@@ -25,7 +25,6 @@
         <div>
             <div class="add-tea-title">
                 <div>
-                    <img src="" class="tea-user-photo">
                     <div></div>
                 </div>
                 <div>總機服務中</div>
@@ -39,96 +38,67 @@
                 <div class="add-tea-room">
                     <div>您的會議地點</div>
                     <div>
-                        <span>BQT/QTT</span>
-                        <span>T01</span>
+                        <div>BQT/QTT</div>
+                        <div id="userChooseMeetingRoom"></div>
                     </div>
                 </div>
                 <div class="add-tea-radio">
                     <div>需要茶水嗎?</div>
                     <div>
-                        <input type="radio" name="teaType" value="tea" id="tea" checked>
-                        <label for="tea">需要杯子</label>
-                        <input type="radio" name="teaType" value="water" id="water">
-                        <label for="water">已有杯子，只需補充茶水</label>
+                        <input type="radio" name="teaType" value="needTea" id="needTea" checked>
+                        <label for="needTea">需要杯子</label>
+                        <input type="radio" name="teaType" value="needWater" id="needWater">
+                        <label for="needWater">已有杯子，只需補充茶水</label>
                     </div>
                 </div>
                 <div class="add-tea-count">
                     <div>
                         <div>茶(杯)</div>
                         <div>
-                            <div class="count-select">
-                                <div>
-                                    <img src="" class="subtract">
-                                </div>
-                                <div class="result">0</div>
-                                <div>
-                                    <img src="" class="add">
-                                </div>
+                            <div class="count-select" data-type="tea">
+                                <div class="tea-subtraction"></div>
+                                <div class="tea-result">0</div>
+                                <div class="tea-addition"></div>
                             </div>
                         </div>
                     </div>
                     <div>
                         <div>水(杯)</div>
                         <div>
-                            <div class="count-select">
-                                <div>
-                                    <img src="" class="subtract">
-                                </div>
-                                <div class="result">0</div>
-                                <div>
-                                    <img src="" class="add">
-                                </div>
+                            <div class="count-select" data-type="water">
+                                <div class="water-subtraction"></div>
+                                <div class="water-result">0</div>
+                                <div class="water-addition"></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="add-tea-btn">
-                    <div>加茶水</div>
+                    <div class="addTeaBtn">加茶水</div>
                 </div>
                 <div class="add-tea-notice">*爲維護品質，請大家結束會議後，記得將杯子送至回收台喔！</div>
                 <div class="add-tea-today">
                     <div class="today-room-title">
-                        <span>在T01預約茶水的同仁</span>
-                        <span>
-                            <img src="" class="room-refresh">
-                        </span>
+                        <span>在</span><span class="followRoomChange"></span><span>預約茶水的同仁</span>
+                        <span class="refreshTargetRoom"></span>
                     </div>
                     <div class="today-room-time">
-                        <span>更新時間</span><span>2018/11/21 14:00</span>
+                        <span>更新時間</span>&nbsp;
+                        <span class="user-main-update-time"></span>
                     </div>
                     <div class="today-room-none">本會議室今日暫無茶水預約</div>
-                    <div class="today-room-list" style="display:none;">
+                    <div class="today-room-list">
                         <ul>
-                            <li>
+                            <!-- <li>
                                 <span>18:00</span>
                                 <span>Allen預約茶5杯</span>
                                 <span></span>
-                            </li>
-                            <li>
-                                <span>16:00</span>
-                                <span>Allen預約茶5杯</span>
-                                <span></span>
-                            </li>
-                            <li class="past-time">
-                                <span>14:00</span>
-                                <span>Allen預約茶5杯</span>
-                                <span>(13:55已送達)</span>
-                            </li>
-                            <li class="past-time">
-                                <span>12:00</span>
-                                <span>Allen加水5杯</span>
-                                <span>(12:05已送達)</span>
-                            </li>
-                            <li class="past-time">
-                                <span>10:00</span>
-                                <span>Allen預約茶5杯</span>
-                                <span>(09:55已送達)</span>
                             </li>
                             <li class="past-time">
                                 <span>08:00</span>
                                 <span>Allen加水5杯</span>
                                 <span>(08:05已送達)</span>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>

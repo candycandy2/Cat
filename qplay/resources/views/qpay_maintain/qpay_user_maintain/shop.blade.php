@@ -5,6 +5,22 @@
 ?>
 @extends('layouts.admin_template')
 @section('content')
+<style>
+#newShopForm .col-lg-10 {
+    width: 100%;
+}
+#newShopForm .col-md-2 {
+    padding-right: 0px;
+    padding-left: 0px;
+    width: 14%;
+}
+#newShopForm .form-control {
+    padding: 6px 8px;
+}
+#newShopForm .input-group {
+    width: 95%;
+}
+</style>
     <h1></h1>
     <div class="row">
         <form id="newShopForm" name="newShopForm">
@@ -38,10 +54,16 @@
                 <div class='col-md-2'>
                     <label for="pwd">{{trans('messages.USER_PWD')}}</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" name="pwd" placeholder="{{trans('messages.QPAY_INPUT_ORI_PWD')}}">
+                        <input class="form-control" type="text" name="pwd" maxlength="20" placeholder="{{trans('messages.QPAY_INPUT_ORI_PWD')}}">
                     </div>
                 </div>
-                 <div class='col-md-2'>
+                <div class='col-md-2'>
+                    <label for="pwd_trade">{{trans('messages.QPAY_TRADE_PWD_DEFAULT')}}</label>
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="pwd_trade" maxlength="4" placeholder="{{trans('messages.QPAY_TRADE_PWD')}}">
+                    </div>
+                </div>
+                <div class='col-md-2'>
                     <label for="addShop">&nbsp;&nbsp;</label>
                     <div class="form-group">
                         <button type="button" id="addShop" class="btn btn-primary">{{trans('messages.NEW')}}</button>
@@ -72,9 +94,9 @@
                     <th data-field="address" data-sortable="true" data-searchable="true"  data-formatter="addressFormatter">{{trans('messages.QPAY_SHOP_ADDRESS')}}</th>
                     <th data-field="ext_no" data-sortable="true" data-searchable="true" data-formatter="telFormatter">{{trans('messages.QPAY_SHOP_TEL')}}</th>
                     <th data-field="login_id" data-sortable="true" data-searchable="true" data-formatter="loginIdFormatter">{{trans('messages.USER_LOGIN_ID')}}</th>
-                    <th data-field="password" data-searchable="false" data-formatter="passwordFormatter">{{trans('messages.USER_PWD')}}</th>
                     <th data-field="" data-width="5px" data-searchable="false" data-formatter="resetPwdFormatter">{{trans('messages.RESET_PWD')}}</th>
-                    <th data-field="" data-width="5px" data-searchable="false" data-formatter="resetOriginFormatter">{{trans('messages.RESET_TO_ORIGIN')}}</th>
+                    <th data-field="" data-width="5px" data-searchable="false" data-formatter="resetOriginFormatter">{{trans('messages.RESET_TO_ORIGIN')}}
+                    <th data-field="" data-width="5px" data-searchable="false" data-formatter="resetTradePwdFormatter">{{trans('messages.RESET_TRADE_PWD')}}</th>
                     <th data-field="status" data-width="10px" data-searchable="false" data-formatter="userStatusFormatter">{{trans('messages.QACCOUNT_USER_STATUS')}}</th>
                     <th data-field="trade_status" data-width="10px" data-searchable="false" data-formatter="tradeStatusFormatter">{{trans('messages.QPAY_TRADE_STATUS')}}</th>
                 </tr>
@@ -146,7 +168,7 @@
                         <tr>
                             <td id ="newPwdInputTitle">{{trans('messages.NEW_PWD')}} : </td>
                             <td style="padding: 10px;">
-                                <input type="text" class="form-control" data-clear-btn="true" id="resetPwd" value="" placeholder="{{trans('messages.QPAY_INPUT_NEW_PWD')}}"/>
+                                <input type="text" class="form-control" data-clear-btn="true" id="resetPwd" value="" maxlength="20" placeholder="{{trans('messages.QPAY_INPUT_NEW_PWD')}}"/>
                                 <span style="color: red;" class="error" for="resetPwd"></span>
                             </td>
                             <td><span style="color: red;">*</span></td>
@@ -163,8 +185,42 @@
         </div>
     </div>
 
+    <div id="resetTradePwdDialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h1 class="modal-title" id="resetTradePwdTitle">{{trans('messages.RESET_TRADE_PWD')}}</h1>
+                </div>
+                <div class="modal-body">
+                    <table style="width:100%">
+                        <tr>
+                            <td id ="newTradePwdInputTitle">{{trans('messages.NEW_PWD')}} : </td>
+                            <td style="padding: 10px;">
+                                <input type="text" class="form-control" data-clear-btn="true" id="resetTradePwd" value="" maxlength="4" placeholder="{{trans('messages.QPAY_INPUT_NEW_PWD')}}"/>
+                                <span style="color: red;" class="error" for="resetTradePwd"></span>
+                            </td>
+                            <td><span style="color: red;">*</span></td>
+                            <input id="targetUserId2" type="hidden" value="" />
+                            <input id="targetIndex2" type="hidden" value="" />
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  class="btn btn-danger" onclick="resetNewTradePwd()">{{trans("messages.CONFIRM")}}</button>
+                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
-        
+        var passwordRegexp = /((^(?!.*[^\x21-\x7e])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[A-Z])(?=.*\d).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[a-z])(?=.*[A-Z]).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[a-z])(?=.*\d).*$))/;
+
+        var accountRegexp = /^[A-Za-z0-9.]*$/;
+
+        var tradePwdRegexp = /^[0-9]*$/;
+
         function shopNameFormatter(value, row, index) {
             return '<a href="#" class="editShop" data-index="'+ index +'" data-id="' + row.row_id +'"><span class="glyphicon glyphicon-edit"></span> '+ htmlEscape(value) +'</a>';
         }
@@ -207,13 +263,11 @@
             }
         }
 
-        function passwordFormatter(value, row, index){
-            
-            if(value == "" || value == null){
-                return '-';
-            }
-            return '******';
+        function resetTradePwdFormatter(value, row, index){
 
+            if(value!=""){
+                return '<div class="reset-pwd-block" id="resetTradePwdBlock_' + row.user_id + '" style="text-align: center;"><button type="button" data-index="' + index + '" data-userid="' + row.user_id + '" class="btn btn-light reset-trade-pwd" title="{{trans('messages.RESET_TRADE_PWD')}}">Reset</button></div>';
+            }
         }
         
         function deleteShop(){
@@ -265,33 +319,79 @@
             var index = $('#targetIndex').val();
             var $block = $("#resetPwdBlock_" + userId);
 
-            //Check Data Empty
-            if (resetPwd.length == 0 ) {
+            var patt = new RegExp(passwordRegexp);
+            var res = patt.test(resetPwd);
+            var checkFail = false;
+
+            if (!res) {
+                checkFail = true;
+            }
+
+            if (resetPwd.length < 8 || resetPwd.length > 20) {
+                checkFail = true;
+            }
+
+            if (checkFail) {
                 showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                 return false;
             }
 
-            var mydata =
-                    {
-                        userId: userId,
-                        resetPwd: resetPwd
-                    };
-                
+            var mydata = {
+                userId: userId,
+                resetPwd: resetPwd
+            };
+
             resetQAccountPwd(
                 mydata, 
-                function(){},
-                function(){$('#resetPwdDialog').modal('hide');}
+                function(){
+                    $('#resetPwdDialog').modal('hide');
+                    $block.html('<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>');
+                },
+                function(){
+                    $block.html(' <button type="button" data-index="' + index + '" data-userid="' + userId + '" class="btn btn-light reset-pwd" title="{{trans('messages.RESET_PWD')}}">Reset</button>');
+                }
             );
-            resetQAccountPwd(
-                        mydata, 
-                        function(){
-                            $('#resetPwdDialog').modal('hide');
-                            $block.html('<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>');
-                        },
-                        function(){
-                            $block.html(' <button type="button" data-index="' + index + '" data-userid="' + userId + '" class="btn btn-light reset-pwd" title="{{trans('messages.RESET_PWD')}}">Reset</button>');
-                        }
-                    );
+        }
+
+        function resetNewTradePwd(){
+
+            var resetTradePwd = $("#resetTradePwd").val();
+            var userId = $("#targetUserId2").val();
+            var index = $('#targetIndex2').val();
+            var $block = $("#resetTradePwdBlock_" + userId);
+
+            var patt = new RegExp(tradePwdRegexp);
+            var res = patt.test(resetTradePwd);
+            var checkFail = false;
+
+            if (!res) {
+                checkFail = true;
+            }
+
+            if (resetTradePwd.length != 4) {
+                checkFail = true;
+            }
+
+            if (checkFail) {
+                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+                return false;
+            }
+
+            var mydata = {
+                userId: userId,
+                resetTradePwd: resetTradePwd
+            };
+
+            updateShopTradePwd(
+                mydata,
+                function(){
+                    $('#resetTradePwdDialog').modal('hide');
+                    $block.html('<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>');
+                },
+                function(){
+                    $block.html(' <button type="button" data-index="' + index + '" data-userid="' + userId + '" class="btn btn-light reset-pwd" title="{{trans('messages.RESET_PWD')}}">Reset</button>');
+                }
+            );
         }
 
         var selectedChanged = function (row, $element) {
@@ -330,13 +430,36 @@
                 complete:complete
             });
         }
-        
+
+        var updateShopTradePwd = function(mydata, beforeSend, complete){
+
+            var mydataStr = $.toJSON(mydata);
+
+            $.ajax({
+                url: "updateShopTradePwd",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json",
+                data: mydataStr,
+                beforeSend: beforeSend,
+                success: function (d, status, xhr) {
+                    if(d.result_code != 1) {
+                        showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
+                        $("#gridShopList").bootstrapTable("refresh");
+                        return false;
+                    }
+                },
+                error: function (e) {
+                    if(handleAJAXError(this, e, "../")){
+                        return false;
+                    }
+                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
+                },
+                complete:complete
+            });
+        }
+
         $(function () {
-
-            var passwordRegexp = /((^(?!.*[^\x21-\x7e])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[A-Z])(?=.*\d).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[a-z])(?=.*[A-Z]).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[a-z])(?=.*\d).*$))/;
-            
-            var accountRegexp = /^[A-Za-z0-9.]*$/;
-
             $.validator.addMethod(
                     "regex",
                     function(value, element, regexp) {
@@ -372,7 +495,7 @@
                     switchToStr = '{{trans("messages.CLOSE")}}';   
                 }
 
-                showConfirmDialog( switchToStr + "{{trans("messages.QACCOUNT_USER_STATUS")}}", "{{trans("messages.CONFIRM")}}" + switchToStr + "{{trans("messages.USER_LOGIN_ID")}} <b>"+ row.login_id +"</b> {{trans("messages.QACCOUNT_USER_STATUS")}}?","", function () { 
+                showConfirmDialog( switchToStr + "{{trans("messages.QACCOUNT_USER_STATUS")}}", "{{trans("messages.CONFIRM")}}" + switchToStr + "{{trans("messages.USER_LOGIN_ID")}} <b>"+ row.login_id +"</b> {{trans("messages.QACCOUNT_USER_STATUS")}}?","", function () {
                   
                     hideConfirmDialog();
                     var action = '';
@@ -479,7 +602,7 @@
                         {
                             userId: userId
                         };
-                showConfirmDialog( "{{trans('messages.RESET_PWD')}}", "{{trans('messages.CONFIRM_RESET_TO_ORI_PWD')}}".replace("%s", row.login_id), "", function () { 
+                showConfirmDialog( "{{trans('messages.RESET_TO_ORIGIN')}}", "{{trans('messages.CONFIRM_RESET_TO_ORI_PWD')}}".replace("%s", row.login_id), "", function () { 
                     hideConfirmDialog();
                     resetQAccountPwd(
                         mydata, 
@@ -495,7 +618,6 @@
 
             //reset new QAccount password
             $('body').on('click','.reset-pwd', function(){
-                
                 var index = $(this).data('index');
                 var currentData = $('#gridShopList').bootstrapTable('getData');
                 var row = currentData[index];
@@ -504,6 +626,18 @@
                 $('#targetUserId').val($(this).data('userid'));
                 $('#targetIndex').val(index);
                 $('#resetPwdDialog').modal('show');
+            });
+
+            //reset Trade password
+            $('body').on('click','.reset-trade-pwd', function(){
+                var index = $(this).data('index');
+                var currentData = $('#gridShopList').bootstrapTable('getData');
+                var row = currentData[index];
+                $('#resetTradePwdDialog').find("#newTradePwdInputTitle").text("{{trans('messages.INPUT_NEW_RESET_TRADE_PWD_LABEL')}}:".replace("%s", row.login_id));
+                $("#resetTradePwd").val("");
+                $('#targetUserId2').val($(this).data('userid'));
+                $('#targetIndex2').val(index);
+                $('#resetTradePwdDialog').modal('show');
             });
 
             //new shop
@@ -532,22 +666,30 @@
                         required: true,
                         rangelength: [8,20],
                         regex: passwordRegexp
+                    },
+                    pwd_trade:{
+                        required: true,
+                        digits: true,
+                        rangelength: [4,4],
+                        regex: tradePwdRegexp
                     }
                 },
                 submitHandler: function(form) {
-                    
+
                     var name = $(form).find('input[name=shopName]').val();
                     var address = $(form).find('input[name=address]').val();
                     var tel = $(form).find('input[name=tel]').val();
                     var loginId = $(form).find('input[name=loginId]').val();
                     var pwd = $(form).find('input[name=pwd]').val();
+                    var pwd_trade = $(form).find('input[name=pwd_trade]').val();
 
                     var mydata = {
                             name:   name,
                             address:  address,
                             tel: tel,
                             loginId: loginId,
-                            pwd: pwd
+                            pwd: pwd,
+                            pwd_trade: pwd_trade
                     };
                     $.ajax({
                         url: "newQPayShop",

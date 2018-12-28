@@ -63,8 +63,8 @@
                     <th data-field="emp_name" data-sortable="true" data-searchable="false">{{trans('messages.USER_EMP_NAME')}}</th>
                     <th data-field="point_type" data-sortable="false" data-searchable="false" data-formatter="pointTypeFormatter">{{trans('messages.QPAY_POINT_TYPE')}}</th>
                     <th data-field="department" data-sortable="true" data-searchable="false" >{{trans('messages.QPAY_MEMBER_DEPARTMENT_CODE')}}</th>
-                    <th data-field="trade_password" data-sortable="false" data-width="5px" data-searchable="false" data-formatter="passwordFormatter">{{trans('messages.QPAY_TRADE_PWD')}}</th>
-                    <th data-field="" data-searchable="false" data-width="5px" data-formatter="resetOriginFormatter">{{trans('messages.RESET_PWD')}}</th>
+                    <th data-field="trade_password" data-sortable="false" data-width="5px" data-searchable="false" data-formatter="passwordFormatter">{{trans('messages.QPAY_TRADE_PWD_DEFAULT')}}</th>
+                    <th data-field="" data-searchable="false" data-width="5px" data-formatter="resetOriginFormatter">{{trans('messages.RESET_TO_ORIGIN')}}</th>
                     <th data-field="user_id" data-searchable="false" data-visible="false"></th>
                 </tr>
                 </thead>
@@ -202,7 +202,7 @@
                             userId: userId
                         };
                         
-                showConfirmDialog( "{{trans('messages.RESET_PWD')}}", "{{trans('messages.QPAY_CONFIRM_TO_RESET_TRADE_PWD')}}".replace("%s", row.emp_name), "", function () { 
+                showConfirmDialog( "{{trans('messages.RESET_TO_ORIGIN')}}", "{{trans('messages.QPAY_CONFIRM_TO_RESET_TRADE_PWD')}}".replace("%s", row.emp_name), "", function () {
                     hideConfirmDialog();
                     resetQPayMemberTradPwd(
                         mydata, 

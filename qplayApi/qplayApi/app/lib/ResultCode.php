@@ -60,6 +60,12 @@ abstract class ResultCode
     const _000930_newTradePasswordIncorrect = "000930"; //新的交易密碼格式錯誤
     const _000931_newLoginPasswordIncorrect = "000931"; //新的登入密碼格式錯誤
     const _000932_shopNotExistError = "000932"; //店家資料異常
+    const _000933_statusStatusIDExist = "000933"; //Status ID 已經存在 
+    const _000934_statusStatusIDNotExist = "000934";//status_id 不存在
+    const _000935_statusStatusTypeNotExist = "000935";//status type 不存在
+    const _000936_statusStatusDateRangeInvalid = "000936";//生命週期的日期範圍錯誤
+    const _000937_statusStatusLifeCrontabNotExist = "000937";//生命週期不存在
+    const _000938_statusStatusLifeCrontabCanNotNull = "000938";//生命週期不可以為空值
     //TODO 以下为各系统扩展
     
     //Emp Service

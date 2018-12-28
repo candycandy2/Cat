@@ -92,6 +92,16 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
             Route::post('/setReserveComplete', 'ReserveController@setReserveComplete');
         });
     });
+
+    //Status API
+    Route::group(['namespace' => 'Status'], function()
+    {   
+        //for app
+        Route::group(['middleware' => 'auth.token'], function () {
+            Route::post('/setStatus', 'StatusController@setStatus');
+        });
+    });
+    
 });
 
 //syncUser
