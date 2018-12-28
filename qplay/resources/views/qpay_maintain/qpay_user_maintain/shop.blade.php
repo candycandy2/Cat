@@ -17,6 +17,9 @@
 #newShopForm .form-control {
     padding: 6px 8px;
 }
+#newShopForm .input-group {
+    width: 95%;
+}
 </style>
     <h1></h1>
     <div class="row">
