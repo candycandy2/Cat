@@ -1,7 +1,7 @@
 $("#viewStaffUserMain").pagecontainer({
     create: function(event, ui) {
 
-        var imgURL = '/widget/widgetPage/viewStaffUserMain/img/',
+        let imgURL = '/widget/widgetPage/viewStaffUserMain/img/',
             staffKey = 'appempservice',
             staffService = 'meetingroomService',
             staffType = 'staff',
