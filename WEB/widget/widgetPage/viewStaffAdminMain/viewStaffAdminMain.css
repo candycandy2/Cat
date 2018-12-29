@@ -161,9 +161,6 @@
 .admin-main-tomorrow{
     width: 100vw;
     min-height: 4vw;
-    /* position: absolute;
-    width: 100vw;
-    bottom: 0; */
 }
 
 .today-no-data,
@@ -172,6 +169,7 @@
     text-indent: 3.71vw;
     color: #253137;
     font-size: 3.768vw;
+    display: none;
 }
 
 .today-list{
