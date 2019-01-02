@@ -259,4 +259,57 @@ class StatusController extends Controller
         return $this->statusService->updateStatus($loginId, $domain, $empNo, $updateData);
     }
 
+    /**
+     * Get specific status and it's associate life crontab infomation
+     * @param  Request $request
+     * @return json
+     */
+    public function getStatus(Request $request){
+
+        //parameter verify
+        $validator = Validator::make($request->all(),
+            [
+            'status_id' => 'required_without:status_type',
+            'status_type' => 'required_without:status_id'
+            ],
+            [
+                'required_without' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        if(isset($request->status_type)){
+
+            $statusTypeExist = $this->statusService->checkStatusTypeExist($request->status_type);
+
+            if(!$statusTypeExist){
+                return response()->json(["result_code" => ResultCode::_000935_statusStatusTypeNotExist, 
+                        "message" => CommonUtil::getMessageContentByCode(ResultCode::_000935_statusStatusTypeNotExist)], 200);
+            }
+
+            $statusListRs = $this->statusService->getLifeCrontabByStatusType($request->status_type);
+            
+           return response()->json($statusListRs);
+
+        }else if(isset($request->status_id)){
+
+            $statusExist = $this->statusService->checkStatusExist($request->status_id);
+
+            //check status already exist or not
+            if(!$statusExist){
+
+                return  response()->json(["result_code" => ResultCode::_000934_statusStatusIDNotExist, 
+                               "message" => CommonUtil::getMessageContentByCode(ResultCode::_000934_statusStatusIDNotExist)], 200);
+            }
+
+            $statusListRs = $this->statusService->getLifeCrontabByStatusID($request->status_id);
+
+            return response()->json($statusListRs);
+        }
+    }
+
 }

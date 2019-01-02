@@ -97,10 +97,11 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
     //Status API
     Route::group(['namespace' => 'Status'], function()
     {   
-        //for app
-        Route::group(['middleware' => 'auth.token'], function () {
+       //for app
+       Route::group(['middleware' => 'auth.token'], function () {
             Route::post('/setStatus', 'StatusController@setStatus');
-        });
+            Route::post('/getStatus', 'StatusController@getStatus');
+       });
     });
     
 });

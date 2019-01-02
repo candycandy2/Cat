@@ -75,7 +75,7 @@ class StatusLogRepository
      * @return mixed
      */
     public static function getLastUpdatedUser($tableName, $tableRowId){
-        $statusLog = new EmpService_Data_Log();
+        $statusLog = new Status_Log();
         return $statusLog->where('table_name',$tableName)
                     ->where('table_row_id',$tableRowId)
                     ->orderby('created_at','desc')
@@ -89,7 +89,7 @@ class StatusLogRepository
      * @return mixed
      */
     public static function getLastCreatedUser($tableName, $tableRowId){
-        $statusLog = new EmpService_Data_Log();
+        $statusLog = new Status_Log();
         return $statusLog->where('table_name', $tableName)
                     ->where('table_row_id', $tableRowId)
                     ->where('action','add')
