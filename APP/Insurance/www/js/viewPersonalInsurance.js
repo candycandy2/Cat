@@ -340,7 +340,8 @@ $("#viewPersonalInsurance").pagecontainer({
             passValueToApplyInsurance(clickFamilyID);
             $("#applyBtn").show();
             $("#cancelBtn").hide();            
-            $.mobile.changePage("#viewApplyInsurance"); 
+            //$.mobile.changePage("#viewApplyInsurance"); 
+            checkWidgetPage('viewApplyInsurance', visitedPageList);
         });  
 
         $(document).on("click", "#insurTextNextBtn", function() { 
@@ -352,7 +353,8 @@ $("#viewPersonalInsurance").pagecontainer({
             } else if (clickCanApply === "取消申請") {
                 nextPage = "pendingDetail";
             }
-            $.mobile.changePage("#viewApplyInsurance");        
+            //$.mobile.changePage("#viewApplyInsurance"); 
+            checkWidgetPage('viewApplyInsurance', visitedPageList);       
         });
 
         $(document).on("click", "#textNextBtn", function() { 
@@ -364,7 +366,8 @@ $("#viewPersonalInsurance").pagecontainer({
             } else if (clickCanApply === "復保") {
                 nextPage = "failedRecoverDetail";
             }                
-            $.mobile.changePage("#viewApplyInsurance");   
+            //$.mobile.changePage("#viewApplyInsurance");  
+            checkWidgetPage('viewApplyInsurance', visitedPageList); 
         });
 
         $(document).on("click", "#addNextBtn", function() { 
@@ -377,7 +380,8 @@ $("#viewPersonalInsurance").pagecontainer({
                 //加保駁回/加保暫存/取消加保
                 nextPage = "failedInsurDetail";
             }
-            $.mobile.changePage("#viewApplyInsurance"); 
+            //$.mobile.changePage("#viewApplyInsurance"); 
+            checkWidgetPage('viewApplyInsurance', visitedPageList);
         });
 
         $(document).on("click", ".family-next", function() {
@@ -387,7 +391,8 @@ $("#viewPersonalInsurance").pagecontainer({
             if (clickCanApply === "停保+退保") {
                 nextPage = "appliedDetail";
             } 
-            $.mobile.changePage("#viewApplyInsurance"); 
+            //$.mobile.changePage("#viewApplyInsurance"); 
+            checkWidgetPage('viewApplyInsurance', visitedPageList);
         });             
 
     }

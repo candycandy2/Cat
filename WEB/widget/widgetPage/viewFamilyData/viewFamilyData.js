@@ -515,7 +515,7 @@ $("#viewFamilyData").pagecontainer({
             $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
             nextPage = "addDetail";
             $.mobile.changePage("#viewApplyInsurance");    
-            //checkWidgetPage('viewApplyInsurance', 'viewApplyInsurance'); 
+            checkWidgetPage('viewApplyInsurance', visitedPageList);
         }
         
         /********************************** page event *************************************/
