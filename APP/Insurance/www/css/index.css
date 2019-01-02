@@ -905,6 +905,7 @@ div.scrollmenu a {
 
 /********************************************** viewApplyInsurance *********************************************/
 
+/*
 .apply-insurance-form, 
 .apply-insurance-ddl,
 .withdraw-insurance-ddl,
@@ -1088,8 +1089,10 @@ input[type=radio]:checked + label {
     width: 49.8%;
     float: left;
 }
+*/
 
 /*多個view有使用到*/
+/*
 .popup-msg-style {
     width: 28VW;
     height: 4VW;
@@ -1114,3 +1117,4 @@ input[type=radio]:checked + label {
     padding: 0 5.36vw;
     margin: 0 0 8.5vw;
 }
+*/
