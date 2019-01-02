@@ -216,6 +216,8 @@ $("#viewQStoreMain").pagecontainer({
         /********************************** page event ***********************************/
 
         $("#viewQStoreMain").one("pageshow", function(event, ui) {
+            var imgURL = "/widget/widgetPage/viewQStoreMain/img/";
+            $(".searchImg").attr("scr", serverURL + imgURL + "nav_search.png");
 
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 qstoreWidget.allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
