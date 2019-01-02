@@ -167,7 +167,7 @@ class StatusService
     }
 
     /**
-     * Check statys type exist
+     * Check status type exist
      * @param  string $statusType status type
      * @return boolean
      */
@@ -250,4 +250,80 @@ class StatusService
         return $result;
     }
     
+    /**
+     * delete status and set it's life crontabs by status_id
+     * @param  string $loginId  user login id
+     * @param  string $domain   user domain
+     * @param  string $empNo    user emp no
+     * @param  string $statusId delete status id
+     * @return array
+     */
+    public function deleteStatusById($loginId, $domain, $empNo, $statusId){
+
+        $lifeCrontabList = $this->statusLifeCrontabRepository->getLifeCrontabByStatusID($statusId);
+        return $this->deleteStatus($loginId, $domain, $empNo, $lifeCrontabList);
+    }
+
+    /**
+     * delete status and set it's life crontabs by status_type
+     * @param  string $loginId    user login id
+     * @param  string $domain     user domain
+     * @param  string $empNo      user emp no
+     * @param  string $statusType status_type
+     * @return array
+     */
+    public function deleteStatusByType($loginId, $domain, $empNo, $statusType){
+
+        $lifeCrontabList = $this->statusLifeCrontabRepository->getLifeCrontabByStatusType($statusType);
+        return $this->deleteStatus($loginId, $domain, $empNo, $lifeCrontabList);
+    }
+
+    /**
+     * delete status
+     * @param  string $loginId         user login id
+     * @param  string $domain          user domain
+     * @param  string $empNo           user emp no
+     * @param  mixed  $lifeCrontabList query result of status infomation and lifecrontab
+     * @return array
+     */
+    private function deleteStatus($loginId, $domain, $empNo, $lifeCrontabList){
+        
+        $statusCotrntabList = [];
+        $logData = [];
+        $updateData = ['active' => 'N'];
+
+        foreach ($lifeCrontabList as $crontab) {
+            $statusCotrntabList[$crontab->status_id][] = $crontab->life_crontab_row_id;
+        }
+
+        foreach ($statusCotrntabList as $statusId => $crontabList) {
+
+            //delete life crontab
+            foreach ($crontabList as $crontabId) {
+                 $deleteCrontabRowId = $this->statusLifeCrontabRepository->updateStatusLifeCrontab($crontabId,$updateData);
+
+                  $logData[] = StatusLog::getLogData(self::TABLE_STATUS_LIFE_CRONTAB, $deleteCrontabRowId,
+                                             self::ACTION_DELETE,
+                                             $loginId, $domain, $empNo,
+                                             $updateData);
+            }
+
+            //delete status id
+            $deletedStatusRowId = $this->statusIdRepository->updateStatus($statusId, $updateData);
+
+            $logData[] = StatusLog::getLogData(self::TABLE_STATUS_ID, $deletedStatusRowId,
+                                     self::ACTION_DELETE,
+                                     $loginId, $domain, $empNo,
+                                     $updateData);
+        }
+
+        $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
+                  ];
+
+        return [$result,$logData];
+
+    }
+    
+
 }

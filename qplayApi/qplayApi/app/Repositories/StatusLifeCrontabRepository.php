@@ -49,9 +49,11 @@ class StatusLifeCrontabRepository
      * @return mixed
      */
     public function updateStatusLifeCrontab($statusLifeCrontabRowId, $data){
-        return $this->statusLifeCrontab
+        $crontab =  $this->statusLifeCrontab
                     ->where('row_id', $statusLifeCrontabRowId)
-                    ->update($data);
+                    ->first();
+        $crontab->update($data);
+        return $crontab->row_id;
     }
 
     /**

@@ -59,6 +59,7 @@ class StatusIDRepository
     public function getStatusTypeCount($statusType){
         return $this->statusId
             ->where('type',$statusType)
+            ->where('active','Y')
             ->count();
     }
 }
