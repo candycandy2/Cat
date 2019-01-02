@@ -230,7 +230,8 @@ class ReserveController extends Controller
             [
                 'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
                 'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
-                'digits' => ResultCode::_999001_requestParameterLostOrIncorrect
+                'digits' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'required_without' => ResultCode::_999001_requestParameterLostOrIncorrect
             ]
         );
 
