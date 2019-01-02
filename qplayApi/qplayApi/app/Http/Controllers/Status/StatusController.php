@@ -273,7 +273,7 @@ class StatusController extends Controller
             'status_type' => 'required_without:status_id'
             ],
             [
-                'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+                'required_without' => ResultCode::_999001_requestParameterLostOrIncorrect
             ]
         );
 
