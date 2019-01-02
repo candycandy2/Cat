@@ -1,3 +1,10 @@
+<strong>Jan-03-19 00:35:19</strong>
+- Reason : daily build, 703
+- Commit# : 
+d34f66fbe - CleoWChan, 9 hours ago : [EmpService] Phase 1 fix bug of getMyReserve API
+08adf7d6f - CleoWChan, 9 hours ago : [Status API] Phase1 Add deleteStatus
+9a5dff457 - CleoWChan, 14 hours ago : [Status API] Phase 1 fix bug of validate message
+
 <strong>Jan-02-19 00:37:20</strong>
 - Reason : daily build, 702
 - Commit# : 
