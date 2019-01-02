@@ -217,7 +217,7 @@ $("#viewQStoreMain").pagecontainer({
 
         $("#viewQStoreMain").one("pageshow", function(event, ui) {
             var imgURL = "/widget/widgetPage/viewQStoreMain/img/";
-            $(".searchImg").attr("scr", serverURL + imgURL + "nav_search.png");
+            $(".searchImg").attr("src", serverURL + imgURL + "nav_search.png");
 
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 qstoreWidget.allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
@@ -225,7 +225,6 @@ $("#viewQStoreMain").pagecontainer({
             } else {
                 //第一次進入
                 //將QStoreList按七種類別，存入localStorage
-                loadingMask("show");
                 qstoreWidget.QueryStoreList(1)
                     .then(qstoreWidget.QueryStoreList(2))
                     .then(qstoreWidget.QueryStoreList(3))
