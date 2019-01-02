@@ -6,10 +6,11 @@ $("#viewStaffAdminMain").pagecontainer({
             staffServiceType = 'staff',//茶水服务类型
             staffKey = 'appempservice',
             statusList = [
-            {id: 1, item: '服務中'},
-            {id: 2, item: '忙碌中'},
-            {id: 3, item: '暫停服務'},
-        ];
+                {id: 1, item: '服務中'},
+                {id: 2, item: '忙碌中'},
+                {id: 0, item: '暫停服務'},
+            ],
+            status_row_id;
 
         //初始化總機狀態dropdownlist
         function initAdminSetting() {
@@ -18,7 +19,7 @@ $("#viewStaffAdminMain").pagecontainer({
                 option: [],
                 title: '<input type="text" id="adminSettingNotice" maxlength="15" placeholder="總機公告(限15字)" />',
                 defaultText: '暫停服務',
-                defaultValue: '0',
+                defaultValue: 100,
                 changeDefaultText: true,
                 attr: {
                     class: "tpl-dropdown-list-icon-arrow"
@@ -72,6 +73,107 @@ $("#viewStaffAdminMain").pagecontainer({
                 if(staffBoardType == null || checkDataExpired(staffBoardType['lastUpdateTime'], 1, 'dd')) {
                     QForumPlugin.CustomAPI("POST", true, "getBoardList", successCallback, failCallback, queryData, "");
                 }
+            }();
+        }
+
+        //获取总机状态
+        function getStaffStatus() {
+            var self = this;
+            let queryData = JSON.stringify({
+                status_id: staffServiceID//hardcode
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+                //表示没有该状态000934，需要setStatus:meetingroomService
+                if(data['result_code'] == '000934') {
+                    newStaffStatus();
+                } else if(data['result_code'] == '1') {
+                    status_row_id = data['content']['status_list'][0]['period_list'][0]['life_crontab_row_id'];
+                    let statusValue = data['content']['status_list'][0]['period_list'][0]['status'];
+                    if(statusValue == 1) {
+                        $('.main-title-status').addClass('active-status-true');
+                        $('#adminSettingPopup-option-popup li:eq(0)').addClass('tpl-dropdown-list-selected');
+                    } else if(statusValue == 2) {
+                        $('.main-title-status').addClass('active-status-false');
+                        $('#adminSettingPopup-option-popup li:eq(1)').addClass('tpl-dropdown-list-selected');
+                    } else if(statusValue == 0) {
+                        $('#adminSettingPopup-option-popup li:eq(2)').addClass('tpl-dropdown-list-selected');
+                    }
+
+                    let statusText = $('#adminSettingPopup-option-popup .tpl-dropdown-list-selected').text();
+                    $('.title-text-status').text(statusText);
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                StatusPlugin.QPlayAPI("POST", "getStatus", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+        //新增总机状态
+        function newStaffStatus() {
+            var self = this;
+            let queryData = JSON.stringify({
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no'],
+                status_new: [{
+                    status_id: staffServiceID,
+                    status_type: staffServiceType,
+                    period_list: [{
+                        life_type: 0,//表示无生命周期
+                        status: 1,//1表示online,0表示offline,2表示busy
+                        crontab: '*****'
+                    }]
+                }]
+            });
+
+            this.successCallback = function(data) {
+                //console.log(data);
+                if(data['result_code'] == '1') {
+                    //如果新增成功，再获取一次当前总机状态
+                    getStaffStatus();
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                StatusPlugin.QPlayAPI("POST", "setStatus", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+        //修改总机状态
+        function setStaffStatus(status) {
+            var self = this;
+            let queryData = JSON.stringify({
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no'],
+                status_update: [{
+                    status_id: staffServiceID,
+                    status_type: staffServiceType,//与status_id择一
+                    period_list: [{
+                        life_crontab_row_id: status_row_id,
+                        life_type: 0,//表示无生命周期
+                        status: status,//1表示online,0表示offline,2表示busy
+                        crontab: '*****'
+                    }]
+                }]
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+                //nothing to do
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                StatusPlugin.QPlayAPI("POST", "setStatus", self.successCallback, self.failCallback, queryData, '');
             }();
         }
 
@@ -137,8 +239,10 @@ $("#viewStaffAdminMain").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
-                //新增茶水服务成功后，再获取一次serviceTargetList
-                getStaffEmpService();
+                if(data['result_code'] == '1') {
+                    //新增茶水服务成功后，再获取一次serviceTargetList
+                    getStaffEmpService();
+                }
             };
 
             this.failCallback = function(data) {};
@@ -319,10 +423,12 @@ $("#viewStaffAdminMain").pagecontainer({
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminMain .page-main').css('height', mainHeight);
             initAdminSetting();
-            //获取所有staff的board主题
-            getBoardType();
+            //是否有总机状态
+            getStaffStatus();
             //是否有茶水服务
             getStaffEmpService();
+            //获取所有staff的board主题
+            getBoardType();
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
@@ -383,12 +489,9 @@ $("#viewStaffAdminMain").pagecontainer({
         //彈窗關閉，text控件失焦
         $(document).on("popupafterclose", "#adminSettingPopup-option-popup", function() {
             $('#adminSettingNotice').blur();
-            //value
+            //简报
             var value = $('#adminSettingNotice').val();
             $('.title-text-now').text(value);
-            //text
-            var text = $.trim($('#adminSettingPopup').text());
-            $('.title-text-status').text(text);
         });
 
         //改變狀態
@@ -398,9 +501,13 @@ $("#viewStaffAdminMain").pagecontainer({
                 $('.main-title-status').removeClass('active-status-false').addClass('active-status-true');
             } else if (statusValue == 2) {
                 $('.main-title-status').removeClass('active-status-true').addClass('active-status-false');
-            } else {
+            } else if(statusValue == 0) {
                 $('.main-title-status').removeClass('active-status-true').removeClass('active-status-false');
             }
+            setStaffStatus(statusValue);
+
+            let statusText = $('#adminSettingPopup-option-popup .tpl-dropdown-list-selected').text();
+            $('.title-text-status').text(statusText);
         });
 
 

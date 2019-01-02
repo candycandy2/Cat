@@ -46,6 +46,59 @@ $("#viewStaffUserMain").pagecontainer({
             }();
         }
 
+        //前台通过星期和时间控制用户是否需要获取总机状态
+        //总机工作日及时间周一到周五，早上8点-12点，下午13点-17点
+        function checkAdminWorkTime() {
+            //1.先判断当天是否是工作日
+            let workDay = new Date().getDay();
+            if(workDay !== 6 && workDay !== 0) {
+                //2.在判断时间是否在区间内
+                let workTime = new Date().getTime();
+                let am_start = new Date(new Date().yyyymmdd('/') + ' 08:00').getTime();
+                let am_end = new Date(new Date().yyyymmdd('/') + ' 12:00').getTime();
+                let pm_start = new Date(new Date().yyyymmdd('/') + ' 13:00').getTime();
+                let pm_end = new Date(new Date().yyyymmdd('/') + ' 17:00').getTime();
+                if((workTime > am_start && workTime < am_end) || (workTime > pm_start && workTime < pm_end)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //获取总机状态
+        function getStaffStatus() {
+            var self = this;
+            let queryData = JSON.stringify({
+                status_id: staffService//hardcode
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['result_code'] == '1') {
+                    var statusValue = data['content']['status_list'][0]['period_list'][0]['status'];
+                    if(statusValue == 1) {
+                        $('.user-main-status').removeClass('active-status-false').addClass('active-status-true');
+                        $('.service-offline').hide();
+                        $('.service-online').show();
+                    } else if(statusValue == 2) {
+                        $('.user-main-status').removeClass('active-status-true').addClass('active-status-false');
+                        $('.service-offline').hide();
+                        $('.service-online').show();
+                    } else if(statusValue == 0) {
+                        $('.user-main-status').removeClass('active-status-true').removeClass('active-status-false');
+                        $('.service-online').hide();
+                        $('.service-offline').show();
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                StatusPlugin.QPlayAPI("POST", "getStatus", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
         //获取所有可提供茶水预约服务的会议室
         function getStaffEmpService() {
             var self = this;
@@ -301,10 +354,15 @@ $("#viewStaffUserMain").pagecontainer({
             $('.tea-user-name').text(loginData['loginid']);
             $('.tea-user-today').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
 
-            //获取所有staff的board主题
-            getBoardType();
+            var needStatus = checkAdminWorkTime();
+            if(needStatus) {
+                //获取总机状态
+                getStaffStatus();
+            }
             //获取所有可预约的会议室
             getStaffEmpService();
+            //获取所有staff的board主题
+            getBoardType();
         });
 
         $("#viewStaffUserMain").on("pageshow", function(event, ui) {
@@ -317,6 +375,15 @@ $("#viewStaffUserMain").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //更新总机状态
+        $('.update-service').on('click', function() {
+            var needStatus = checkAdminWorkTime();
+            if(needStatus) {
+                //获取总机状态
+                getStaffStatus();
+            }
+        });
+
         //切换会议室
         $('#userChooseMeetingRoom').on('change', '#userChooseRoom', function() {
             let room_code = $.trim($(this).text());
