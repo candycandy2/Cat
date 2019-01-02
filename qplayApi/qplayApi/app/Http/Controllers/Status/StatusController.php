@@ -312,4 +312,83 @@ class StatusController extends Controller
         }
     }
 
+
+    /**
+     * Delete status and it's assoicate life crontab by status_type or status_id
+     * @param $request
+     * @return Array
+     */
+    public function deleteStatus(Request $request){
+
+        //parameter verify
+        $validator = Validator::make($request->all(),
+            [
+            'status_id' => 'required_without:status_type',
+            'status_type' => 'required_without:status_id',
+            'login_id' => 'required',
+            'domain' => 'required',
+            'emp_no' => 'required'
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'required_without' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        $loginId = $request->login_id;
+        $domain = $request->domain;
+        $empNo = $request->emp_no;
+
+        $updateResult = [];
+
+        try {
+            
+            $DBconn = DB::connection($this->connection);
+            $DBconn->beginTransaction();
+
+            if(isset($request->status_type)){
+
+                $statusTypeExist = $this->statusService->checkStatusTypeExist($request->status_type);
+
+                if(!$statusTypeExist){
+                    return response()->json(["result_code" => ResultCode::_000935_statusStatusTypeNotExist, 
+                            "message" => CommonUtil::getMessageContentByCode(ResultCode::_000935_statusStatusTypeNotExist)], 200);
+                }
+
+                $updateResult = $this->statusService->deleteStatusByType($loginId, $domain, $empNo, $request->status_type);                
+
+            }else if(isset($request->status_id)){
+
+                $statusExist = $this->statusService->checkStatusExist($request->status_id);
+
+                //check status already exist or not
+                if(!$statusExist){
+
+                    return  response()->json(["result_code" => ResultCode::_000934_statusStatusIDNotExist, 
+                                   "message" => CommonUtil::getMessageContentByCode(ResultCode::_000934_statusStatusIDNotExist)], 200);
+                }
+                
+                $updateResult = $this->statusService->deleteStatusById($loginId, $domain, $empNo, $request->status_id);
+
+            }
+
+            if($updateResult[0]['result_code'] == ResultCode::_1_reponseSuccessful){
+                $this->statusLogService->newStatusLog($updateResult[1]);
+            } 
+
+            $DBconn->commit();
+            
+            return response()->json($updateResult[0], 200);
+
+        } catch (\Exception $e) {
+            $DBconn->rollBack();
+            throw $e;
+        }
+    
+    }
 }
