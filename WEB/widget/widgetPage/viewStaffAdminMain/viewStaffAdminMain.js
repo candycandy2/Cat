@@ -12,6 +12,14 @@ $("#viewStaffAdminMain").pagecontainer({
             ],
             status_row_id;
 
+        //获取当前时间并精确到秒
+        function getTimeBySecond() {
+            var hh = new Date().getHours().toString();
+            var mm = new Date().getMinutes().toString();
+            var ss = new Date().getSeconds().toString();
+            return (hh[1] ? hh : '0' + hh[0]) + ':' + (mm[1] ? mm : '0' + mm[0]) + ':' + (ss[1] ? ss : '0' + ss[0]);
+        }
+
         //初始化總機狀態dropdownlist
         function initAdminSetting() {
             var settingData = {
@@ -306,7 +314,7 @@ $("#viewStaffAdminMain").pagecontainer({
 
             var __construct = function() {
                 //更新时间
-                let nowTime = new Date().yyyymmdd('/') + ' ' + new Date().hhmm();
+                let nowTime = new Date().yyyymmdd('/') + ' ' + getTimeBySecond();
                 $('.admin-main-update-time').text(nowTime);
                 //API
                 EmpServicePlugin.QPlayAPI("POST", "getReserveRecord", self.successCallback, self.failCallback, queryData, '');
@@ -422,6 +430,7 @@ $("#viewStaffAdminMain").pagecontainer({
         $("#viewStaffAdminMain").one("pageshow", function(event, ui) {
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminMain .page-main').css('height', mainHeight);
+            $('.admin-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
             initAdminSetting();
             //是否有总机状态
             getStaffStatus();

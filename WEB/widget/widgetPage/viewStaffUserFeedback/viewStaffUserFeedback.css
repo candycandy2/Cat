@@ -81,3 +81,12 @@
     color: #979797;
     font-size: 4.18vw;
 }
+
+.thankFeedbackPopup .ui-content{
+    padding: 0 !important;
+}
+
+.thankFeedbackPopup .ui-content>.header,
+.thankFeedbackPopup .ui-content>.footer{
+    margin-top: 8vw;
+}

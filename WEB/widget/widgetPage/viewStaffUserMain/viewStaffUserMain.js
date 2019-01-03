@@ -8,6 +8,14 @@ $("#viewStaffUserMain").pagecontainer({
             teaCount = 0,
             waterCount = 0;
 
+        //获取当前时间并精确到秒
+        function getTimeBySecond() {
+            var hh = new Date().getHours().toString();
+            var mm = new Date().getMinutes().toString();
+            var ss = new Date().getSeconds().toString();
+            return (hh[1] ? hh : '0' + hh[0]) + ':' + (mm[1] ? mm : '0' + mm[0]) + ':' + (ss[1] ? ss : '0' + ss[0]);
+        }
+
         //获取所有讨论版
         function getBoardType() {
             let queryData = "<LayoutHeader><emp_no>" +
@@ -66,25 +74,46 @@ $("#viewStaffUserMain").pagecontainer({
         }
 
         //获取总机状态
-        function getStaffStatus() {
+        function getStaffStatus(type) {
+            type = type || null;
             var self = this;
             let queryData = JSON.stringify({
-                status_id: staffService//hardcode
+                status_id: staffService
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
+                
                 if(data['result_code'] == '1') {
+                    //茶水信息
+                    let roomText = $('#userChooseRoom option:selected').text();
+                    let staffType = $('input[name="teaType"]:checked').val();
+                    let typeText = (staffType == 'needTea' ? '添加' : '添加茶水');
+                    let teaText = (staffType == 'needTea' && teaCount != 0 ? '茶' + teaCount + '杯' : '');
+                    let waterText = (staffType == 'needTea' && waterCount != 0 ? '水' + waterCount + '杯' : '');
+
+                    //popup
                     var statusValue = data['content']['status_list'][0]['period_list'][0]['status'];
                     if(statusValue == 1) {
+                        $('.user-status-text').text('總機服務中');
                         $('.user-main-status').removeClass('active-status-false').addClass('active-status-true');
                         $('.service-offline').hide();
                         $('.service-online').show();
+                        if(type != null) {
+                            $('.confirmAddTeaPopup .header-title').text(roomText + typeText + teaText + waterText + '?');
+                            popupMsgInit('.confirmAddTeaPopup');
+                        }
                     } else if(statusValue == 2) {
+                        $('.user-status-text').text('總機忙碌中');
                         $('.user-main-status').removeClass('active-status-true').addClass('active-status-false');
                         $('.service-offline').hide();
                         $('.service-online').show();
+                        if(type != null) {
+                            $('.adminBusyPopup .main-paragraph').text(roomText + typeText + teaText + waterText);
+                            popupMsgInit('.adminBusyPopup');
+                        }
                     } else if(statusValue == 0) {
+                        $('.user-status-text').text('總機暫停服務');
                         $('.user-main-status').removeClass('active-status-true').removeClass('active-status-false');
                         $('.service-online').hide();
                         $('.service-offline').show();
@@ -180,7 +209,7 @@ $("#viewStaffUserMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     let arr = data['content']['data_list'];
@@ -215,7 +244,7 @@ $("#viewStaffUserMain").pagecontainer({
 
             var __construct = function() {
                 //更新时间
-                let nowTime = new Date().yyyymmdd('/') + ' ' + new Date().hhmm();
+                let nowTime = new Date().yyyymmdd('/') + ' ' + getTimeBySecond();
                 $('.user-main-update-time').text(nowTime);
                 //API
                 EmpServicePlugin.QPlayAPI("POST", "getTargetReserveData", self.successCallback, self.failCallback, queryData, '');
@@ -236,7 +265,7 @@ $("#viewStaffUserMain").pagecontainer({
                 tea: teaCount,
                 water: waterCount
             };
-            let typeContent = (teaType == 'needTea' ? '添加' : '加水');
+            let typeContent = (teaType == 'needTea' ? '添加' : '添加茶水');
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
             let pushContent = teaInfo['time'] +
@@ -260,14 +289,31 @@ $("#viewStaffUserMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     //預約成功後初始化
                     initCountData();
                     //刷新数据
                     $('.refreshTargetRoom').trigger('click');
+                    //跳转到我的预约
+                    let sendData = {
+                        content: pushContent
+                    }
+                    checkWidgetPage('viewStaffUserReserve', pageVisitedList, sendData);
                 }
+
+                //不管成功或失败，再打开推播
+                setTimeout(function(){
+                    if (device.platform === "iOS") {
+                        document.addEventListener('jpush.openNotification', notification.onOpenNotification, false);
+                        document.addEventListener('jpush.receiveNotification', notification.onOpenNotification, false);
+                    } else {
+                        document.addEventListener('qpush.openNotification', notification.onOpenNotification, false);
+                        document.addEventListener('qpush.receiveNotification', notification.onOpenNotification, false);
+                    }
+                }, 500);
+                
             };
 
             this.failCallback = function(data) {};
@@ -351,8 +397,8 @@ $("#viewStaffUserMain").pagecontainer({
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffUserMain .page-main').css('height', mainHeight);
 
-            $('.tea-user-name').text(loginData['loginid']);
-            $('.tea-user-today').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
+            $('.user-today-name').text(loginData['loginid']);
+            $('.user-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
 
             var needStatus = checkAdminWorkTime();
             if(needStatus) {
@@ -429,9 +475,30 @@ $("#viewStaffUserMain").pagecontainer({
         //茶水预约
         $('.addTeaBtn').on('click', function() {
             let has = $(this).hasClass('active-btn-green');
-            if(has) {
-                quickNewReserve();
+            var needStatus = checkAdminWorkTime();
+            if(has && needStatus) {
+                //获取总机状态
+                getStaffStatus('new');
+            } else if(!needStatus) {
+                $('.user-status-text').text('總機暫停服務');
+                $('.user-main-status').removeClass('active-status-true').removeClass('active-status-false');
+                $('.service-online').hide();
+                $('.service-offline').show();
             }
+        });
+
+        //确定送出茶水预约
+        $('#viewStaffUserMain').on('click', '.userAddTeaBtn, .userWaitBtn', function() {
+            //禁止打开推播
+            if (device.platform === "iOS") {
+                document.removeEventListener('jpush.openNotification', notification.onOpenNotification, false);
+                document.removeEventListener('jpush.receiveNotification', notification.onOpenNotification, false);
+            } else {
+                document.removeEventListener('qpush.openNotification', notification.onOpenNotification, false);
+                document.removeEventListener('qpush.receiveNotification', notification.onOpenNotification, false);
+            }
+            //API
+            quickNewReserve();
         });
 
 

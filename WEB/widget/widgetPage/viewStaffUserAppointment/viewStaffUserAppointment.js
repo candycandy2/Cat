@@ -53,6 +53,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             $('.appointment-date-list').css('width', dateLength * 31 + 'vw');
             $('.appointment-date-list ul').html('').append(dateContent);
 
+            initHoursUI();
             //3. 根据已有active-staff，来确定会议室和日期，获取该会议室当天所有预约
             getReserveByTarget();
         }

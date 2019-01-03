@@ -1,7 +1,7 @@
 $("#viewStaffUserReserve").pagecontainer({
     create: function(event, ui) {
 
-        let imgURL = '/widget/widgetPage/viewStaffUserReserve/img/'
+        let imgURL = '/widget/widgetPage/viewStaffUserReserve/img/',
             staffService = 'meetingroomService',
             staffType = 'staff';
 
@@ -93,12 +93,16 @@ $("#viewStaffUserReserve").pagecontainer({
         $("#viewStaffUserReserve").one("pageshow", function(event, ui) {
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffUserReserve .page-main').css('height', mainHeight);
-            //popupMsgInit('.reserveTeaDelete');
-            getMyReserve();
         });
 
         $("#viewStaffUserReserve").on("pageshow", function(event, ui) {
-
+            var msgContent = JSON.parse(window.sessionStorage.getItem('viewStaffUserReserve_parmData'));
+            if(msgContent != null) {
+                $('.reserveTeaNow .header-title').text(msgContent['content']);
+                popupMsgInit('.reserveTeaNow');
+                window.sessionStorage.removeItem('viewStaffUserReserve_parmData');
+            }
+            getMyReserve();
         });
 
         $("#viewStaffUserReserve").on("pagehide", function(event, ui) {
