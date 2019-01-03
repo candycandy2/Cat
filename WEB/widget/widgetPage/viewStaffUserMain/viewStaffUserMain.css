@@ -358,3 +358,21 @@
 .visible-hide{
     visibility: hidden;
 }
+
+.confirmAddTeaPopup .ui-content{
+    padding: 0 !important;
+}
+
+.confirmAddTeaPopup .ui-content>.header,
+.confirmAddTeaPopup .ui-content>.footer{
+    margin-top: 10vw;
+}
+
+.adminBusyPopup .ui-content{
+    padding: 0 !important;
+}
+
+.adminBusyPopup .ui-content>.header,
+.adminBusyPopup .ui-content>.footer{
+    margin-top: 8vw;
+}

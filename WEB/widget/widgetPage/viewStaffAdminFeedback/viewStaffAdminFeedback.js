@@ -5,32 +5,6 @@ $("#viewStaffAdminFeedback").pagecontainer({
         let staffKey = 'appempservice';
         let faqBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffFAQ']['board_id'].toString();
 
-        //初始化總機狀態dropdownlist
-        function initAdminSetting() {
-            var settingData = {
-                id: "adminSettingPopup",
-                option: [],
-                title: '<input type="text" id="adminSettingNotice" maxlength="15" placeholder="總機公告(限15字)" />',
-                defaultText: '暫停服務',
-                defaultValue: '0',
-                changeDefaultText: true,
-                attr: {
-                    class: "tpl-dropdown-list-icon-arrow"
-                }
-            };
-
-            for(var i in statusList) {
-                settingData['option'][i] = {};
-                settingData['option'][i]['value'] = statusList[i].id;
-                settingData['option'][i]['text'] = statusList[i].item;
-            }
-
-            tplJS.DropdownList("viewStaffAdminFeedback", "adminSettingHidden", "prepend", "typeB", settingData);
-
-            //去除默認選擇
-            //$('#adminSettingPopup-option-list .tpl-dropdown-list-selected').removeClass('tpl-dropdown-list-selected');
-        }
-
         //获取所有反馈问题
         function getFAQPostList() {
             var queryData = "<LayoutHeader><emp_no>" +
@@ -46,16 +20,38 @@ $("#viewStaffAdminFeedback").pagecontainer({
                 console.log(data);
 
                 if(data['ResultCode'] == '1') {
+                    //readlist
+                    let readList = JSON.parse(window.localStorage.getItem('AdminFeedbackList'));
+                    if(readList == null) {
+                        readList = {};
+                    }
+                    //data
                     let faqPostList = data['Content'];
                     let content = '';
                     for(var i in faqPostList) {
-                        content += '<li class="admin-feedback-list"><div>' +
-                            faqPostList[i]['post_create_time'] +
-                            '</div><div class="unread">' +
+                        //1.确认已读未读状态
+                        let readStatus = false;
+                        if(typeof readList[faqPostList[i]['post_id']] == 'undefined') {
+                            readList[faqPostList[i]['post_id']] = '';
+                        } else {
+                            readStatus = true;
+                        }
+                        //2.post_create_time存在时区问题
+                        let now = new Date(faqPostList[i]['post_create_time']).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
+                        //3.html
+                        content += '<li class="admin-feedback-list" data-id="' +
+                            faqPostList[i]['post_id'] +
+                            '"><div>' +
+                            new Date(now).yyyymmdd('/') + ' ' + new Date(now).hhmm() +
+                            '</div><div' +
+                            (readStatus ? '' : ' class="unread"') +
+                            '>' +
                             faqPostList[i]['post_title'] +
                             '</div></li>';
                     }
-                    $('.admin-feedback-ul').append(content);
+                    $('.admin-feedback-ul').html('').append(content);
+                    //save to local
+                    window.localStorage.setItem('AdminFeedbackList', JSON.stringify(readList));
                 }
             };
 
@@ -87,7 +83,6 @@ $("#viewStaffAdminFeedback").pagecontainer({
 
 
         /********************************** dom event *************************************/
-
 
 
     }

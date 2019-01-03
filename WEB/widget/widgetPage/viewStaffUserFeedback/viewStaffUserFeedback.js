@@ -7,28 +7,7 @@ $("#viewStaffUserFeedback").pagecontainer({
         let statusList = ['請選擇', '投影機故障', '缺訊號線', '文具損毀/遺失', '燈泡故障', '空調故障', '其他']
 
         function initFeedback() {
-            //1. site code
-            let siteData = {
-                id: "feedbackSite",
-                option: [],
-                title: "",
-                defaultText: langStr['wgt_038'],
-                changeDefaultText: true,
-                attr: {
-                    class: "dropdown-arrow"
-                }
-            }
-
-            siteData["option"][0] = {};
-            siteData["option"][0]["value"] = "1";
-            siteData["option"][0]["text"] = "BQT";
-            siteData["option"][1] = {};
-            siteData["option"][1]["value"] = "2";
-            siteData["option"][1]["text"] = "QTT";
-
-            tplJS.DropdownList("viewStaffUserFeedback", "staffSiteCode", "prepend", "typeB", siteData);
-
-            //2. meeting room
+            //1. meeting room
             let roomData = {
                 id: "feedbackRoom",
                 option: [],
@@ -40,16 +19,16 @@ $("#viewStaffUserFeedback").pagecontainer({
                 }
             }
 
-            roomData["option"][0] = {};
-            roomData["option"][0]["value"] = "1";
-            roomData["option"][0]["text"] = "T01";
-            roomData["option"][1] = {};
-            roomData["option"][1]["value"] = "2";
-            roomData["option"][1]["text"] = "T02";
+            let arr = JSON.parse(window.sessionStorage.getItem('meetingroomServiceTargetList'));
+            for(var i in arr) {
+                roomData["option"][i] = {};
+                roomData["option"][i]["value"] = arr[i]['target_id_row_id'];
+                roomData["option"][i]["text"] = arr[i]['target_id'];
+            }
 
             tplJS.DropdownList("viewStaffUserFeedback", "staffMeetingRoom", "prepend", "typeB", roomData);
 
-            //3. device status
+            //2. device status
             let statusData = {
                 id: "feedbackType",
                 option: [],
@@ -61,7 +40,6 @@ $("#viewStaffUserFeedback").pagecontainer({
                 }
             }
 
-
             for(var i = 0; i < statusList.length; i++) {
                 statusData["option"][i] = {};
                 statusData["option"][i]["value"] = i;
@@ -72,12 +50,11 @@ $("#viewStaffUserFeedback").pagecontainer({
         }
 
         function checkAllForm() {
-            let site = $('#staffSiteCode select').val();
             let meeting = $('#staffMeetingRoom select').val();
             let type = $('#staffDeviceType select').val();
             let otherTextarea = $.trim($('.feedback-textarea textarea').val());
 
-            if(site != langStr['wgt_038'] && meeting != langStr['wgt_038'] && type != langStr['wgt_038'] && type != '0') {
+            if(meeting != langStr['wgt_038'] && type != langStr['wgt_038'] && type != '0') {
                 if(type == '6' && otherTextarea != '') {
                     $('.confirmSendFeedback').addClass('active-btn-green');
                 } else if(type != '6') {
@@ -142,7 +119,9 @@ $("#viewStaffUserFeedback").pagecontainer({
 
                 if(data['ResultCode'] == '1') {
                     //success
-                    console.log('success');
+                    //状况类型设置为请选择
+                    $('#feedbackType-option-popup li:eq(0)').trigger('click');
+                    popupMsgInit('.thankFeedbackPopup');
                 }
             };
 
@@ -176,10 +155,7 @@ $("#viewStaffUserFeedback").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        $('#staffSiteCode').on('change', 'select', function() {
-            checkAllForm();
-        });
-
+        //选择会议室
         $('#staffMeetingRoom').on('change', 'select', function() {
             checkAllForm();
         });
@@ -202,8 +178,7 @@ $("#viewStaffUserFeedback").pagecontainer({
             if(has) {
                 getNewPostID();
             }
-        })
-
+        });
 
 
     }
