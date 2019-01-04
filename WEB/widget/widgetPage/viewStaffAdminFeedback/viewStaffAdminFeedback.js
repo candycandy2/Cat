@@ -1,12 +1,13 @@
 $("#viewStaffAdminFeedback").pagecontainer({
     create: function(event, ui) {
 
-        var imgURL = '/widget/widgetPage/viewStaffAdminFeedback/img/';
-        let staffKey = 'appempservice';
-        let faqBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffFAQ']['board_id'].toString();
-
+        let imgURL = '/widget/widgetPage/viewStaffAdminFeedback/img/',
+            staffKey = 'appempservice';
+        
         //获取所有反馈问题
         function getFAQPostList() {
+            let faqBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffFAQ']['board_id'].toString();
+
             var queryData = "<LayoutHeader><emp_no>" +
                 loginData["emp_no"] +
                 "</emp_no><source>" +

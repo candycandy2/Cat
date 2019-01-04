@@ -48,7 +48,7 @@ $("#viewStaffUserMain").pagecontainer({
 
             var __construct = function() {
                 let staffBoardType = JSON.parse(window.localStorage.getItem('staffBoardType'));
-                if(staffBoardType == null || checkDataExpired(staffBoardType['lastUpdateTime'], 1, 'dd')) {
+                if(staffBoardType == null || checkDataExpired(staffBoardType['lastUpdateTime'], 7, 'dd')) {
                     QForumPlugin.CustomAPI("POST", true, "getBoardList", successCallback, failCallback, queryData, "");
                 }
             }();
