@@ -77,7 +77,7 @@ input[type=radio] {
 }
 
 input[type=radio] + label {
-    background: url('../img/radio_blue.png') no-repeat;
+    background: url('../viewApplyInsurance/img/radio_blue.png') no-repeat;
     background-size: 5.47vw 5.47vw;
     height: 5.47vw;
     width: 5.47vw;
@@ -86,7 +86,7 @@ input[type=radio] + label {
 }
 
 input[type=radio]:checked + label {
-    background: url('../img/radio_select_blue.png') no-repeat;
+    background: url('../viewApplyInsurance/img/radio_select_blue.png') no-repeat;
     background-size: 5.47vw 5.47vw;
     height: 5.47vw;
     width: 5.47vw;

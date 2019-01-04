@@ -398,6 +398,9 @@ $("#viewApplyInsurance").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewApplyInsurance").one("pageshow", function (event, ui) {
+            if (device.platform === "iOS") {
+                $('.page-main').css({'padding-top': '0.1vw'});
+            }
             $("#applyRemark").attr("placeholder", langStr["str_130"]);
         });
 
