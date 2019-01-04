@@ -173,11 +173,7 @@ pre {
   overflow: auto;
   padding: 5px;
 }
-#relieveInfo {
-  flex: 1;
-  padding-top: 20px;
-  transition: transform .3s;
-}
+
 .trigger {
   width: 35px;
   height: 35px;
@@ -194,13 +190,6 @@ pre {
   background: #eef;
   padding: 10px 0;
 }
-
-.reserveInfo{ overflow: hidden; padding: 4vw 6.71vw 3vw; display: flex; align-items: center; position: relative;}
-.reserveInfo-area{ float: left; vertical-align: middle; display: inline-block;}
-.reserve-area-time{ margin: 0 0 2.14vw 3.71vw;}
-#today-reserve-area{ margin-bottom: 6.44vw;}
-#today-reserve-area .reserveInfo{ background-color: #fff;}
-
 
 /********************************** public area *************************************/
 
@@ -793,7 +782,7 @@ div.scrollmenu a {
 #insranceInfo li:nth-last-of-type(1){ border-bottom: none;}
 
 /********************************************** PersonalInsurace *********************************************/
-
+/*
 .health-insur-list {
     width: 86.5vw;
     height: 14.5vw;
@@ -857,7 +846,7 @@ div.scrollmenu a {
     width: 100vw;
     height: 1px;
     /*margin-left: 3.71vw;*/
-    background-color: #d6d6d6;
+/*    background-color: #d6d6d6;
     overflow: hidden;
 }
 
