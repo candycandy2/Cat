@@ -4,19 +4,18 @@ $("#viewStaffAdminAddPreview").pagecontainer({
         let imgURL = '/widget/widgetPage/viewStaffAdminAddPreview/img/',
             staffKey = 'appempservice',
             postData = {},
-            postID = '',
-            postURL = '',
-            announceBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffAnnounce']['board_id'].toString();
+            announceBoardID = '';
 
         //获取预览内容
         function getPreviewData() {
+            announceBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffAnnounce']['board_id'].toString();
             postData = JSON.parse(window.sessionStorage.getItem('viewStaffAdminAddPreview_parmData'));
             $('.add-preview-title').text(postData['postTitle']);
             $('.add-preview-text').text(postData['postContent']);
             $('.add-preview-time').text(new Date().yyyymmdd('/'));
             //是否有图档
             if(postData['postURL'] != '') {
-                $('.add-preview-img').html('').show().append('<img src="' + postData['postURL'] + '">');
+                $('.add-preview-img').html('').append('<img src="' + postData['postURL'] + '">').show();
             } else {
                 $('.add-preview-img').hide();
             }
@@ -31,9 +30,15 @@ $("#viewStaffAdminAddPreview").pagecontainer({
                 "</source></LayoutHeader>";
 
             var successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] == '1') {
-                    postID = data['Content'];
+                    let postID = data['Content'];
+                    //如果有图档，先上传图档，否则可以直接送出
+                    if(postData['postURL'] != '') {
+                        uploadFile(postID);
+                    } else {
+                        sendNewPost(postID);
+                    }
                 }
             };
 
@@ -44,15 +49,19 @@ $("#viewStaffAdminAddPreview").pagecontainer({
             }();
         }
 
-        function uploadFile(queryData) {
+        function uploadFile(id) {
             var self = this;
 
-            let resource = announceBoardID + '/' + postID;
+            let imgFile = QStoragePlugin.dataURLtoFile(postData['postURL']);
+            let queryData = new FormData();
+            queryData.append('files', imgFile);
+            let resource = announceBoardID + '/' + id;
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
                 if (data['ResultCode'] == '1') {
-                    postURL = data['Content']['thumbnail_1024_url'];
+                    let postURL = data['Content']['thumbnail_1024_url'];
+                    sendNewPost(id, postURL);
                 }
             };
 
@@ -64,50 +73,33 @@ $("#viewStaffAdminAddPreview").pagecontainer({
         }
 
         //发送公告
-        function sendNewPost() {
+        function sendNewPost(id, url) {
+            url = url || null;
 
             let fileList = '';
-            let postContent = '';
-
-            if(postData['postURL'] != '') {
-                fileList = '<file_list><file>' + postURL + '</file></file_list>';
-                //此模板是用户版的公告详情
-                postContent = '<div class="notice-msg-text">' +
-                    postData['postTitle'] +
-                    '</div><div class="notice-msg-time">' +
-                    new Date().yyyymmdd('/') +
-                    '</div><div class="notice-msg-img"><img src="' +
-                    postURL +
-                    '"></div><div class="notice-msg-text">' +
-                    postData['postContent'] +
-                    '</div>';
-            } else {
-                //此模板是用户版的公告详情
-                postContent = '<div class="notice-msg-text">' +
-                    postData['postTitle'] +
-                    '</div><div class="notice-msg-time">' +
-                    new Date().yyyymmdd('/') +
-                    '</div><div class="notice-msg-text">' +
-                    postData['postContent'] +
-                    '</div>';
+            if(url != null) {
+                fileList = '<file_list><file>' + url + '</file></file_list>';
             }
 
             let xmlData = {
                 emp_no: loginData["emp_no"],
                 source: staffKey + appEnvironment,
                 board_id: announceBoardID,
-                post_id: postID,
+                post_id: id,
                 post_title: postData['postTitle'],
-                content: postContent
+                content: postData['postContent']
             };
 
             let queryData = "<LayoutHeader>" + QForumPlugin.createXMLDataString(xmlData) + fileList + "</LayoutHeader>";
 
             var successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] == '1') {
-                    //success
-                    console.log('success');
+                    //成功后回退到公告页
+                    pageVisitedList.pop();
+                    onBackKeyDown();
+                    //只有当新增成功时才需要初始化新增页(前一页)
+                    window.sessionStorage.setItem('InitAdminAddPage', 'Y');
                 }
                 loadingMask('hide');
             };
@@ -122,41 +114,30 @@ $("#viewStaffAdminAddPreview").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminAddPreview").on("pagebeforeshow", function(event, ui) {
-
+            getPreviewData();
         });
 
         $("#viewStaffAdminAddPreview").one("pageshow", function(event, ui) {
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminAddPreview .page-main').css('height', mainHeight);
             $('.addNoticeSendBtn').show();
-        });
-
-        $("#viewStaffAdminAddPreview").on("pageshow", function(event, ui) {
             getPreviewData();
         });
 
+        $("#viewStaffAdminAddPreview").on("pageshow", function(event, ui) {
+
+        });
+
         $("#viewStaffAdminAddPreview").on("pagehide", function(event, ui) {
-            postID = '';
-            postURL = '';
+
         });
 
 
         /********************************** dom event *************************************/
         $('.addNoticeSendBtn').on('click', function() {
             loadingMask('show');
-            //1.API:get post id
+            //API:get post id first then send new post
             getNewPostID();
-            //2.have img or not
-            if(postData['postURL'] != '') {
-                //3.url to file
-                let file = QStoragePlugin.dataURLtoFile(postData['postURL']);
-                let formData = new FormData();
-                formData.append('files', file);
-                //4.API:upload file to board_id/post_id
-                uploadFile(formData);
-            }
-            //5.API:send new post
-            sendNewPost();
         });
 
 
