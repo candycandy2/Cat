@@ -38,7 +38,8 @@ $(document).one("pagebeforeshow", function() {
 
     $("#mypanel #mypanelviewPersonalInsurance").on("click", function() {
         editLeaveForm = false; 
-        changePageByPanel("viewPersonalInsurance");
+        //changePageByPanel("viewPersonalInsurance");
+        checkWidgetPage('viewPersonalInsurance', visitedPageList);
     });
 
     $("#mypanel #mypanelviewFamilyData").on("click", function() {
