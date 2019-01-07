@@ -868,7 +868,7 @@ $("#viewAccountingRate").pagecontainer({
         });
 
         /********************************** Add/Remove Favorite *************************************/
-        $(document).on("click", ".select", function() {
+        $("#viewAccountingRate").on("click", ".select", function() {
             statuscountrypop = $(this).prop("id");
 
             //save current favorite rate
@@ -891,7 +891,7 @@ $("#viewAccountingRate").pagecontainer({
         });
 
         //Popup - Select Country
-        $(document).on({
+        $("#viewAccountingRate").on({
             popupafteropen: function() {
                 var domID = $(this).prop("id");
                 popupPositionProcess(domID);
