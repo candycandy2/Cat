@@ -1,7 +1,7 @@
 $("#viewStaffAdminMain").pagecontainer({
     create: function(event, ui) {
 
-        var imgURL = '/widget/widgetPage/viewStaffAdminMain/img/',
+        let imgURL = '/widget/widgetPage/viewStaffAdminMain/img/',
             staffServiceID = 'meetingroomService',//茶水服务id
             staffServiceType = 'staff',//茶水服务类型
             staffKey = 'appempservice',
@@ -10,10 +10,11 @@ $("#viewStaffAdminMain").pagecontainer({
                 {id: 2, item: '忙碌中'},
                 {id: 0, item: '暫停服務'},
             ],
-            status_row_id;
+            status_row_id,
+            pullControl = null;
 
         //获取当前时间并精确到秒
-        function getTimeBySecond() {
+        function getTimeSec() {
             var hh = new Date().getHours().toString();
             var mm = new Date().getMinutes().toString();
             var ss = new Date().getSeconds().toString();
@@ -294,6 +295,8 @@ $("#viewStaffAdminMain").pagecontainer({
                                     todayArr[i]['reserve_id'] +
                                     '"></div><div class="today-tel-btn" data-name="' +
                                     todayArr[i]['reserve_login_id'] +
+                                    '" data-domain="' +
+                                    todayArr[i]['reserve_domain'] +
                                     '"></div></div></li>';
                             } else {
                                 completedContent += '<li class="complete-list"><div>' +
@@ -314,7 +317,7 @@ $("#viewStaffAdminMain").pagecontainer({
 
             var __construct = function() {
                 //更新时间
-                let nowTime = new Date().yyyymmdd('/') + ' ' + getTimeBySecond();
+                let nowTime = new Date().yyyymmdd('/') + ' ' + getTimeSec();
                 $('.admin-main-update-time').text(nowTime);
                 //API
                 EmpServicePlugin.QPlayAPI("POST", "getReserveRecord", self.successCallback, self.failCallback, queryData, '');
@@ -389,9 +392,9 @@ $("#viewStaffAdminMain").pagecontainer({
         }
 
         //查询电话yellowpage
-        function getTelephoneByName(name) {
+        function getTelephoneByName(domain, name) {
             let queryData = '<LayoutHeader><Company>' +
-                loginData['company'] +
+                domain +
                 '</Company><Name_EN>'+
                 name +
                 '</Name_EN></LayoutHeader>';
@@ -424,7 +427,8 @@ $("#viewStaffAdminMain").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminMain").on("pagebeforeshow", function(event, ui) {
-
+            getTodayAllReserve();
+            getTomorrowAllReserve();
         });
 
         $("#viewStaffAdminMain").one("pageshow", function(event, ui) {
@@ -438,6 +442,14 @@ $("#viewStaffAdminMain").pagecontainer({
             getStaffEmpService();
             //获取所有staff的board主题
             getBoardType();
+            //pull refresh
+            pullControl = PullToRefresh.init({
+                mainElement: '.admin-main-update',
+                onRefresh: function() {
+                    getTodayAllReserve();
+                    getTomorrowAllReserve();
+                }
+            });
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
@@ -486,8 +498,9 @@ $("#viewStaffAdminMain").pagecontainer({
 
         //点击电话
         $('.main-today-ul').on('click', '.today-tel-btn', function() {
+            let domain = $(this).data('domain');
             let en_name = $(this).data('name');
-            getTelephoneByName(en_name);
+            getTelephoneByName(domain, en_name);
         });
 
         //setting admin status
