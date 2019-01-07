@@ -59,6 +59,59 @@
 
 .empty-list, .group-list {padding: 3vw 6.71vw;}
 
+.family-edit {
+    width: 6.2vw;
+    height: 6.2vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
+}
+
+.family-delete {
+    width: 5.2vw;
+    height: 5.2vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
+    display: none;
+}
+
+.family-next, .family-add {
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 14vw;
+    margin-top: -1vw;
+}
+
+.family-text-img {
+    vertical-align: middle;
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 3vw;
+    margin-top: -1vw;
+}
+
+.family-notice {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 4.3vw;
+    margin-left: 3.71vw;
+}
+
+.family-notice div {
+    line-height: 1.5;
+}
+
+.family-add-img {
+    position: fixed;
+    bottom: 4.3vw;
+    right: 6.727vw;
+    z-index: 1;
+}
+
+.family-add-img img {
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
 .activity-line {
     width: 100vw;
     height: 1px;
@@ -107,4 +160,30 @@
 
 .confirmCancelPendingApply .ui-content>.main {
     margin-top: 6%;
+}
+
+/*多個view有使用到*/
+.popup-msg-style {
+    width: 28VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 6.2VW 1VW 6.2VW 1VW;
+    position: fixed;
+    top: 70vw;
+    left: 36vw;
+    background-color: #666;
+    border-radius: 1.5px;
+    color: #F0F0F0;
+    font-size: 3.6VW;
+    text-align: center;
+    z-index: 2;
+    display: none;
+}
+
+.app-popup .main-cancel {
+    text-align: center;
+    color: #0f0f0f;
+    padding: 0 5.36vw;
+    margin: 0 0 8.5vw;
 }

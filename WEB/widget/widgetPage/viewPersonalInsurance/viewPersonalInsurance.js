@@ -310,6 +310,15 @@ $("#viewPersonalInsurance").pagecontainer({
             $('#pageInsurStatus-2').hide();
             $("label[for=fam-insur-tab-2]").removeClass('ui-btn-active');
             $("label[for=fam-insur-tab-1]").addClass('ui-btn-active');
+            //去除上一頁菜單樣式
+            var prevPage = visitedPageList[visitedPageList.length - 2];
+            $("#mypanel" + " #mypanel" + prevPage).css("background", "#f6f6f6");
+            $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f");
+            //此頁添加菜單樣式
+            var nowPage = visitedPageList[visitedPageList.length - 1];
+            $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81");
+            $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
+            
             if (!viewPersonalInsuranceShow) {
                 QueryHealthInsuranceList();
                 QueryGroupInsuranceList();
@@ -394,7 +403,12 @@ $("#viewPersonalInsurance").pagecontainer({
             } 
             //$.mobile.changePage("#viewApplyInsurance"); 
             checkWidgetPage('viewApplyInsurance', visitedPageList);
-        });             
+        });   
+
+        $(document).on('click', '#viewPersonalInsurance .insuranceMenu', function() {
+            $("#mypanel").panel("open");
+            $(".page-mask").show();
+        })          
 
     }
 });

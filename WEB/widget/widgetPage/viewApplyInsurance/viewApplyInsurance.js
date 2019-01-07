@@ -408,7 +408,7 @@ $("#viewApplyInsurance").pagecontainer({
             $('.apply-insur-title').text("");   
             if (nextPage == "addDetail") {  
                 $('.apply-insur-title').text(langStr["str_111"]); 
-                var prevPage = visitedPageList[visitedPageList.length - 1];;
+                var prevPage = visitedPageList[visitedPageList.length - 2];
                 if ( prevPage == "viewFamilyData") {
                     $('#backFamilyDataFromDetail').show();
                     $('#backPersonalInsuranceFromApply').hide();
@@ -432,6 +432,7 @@ $("#viewApplyInsurance").pagecontainer({
             } else {      
                 $('.apply-insur-title').text(langStr["str_154"]);            
                 $('#backPersonalInsuranceFromDetail').show(); 
+                $('#backFamilyDataFromDetail').hide();
                 $('#backPersonalInsuranceFromApply').hide();
                 //加保/退保/停保/復保資訊 清空字串  
                 $('.insur-info-title').text("");
@@ -525,13 +526,25 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $("#backFamilyDataFromDetail").on("click", function () {
+            $("#mypanelviewPersonalInsurance").removeAttr("style");
+            $("#mypanel #mypanelviewFamilyData").css("background", "#503f81");
+            $("#mypanel #mypanelviewFamilyData").css("color", "#fff");   
             checkWidgetPage('viewFamilyData', visitedPageList);
         });
 
         //從保險明細返回到個人保險現況，
         $("#backPersonalInsuranceFromDetail").on("click", function () {
             $('#backPersonalInsuranceFromDetail').hide(); 
-            $.mobile.changePage("#viewPersonalInsurance");
+            //去除上一頁菜單樣式
+            var prevPage = visitedPageList[visitedPageList.length - 2];
+            $("#mypanel" + " #mypanel" + prevPage).css("background", "#f6f6f6");
+            $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f");
+            //此頁添加菜單樣式
+            var nowPage = visitedPageList[visitedPageList.length - 1];
+            $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81");
+            $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
+            checkWidgetPage('viewPersonalInsurance', visitedPageList); 
+            //$.mobile.changePage("#viewPersonalInsurance");
         });
 
         //返回到保險申請，彈窗popup
@@ -652,7 +665,8 @@ $("#viewApplyInsurance").pagecontainer({
         //確定取消新增，跳轉
         $("#confirmCancelApplyBtn").on("click", function () {
             $('#backPersonalInsuranceFromApply').hide();
-            $.mobile.changePage("#viewPersonalInsurance"); 
+            //$.mobile.changePage("#viewPersonalInsurance"); 
+            checkWidgetPage('viewPersonalInsurance', visitedPageList);
         });
 
         //確定取消新增，跳轉至明細
