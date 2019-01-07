@@ -5,7 +5,8 @@
     position: fixed;
 }
 
-.notice-msg-text{
+.notice-msg-title,
+.notice-msg-content{
     width: 92.58vw;
     padding: 5vw 3.71vw 0;
     color: #253137;
