@@ -11,7 +11,8 @@ $("#viewStaffAdminMain").pagecontainer({
                 {id: 0, item: '暫停服務'},
             ],
             status_row_id,
-            pullControl = null;
+            pullControl = null,
+            refreshInterval = null;
 
         //获取当前时间并精确到秒
         function getTimeSec() {
@@ -93,13 +94,16 @@ $("#viewStaffAdminMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 //表示没有该状态000934，需要setStatus:meetingroomService
                 if(data['result_code'] == '000934') {
                     newStaffStatus();
                 } else if(data['result_code'] == '1') {
-                    status_row_id = data['content']['status_list'][0]['period_list'][0]['life_crontab_row_id'];
-                    let statusValue = data['content']['status_list'][0]['period_list'][0]['status'];
+                    let status_info = data['content']['status_list'][0]['period_list'][0];
+                    //1.绿灯红灯
+                    status_row_id = status_info['life_crontab_row_id'];
+                    let statusValue = status_info['status'];
+                    $('#adminSettingPopup option:eq(0)').text(statusValue);
                     if(statusValue == 1) {
                         $('.main-title-status').addClass('active-status-true');
                         $('#adminSettingPopup-option-popup li:eq(0)').addClass('tpl-dropdown-list-selected');
@@ -109,9 +113,13 @@ $("#viewStaffAdminMain").pagecontainer({
                     } else if(statusValue == 0) {
                         $('#adminSettingPopup-option-popup li:eq(2)').addClass('tpl-dropdown-list-selected');
                     }
-
+                    //2.状态名称
                     let statusText = $('#adminSettingPopup-option-popup .tpl-dropdown-list-selected').text();
                     $('.title-text-status').text(statusText);
+                    //3.状态描述，暂用crontab栏位存取
+                    let description = status_info['crontab'];
+                    $('.title-text-now').text(description);
+                    $('#adminSettingNotice').val(description);
                 }
             };
 
@@ -156,7 +164,7 @@ $("#viewStaffAdminMain").pagecontainer({
         }
 
         //修改总机状态
-        function setStaffStatus(status) {
+        function setStaffStatus(id, desc) {
             var self = this;
             let queryData = JSON.stringify({
                 login_id: loginData['loginid'],
@@ -168,14 +176,14 @@ $("#viewStaffAdminMain").pagecontainer({
                     period_list: [{
                         life_crontab_row_id: status_row_id,
                         life_type: 0,//表示无生命周期
-                        status: status,//1表示online,0表示offline,2表示busy
-                        crontab: '*****'
+                        status: id,//1表示online,0表示offline,2表示busy
+                        crontab: desc
                     }]
                 }]
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 //nothing to do
             };
 
@@ -271,7 +279,7 @@ $("#viewStaffAdminMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     let todayArr = data['content']['record_list'];
@@ -295,8 +303,6 @@ $("#viewStaffAdminMain").pagecontainer({
                                     todayArr[i]['reserve_id'] +
                                     '"></div><div class="today-tel-btn" data-name="' +
                                     todayArr[i]['reserve_login_id'] +
-                                    '" data-domain="' +
-                                    todayArr[i]['reserve_domain'] +
                                     '"></div></div></li>';
                             } else {
                                 completedContent += '<li class="complete-list"><div>' +
@@ -392,16 +398,12 @@ $("#viewStaffAdminMain").pagecontainer({
         }
 
         //查询电话yellowpage
-        function getTelephoneByName(domain, name) {
-            let queryData = '<LayoutHeader><Company>' +
-                domain +
-                '</Company><Name_EN>'+
-                name +
-                '</Name_EN></LayoutHeader>';
-            //let queryData = '<LayoutHeader><Company>Qisda</Company><Name_EN>sammi.yao</Name_EN></LayoutHeader>';
+        function getTelephoneByName(name) {
+            let queryData = '<LayoutHeader><Company>All Company</Company><Name_CH></Name_CH>' +
+                '<Name_EN>' + name + '</Name_EN><DeptCode></DeptCode><Ext_No></Ext_No></LayoutHeader>';
 
             var successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
 
                 if(data['ResultCode'] == '1') {
                     //只取第一个电话号码
@@ -413,14 +415,14 @@ $("#viewStaffAdminMain").pagecontainer({
                     // $('.currentTelephone').html('').append('<a href="mailto:' + mail + '?subject=會議室協調_12/26">' + mail + '</a>');
                     // $('.currentTelephone a')[0].click();
                 } else {
-
+                    $("#noTelephoneData").fadeIn(100).delay(2000).fadeOut(100);
                 }
             };
 
             var failCallback = function(data) {};
 
             var __construct = function() {
-                YellowPagePlugin.CustomAPI("POST", false, "QueryEmployeeDataDetail", successCallback, failCallback, queryData, "");
+                YellowPagePlugin.CustomAPI("POST", false, "QueryEmployeeData", successCallback, failCallback, queryData, "");
             }();
         }
 
@@ -435,6 +437,7 @@ $("#viewStaffAdminMain").pagecontainer({
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminMain .page-main').css('height', mainHeight);
             $('.admin-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
+            //初始化总机状态设定dropdownlist
             initAdminSetting();
             //是否有总机状态
             getStaffStatus();
@@ -453,11 +456,21 @@ $("#viewStaffAdminMain").pagecontainer({
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
-
+            //每10秒更新一次所有预约
+            if(refreshInterval == null) {
+                refreshInterval = setInterval(function() {
+                    getTodayAllReserve();
+                    getTomorrowAllReserve();
+                }, 10000);
+            }
         });
 
         $("#viewStaffAdminMain").on("pagehide", function(event, ui) {
-
+            //离开时清除定时器
+            if(refreshInterval != null) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
         });
 
 
@@ -498,9 +511,8 @@ $("#viewStaffAdminMain").pagecontainer({
 
         //点击电话
         $('.main-today-ul').on('click', '.today-tel-btn', function() {
-            let domain = $(this).data('domain');
             let en_name = $(this).data('name');
-            getTelephoneByName(domain, en_name);
+            getTelephoneByName(en_name);
         });
 
         //setting admin status
@@ -508,17 +520,11 @@ $("#viewStaffAdminMain").pagecontainer({
             $('#adminSettingPopup').trigger('click');
         });
 
-        //彈窗關閉，text控件失焦
-        $(document).on("popupafterclose", "#adminSettingPopup-option-popup", function() {
+        //关闭popup后修改状态
+        $('#viewStaffAdminMain').on('popupafterclose', '#adminSettingPopup-option-popup', function() {
             $('#adminSettingNotice').blur();
-            //简报
-            var value = $('#adminSettingNotice').val();
-            $('.title-text-now').text(value);
-        });
-
-        //改變狀態
-        $(document).on('change', '#adminSettingPopup', function() {
-            var statusValue = $(this).val();
+            //1.改变成绿灯或红灯
+            let statusValue = $('#adminSettingPopup').val();
             if(statusValue == 1) {
                 $('.main-title-status').removeClass('active-status-false').addClass('active-status-true');
             } else if (statusValue == 2) {
@@ -526,10 +532,24 @@ $("#viewStaffAdminMain").pagecontainer({
             } else if(statusValue == 0) {
                 $('.main-title-status').removeClass('active-status-true').removeClass('active-status-false');
             }
-            setStaffStatus(statusValue);
-
+            //2.修改状态名称
             let statusText = $('#adminSettingPopup-option-popup .tpl-dropdown-list-selected').text();
             $('.title-text-status').text(statusText);
+            //3.修改状态描述
+            let description = $('#adminSettingNotice').val();
+            $('.title-text-now').text(description);
+            //4.API
+            setStaffStatus(statusValue, description);
+        });
+
+        //关闭推播，更新所有预约
+        $('#cancelNewMessage').on('click', function() {
+            //属于该页面的操作，只有在该页面点击关闭推播才会触发
+            let pageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0]['id'];
+            if(pageID == 'viewStaffAdminMain') {
+                getTodayAllReserve();
+                getTomorrowAllReserve();
+            }
         });
 
 

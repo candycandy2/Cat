@@ -82,7 +82,7 @@ $("#viewStaffUserMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
                 
                 if(data['result_code'] == '1') {
                     //茶水信息
@@ -91,9 +91,11 @@ $("#viewStaffUserMain").pagecontainer({
                     let typeText = (staffType == 'needTea' ? '添加' : '添加茶水');
                     let teaText = (staffType == 'needTea' && teaCount != 0 ? '茶' + teaCount + '杯' : '');
                     let waterText = (staffType == 'needTea' && waterCount != 0 ? '水' + waterCount + '杯' : '');
-
+                    //总机状态描述
+                    let description = data['content']['status_list'][0]['period_list'][0]['crontab'];
+                    $('.user-status-desc').text(description);
                     //popup
-                    var statusValue = data['content']['status_list'][0]['period_list'][0]['status'];
+                    let statusValue = data['content']['status_list'][0]['period_list'][0]['status'];
                     if(statusValue == 1) {
                         $('.user-status-text').text('總機服務中');
                         $('.user-main-status').removeClass('active-status-false').addClass('active-status-true');
@@ -296,23 +298,7 @@ $("#viewStaffUserMain").pagecontainer({
                     initCountData();
                     //刷新数据
                     $('.refreshTargetRoom').trigger('click');
-                    //跳转到我的预约
-                    let sendData = {
-                        content: pushContent
-                    }
-                    checkWidgetPage('viewStaffUserReserve', pageVisitedList, sendData);
                 }
-
-                //不管成功或失败，再打开推播
-                setTimeout(function(){
-                    if (device.platform === "iOS") {
-                        document.addEventListener('jpush.openNotification', notification.onOpenNotification, false);
-                        document.addEventListener('jpush.receiveNotification', notification.onOpenNotification, false);
-                    } else {
-                        document.addEventListener('qpush.openNotification', notification.onOpenNotification, false);
-                        document.addEventListener('qpush.receiveNotification', notification.onOpenNotification, false);
-                    }
-                }, 500);
                 
             };
 
@@ -396,15 +382,9 @@ $("#viewStaffUserMain").pagecontainer({
         $("#viewStaffUserMain").one("pageshow", function(event, ui) {
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffUserMain .page-main').css('height', mainHeight);
-
             $('.user-today-name').text(loginData['loginid']);
             $('.user-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
 
-            var needStatus = checkAdminWorkTime();
-            if(needStatus) {
-                //获取总机状态
-                getStaffStatus();
-            }
             //获取所有可预约的会议室
             getStaffEmpService();
             //获取所有staff的board主题
@@ -412,7 +392,11 @@ $("#viewStaffUserMain").pagecontainer({
         });
 
         $("#viewStaffUserMain").on("pageshow", function(event, ui) {
-
+            var needStatus = checkAdminWorkTime();
+            if(needStatus) {
+                //获取总机状态
+                getStaffStatus();
+            }
         });
 
         $("#viewStaffUserMain").on("pagehide", function(event, ui) {
@@ -489,14 +473,6 @@ $("#viewStaffUserMain").pagecontainer({
 
         //确定送出茶水预约
         $('#viewStaffUserMain').on('click', '.userAddTeaBtn, .userWaitBtn', function() {
-            //禁止打开推播
-            if (device.platform === "iOS") {
-                document.removeEventListener('jpush.openNotification', notification.onOpenNotification, false);
-                document.removeEventListener('jpush.receiveNotification', notification.onOpenNotification, false);
-            } else {
-                document.removeEventListener('qpush.openNotification', notification.onOpenNotification, false);
-                document.removeEventListener('qpush.receiveNotification', notification.onOpenNotification, false);
-            }
             //API
             quickNewReserve();
         });

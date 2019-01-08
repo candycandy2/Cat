@@ -5,25 +5,30 @@
     position: fixed;
 }
 
-.add-tea-title{
+.user-main-title{
     width: 89.22vw;
     height: 12.9vw;
     padding: 6.5vw 5.39vw 8.37vw;
 }
 
-.add-tea-title>div{
+.user-main-title>div{
     float: left;
     height: 100%;
 }
 
-.add-tea-title>div:nth-of-type(1){
+.user-main-img{
     width: 17.2vw;
     position: relative;
-    background: url(img/default_photo.png) no-repeat;
-    background-size: 12.9vw 12.9vw;
 }
 
-.add-tea-title>div:nth-of-type(1) div{
+.user-main-img>div:nth-of-type(1){
+    width: 12.9vw;
+    height: 12.9vw;
+    background: url(img/default_photo.png) no-repeat;
+    background-size: 12.9vw;
+}
+
+.user-main-img>div:nth-of-type(2){
     width: 2.9vw;
     height: 2.9vw;
     position: absolute;
@@ -34,6 +39,59 @@
     border-radius: 50%;
 }
 
+.user-main-text{
+    width: 72vw;
+}
+
+.user-text-row1{
+    width: 100%;
+    height: 5.5vw;
+    padding-top: 2vw;
+}
+
+.user-text-row1>div{
+    float: left;
+    height: 100%;
+}
+
+.user-text-row1>div:nth-of-type(1){
+    width: 50%;
+    line-height: 1.2;
+    color: #253137;
+    font-size: 3.768vw;
+}
+
+.user-text-row1>div:nth-of-type(2){
+    width: 50%;
+    text-align: right;
+    color: #8fa3ad;
+    font-size: 3.55vw;
+}
+
+.user-text-row2{
+    width: 100%;
+    height: 5.9vw;
+}
+
+.user-text-row2>div{
+    float: left;
+    height: 100%;
+}
+
+.user-text-row2>div:nth-of-type(1){
+    width: 55%;
+    color: #253137;
+    font-size: 3.768vw;
+    line-height: 1.7;
+}
+
+.user-text-row2>div:nth-of-type(2){
+    width: 45%;
+    text-align: right;
+    color: #253137;
+    font-size: 4.81vw;
+}
+
 .active-status-true {
     background: #32CD32 !important;
     border: 1px solid #32CD32 !important;
@@ -42,33 +100,6 @@
 .active-status-false {
     background: #FF0000 !important;
     border: 1px solid #FF0000 !important;
-}
-
-.add-tea-title>div:nth-of-type(2){
-    width: 27vw;
-    line-height: 12.9vw;
-    color: #253137;
-    font-size: 3.768vw;
-}
-
-.add-tea-title>div:nth-of-type(3){
-    width: 45vw;
-    text-align: right;
-}
-
-.add-tea-title>div:nth-of-type(3) div{
-    height: 6vw;
-    line-height: 7vw;
-}
-
-.add-tea-title>div:nth-of-type(3) div:nth-of-type(1){
-    color: #8fa3ad;
-    font-size: 3.55vw;
-}
-
-.add-tea-title>div:nth-of-type(3) div:nth-of-type(2){
-    color: #253137;
-    font-size: 4.81vw;
 }
 
 .add-tea-room{

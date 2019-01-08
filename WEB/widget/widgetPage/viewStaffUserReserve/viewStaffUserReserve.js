@@ -96,12 +96,12 @@ $("#viewStaffUserReserve").pagecontainer({
         });
 
         $("#viewStaffUserReserve").on("pageshow", function(event, ui) {
-            var msgContent = JSON.parse(window.sessionStorage.getItem('viewStaffUserReserve_parmData'));
-            if(msgContent != null) {
-                $('.reserveTeaNow .header-title').text(msgContent['content']);
-                popupMsgInit('.reserveTeaNow');
-                window.sessionStorage.removeItem('viewStaffUserReserve_parmData');
-            }
+            // var msgContent = JSON.parse(window.sessionStorage.getItem('viewStaffUserReserve_parmData'));
+            // if(msgContent != null) {
+            //     $('.reserveTeaNow .header-title').text(msgContent['content']);
+            //     popupMsgInit('.reserveTeaNow');
+            //     window.sessionStorage.removeItem('viewStaffUserReserve_parmData');
+            // }
             getMyReserve();
         });
 
