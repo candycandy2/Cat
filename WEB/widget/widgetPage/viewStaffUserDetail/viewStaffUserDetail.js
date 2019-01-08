@@ -26,7 +26,7 @@ $("#viewStaffUserDetail").pagecontainer({
                 if(data['ResultCode'] == '1') {
                     let detailObj = data['Content'];
                     $('.notice-msg-title').text(detailObj['post_title']);
-                    let now = new Date(detailObj['post_create_time']).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
+                    let now = new Date(detailObj['post_create_time'].replace(/-/g, '/')).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
                     $('.notice-msg-time').text(new Date(now).yyyymmdd('/') + ' ' + new Date(now).hhmm());
                     $('.notice-msg-content').text(detailObj['post_content']);
                     //还需判断是否有图档

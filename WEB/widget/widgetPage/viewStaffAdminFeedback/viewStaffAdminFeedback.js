@@ -38,7 +38,7 @@ $("#viewStaffAdminFeedback").pagecontainer({
                             readStatus = true;
                         }
                         //2.post_create_time存在时区问题
-                        let now = new Date(faqPostList[i]['post_create_time']).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
+                        let now = new Date(faqPostList[i]['post_create_time'].replace(/-/g, '/')).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
                         //3.html
                         content += '<li class="admin-feedback-list" data-id="' +
                             faqPostList[i]['post_id'] +
