@@ -225,14 +225,16 @@ $("#viewQStoreMain").pagecontainer({
             } else {
                 //第一次進入
                 //將QStoreList按七種類別，存入localStorage
-                qstoreWidget.QueryStoreList(1)
-                    .then(qstoreWidget.QueryStoreList(2))
-                    .then(qstoreWidget.QueryStoreList(3))
-                    .then(qstoreWidget.QueryStoreList(4))
-                    .then(qstoreWidget.QueryStoreList(5))
-                    .then(qstoreWidget.QueryStoreList(6))
-                    .then(qstoreWidget.QueryStoreList(7))
-                    .then(addToMarks(qstoreWidget.allQStoreList));
+                setTimeout(function() {
+                    qstoreWidget.QueryStoreList(1)
+                        .then(qstoreWidget.QueryStoreList(2))
+                        .then(qstoreWidget.QueryStoreList(3))
+                        .then(qstoreWidget.QueryStoreList(4))
+                        .then(qstoreWidget.QueryStoreList(5))
+                        .then(qstoreWidget.QueryStoreList(6))
+                        .then(qstoreWidget.QueryStoreList(7))
+                        .then(addToMarks(qstoreWidget.allQStoreList));
+                }, 1000);
             }
 
         });
@@ -279,8 +281,7 @@ $("#viewQStoreMain").pagecontainer({
                     window.map.setCenter(myLatLng);
                 };
 
-                window.locationError = function(error) {
-                };
+                window.locationError = function(error) {};
 
                 navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {
                     enableHighAccuracy: true
@@ -295,8 +296,8 @@ $("#viewQStoreMain").pagecontainer({
         });
 
         /********************************** dom event *************************************/
-        $("#search").on("click", function () {
+        $("#search").on("click", function() {
             checkWidgetPage('viewQStoreSearchList', pageVisitedList);
-        });      
+        });
     }
 });
