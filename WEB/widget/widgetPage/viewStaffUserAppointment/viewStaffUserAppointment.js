@@ -114,7 +114,8 @@ $("#viewStaffUserAppointment").pagecontainer({
         function initHoursUI() {
             //1. 初始化，去除所有状态的UI
             $('.appointment-hour li').each(function(index, elem) {
-                if($(elem).data('hour') != '12:00' && $(elem).data('hour') != '12:30') {
+                let hours = $(elem).data('hour');
+                if(hours != '12:00' && hours != '12:30') {
                     $(elem).removeClass('rest-hour').removeClass('checked-hour').removeClass('active-hour');
                     $(elem).children('div:eq(1)').html('');
                     //已选择的也必须清除
