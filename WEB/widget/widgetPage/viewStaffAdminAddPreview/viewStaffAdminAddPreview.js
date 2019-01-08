@@ -11,7 +11,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
             announceBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffAnnounce']['board_id'].toString();
             postData = JSON.parse(window.sessionStorage.getItem('viewStaffAdminAddPreview_parmData'));
             $('.add-preview-title').text(postData['postTitle']);
-            $('.add-preview-text').text(postData['postContent']);
+            $('.add-preview-content').text(postData['postContent']);
             $('.add-preview-time').text(new Date().yyyymmdd('/'));
             //是否有图档
             if(postData['postURL'] != '') {
@@ -81,13 +81,20 @@ $("#viewStaffAdminAddPreview").pagecontainer({
                 fileList = '<file_list><file>' + url + '</file></file_list>';
             }
 
+            //content文本转html
+            let contentHtml = '<div class="postImg">' +
+                (url == null ? '' : '<img src="' + url + '" style="width:92.58vw;">') +
+                '</div><div class="postContent">' +
+                postData['postContent'] +
+                '</div>';
+
             let xmlData = {
                 emp_no: loginData["emp_no"],
                 source: staffKey + appEnvironment,
                 board_id: announceBoardID,
                 post_id: id,
                 post_title: postData['postTitle'],
-                content: postData['postContent']
+                content: contentHtml
             };
 
             let queryData = "<LayoutHeader>" + QForumPlugin.createXMLDataString(xmlData) + fileList + "</LayoutHeader>";
