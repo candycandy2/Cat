@@ -24,7 +24,7 @@ $("#viewStaffUserNotice").pagecontainer({
                     let postList = data['Content'];
                     let content = '';
                     for(var i in postList) {
-                        let now = new Date(postList[i]['post_create_time']).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
+                        let now = new Date(postList[i]['post_create_time'].replace(/-/g, '/')).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
 
                         content += '<li class="notice-list" data-id="' +
                             postList[i]['post_id'] +

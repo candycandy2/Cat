@@ -27,7 +27,7 @@ $("#viewStaffAdminDetail").pagecontainer({
                 if(data['ResultCode'] == '1') {
                     detailObj = data['Content'];
                     $('.notice-detail-title').text(detailObj['post_title']);
-                    let now = new Date(detailObj['post_create_time']).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
+                    let now = new Date(detailObj['post_create_time'].replace(/-/g, '/')).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
                     $('.notice-detail-time').text(new Date(now).yyyymmdd('/') + ' ' + new Date(now).hhmm());
                     $('.notice-detail-content').text(detailObj['post_content']);
                     $('.editNoticeBtn').addClass('active-btn-green');
