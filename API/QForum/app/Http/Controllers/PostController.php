@@ -94,7 +94,7 @@ class PostController extends Controller
         try{
             $newPostResult = $this->postService->newPost($data, $userData);
             if(!is_null($fileData)){
-                $attachResult = $this->attachService->addAttach($postId, $commentId, $fileData, $userData->row_id);
+                $attachResult = $this->attachService->addAttach($postId, 0, $fileData, $userData->row_id);
             }
             \DB::commit();
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
