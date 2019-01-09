@@ -70,10 +70,6 @@ class Verify
              return array("code"=>ResultCode::_047903_MandatoryFieldLost,
                 "message"=>"必填字段缺失");
         }
-        if( preg_match("/^[0-9]+$/", $empNo) == 0){
-              return array('code'=>ResultCode::_047905_FieldFormatError,
-                'message'=>"欄位格式錯誤");
-        }
         if(!self::checkUserStatusByUserEmpNo($empNo)) {
             return array("code"=>ResultCode::_047908_AccountNotExist,
                 "message"=>"帳號不存在");
