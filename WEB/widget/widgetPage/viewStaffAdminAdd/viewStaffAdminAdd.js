@@ -75,6 +75,12 @@ $("#viewStaffAdminAdd").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //如果已输入内容，返回上一页，需要popup提示
+        $('#viewStaffAdminAdd').on('click', '.page-back', function() {
+            openConfirmPopup();
+            return false;
+        });
+
         //確定取消新增，返回上一頁
         $('.confirmCancelAddNotice').on('click', function() {
             setTimeout(function() {
