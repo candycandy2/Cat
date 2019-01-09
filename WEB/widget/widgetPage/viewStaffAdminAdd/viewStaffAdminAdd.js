@@ -99,18 +99,14 @@ $("#viewStaffAdminAdd").pagecontainer({
 
         //upload img
         $('.add-upload-icon').on('click', function() {
-            //有且只能上传一张图档
-            let imgCount = $('.add-img-now').children().length;
-            if(imgCount == 0) {
-                navigator.camera.getPicture(onSuccess, onFail, {
-                    quality: 100,
-                    sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
-                    destinationType: Camera.DestinationType.DATA_URL,
-                    allowEdit: true,
-                    targetWidth: 500,
-                    targetHeight: 500
-                });
-            }
+            navigator.camera.getPicture(onSuccess, onFail, {
+                quality: 100,
+                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+                destinationType: Camera.DestinationType.DATA_URL,
+                allowEdit: true,
+                targetWidth: 1000,
+                targetHeight: 1000
+            });
         });
 
         //remove img

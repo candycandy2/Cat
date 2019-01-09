@@ -65,7 +65,7 @@
 }
 
 .title-text-row1>div:nth-of-type(1){
-    width: 50%;
+    width: 40%;
     line-height: 1;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .title-text-row1>div:nth-of-type(2){
-    width: 50%;
+    width: 60%;
     text-align: right;
     color: #8fa3ad;
     font-size: 3.55vw;
@@ -102,14 +102,14 @@
 }
 
 .title-text-row2>div:nth-of-type(1){
-    width: 80%;
+    width: 60%;
     color: #253137;
     font-size: 3.768vw;
     line-height: 1.5;
 }
 
 .title-text-row2>div:nth-of-type(2){
-    width: 20%;
+    width: 40%;
     text-align: right;
     color: #253137;
     font-size: 4.81vw;

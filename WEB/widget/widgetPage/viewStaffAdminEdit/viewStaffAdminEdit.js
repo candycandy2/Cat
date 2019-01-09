@@ -8,7 +8,19 @@ $("#viewStaffAdminEdit").pagecontainer({
         function getOriginalPost() {
             postDetail = JSON.parse(window.sessionStorage.getItem('viewStaffAdminEdit_parmData'));
             $('.old-notice-title').val(postDetail['title']);
-            $('.old-notice-context').val(postDetail['content']);
+            //提取html中的content和img
+            $('.edit-data-hidden').html('').append(postDetail['content']);
+            let content = $('.edit-data-hidden .postContent').text();
+            $('.old-notice-context').val(content);
+            let imgLength = $('.edit-data-hidden .postImg').children().length;
+            if(imgLength > 0) {
+                let src = $('.edit-data-hidden img').attr('src');
+                $('.edit-img-old').html('').append('<img src="' + src + '" class="usable">');//通过详情获得的图档可直接使用(包含在html中)
+                $('.remove-img-old').show();
+            } else {
+                $('.edit-img-old').html('');
+                $('.remove-img-old').hide();
+            }
         }
 
         //检查是否可以送出预览
@@ -21,6 +33,15 @@ $("#viewStaffAdminEdit").pagecontainer({
                 $('.editNoticePreviewBtn').removeClass('active-btn-green');
             }
         }
+
+        //拍照或图库成功
+        function onSuccess(imageURI) {
+            $('.remove-img-old').show();
+            postURL = 'data:image/jpeg;base64,' + imageURI;
+            $('.edit-img-old').html('').append('<img src="' + postURL + '">');//从本地获得的图档不可直接使用，需要先上传
+        }
+
+        function onFail(message) {}
 
 
         /********************************** page event ***********************************/
@@ -57,15 +78,41 @@ $("#viewStaffAdminEdit").pagecontainer({
             checkTitleAndContent();
         });
 
+        //upload img
+        $('.edit-upload-icon').on('click', function() {
+            navigator.camera.getPicture(onSuccess, onFail, {
+                quality: 100,
+                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+                destinationType: Camera.DestinationType.DATA_URL,
+                allowEdit: true,
+                targetWidth: 1000,
+                targetHeight: 1000
+            });
+        });
+
+        //删除图档
+        $('.remove-img-old').on('click', function() {
+            $('.edit-img-old').html('');
+            $('.remove-img-old').hide();
+        });
+
         //enter preview page after edit
         $('.editNoticePreviewBtn').on('click', function() {
             let has = $(this).hasClass('active-btn-green');
             if(has) {
+                let imgLength = $('.edit-img-old').children().length;
+                let hasClass = $('.edit-img-old img').hasClass('usable');
+                let src = $('.edit-img-old img').attr('src');
+                let content = '<div class="postImg">' +
+                    (imgLength == 0 ? '' : '<img src="' + src + '"' + (hasClass ? ' class="usable"' : '') + '>') +
+                    '</div><div class="postContent">' +
+                    $.trim($('.old-notice-context').val()) +
+                    '</div>';
                 let obj = {
                     id: postDetail['id'],
-                    title: $('.old-notice-title').val(),
-                    content: $('.old-notice-context').val(),
-                    url: ''
+                    title: $.trim($('.old-notice-title').val()),
+                    //content: $.trim($('.old-notice-context').val()),
+                    content: content
                 }
                 checkWidgetPage('viewStaffAdminEditPreview', pageVisitedList, obj);
                 window.sessionStorage.setItem('InitAdminEditPage', 'N');

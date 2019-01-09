@@ -92,6 +92,28 @@
     width: 92.58vw;
     height: 15vw;
     padding: 5vw 3.71vw 0;
+    position: relative;
+}
+
+.edit-img-old{
+    width: 15vw;
+    height: 15vw;
+    overflow: hidden;
+}
+
+.edit-img-old img{
+    width: 15vw;
+}
+
+.remove-img-old{
+    position: absolute;
+    top: 2.5vw;
+    left: 16vw;
+    width: 5vw;
+    height: 5vw;
+    background: url(img/delete.png) no-repeat;
+    background-size: 5vw;
+    display: none;
 }
 
 .editNoticePreviewBtn{
