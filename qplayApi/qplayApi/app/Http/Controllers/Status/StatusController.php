@@ -58,6 +58,7 @@ class StatusController extends Controller
                         $subRoot = $root.'.period_list.'.$pkey;      
                         
                         $rule[$subRoot.'.status']     = ['required','numeric'];
+                        $rule[$subRoot.'.note']       = 'max:30';
                         $rule[$subRoot.'.life_type']  = ['required','in:0,1'];
                         $rule[$subRoot.'.life_start'] = 'required_if:'.$subRoot.'.life_type,1';
                         $rule[$subRoot.'.life_end']   = 'required_if:'.$subRoot.'.life_type,1';
@@ -87,6 +88,7 @@ class StatusController extends Controller
                         
                         $rule[$subRoot.'.life_crontab_row_id']     = ['required','numeric'];
                         $rule[$subRoot.'.status']     = 'required';
+                        $rule[$subRoot.'.note']       = 'max:30';
                         $rule[$subRoot.'.life_type']  = ['required','in:0,1'];
                         $rule[$subRoot.'.life_start'] = 'required_if:'.$subRoot.'.life_type,1';
                         $rule[$subRoot.'.life_end']   = 'required_if:'.$subRoot.'.life_type,1';
@@ -103,6 +105,7 @@ class StatusController extends Controller
                 'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
                 'in' => ResultCode::_999001_requestParameterLostOrIncorrect,
                 'required_if'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'max' => ResultCode::_999001_requestParameterLostOrIncorrect
             ];
 
         $validator = Validator::make($request->all(), $rule, $errorMsg );
