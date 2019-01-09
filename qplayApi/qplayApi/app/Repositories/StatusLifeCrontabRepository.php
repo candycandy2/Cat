@@ -38,7 +38,7 @@ class StatusLifeCrontabRepository
                     ->where('status_life_crontab.active','Y')
                     ->where('status_id.active','Y')
                     ->select('status_id', 'type as status_type',
-                             'status','life_type','life_start','life_end','crontab')
+                             'status','note','life_type','life_start','life_end','crontab')
                     ->get();
     }
 
@@ -69,7 +69,7 @@ class StatusLifeCrontabRepository
                     ->where('status_life_crontab.active', 'Y')
                     ->where('status_id.active', 'Y')
                     ->select('status_id as status_id','status_id.row_id as status_id_row_id','status_id.type as status_type', 'status_life_crontab.row_id as life_crontab_row_id',
-                            'status', 'life_type', 'life_start', 'life_end', 'crontab')
+                            'status','note', 'life_type', 'life_start', 'life_end', 'crontab')
                     ->get();
     }
 
@@ -86,7 +86,7 @@ class StatusLifeCrontabRepository
                     ->where('status_life_crontab.active', 'Y')
                     ->where('status_id.active', 'Y')
                     ->select('status_id as status_id', 'status_id.row_id as status_id_row_id','status_id.type as status_type', 'status_life_crontab.row_id as life_crontab_row_id',
-                            'status', 'life_type', 'life_start', 'life_end', 'crontab')
+                            'status','note', 'life_type', 'life_start', 'life_end', 'crontab')
                     ->get();
     }
 
