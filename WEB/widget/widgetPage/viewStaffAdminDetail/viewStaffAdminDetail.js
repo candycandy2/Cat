@@ -29,10 +29,21 @@ $("#viewStaffAdminDetail").pagecontainer({
                     $('.notice-detail-title').text(detailObj['post_title']);
                     let now = new Date(detailObj['post_create_time'].replace(/-/g, '/')).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
                     $('.notice-detail-time').text(new Date(now).yyyymmdd('/') + ' ' + new Date(now).hhmm());
-                    $('.notice-detail-content').text(detailObj['post_content']);
-                    //$('.notice-detail-content').append(detailObj['post_content']);
+                    //$('.notice-detail-content').text(detailObj['post_content']);
+                    $('.notice-detail-content').html('').append(detailObj['post_content']);
                     $('.editNoticeBtn').addClass('active-btn-green');
-                    //还需判断是否有图档
+                    //还需判断是否有图档，通过DOM节点判断
+                    let imgLength = $('.notice-detail-content .postImg').children().length;
+                    if(imgLength == 0) {
+                        //表示没有图档，可直接显示
+                        $('.notice-detail-content').show();
+                    } else {
+                        //如果有图档，需要获取sas_token拼接到url后面才能正常显示图档
+                        let target = $('.notice-detail-content img').data('target');
+                        let url = $('.notice-detail-content img').attr('src');
+                        getSastokenByTarget(target, url);
+                    }
+
                 }
             };
 
@@ -40,6 +51,45 @@ $("#viewStaffAdminDetail").pagecontainer({
 
             var __construct = function() {
                 QForumPlugin.CustomAPI("POST", true, "getPostDetails", successCallback, failCallback, queryData, "");
+            }();
+        }
+
+        //获取sastoken
+        function getSastokenByTarget(tar, url) {
+            let self = this;
+
+            let queryStr = '&start=' +
+                new Date().toISOString().replace(/\.[0-9]*/, '') +
+                '&expiry=' +
+                new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().replace(/\.[0-9]*/, '') +//时效设为1年
+                '&sp=r';//只读权限
+
+            this.successCallback = function (data) {
+                console.log(data);
+                if (data['ResultCode'] == '1') {
+                    //1.show
+                    let sas_token = data['Content']['sas_token'];
+                    $('.notice-detail-content img').attr('src', url + '?' + sas_token);
+                    $('.notice-detail-content').show();
+                    //2.save to local
+                    let obj = {
+                        lastUpdateTime: new Date(),
+                        sasToken: sas_token
+                    };
+                    window.localStorage.setItem(tar, JSON.stringify(obj));
+                }
+            };
+
+            this.failCallback = function (data) {};
+
+            var __construct = function () {
+                let sasToken = JSON.parse(window.localStorage.getItem(tar));
+                if(sasToken == null || checkDataExpired(sasToken['lastUpdateTime'], 1, 'yy')) {
+                    QStoragePlugin.QStorageTokenAPI("GET", true, 'appqforum', 'sastoken/container', self.successCallback, self.failCallback, null, queryStr, tar);
+                } else {
+                    $('.notice-detail-content img').attr('src', url + '?' + sasToken['sasToken']);
+                    $('.notice-detail-content').show();
+                }
             }();
         }
 
@@ -93,7 +143,7 @@ $("#viewStaffAdminDetail").pagecontainer({
         $("#viewStaffAdminDetail").on("pagehide", function(event, ui) {
             $('.notice-detail-title').text('');
             $('.notice-detail-time').text('');
-            $('.notice-detail-content').text('');
+            $('.notice-detail-content').text('').hide();
             $('.editNoticeBtn').removeClass('active-btn-green');
         });
 
@@ -106,7 +156,8 @@ $("#viewStaffAdminDetail").pagecontainer({
                 let obj = {
                     id: detailObj['post_id'],
                     title: detailObj['post_title'],
-                    content: detailObj['post_content']
+                    //content: detailObj['post_content'],
+                    content: $('.notice-detail-content').html().toString()
                 }
                 checkWidgetPage('viewStaffAdminEdit', pageVisitedList, obj);
             }

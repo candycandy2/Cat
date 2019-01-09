@@ -61,7 +61,8 @@ $("#viewStaffAdminAddPreview").pagecontainer({
                 //console.log(data);
                 if (data['ResultCode'] == '1') {
                     let postURL = data['Content']['thumbnail_1024_url'];
-                    sendNewPost(id, postURL);
+                    let target = data['Content']['target'];
+                    sendNewPost(id, postURL, target);
                 }
             };
 
@@ -73,8 +74,9 @@ $("#viewStaffAdminAddPreview").pagecontainer({
         }
 
         //发送公告
-        function sendNewPost(id, url) {
+        function sendNewPost(id, url, tar) {
             url = url || null;
+            tar = tar || null;
 
             let fileList = '';
             if(url != null) {
@@ -83,7 +85,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
 
             //content文本转html
             let contentHtml = '<div class="postImg">' +
-                (url == null ? '' : '<img src="' + url + '" style="width:92.58vw;">') +
+                (url == null ? '' : '<img src="' + url + '" data-target="' + tar + '">') +
                 '</div><div class="postContent">' +
                 postData['postContent'] +
                 '</div>';
@@ -94,8 +96,8 @@ $("#viewStaffAdminAddPreview").pagecontainer({
                 board_id: announceBoardID,
                 post_id: id,
                 post_title: postData['postTitle'],
-                //content: contentHtml
-                content: postData['postContent']
+                content: contentHtml
+                //content: postData['postContent']
             };
 
             let queryData = "<LayoutHeader>" + QForumPlugin.createXMLDataString(xmlData) + fileList + "</LayoutHeader>";

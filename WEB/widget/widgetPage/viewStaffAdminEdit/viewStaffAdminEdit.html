@@ -22,23 +22,28 @@
             <div class="edit-notice-title">
                 <div>主旨</div>
                 <div>
-                    <textarea class="old-notice-title" placeholder="請輸入公告主旨"></textarea>
+                    <textarea class="old-notice-title" placeholder="請輸入公告主旨" maxlength="50"></textarea>
                 </div>
             </div>
             <div class="edit-notice-main">
                 <div>公告內文</div>
                 <div>
-                    <textarea class="old-notice-context" placeholder="新增公告內文"></textarea>
+                    <textarea class="old-notice-context" placeholder="新增公告內文" maxlength="100"></textarea>
                 </div>
             </div>
-            <div class="edit-notice-upload" style="display:none">
+            <div class="edit-notice-upload">
                 <div>上傳圖檔</div>
                 <div>
                     <span>選擇檔案</span>&nbsp;
                     <span class="edit-upload-icon"></span>
                 </div>
             </div>
-            <div class="edit-notice-img"></div>
+            <div class="edit-notice-img">
+                <div class="edit-img-old"></div>
+                <div class="remove-img-old"></div>
+            </div>
+            <!--接收detail传过来的content-->
+            <div class="edit-data-hidden" style="display:none"></div>
         </div>
         <div class="editNoticePreviewBtn active-btn-green">修改預覽</div>
     </div>

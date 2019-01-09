@@ -12,14 +12,16 @@ $("#viewStaffAdminEditPreview").pagecontainer({
             postData = JSON.parse(window.sessionStorage.getItem('viewStaffAdminEditPreview_parmData'));
             $('.edit-preview-title').text(postData['title']);
             $('.edit-preview-time').text(new Date().yyyymmdd('/'));
-            $('.edit-preview-content').text(postData['content']);
+            //$('.edit-preview-content').text(postData['content']);
 
             //是否有图档
-            if(postData['url'] != '') {
-                $('.edit-preview-img').html('').append('<img src="' + postData['url'] + '">').show();
-            } else {
-                $('.edit-preview-img').hide();
-            }
+            // if(postData['url'] != '') {
+            //     $('.edit-preview-img').html('').append('<img src="' + postData['url'] + '">').show();
+            // } else {
+            //     $('.edit-preview-img').hide();
+            // }
+
+            $('.edit-preview-content').append(postData['content']);
         }
 
         //确认修改该post
@@ -74,14 +76,14 @@ $("#viewStaffAdminEditPreview").pagecontainer({
         $("#viewStaffAdminEditPreview").on("pagehide", function(event, ui) {
             $('.edit-preview-title').text('');
             $('.edit-preview-time').text('');
-            $('.edit-preview-content').text('');
+            $('.edit-preview-content').html('');
         });
 
 
         /********************************** dom event *************************************/
         //送出修改
         $('.editNoticeSendBtn').on('click', function() {
-            editThisPost();
+            //editThisPost();
         });
 
 
