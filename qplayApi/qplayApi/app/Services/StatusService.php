@@ -90,6 +90,9 @@ class StatusService
                                 'life_type'         =>  $pValue['life_type'],
                                 'crontab'           =>  $pValue['crontab']
                                ];
+                if(isset($pValue['note'])){
+                    $lifeCrontab['note'] =  $pValue['note'];
+                }
                 if($pValue['life_type'] == 1){
                     $lifeCrontab['life_start'] = gmdate("Y-m-d H:i:s", $pValue['life_start']);
                     $lifeCrontab['life_end'] = gmdate("Y-m-d H:i:s", $pValue['life_end']);
@@ -141,7 +144,9 @@ class StatusService
                                 'life_type'         =>  $pValue['life_type'],
                                 'crontab'           =>  $pValue['crontab']
                                ];
-                
+                if(isset($pValue['note'])){
+                     $lifeCrontab['note'] =  $pValue['note'];
+                }
                 if($pValue['life_type'] == 1){
                     $lifeCrontab['life_start'] = gmdate("Y-m-d H:i:s", $pValue['life_start']);
                     $lifeCrontab['life_end'] = gmdate("Y-m-d H:i:s", $pValue['life_end']);
@@ -222,7 +227,9 @@ class StatusService
             $updatedUser = StatusLog::getLastUpdatedUser(self::TABLE_STATUS_LIFE_CRONTAB,$crontab->life_crontab_row_id);
             if(!is_null($updatedUser)){
                 
-                $statusTypeArr[$crontab->status_type][$crontab->status_id][] = ["status" => $crontab->status,
+                $statusTypeArr[$crontab->status_type][$crontab->status_id][] = [
+                                                     "status" => $crontab->status,
+                                                     "note" => $crontab->note,
                                                      "life_crontab_row_id" => $crontab->life_crontab_row_id,
                                                      "life_type" => $crontab->life_type,
                                                      "crontab" => $crontab->crontab,  
