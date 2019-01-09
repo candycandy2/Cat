@@ -55,14 +55,14 @@
 }
 
 .user-text-row1>div:nth-of-type(1){
-    width: 50%;
+    width: 40%;
     line-height: 1.2;
     color: #253137;
     font-size: 3.768vw;
 }
 
 .user-text-row1>div:nth-of-type(2){
-    width: 50%;
+    width: 60%;
     text-align: right;
     color: #8fa3ad;
     font-size: 3.55vw;
