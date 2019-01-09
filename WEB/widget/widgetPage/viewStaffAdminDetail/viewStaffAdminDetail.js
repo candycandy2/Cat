@@ -29,8 +29,8 @@ $("#viewStaffAdminDetail").pagecontainer({
                     $('.notice-detail-title').text(detailObj['post_title']);
                     let now = new Date(detailObj['post_create_time'].replace(/-/g, '/')).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
                     $('.notice-detail-time').text(new Date(now).yyyymmdd('/') + ' ' + new Date(now).hhmm());
-                    //$('.notice-detail-content').text(detailObj['post_content']);
-                    $('.notice-detail-content').append(detailObj['post_content']);
+                    $('.notice-detail-content').text(detailObj['post_content']);
+                    //$('.notice-detail-content').append(detailObj['post_content']);
                     $('.editNoticeBtn').addClass('active-btn-green');
                     //还需判断是否有图档
                 }

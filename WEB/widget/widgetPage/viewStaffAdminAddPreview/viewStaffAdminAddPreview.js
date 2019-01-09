@@ -94,7 +94,8 @@ $("#viewStaffAdminAddPreview").pagecontainer({
                 board_id: announceBoardID,
                 post_id: id,
                 post_title: postData['postTitle'],
-                content: contentHtml
+                //content: contentHtml
+                content: postData['postContent']
             };
 
             let queryData = "<LayoutHeader>" + QForumPlugin.createXMLDataString(xmlData) + fileList + "</LayoutHeader>";
