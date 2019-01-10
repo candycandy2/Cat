@@ -509,6 +509,7 @@ return [
     'QPAY_IMPORT_TOTAL_POINT'=>'Total points',
     'QPAY_IMPORT_EACH_MEMBER'=>'Points for each Employee',
     'QPAY_MEMBER_EMP_NO_ERROR'=>'The following Emp No. were error!!',
+    'QPAY_MEMBER_EMP_NO_ERROR_POINT'=>'The Points of following Emp No. were negative!!',
     'POINT' => 'point',
     'PERSON' => 'person',
     'QPAY_SELECT_STORE_INTERVAL' => 'Select a stored point interval',

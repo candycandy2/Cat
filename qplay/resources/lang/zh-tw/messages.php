@@ -508,6 +508,7 @@ return [
     'QPAY_IMPORT_TOTAL_POINT'=>'轉入總點數',
     'QPAY_IMPORT_EACH_MEMBER'=>'轉入點數(每人)',
     'QPAY_MEMBER_EMP_NO_ERROR'=>'以下工號核對有誤!!',
+    'QPAY_MEMBER_EMP_NO_ERROR_POINT'=>'以下工號的點數為負值!!',
     'POINT' => '點',
     'PERSON' => '人',
     'QPAY_SELECT_STORE_INTERVAL' => '選擇儲值區間',

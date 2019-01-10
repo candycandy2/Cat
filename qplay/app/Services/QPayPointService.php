@@ -26,6 +26,7 @@ class QPayPointService
     protected $excelDataInfo = [];
     protected $allEmpDataArray = [];
     protected $errorEmpNoArray = [];
+    protected $negativePointEmpNoArray = [];
 
     /**
      * QPayPointService constructor.
@@ -116,7 +117,7 @@ class QPayPointService
 
                 //Find All emp_no which exist in `qp_user`
                 $result = DB::table('qp_user')
-                        -> select('emp_no')
+                        -> select('row_id', 'emp_no')
                         -> whereIn('emp_no', $excelEmpNoArray)
                         -> where('resign', '=', 'N')
                         -> get();
@@ -126,24 +127,43 @@ class QPayPointService
                 }, $result);
 
                 $userEmpNoArray = [];
+                $userRowIDArray = [];
+                $userRowIDEmpNoArray = [];
 
                 foreach ($result as $data) {
                     $userEmpNoArray[] = strval(trim($data["emp_no"]));
+                    $userRowIDArray[] = strval(trim($data["row_id"]));
+                    $userRowIDEmpNoArray[strval(trim($data["row_id"]))] = strval(trim($data["emp_no"]));
                 }
 
                 //Check if any emp_no not exist in `qp_user`
                 $this->errorEmpNoArray = array_diff($excelEmpNoArray, $userEmpNoArray);
 
+                //Check if the QPay points of the user will become Negative after insert this data
+                $result = DB::table('qpay_member_point')
+                        -> leftJoin("qpay_member", "qpay_member.row_id", "=", "qpay_member_point.member_row_id")
+                        -> select(
+                                DB::raw('SUM(qpay_member_point.stored_now) AS point_now'),
+                                'qpay_member.user_row_id')
+                        -> whereIn('qpay_member.user_row_id', $userRowIDArray)
+                        -> groupBy('qpay_member.user_row_id')
+                        -> get();
+
+                $result = array_map(function ($value) {
+                    return (array) $value;
+                }, $result);
+
+                foreach ($result as $data) {
+                    if (($data["point_now"] + $point) < 0) {
+                        $this->negativePointEmpNoArray[] = $userRowIDEmpNoArray[$data["user_row_id"]];
+                    }
+                }
             });
 
             //Return the result
             $result = [];
 
-            if (count($this->errorEmpNoArray) == 0) {
-                $result["result_code"] = ResultCode::_1_reponseSuccessful;
-                $result["all_empno"] = $this->allEmpDataArray;
-                $result["excel_data_info"] = $this->excelDataInfo;
-            } else {
+            if (count($this->errorEmpNoArray) != 0) {
                 $errorEmpNo = [];
 
                 foreach ($this->errorEmpNoArray as $key => $val) {
@@ -152,6 +172,15 @@ class QPayPointService
 
                 $result["result_code"] = ResultCode::_000901_userNotExistError;
                 $result["error_empno"] = $errorEmpNo;
+            } else if (count($this->negativePointEmpNoArray) != 0) {
+                $errorEmpNo = $this->negativePointEmpNoArray;
+
+                $result["result_code"] = ResultCode::_000923_qpayNegativePoint;
+                $result["error_empno"] = $errorEmpNo;
+            } else if (count($this->errorEmpNoArray) == 0 && count($this->negativePointEmpNoArray) == 0) {
+                $result["result_code"] = ResultCode::_1_reponseSuccessful;
+                $result["all_empno"] = $this->allEmpDataArray;
+                $result["excel_data_info"] = $this->excelDataInfo;
             }
 
             return json_encode($result);
