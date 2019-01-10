@@ -89,4 +89,20 @@ class QPayMemberPointRepository
 
         return $result;
     }
+
+    /**
+     * get Member Point Data By Row ID (only this year)
+     * @param  row_id
+     * @return mixed
+     */
+    public function getPointDataByRowID($rowID)
+    {
+        $result = $this->qpayMemberPoint
+                    -> leftJoin("qpay_member", "qpay_member.row_id", "=", "qpay_member_point.member_row_id")
+                    -> select("qpay_member_point.*", "qpay_member.user_row_id")
+                    -> where("qpay_member_point.row_id", "=", $rowID)
+                    -> get();
+
+        return $result;
+    }
 }

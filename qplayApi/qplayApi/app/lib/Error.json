@@ -921,6 +921,108 @@
         ]
       },
       {
+        "error_code": "000939",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Trade ID does not exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易碼不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易码不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000940",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Trade ID does not match store."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易碼和店家不符合"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易码和店家不符合"
+          }
+        ]
+      },
+      {
+        "error_code": "000941",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Trade ID cancel date overdue."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易碼的取消時間逾期"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易码的取消时间逾期"
+          }
+        ]
+      },
+      {
+        "error_code": "000942",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Trade ID had canceled."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易碼已經被取消"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易码已经被取消"
+          }
+        ]
+      },
+      {
+        "error_code": "000943",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Trade ID cannot cancel."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易碼無法取消"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易码无法取消"
+          }
+        ]
+      },
+      {
+        "error_code": "000944",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Trade price incorrect."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易金額不正確"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易金额不正确"
+          }
+        ]
+      },
+      {
         "error_code": "052001",
         "language_list": [
           {

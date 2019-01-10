@@ -171,6 +171,9 @@ class QPayPointService
 
         if (isset($this->pointStoreID) && is_numeric($this->pointStoreID)) {
 
+            ini_set("memory_limit","2048M");
+            set_time_limit(0);
+
             //Move Temp Excel file into saved_upload folder
             $tempPath = "temp_upload/";
             $savedPath = "saved_upload/";

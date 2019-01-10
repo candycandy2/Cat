@@ -36,7 +36,8 @@ class TradeController extends Controller
             'emp_no' => 'required',
             'price' => 'required|numeric|max:1000',
             'shop_id' => 'required|numeric',
-            'trade_pwd' => 'required|size:4'
+            'trade_pwd' => 'required|size:4',
+            'action' => 'required'
         ], [
             'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
             'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
@@ -49,9 +50,14 @@ class TradeController extends Controller
                 'result_code' => $validator->errors()->first(),
                 'message' => CommonUtil::getMessageContentByCode($validator->errors()->first())
             ], 200);
+        } else if (!($request->action == "new" || $request->action == "cancel")) {
+            return response()->json([
+                'result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message' => CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+            ], 200);
         } else {
             $result = $this->qpayTradeService->getTradeToken($request->uuid, $request->emp_no, $request->header("trade-pwd"), 
-                                                             $request->price, $request->shop_id);
+                                                             $request->price, $request->shop_id, $request->action);
 
             $result["token_valid"] = $request->token_valid_date;
             return response()->json($result);
@@ -74,7 +80,7 @@ class TradeController extends Controller
             'price' => 'required|numeric|max:1000',
             'shop_id' => 'required|numeric',
             'trade_token' => 'required|string|size:44',
-            'trade_pwd' => 'required|size:4'
+            'trade_pwd' => 'required|digits:4'
         ], [
             'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
             'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
@@ -152,6 +158,78 @@ class TradeController extends Controller
             ], 200);
         } else {
             $result = $this->qpayTradeService->getTradeRecordShop($request->uuid, $request->start_date, $request->end_date, $request->point_type_id);
+            $result["token_valid"] = $request->token_valid_date;
+
+            return response()->json($result);
+        }
+    }
+
+    /**
+     * check QPay Trade ID
+     * @param  Request $request
+     * @return json
+     */
+    public function checkTradeID(Request $request)
+    {
+        //parameter verify
+        $validator = Validator::make($request->all(), [
+            'trade_id' => 'required|digits:6',
+            'shop_id' => 'required|numeric'
+        ], [
+            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'digits' => ResultCode::_999001_requestParameterLostOrIncorrect
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'result_code' => $validator->errors()->first(),
+                'message' => CommonUtil::getMessageContentByCode($validator->errors()->first())
+            ], 200);
+        } else {
+            $result = $this->qpayTradeService->checkTradeID($request->shop_id, $request->trade_id);
+
+            $result["token_valid"] = $request->token_valid_date;
+            return response()->json($result);
+        }
+    }
+
+    /**
+     * QPay cancel trade
+     * @param  Request $request
+     * @return json
+     */
+    public function cancelTrade(Request $request)
+    {
+        $request->merge(['trade_token' => $request->header('trade-token')]);
+        $request->merge(['trade_pwd' => $request->header('trade-pwd')]);
+
+        //parameter verify
+        $validator = Validator::make($request->all(), [
+            'emp_no' => 'required',
+            'price' => 'required|numeric|max:1000',
+            'shop_id' => 'required|numeric',
+            'trade_token' => 'required|string|size:44',
+            'trade_pwd' => 'required|digits:4',
+            'trade_id' => 'required|digits:6',
+            'reason' => 'required'
+        ], [
+            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'string' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'max' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'size' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'digits' => ResultCode::_999001_requestParameterLostOrIncorrect
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'result_code' => $validator->errors()->first(),
+                'message' => CommonUtil::getMessageContentByCode($validator->errors()->first())
+            ], 200);
+        } else {
+            $result = $this->qpayTradeService->cancelTrade($request->uuid, $request->header("trade-pwd"), $request->header("trade-token"),
+                            $request->emp_no, $request->price, $request->shop_id, $request->trade_id, $request->reason, $request->lang);
             $result["token_valid"] = $request->token_valid_date;
 
             return response()->json($result);

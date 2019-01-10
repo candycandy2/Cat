@@ -66,6 +66,30 @@
     text-align: center;
     font-size: 24px;
 }
+.loading-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    opacity: 0.4;
+    z-index: 2000;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+.loading-mask-icon {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+}
+.loading-mask-str {
+    position: absolute;
+    left: 45%;
+    top: 55%;
+    color: #FFF;
+}
 </style>
 
 <!--********************************** Import QPayMember member *************************************-->
@@ -239,6 +263,10 @@
     </div>
 </div>
 
+<div class="loading-mask">
+    <img class="loading-mask-icon" src="{{asset('/css/images/loading.gif')}}">
+    <div class="loading-mask-str">處理中, 請勿關閉或是重整視窗</div>
+</div>
 
 <script type="text/javascript">
 $(function() {
@@ -359,6 +387,7 @@ $(function() {
     $("#storeConfirm").on("click", function() {
         $("#dialogStoreConfirm").modal("hide");
         storePoint();
+        $(".loading-mask").show();
     });
 
     //Chech Stored Record
@@ -379,8 +408,11 @@ $(function() {
                     $("#preViewPage #previewToolbar").hide();
                     $("#preViewPage .finish-review").show();
                 }
+                $(".loading-mask").hide();
             },
-            error: function (e) {}
+            error: function (e) {
+                $(".loading-mask").hide();
+            }
         });
 
     }
