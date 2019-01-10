@@ -111,6 +111,16 @@ html body .ui-group-theme-a .ui-bar-inherit {
         margin-top: 8.6vw;
         margin-bottom: 6vw;
     }
+    .info-icon {
+        width: 3.75vw;
+        height: 3.75vw;
+        margin-top: 3.5vw;
+        opacity: 0;
+    }
+    .cancel-info {
+        position: relative;
+        left: 13.396vw;
+    }
     .main {
         width: 80vw;
         height: 100%;
@@ -150,6 +160,26 @@ html body .ui-group-theme-a .ui-bar-inherit {
         margin-bottom: 24px;
         width: 90vw;
         margin-left: 5vw;
+    }
+    .mask, .message-info {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        height: 100%;
+        width: 100%;
+        background: rgba(35,31,32,0.3);
+        text-align: center;
+        padding-top: 0;
+    }
+    .message-info-button {
+        text-align: right;
+        padding-top: 1.75vw;
+        padding-right: 1.75vw;
+    }
+    .message-info-button .close {
+        width: 6.75vw;
+        height: 6.75vw;
     }
     /*--viewLogin--*/
     #viewLogin .text-info-content {
@@ -348,7 +378,7 @@ html body .ui-group-theme-a .ui-bar-inherit {
     }
     #viewRecord .record-body .point-number {
         float: right;
-        margin-right: 3vw;
+        margin-right: 7.3vw;
     }
     /*--Date Picker--*/
     .ui-widget {
@@ -369,6 +399,14 @@ html body .ui-group-theme-a .ui-bar-inherit {
     .icon {
         width: 70px;
         height: 70px;
+    }
+    .info-icon {
+        width: 15px;
+        height: 15px;
+        position: relative;
+        top: 3px;
+        left: -25%;
+        opacity: 0;
     }
     .text-title-content {
         margin-bottom: 8px;

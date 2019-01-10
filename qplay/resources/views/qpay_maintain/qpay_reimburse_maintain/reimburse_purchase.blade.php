@@ -88,12 +88,13 @@
                     data-page-list="[5,10,20]" data-click-to-select="false" data-single-select="false">
                 <thead>
                     <tr>
-                        <th data-field="trade_time" data-sortable="true" data-formatter="tradeTimeFormatter">{{trans('messages.QPAY_TRAD_DATE')}}</th>
-                        <th data-field="shop_name"  data-sortable="true">{{trans('messages.QPAY_TRADE_LOCATION')}}</th>
-                        <th data-field="trade_point" data-sortable="true">{{trans('messages.QPAY_TRADE_POINT')}}</th>
-                        <th data-field="trade_id" data-sortable="true">{{trans('messages.QPAY_TRADE_ID')}}</th>
-                        <th data-field="trade_success" data-sortable="true" data-formatter="tradeStatusFormatter">{{trans('messages.QPAY_TRADE_STATUS')}}</th>
-                        <th data-field="error_code" data-sortable="true">{{trans('messages.ERROR_CODE')}}</th>
+                        <th data-field="trade_time" data-width="15%" data-sortable="true" data-formatter="tradeTimeFormatter">{{trans('messages.QPAY_TRAD_DATE')}}</th>
+                        <th data-field="shop_name" data-width="15%" data-sortable="true">{{trans('messages.QPAY_TRADE_LOCATION')}}</th>
+                        <th data-field="trade_point" data-width="10%" data-sortable="true">{{trans('messages.QPAY_TRADE_POINT')}}</th>
+                        <th data-field="trade_id" data-width="10%" data-sortable="true">{{trans('messages.QPAY_TRADE_ID')}}</th>
+                        <th data-field="trade_success" data-width="15%" data-sortable="true" data-formatter="tradeStatusFormatter">{{trans('messages.QPAY_TRADE_STATUS')}}</th>
+                        <th data-field="error_code" data-width="10%" data-sortable="true">{{trans('messages.ERROR_CODE')}}</th>
+                        <th data-field="cancel_reason" data-width="25%" data-sortable="true">{{trans('messages.PROJECT_MEMO')}}</th>
                     </tr>
                 </thead>
             </table>

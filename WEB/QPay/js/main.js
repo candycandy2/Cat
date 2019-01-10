@@ -152,6 +152,15 @@ $(function() {
         }
     }
 
+    function messageInfo(action, title) {
+        if (action == "open") {
+            $(".message-info .message .title").html(title);
+            $(".message-info").show()
+        } else {
+            $(".message-info").hide();
+        }
+    }
+
     function changePage(pageID) {
         if (pageID == "viewLogin") {
             var change = true;
@@ -588,18 +597,33 @@ $(function() {
                 var record = $(recordHTML);
                 var displayName = "";
                 var pointSymbol = "";
+                var displayNote = "";
 
                 if (recordData[i]["trade_type"] == "store") {
                     displayName = recordData[i]["point_type_name"];
                     pointSymbol = "+";
                 } else if (recordData[i]["trade_type"] == "trade") {
                     displayName = recordData[i]["shop_name"];
-                    pointSymbol = "-";
 
-                    if (isMobile) {
-                        record.find(".column-4 .point-number").removeClass("point-add");
+                    //Check if is [cancel trade]
+                    if (recordData[i]["cancel_trade"] == "Y") {
+                        if (recordData[i]["trade_success"] == "N") {
+                            continue;
+                        }
+
+                        pointSymbol = "+";
+                        displayNote = "退款:" + recordData[i]["cancel_reason"];
+
+                        record.find(".column-4 .info-icon").prop("title", displayNote);
+                        record.find(".column-4 .info-icon").css("opacity", 1);
                     } else {
-                        record.find(".column-4").removeClass("point-add");
+                        pointSymbol = "-";
+
+                        if (isMobile) {
+                            record.find(".column-4 .point-number").removeClass("point-add");
+                        } else {
+                            record.find(".column-4").removeClass("point-add");
+                        }
                     }
                 }
 
@@ -703,5 +727,19 @@ $(function() {
 
     $(document).on("click", "#btnNext", function() {
         pageNumberView("next");
+    });
+
+    $(document).on("click", ".info-icon", function() {
+        var isMobile = window.mobilecheck();
+        if (isMobile) {
+            messageInfo("open", $(this).prop("title"));
+        }
+    });
+
+    $(document).on("click", ".message-info .close", function() {
+        var isMobile = window.mobilecheck();
+        if (isMobile) {
+            messageInfo("close", "");
+        }
     });
 });

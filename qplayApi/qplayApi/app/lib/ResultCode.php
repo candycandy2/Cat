@@ -66,6 +66,12 @@ abstract class ResultCode
     const _000936_statusStatusDateRangeInvalid = "000936";//生命週期的日期範圍錯誤
     const _000937_statusStatusLifeCrontabNotExist = "000937";//生命週期不存在
     const _000938_statusStatusLifeCrontabCanNotNull = "000938";//生命週期不可以為空值
+    const _000939_tradeIDNotExist = "000939";//交易碼不存在
+    const _000940_tradeIDNotMatchStore = "000940";//交易碼和店家不符合
+    const _000941_tradeIDCandelDateOverdue = "000941";//交易碼的取消時間逾期
+    const _000942_tradeIDHadCanceled = "000942";//交易碼已經被取消
+    const _000943_tradeIDCannotCancel = "000943";//交易碼無法取消
+    const _000944_tradePriceIncorrect = "000944";//交易金額不正確
     //TODO 以下为各系统扩展
     
     //Emp Service

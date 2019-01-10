@@ -13,6 +13,9 @@
 .panel-row-title{
     margin-right: 20px
 }
+#datetimepicker1 .form-control {
+    padding: 6px 6px;
+}
 </style>
 
     <h1></h1>
@@ -121,9 +124,10 @@
                        data-click-to-select="false" data-single-select="false">
                     <thead>
                         <tr>
-                            <th data-field="trade_time" data-sortable="true" data-formatter="tradeTimeFormatter">{{trans('messages.QPAY_TRAD_DATE')}}</th>
-                            <th data-field="trade_point" data-sortable="true">{{trans('messages.QPAY_TRADE_AMOUNT')}}({{trans('messages.QPAY_COUNT')}})</th>
-                            <th data-field="trade_id" data-sortable="true">{{trans('messages.QPAY_TRADE_ID')}}</th>
+                            <th data-field="trade_time" data-width="25%" data-sortable="true" data-formatter="tradeTimeFormatter">{{trans('messages.QPAY_TRAD_DATE')}}</th>
+                            <th data-field="trade_point" data-width="25%" data-sortable="true">{{trans('messages.QPAY_TRADE_AMOUNT')}}({{trans('messages.QPAY_COUNT')}})</th>
+                            <th data-field="trade_id" data-width="25%" data-sortable="true">{{trans('messages.QPAY_TRADE_ID')}}</th>
+                            <th data-field="cancel_reason" data-width="25%" data-sortable="true">{{trans('messages.PROJECT_MEMO')}}</th>
                         </tr>
                     </thead>
                 </table>
