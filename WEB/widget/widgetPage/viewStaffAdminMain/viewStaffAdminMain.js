@@ -126,7 +126,7 @@ $("#viewStaffAdminMain").pagecontainer({
                     $('.title-text-status').text(statusText);
                     //3.状态描述，暂用crontab栏位存取
                     let description = (status_info['note'] == null ? '' : status_info['note']);
-                    $('.title-text-now').text();
+                    $('.title-text-now').text(description);
                     $('#adminSettingNotice').val(description);
                 }
             };
