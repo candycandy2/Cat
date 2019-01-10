@@ -245,6 +245,21 @@
     </div>
 </div>
 
+<div class="modal fade" id="dialogErrorPointEmpNo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{trans('messages.QPAY_MEMBER_EMP_NO_ERROR_POINT')}}</h4>
+            </div>
+            <div class="modal-body">
+                1234466
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="dialogStoreConfirm">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -320,7 +335,7 @@ $(function() {
                     $("#nextBtn").hide();
                     $("#nextPreviewBtn").show();
 
-                } else {
+                } else if (response.result_code == "000901") {
                     var errorString = "";
 
                     $.each(response.error_empno, function(key, val) {
@@ -329,6 +344,17 @@ $(function() {
 
                     $("#dialogErrorEmpNo .modal-content .modal-body").html(errorString);
                     $('#dialogErrorEmpNo').modal('show');
+                    $("#uploadExcel").val("");
+                    $("#fileName").html("");
+                } else if (response.result_code == "000923") {
+                    var errorString = "";
+
+                    $.each(response.error_empno, function(key, val) {
+                        errorString =  errorString + val.toString() + "<br>";
+                    });
+
+                    $("#dialogErrorPointEmpNo .modal-content .modal-body").html(errorString);
+                    $('#dialogErrorPointEmpNo').modal('show');
                     $("#uploadExcel").val("");
                     $("#fileName").html("");
                 }
