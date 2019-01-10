@@ -163,6 +163,10 @@
     min-height: 4vw;
 }
 
+.admin-main-tomorrow{
+    display: none;
+}
+
 .today-no-data,
 .tomorrow-no-data{
     width: 100vw;
@@ -261,6 +265,10 @@
     font-size: 3.768vw;
     background: #F9F9F9;
     overflow: hidden;
+}
+
+.currentTelephone{
+    display: none;
 }
 
 .adminStatus .header-title-main{
