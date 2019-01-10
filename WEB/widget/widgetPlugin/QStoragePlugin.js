@@ -58,6 +58,54 @@ var QStoragePlugin = {
             error: requestError
         });
     },
+    QStorageTokenAPI: function(requestType, asyncType, key, requestAction, successCallback, failCallback, queryData, queryStr, target) {
+
+        let secretKey = QStoragePlugin[key];
+        failCallback = failCallback || null;
+        queryData = queryData || null;
+        queryStr = queryStr || "";
+
+        function requestSuccess(data) {
+            checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
+
+            var dataArr = [
+                "Call API",
+                requestAction,
+                data['ResultCode']
+            ];
+            LogFile.createAndWriteFile(dataArr);
+        }
+
+        function requestError(data) {
+            errorHandler(data, requestAction);
+            if (failCallback) {
+                failCallback();
+            }
+        }
+
+        var signatureTime = QStoragePlugin.getSignature("getTime");
+        var signatureInBase64 = QStoragePlugin.getSignature("getInBase64", signatureTime, secretKey);
+
+        $.ajax({
+            type: requestType,
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'App-Key': key + QStoragePlugin.env,
+                'Signature-Time': signatureTime,
+                'Signature': signatureInBase64,
+                'account': loginData['emp_no'],
+                'target': target
+            },
+            url: serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData['uuid'] + queryStr,
+            dataType: "json",
+            data: queryData,
+            async: asyncType,
+            cache: false,
+            timeout: 30000,
+            success: requestSuccess,
+            error: requestError
+        });
+    },
     dataURLtoFile: function(url, file) {
         file = file || 'text.jpg';
 
