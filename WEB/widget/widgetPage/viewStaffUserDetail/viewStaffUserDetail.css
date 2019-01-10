@@ -13,6 +13,14 @@
     font-size: 3.768vw;
 }
 
+.notice-msg-content{
+    display: none;
+}
+
+.notice-msg-content img{
+    width: 92.58vw;
+}
+
 .notice-msg-time{
     width: 92.58vw;
     padding: 2.14vw 3.71vw 0;

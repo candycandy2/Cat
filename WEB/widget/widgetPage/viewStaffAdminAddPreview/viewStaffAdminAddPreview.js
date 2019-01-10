@@ -21,6 +21,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
             }
         }
 
+        //获取新post_id
         function getNewPostID() {
             var queryData = "<LayoutHeader><emp_no>" +
                 loginData["emp_no"] +
@@ -31,6 +32,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
 
             var successCallback = function(data) {
                 //console.log(data);
+
                 if(data['ResultCode'] == '1') {
                     let postID = data['Content'];
                     //如果有图档，先上传图档，否则可以直接送出
@@ -49,6 +51,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
             }();
         }
 
+        //上传图档
         function uploadFile(id) {
             var self = this;
 
@@ -59,6 +62,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
 
             this.successCallback = function (data) {
                 //console.log(data);
+
                 if (data['ResultCode'] == '1') {
                     let postURL = data['Content']['thumbnail_1024_url'];
                     let target = data['Content']['target'];
@@ -104,6 +108,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
 
             var successCallback = function(data) {
                 //console.log(data);
+
                 if(data['ResultCode'] == '1') {
                     //成功后回退到公告页
                     pageVisitedList.pop();
@@ -111,6 +116,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
                     //只有当新增成功时才需要初始化新增页(前一页)
                     window.sessionStorage.setItem('InitAdminAddPage', 'Y');
                 }
+
                 loadingMask('hide');
             };
 
@@ -128,7 +134,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
         });
 
         $("#viewStaffAdminAddPreview").one("pageshow", function(event, ui) {
-            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            let mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminAddPreview .page-main').css('height', mainHeight);
             $('.addNoticeSendBtn').show();
             getPreviewData();
@@ -146,7 +152,7 @@ $("#viewStaffAdminAddPreview").pagecontainer({
         /********************************** dom event *************************************/
         $('.addNoticeSendBtn').on('click', function() {
             loadingMask('show');
-            //API:get post id first then send new post
+            //API:get post id first then uploadfile or send new post
             getNewPostID();
         });
 

@@ -116,6 +116,10 @@
     display: none;
 }
 
+.edit-data-hidden{
+    display: none;
+}
+
 .editNoticePreviewBtn{
     position: absolute;
     width: 35.5vw;

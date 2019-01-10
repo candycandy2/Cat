@@ -29,7 +29,6 @@ $("#viewStaffAdminDetail").pagecontainer({
                     $('.notice-detail-title').text(detailObj['post_title']);
                     let now = new Date(detailObj['post_create_time'].replace(/-/g, '/')).getTime() - new Date().getTimezoneOffset() * 60 * 1000;
                     $('.notice-detail-time').text(new Date(now).yyyymmdd('/') + ' ' + new Date(now).hhmm());
-                    //$('.notice-detail-content').text(detailObj['post_content']);
                     $('.notice-detail-content').html('').append(detailObj['post_content']);
                     $('.editNoticeBtn').addClass('active-btn-green');
                     //还需判断是否有图档，通过DOM节点判断
@@ -43,7 +42,6 @@ $("#viewStaffAdminDetail").pagecontainer({
                         let url = $('.notice-detail-content img').attr('src');
                         getSastokenByTarget(target, url);
                     }
-
                 }
             };
 
@@ -65,7 +63,8 @@ $("#viewStaffAdminDetail").pagecontainer({
                 '&sp=r';//只读权限
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
+
                 if (data['ResultCode'] == '1') {
                     //1.show
                     let sas_token = data['Content']['sas_token'];
@@ -129,7 +128,7 @@ $("#viewStaffAdminDetail").pagecontainer({
         });
 
         $("#viewStaffAdminDetail").one("pageshow", function(event, ui) {
-            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            let mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminDetail .page-main').css('height', mainHeight);
 
             $('.editNoticeBtn').show();
@@ -156,7 +155,6 @@ $("#viewStaffAdminDetail").pagecontainer({
                 let obj = {
                     id: detailObj['post_id'],
                     title: detailObj['post_title'],
-                    //content: detailObj['post_content'],
                     content: $('.notice-detail-content').html().toString()
                 }
                 checkWidgetPage('viewStaffAdminEdit', pageVisitedList, obj);

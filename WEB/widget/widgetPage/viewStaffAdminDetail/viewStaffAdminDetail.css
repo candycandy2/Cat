@@ -13,6 +13,10 @@
     font-size: 3.768vw;
 }
 
+.notice-detail-content{
+    display: none;
+}
+
 .notice-detail-content img{
     width: 92.58vw;
 }

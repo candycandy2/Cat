@@ -111,7 +111,6 @@ $("#viewStaffAdminEdit").pagecontainer({
                 let obj = {
                     id: postDetail['id'],
                     title: $.trim($('.old-notice-title').val()),
-                    //content: $.trim($('.old-notice-context').val()),
                     content: content
                 }
                 checkWidgetPage('viewStaffAdminEditPreview', pageVisitedList, obj);

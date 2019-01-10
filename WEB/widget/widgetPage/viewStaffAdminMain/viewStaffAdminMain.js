@@ -95,11 +95,19 @@ $("#viewStaffAdminMain").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
+
                 //表示没有该状态000934，需要setStatus:meetingroomService
                 if(data['result_code'] == '000934') {
                     newStaffStatus();
                 } else if(data['result_code'] == '1') {
-                    let status_info = data['content']['status_list'][0]['period_list'][0];
+
+                    let status_info;
+                    for(var i in data['content']['status_list']) {
+                        if(data['content']['status_list'][i]['status_id'] == staffServiceID) {
+                            status_info = data['content']['status_list'][i]['period_list'][0];
+                            break;
+                        }
+                    }
                     //1.绿灯红灯
                     status_row_id = status_info['life_crontab_row_id'];
                     let statusValue = status_info['status'];
@@ -117,8 +125,8 @@ $("#viewStaffAdminMain").pagecontainer({
                     let statusText = $('#adminSettingPopup-option-popup .tpl-dropdown-list-selected').text();
                     $('.title-text-status').text(statusText);
                     //3.状态描述，暂用crontab栏位存取
-                    let description = status_info['crontab'];
-                    $('.title-text-now').text(description);
+                    let description = (status_info['note'] == null ? '' : status_info['note']);
+                    $('.title-text-now').text();
                     $('#adminSettingNotice').val(description);
                 }
             };
@@ -150,6 +158,7 @@ $("#viewStaffAdminMain").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
+
                 if(data['result_code'] == '1') {
                     //如果新增成功，再获取一次当前总机状态
                     getStaffStatus();
@@ -177,7 +186,8 @@ $("#viewStaffAdminMain").pagecontainer({
                         life_crontab_row_id: status_row_id,
                         life_type: 0,//表示无生命周期
                         status: id,//1表示online,0表示offline,2表示busy
-                        crontab: desc
+                        crontab: '*****',
+                        note: desc
                     }]
                 }]
             });
@@ -203,6 +213,7 @@ $("#viewStaffAdminMain").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
+
                 //表示没有该服务052002，需要newEmpService:meetingroomService
                 if(data['result_code'] == '052002') {
                     newStaffEmpService();
@@ -256,6 +267,7 @@ $("#viewStaffAdminMain").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
+
                 if(data['result_code'] == '1') {
                     //新增茶水服务成功后，再获取一次serviceTargetList
                     getStaffEmpService();
@@ -403,7 +415,7 @@ $("#viewStaffAdminMain").pagecontainer({
                 '<Name_EN>' + name + '</Name_EN><DeptCode></DeptCode><Ext_No></Ext_No></LayoutHeader>';
 
             var successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['ResultCode'] == '1') {
                     //只取第一个电话号码
@@ -536,7 +548,7 @@ $("#viewStaffAdminMain").pagecontainer({
             let statusText = $('#adminSettingPopup-option-popup .tpl-dropdown-list-selected').text();
             $('.title-text-status').text(statusText);
             //3.修改状态描述
-            let description = $('#adminSettingNotice').val();
+            let description = $.trim($('#adminSettingNotice').val());
             $('.title-text-now').text(description);
             //4.API
             setStaffStatus(statusValue, description);

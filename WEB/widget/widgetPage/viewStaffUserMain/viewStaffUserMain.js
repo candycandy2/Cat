@@ -82,7 +82,7 @@ $("#viewStaffUserMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 
                 if(data['result_code'] == '1') {
                     //茶水信息
@@ -91,11 +91,19 @@ $("#viewStaffUserMain").pagecontainer({
                     let typeText = (staffType == 'needTea' ? '添加' : '添加茶水');
                     let teaText = (staffType == 'needTea' && teaCount != 0 ? '茶' + teaCount + '杯' : '');
                     let waterText = (staffType == 'needTea' && waterCount != 0 ? '水' + waterCount + '杯' : '');
+                    //遍历此status
+                    let statusData;
+                    for(var i in data['content']['status_list']) {
+                        if(data['content']['status_list'][i]['status_id'] == staffService) {
+                            statusData = data['content']['status_list'][i]['period_list'][0];
+                            break;
+                        }
+                    }
                     //总机状态描述
-                    let description = data['content']['status_list'][0]['period_list'][0]['crontab'];
+                    let description = (statusData['note'] == null ? '' : statusData['note']);
                     $('.user-status-desc').text(description);
                     //popup
-                    let statusValue = data['content']['status_list'][0]['period_list'][0]['status'];
+                    let statusValue = statusData['status'];
                     if(statusValue == 1) {
                         $('.user-status-text').text('總機服務中');
                         $('.user-main-status').removeClass('active-status-false').addClass('active-status-true');
