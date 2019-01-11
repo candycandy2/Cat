@@ -987,6 +987,38 @@
     color: #666;
 }
 
+.staff-img,
+.staffAdmin-img {
+    width: 20vw;
+    height: 20vw;
+    margin-left: 40vw;
+}
+
+.staff-img img,
+.staffAdmin-img img {
+    width: 20vw;
+}
+
+.staff-btn,
+.staffAdmin-btn {
+    width: 100%;
+    height: 8vw;
+    padding: 5vw 0 3.27vw;
+}
+
+.staff-btn div,
+.staffAdmin-btn div {
+    width: 20vw;
+    height: 8vw;
+    margin: 0 auto;
+    background: #4FAEA5;
+    color: #FFF;
+    line-height: 8.5vw;
+    text-align: center;
+    font-size: 3.768vw;
+    border-radius: 2px;
+}
+
 /*********************** staff menu ***********************/
 .staff-menu-mask{
     position: fixed;
