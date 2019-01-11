@@ -149,6 +149,7 @@ class QPayPointService
                                     DB::raw('SUM(qpay_member_point.stored_total) AS point_total'),
                                     'qpay_member.user_row_id')
                             -> whereIn('qpay_member.user_row_id', $userRowIDArray)
+                            -> whereYear("qpay_member_point.created_at", "=", date("Y"))
                             -> groupBy('qpay_member.user_row_id')
                             -> get();
 
