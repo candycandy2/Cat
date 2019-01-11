@@ -197,26 +197,43 @@ class QPayTradeService
             try {
                 $allPointData = $this->qpayMemberPointRepository->getPointData($user->row_id);
 
-                if ($allPointData[0]->stored_now > $price) {
+                //Check count of datas & Check if there has a Negative value data
+                $positiveValueTotal = 0;
+                $startProcessAtPointsNumber = 0;
+
+                foreach ($allPointData as $index => $pointData) {
+                    if ($pointData["stored_now"] < 0) {
+                        //Negative point
+                        if (($pointData["stored_now"] + $positiveValueTotal) == 0) {
+                            $startProcessAtPointsNumber = $index + 1;
+                            $positiveValueTotal = 0;
+                        }
+                    } else {
+                        //Positive point
+                        $positiveValueTotal += $pointData["stored_now"];
+                    }
+                }
+
+                if ($allPointData[$startProcessAtPointsNumber]->stored_now > $price) {
                     //Not a Multiple Point Trade
                     $multiplePay = "N";
                     $multipleRowID = 0;
                     $multiplePoint = 0;
                     $tradeSuccess = "Y";
-                    $newStoredNow = $allPointData[0]->stored_now - $price;
-                    $newStoredUsed = $allPointData[0]->stored_used + $price;
+                    $newStoredNow = $allPointData[$startProcessAtPointsNumber]->stored_now - $price;
+                    $newStoredUsed = $allPointData[$startProcessAtPointsNumber]->stored_used + $price;
 
-                    $updatePointDataResult = $this->qpayMemberPointRepository->updatePointData($allPointData[0]->row_id, $newStoredNow,  $newStoredUsed);
+                    $updatePointDataResult = $this->qpayMemberPointRepository->updatePointData($allPointData[$startProcessAtPointsNumber]->row_id, $newStoredNow,  $newStoredUsed);
 
                     if ($updatePointDataResult != 1) {
                         $tradeSuccess = "N";
                     }
 
                     $newTradeID = $this->qpayTradeLogRepository->newTradeRecord(
-                        $allPointData[0]->member_row_id,
-                        $allPointData[0]->row_id,
-                        $allPointData[0]->stored_now,
-                        $allPointData[0]->stored_used,
+                        $allPointData[$startProcessAtPointsNumber]->member_row_id,
+                        $allPointData[$startProcessAtPointsNumber]->row_id,
+                        $allPointData[$startProcessAtPointsNumber]->stored_now,
+                        $allPointData[$startProcessAtPointsNumber]->stored_used,
                         $newStoredNow,
                         $newStoredUsed,
                         $shopID,
@@ -240,11 +257,17 @@ class QPayTradeService
                     $dataProcessNumber = 1;
                     $tradePriceLeft = $price;
 
-                    foreach ($allPointData as $pointData) {
+                    foreach ($allPointData as $index => $pointData) {
+
+                        if ($index != $startProcessAtPointsNumber) {
+                            continue;
+                        }
+
                         if ($dataProcessNumber == 1) {
                             //Check if the First Member Point's stored_now = 0, If true, ignore it,
                             //Not a Multiple Point Trade
                             if (intval($pointData["stored_now"]) == 0) {
+                                $startProcessAtPointsNumber++;
                                 $multiplePay = "N";
                                 $dataProcessNumber++;
                                 continue;
@@ -292,6 +315,7 @@ class QPayTradeService
                         );
 
                         if ($dataProcessNumber == 1) {
+                            $startProcessAtPointsNumber++;
                             $multipleRowID = $latestPointTradeLogID;
                             $dataProcessNumber++;
                         }
