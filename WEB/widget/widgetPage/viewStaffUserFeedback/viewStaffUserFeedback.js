@@ -13,6 +13,7 @@ $("#viewStaffUserFeedback").pagecontainer({
                 option: [],
                 title: "",
                 defaultText: langStr['wgt_038'],
+                defaultValue: 0,
                 changeDefaultText: true,
                 attr: {
                     class: "dropdown-arrow"
@@ -27,6 +28,11 @@ $("#viewStaffUserFeedback").pagecontainer({
             }
 
             tplJS.DropdownList("viewStaffUserFeedback", "staffMeetingRoom", "prepend", "typeB", roomData);
+            //设置默认值0
+            $('#feedbackRoom option').attr('value', 0);
+            //减少间距
+            let roomWidth = setDropdownlistWidth(3);
+            tplJS.reSizeDropdownList('feedbackRoom', null, roomWidth);
 
             //2. device status
             let statusData = {
@@ -34,6 +40,7 @@ $("#viewStaffUserFeedback").pagecontainer({
                 option: [],
                 title: "",
                 defaultText: langStr['wgt_038'],
+                defaultValue: 0,
                 changeDefaultText: true,
                 attr: {
                     class: "dropdown-arrow"
@@ -47,23 +54,39 @@ $("#viewStaffUserFeedback").pagecontainer({
             }
 
             tplJS.DropdownList("viewStaffUserFeedback", "staffDeviceType", "prepend", "typeB", statusData);
+            //设置默认值0
+            $('#feedbackType option').attr('value', 0);
+            //减少间距
+            let typeWidth = setDropdownlistWidth(3);
+            tplJS.reSizeDropdownList('feedbackType', null, typeWidth);
         }
 
+        //检查是否能反馈设备问题
         function checkAllForm() {
-            let meeting = $('#staffMeetingRoom select').val();
-            let type = $('#staffDeviceType select').val();
-            let otherTextarea = $.trim($('.feedback-textarea textarea').val());
+            //会议室和设备状况的默认值都为0，状况类型为6时代表其他，需要输入text
+            let roomVal = $('#staffMeetingRoom select').val();
+            let typeVal = $('#staffDeviceType select').val();
+            let textVal = $.trim($('.feedback-textarea textarea').val());
 
-            if(meeting != langStr['wgt_038'] && type != langStr['wgt_038'] && type != '0') {
-                if(type == '6' && otherTextarea != '') {
-                    $('.confirmSendFeedback').addClass('active-btn-green');
-                } else if(type != '6') {
-                    $('.confirmSendFeedback').addClass('active-btn-green');
-                } else {
-                    $('.confirmSendFeedback').removeClass('active-btn-green');
-                }
-            } else {
+            //1.room不能为0
+            if(roomVal == 0) {
                 $('.confirmSendFeedback').removeClass('active-btn-green');
+            } else {
+                //2.type不能为0
+                if(typeVal == 0) {
+                    $('.confirmSendFeedback').removeClass('active-btn-green');
+                } else {
+                    //3.type为6时(其他类型)text必填
+                    if(typeVal == 6) {
+                        if(textVal == '') {
+                            $('.confirmSendFeedback').removeClass('active-btn-green');
+                        } else {
+                            $('.confirmSendFeedback').addClass('active-btn-green');
+                        }
+                    } else {
+                        $('.confirmSendFeedback').addClass('active-btn-green');
+                    }
+                }
             }
         }
 
@@ -121,6 +144,7 @@ $("#viewStaffUserFeedback").pagecontainer({
                     //success
                     //状况类型设置为请选择
                     $('#feedbackType-option-popup li:eq(0)').trigger('click');
+                    $('.feedback-textarea textarea').val('');
                     popupMsgInit('.thankFeedbackPopup');
                 }
             };
@@ -157,6 +181,10 @@ $("#viewStaffUserFeedback").pagecontainer({
         /********************************** dom event *************************************/
         //选择会议室
         $('#staffMeetingRoom').on('change', 'select', function() {
+            //减少间距
+            let roomWidth = setDropdownlistWidth(3);
+            tplJS.reSizeDropdownList('feedbackRoom', null, roomWidth);
+            //是否可送出
             checkAllForm();
         });
 
@@ -168,6 +196,16 @@ $("#viewStaffUserFeedback").pagecontainer({
             } else {
                 $('.feedback-textarea').hide();
             }
+            //减少间距
+            let typeWidth = setDropdownlistWidth(3);
+            tplJS.reSizeDropdownList('feedbackType', null, typeWidth);
+            //是否可送出
+            checkAllForm();
+        });
+
+        //输入其他类型文本
+        $('.feedback-textarea textarea').on('input', function() {
+            //是否可送出
             checkAllForm();
         });
 

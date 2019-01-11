@@ -18,7 +18,7 @@ $("#viewStaffAdminNotice").pagecontainer({
                 "</board_id></LayoutHeader>";
 
             var successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['ResultCode'] == '1') {
                     let postList = data['Content'];

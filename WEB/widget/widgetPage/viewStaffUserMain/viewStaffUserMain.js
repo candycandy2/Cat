@@ -204,7 +204,9 @@ $("#viewStaffUserMain").pagecontainer({
             }
 
             tplJS.DropdownList("viewStaffUserMain", "userChooseMeetingRoom", "prepend", "typeB", roomData);
-
+            //减少间距
+            let typeWidth = setDropdownlistWidth(3);
+            tplJS.reSizeDropdownList('userChooseRoom', null, typeWidth);
             //默认选中第一个，会触发select onchange事件getReserveByTarget()
             $('#userChooseRoom-option-list li:eq(0)').trigger('click');
         }
@@ -393,6 +395,12 @@ $("#viewStaffUserMain").pagecontainer({
             $('.user-today-name').text(loginData['loginid']);
             $('.user-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
 
+            //iphone x下增加高度
+            if(checkiPhoneX()){
+                $('#viewStaffUserMain .add-tea-today').css('height', '82vw');
+                $('#viewStaffUserMain .today-room-list').css('height', '58vw');
+            }
+
             //获取所有可预约的会议室
             getStaffEmpService();
             //获取所有staff的board主题
@@ -428,6 +436,9 @@ $("#viewStaffUserMain").pagecontainer({
             $('.followRoomChange').text(room_code);
             let target_id_row_id = $(this).val();
             getReserveByTarget(target_id_row_id);
+            //减少间距
+            let typeWidth = setDropdownlistWidth(3);
+            tplJS.reSizeDropdownList('userChooseRoom', null, typeWidth);
         });
 
         //刷新當前room的預約

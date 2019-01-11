@@ -11,7 +11,7 @@ $("#viewStaffAdminManage").pagecontainer({
             var queryData = {};
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['ResultCode'] == '1') {
                     let meetingRoomArr = data['Content'];
@@ -95,6 +95,9 @@ $("#viewStaffAdminManage").pagecontainer({
             }
 
             tplJS.DropdownList("viewStaffAdminManage", "meetingRoomFloor", "prepend", "typeB", floorData);
+            //减少间距
+            let typeWidth = setDropdownlistWidth(3);
+            tplJS.reSizeDropdownList('bqtFloor', null, typeWidth);
             //动态生成楼层的ul
             $('.floor-meeting-room').append(content);
             //生成所有楼层的list
@@ -133,7 +136,7 @@ $("#viewStaffAdminManage").pagecontainer({
                 $('.meeting-room-list[data-item="' + meetingRoomCode + '"]').find('.select-room-icon').attr('data-src', 'open');
                 $('.meeting-room-list[data-item="' + meetingRoomCode + '"]').find('img').attr('src', serverURL + imgURL +'switch_open.png');
                 //3.为我管理的会议室新增html
-                content += '<li class="my-meeting-room-list" data-item="'+
+                content += '<li class="my-meeting-room-list" data-item="' +
                     meetingRoomCode +
                     '"><div>' +
                     meetingRoomCode +
@@ -254,6 +257,9 @@ $("#viewStaffAdminManage").pagecontainer({
             let floor = $(this).val();
             $('.meeting-room-ul').removeClass('active-floor');
             $('.floor-' + floor).addClass('active-floor');
+            //减少间距
+            let typeWidth = setDropdownlistWidth(3);
+            tplJS.reSizeDropdownList('bqtFloor', null, typeWidth);
         });
 
 

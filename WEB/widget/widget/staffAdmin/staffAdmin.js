@@ -20,7 +20,7 @@ var staffAdminWidget = {
             }, "html");
 
             //点击更多，跳转到快速叫茶
-            contentItem.on('click', '.staff-admin-more, div.staffAdmin-btn', function() {
+            contentItem.on('click', '.staff-admin-more, div.staffAdmin-btn, .staffAdmin-img img', function() {
                 var targetPage = $('.adminStaffMenu .active-menu').data('view');
                 checkWidgetPage(targetPage, pageVisitedList);
             });
