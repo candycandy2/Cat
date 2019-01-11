@@ -20,7 +20,7 @@ var staffWidget = {
             }, "html");
 
             //点击更多，跳转到快速叫茶
-            contentItem.on('click', '.staff-user-more, div.staff-btn', function() {
+            contentItem.on('click', '.staff-user-more, div.staff-btn, .staff-img img', function() {
                 var targetPage = $('.userStaffMenu .active-menu').data('view');
                 checkWidgetPage(targetPage, pageVisitedList);
             });

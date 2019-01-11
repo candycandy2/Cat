@@ -207,3 +207,10 @@ function checkWidgetPage(pageID, pageVisitedList, parmData) {
 
     }
 }
+
+//重设dropdownlist宽度
+function setDropdownlistWidth(num) {
+    let pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
+    let vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + num;
+    return vwWidth;
+}

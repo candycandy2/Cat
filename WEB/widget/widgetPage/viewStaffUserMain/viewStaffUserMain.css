@@ -3,6 +3,7 @@
     width: 100vw;
     padding: 0 !important;
     position: fixed;
+    -webkit-overflow-scrolling: touch;
 }
 
 .user-main-title{
