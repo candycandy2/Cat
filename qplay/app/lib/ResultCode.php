@@ -48,5 +48,6 @@ abstract class ResultCode
     const _000921_functionVariableExist = "000921"; //功能變數名稱重複
     const _000922_qpayShopAlreadyExist = "000922"; //消費券店家帳號重複
     const _000923_qpayNegativePoint = "000923"; //消費券點數總額為負值
+    const _000924_qpayPointOver1000 = "000924"; //員工的消費券點數總額大於1000
     //TODO 以下为各系统扩展
 }
