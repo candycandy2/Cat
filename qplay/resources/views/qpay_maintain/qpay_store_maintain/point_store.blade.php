@@ -260,6 +260,40 @@
     </div>
 </div>
 
+<div class="modal fade" id="dialogStorePointOver1000Confirm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{trans('messages.QPAY_CONFIRM_STORE_POINT_OVER1000_DIALOG')}}</h4>
+            </div>
+            <div class="modal-body">
+                1234466
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="StorePointOver1000Confirm" >{{trans('messages.CONFIRM')}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dialogEmpPointTotalOver1000EmpNo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{trans('messages.QPAY_MEMBER_EMP_NO_ERROR_POINT_TOTAL_OVER1000')}}</h4>
+            </div>
+            <div class="modal-body">
+                1234466
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="TotalPointOver1000Confirm" >{{trans('messages.CONFIRM')}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="dialogStoreConfirm">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -323,7 +357,6 @@ $(function() {
                 var response = JSON.parse(r);
 
                 if (response.result_code == 1) {
-
                     excelDataInfo = response.excel_data_info;
 
                     $("#gridQPayMemberList").bootstrapTable('load', response.all_empno);
@@ -334,7 +367,6 @@ $(function() {
                     $("#importDataInfo").show();
                     $("#nextBtn").hide();
                     $("#nextPreviewBtn").show();
-
                 } else if (response.result_code == "000901") {
                     var errorString = "";
 
@@ -357,6 +389,26 @@ $(function() {
                     $('#dialogErrorPointEmpNo').modal('show');
                     $("#uploadExcel").val("");
                     $("#fileName").html("");
+                } else if (response.result_code == "000924") {
+                    var errorString = "";
+
+                    $.each(response.error_empno, function(key, val) {
+                        errorString =  errorString + val.toString() + "<br>";
+                    });
+
+                    $("#dialogEmpPointTotalOver1000EmpNo .modal-content .modal-body").html(errorString);
+                    $('#dialogEmpPointTotalOver1000EmpNo').modal('show');
+
+                    excelDataInfo = response.excel_data_info;
+
+                    $("#gridQPayMemberList").bootstrapTable('load', response.all_empno);
+                    $("#empCount").html(excelDataInfo.empCount);
+                    $("#pointCount").html(excelDataInfo.pointCount);
+                    $("#pointType").html($("#selectPointType option:selected").text());
+
+                    $("#importDataInfo").show();
+                    $("#nextBtn").hide();
+                    $("#nextPreviewBtn").show();
                 }
             },
             error: function (e) {}
@@ -364,9 +416,12 @@ $(function() {
 
     });
 
-    //Preview Page
-    $("#nextPreviewBtn").on("click", function() {
+    $("#TotalPointOver1000Confirm").on("click", function() {
+        $("#dialogEmpPointTotalOver1000EmpNo").modal("hide");
+    });
 
+    //Preview Page
+    function showPreviewPage() {
         $("#importPage").hide();
         $("#preViewPage").show();
         $("#preViewPage #previewToolbar").show();
@@ -381,7 +436,21 @@ $(function() {
         $("#previewPointSingle").html(excelDataInfo.point);
         $("#previewEmpCount").html(excelDataInfo.empCount);
         $("#previewPointAll").html(excelDataInfo.pointCount);
+    }
 
+    $("#nextPreviewBtn").on("click", function() {
+        //Check if the poinst over 1000
+        if (excelDataInfo.point > 1000) {
+            $("#dialogStorePointOver1000Confirm .modal-content .modal-body").html(excelDataInfo.point);
+            $("#dialogStorePointOver1000Confirm").modal("show");
+        } else {
+            showPreviewPage();
+        }
+    });
+
+    $("#StorePointOver1000Confirm").on("click", function() {
+        $("#dialogStorePointOver1000Confirm").modal("hide");
+        showPreviewPage();
     });
 
     $("#backBtn").on("click", function() {
