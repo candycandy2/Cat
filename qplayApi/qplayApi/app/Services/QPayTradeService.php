@@ -50,16 +50,23 @@ class QPayTradeService
     * Get Trade Token
     * @return trade token
     */
-    public function getTradeToken($uuid, $empNO, $tradePWD, $price, $shopID)
+    public function getTradeToken($uuid, $empNO, $tradePWD, $price, $shopID, $action)
     {
         $resultCode = ResultCode::_1_reponseSuccessful;
         $cerateTradeToken = false;
 
         $user = CommonUtil::getUserInfoJustByUserEmpNo($empNO);
         $tradeTokenData = $this->qpayTradeTokenRepository->getTradeToken($uuid);
-        $qpayMemberData = $this->qpayMemberRepository->getQPayMemberInfo($user->row_id);
 
-        if (password_verify($tradePWD, $qpayMemberData["trade_password"])) {
+        if ($action == "new") {
+            $qpayMemberData = $this->qpayMemberRepository->getQPayMemberInfo($user->row_id);
+            $tradePasswordData = $qpayMemberData["trade_password"];
+        } else if ($action == "cancel") {
+            $qpayShopData = $this->qpayShopRepository->getShopInfoByUserId($user->row_id);
+            $tradePasswordData = $qpayShopData["trade_password"];
+        }
+
+        if (password_verify($tradePWD, $tradePasswordData)) {
             //Trade Password Valid
             //No Trade Token exist
             if (count($tradeTokenData) == 0) {
@@ -190,27 +197,43 @@ class QPayTradeService
             try {
                 $allPointData = $this->qpayMemberPointRepository->getPointData($user->row_id);
 
-                if ($allPointData[0]->stored_now > $price) {
+                //Check count of datas & Check if there has a Negative value data
+                $positiveValueTotal = 0;
+                $startProcessAtPointsNumber = 0;
+
+                foreach ($allPointData as $index => $pointData) {
+                    if ($pointData["stored_now"] < 0) {
+                        //Negative point
+                        if (($pointData["stored_now"] + $positiveValueTotal) == 0) {
+                            $startProcessAtPointsNumber = $index + 1;
+                            $positiveValueTotal = 0;
+                        }
+                    } else {
+                        //Positive point
+                        $positiveValueTotal += $pointData["stored_now"];
+                    }
+                }
+
+                if ($allPointData[$startProcessAtPointsNumber]->stored_now > $price) {
                     //Not a Multiple Point Trade
                     $multiplePay = "N";
-                    $multipleRowID = "";
-                    $multiplePoint = "";
+                    $multipleRowID = 0;
+                    $multiplePoint = 0;
                     $tradeSuccess = "Y";
-                    $newStoredNow = $allPointData[0]->stored_now - $price;
-                    $newStoredUsed = $allPointData[0]->stored_used + $price;
+                    $newStoredNow = $allPointData[$startProcessAtPointsNumber]->stored_now - $price;
+                    $newStoredUsed = $allPointData[$startProcessAtPointsNumber]->stored_used + $price;
 
-                    $updatePointDataResult = $this->qpayMemberPointRepository->updatePointData($allPointData[0]->row_id, $newStoredNow,  $newStoredUsed);
-
+                    $updatePointDataResult = $this->qpayMemberPointRepository->updatePointData($allPointData[$startProcessAtPointsNumber]->row_id, $newStoredNow,  $newStoredUsed);
 
                     if ($updatePointDataResult != 1) {
                         $tradeSuccess = "N";
                     }
 
-                    $tradeID = $this->qpayTradeLogRepository->newTradeRecord(
-                        $allPointData[0]->member_row_id,
-                        $allPointData[0]->row_id,
-                        $allPointData[0]->stored_now,
-                        $allPointData[0]->stored_used,
+                    $newTradeID = $this->qpayTradeLogRepository->newTradeRecord(
+                        $allPointData[$startProcessAtPointsNumber]->member_row_id,
+                        $allPointData[$startProcessAtPointsNumber]->row_id,
+                        $allPointData[$startProcessAtPointsNumber]->stored_now,
+                        $allPointData[$startProcessAtPointsNumber]->stored_used,
                         $newStoredNow,
                         $newStoredUsed,
                         $shopID,
@@ -219,24 +242,32 @@ class QPayTradeService
                         $multiplePoint,
                         $price,
                         $tradeSuccess,
-                        $resultCode
+                        $resultCode,
+                        "N",
+                        "N",
+                        "",
+                        ""
                     );
-
-                    $newTradeID = $tradeID;
                 } else {
                     //Multiple Point Trade
                     $multiplePay = "Y";
-                    $multipleRowID = "";
-                    $multiplePoint = "";
+                    $multipleRowID = 0;
+                    $multiplePoint = 0;
                     $tradeSuccess = "Y";
                     $dataProcessNumber = 1;
                     $tradePriceLeft = $price;
 
-                    foreach ($allPointData as $pointData) {
+                    foreach ($allPointData as $index => $pointData) {
+
+                        if ($index != $startProcessAtPointsNumber) {
+                            continue;
+                        }
+
                         if ($dataProcessNumber == 1) {
                             //Check if the First Member Point's stored_now = 0, If true, ignore it,
                             //Not a Multiple Point Trade
                             if (intval($pointData["stored_now"]) == 0) {
+                                $startProcessAtPointsNumber++;
                                 $multiplePay = "N";
                                 $dataProcessNumber++;
                                 continue;
@@ -276,10 +307,15 @@ class QPayTradeService
                             $multiplePoint,
                             $price,
                             $tradeSuccess,
-                            $resultCode
+                            $resultCode,
+                            "N",
+                            "N",
+                            "",
+                            ""
                         );
 
                         if ($dataProcessNumber == 1) {
+                            $startProcessAtPointsNumber++;
                             $multipleRowID = $latestPointTradeLogID;
                             $dataProcessNumber++;
                         }
@@ -293,7 +329,6 @@ class QPayTradeService
 
                     //Send Push Message
                     $shopData = $this->qpayShopRepository->getShopInfoByShopID($shopID);
-                    date_default_timezone_set("Asia/Taipei");
                     $successTradeID = "T".str_pad($newTradeID, 6, "0", STR_PAD_LEFT);
 
                     $queryParam =  array(
@@ -307,7 +342,7 @@ class QPayTradeService
                         $shopData[0]->user_domain . "\\" . $shopData[0]->login_id
                     );
                     $title = trans("messages.MSG_QPAY_1");
-                    $text = str_replace("%0", date("m/d H:i"), trans("messages.MSG_QPAY_2"));
+                    $text = str_replace("%0", date("m/d H:i", time() + 8*3600), trans("messages.MSG_QPAY_2"));
                     $text = str_replace("%1", $price, $text);
                     $text = str_replace("%2", $successTradeID, $text);
                     $extra = [];
@@ -319,7 +354,7 @@ class QPayTradeService
                         PushUtil::getPushUserByEmpNo($empNO)
                     );
                     $title = trans("messages.MSG_QPAY_1");
-                    $text = str_replace("%0", date("m/d H:i"), trans("messages.MSG_QPAY_3"));
+                    $text = str_replace("%0", date("m/d H:i", time() + 8*3600), trans("messages.MSG_QPAY_3"));
                     $text = str_replace("%1", $price, $text);
                     $text = str_replace("%2", $shopData[0]->emp_name, $text);
                     $text = str_replace("%3", $successTradeID, $text);
@@ -337,7 +372,7 @@ class QPayTradeService
             //Step 6. Create Trade Fail Log
             $tradeSuccess = "N";
 
-            $tradeID = $this->qpayTradeLogRepository->newTradeRecord(
+            $newTradeID = $this->qpayTradeLogRepository->newTradeRecord(
                 $qpayMemberData["row_id"],
                 0,
                 0,
@@ -346,14 +381,16 @@ class QPayTradeService
                 0,
                 $shopID,
                 "N",
-                "",
-                "",
+                0,
+                0,
                 $price,
+                $tradeSuccess,
+                $resultCode,
                 "N",
-                $resultCode
+                "N",
+                "",
+                ""
             );
-
-            $newTradeID = $tradeID;
         }
 
         //Step Final. Return Result
@@ -499,6 +536,18 @@ class QPayTradeService
                 if ($key == "shop_name") {
                     $tempArray["shop_name"] = $val;
                 }
+                if ($key == "cancel") {
+                    $tempArray["cancel"] = $val;
+                }
+                if ($key == "cancel_trade") {
+                    $tempArray["cancel_trade"] = $val;
+                }
+                if ($key == "cancel_trade_id") {
+                    $tempArray["cancel_trade_id"] = $val;
+                }
+                if ($key == "cancel_reason") {
+                    $tempArray["cancel_reason"] = $val;
+                }
             }
 
             $tempArray["trade_success"] = $tradeSuccess;
@@ -508,6 +557,332 @@ class QPayTradeService
         $result = [
             "trade_record" => $resultContent
         ];
+
+        return $result;
+    }
+
+    /**
+    * check QPay Trade ID
+    * @return trade data
+    */
+    public function checkTradeID($shopID, $tradeID)
+    {
+        $resultCode = ResultCode::_1_reponseSuccessful;
+        $cerateTradeToken = false;
+        $checkSuccess = true;
+
+        $tradeData = $this->qpayTradeLogRepository->getTradeID($tradeID);
+
+        if (count($tradeData) == 0) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000939_tradeIDNotExist;
+        }
+
+        if ($checkSuccess && (trim($tradeData[0]->shop_row_id) != trim($shopID))) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000940_tradeIDNotMatchStore;
+        }
+
+        if ($checkSuccess) {
+            $nowDate = date("Y/m/d", time() + 8*3600);
+            $tradeDate = date("Y/m/d", $tradeData[0]->trade_time + 8*3600);
+
+            if ($nowDate != $tradeDate) {
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000941_tradeIDCandelDateOverdue;
+            }
+        }
+
+        if ($checkSuccess && ($tradeData[0]->cancel == "Y")) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000942_tradeIDHadCanceled;
+        }
+
+        if ($checkSuccess && ($tradeData[0]->cancel_pay == "Y")) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000943_tradeIDCannotCancel;
+        }
+
+
+        if ($checkSuccess) {
+            $result = [
+                "result_code" => $resultCode,
+                "message" => CommonUtil::getMessageContentByCode($resultCode),
+                "content" => [
+                    "trade_id" => "T".$tradeID,
+                    "trade_price" => $tradeData[0]->trade_price,
+                    "trade_time" => $tradeData[0]->trade_time
+                ]
+            ];
+        } else if (!$checkSuccess) {
+            $result = [
+                "result_code" => $resultCode,
+                "message" => CommonUtil::getMessageContentByCode($resultCode)
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+    * Cancel Trade
+    * @return trade result
+    */
+    public function cancelTrade($uuid, $tradePWD, $tradeToken, $empNO, $price, $shopID, $tradeID, $reason, $lang)
+    {
+        $newTradeID = "";
+        $checkSuccess = true;
+        $resultCode = "";
+        $tradeSuccess = "";
+
+        $userShop = CommonUtil::getUserInfoJustByUserEmpNo($empNO);
+        $qpayShopData = $this->qpayShopRepository->getShopInfoByUserId($userShop->row_id);
+        $tradeData = $this->qpayTradeLogRepository->getTradeID($tradeID);
+
+        //Step 1. Check Trade Token
+        $tradeTokenData = $this->qpayTradeTokenRepository->getTradeToken($uuid);
+
+        if (count($tradeTokenData) == 0) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000927_tradeTokenIncorrect;
+        }
+
+        if ($checkSuccess && $tradeToken != $tradeTokenData[0]->trade_token) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000927_tradeTokenIncorrect;
+        }
+
+        if ($checkSuccess && intval($tradeTokenData[0]->trade_token_valid) <= time()) {
+            //Trade Token Invalid
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000928_tradeTokenInvalid;
+        } else {
+            //Trade Token Valid
+        }
+
+        if ($checkSuccess) {
+            $this->qpayTradeTokenRepository->deleteTradeToken($uuid, $tradeToken);
+        }
+
+        //Step 2. Check Trade Password
+        if ($checkSuccess) {
+            if (password_verify($tradePWD, $qpayShopData["trade_password"])) {
+                //Trade Password Valid
+            } else {
+                //Trade Password Invalid
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000929_tradePasswordIncorrect;
+            }
+        }
+
+        //Step 3. Check Trade ID
+        if ($checkSuccess && (trim($tradeData[0]->shop_row_id) != trim($shopID))) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000940_tradeIDNotMatchStore;
+        }
+
+        if ($checkSuccess) {
+            $nowDate = date("Y/m/d", time() + 8*3600);
+            $tradeDate = date("Y/m/d", $tradeData[0]->trade_time + 8*3600);
+
+            if ($nowDate != $tradeDate) {
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000941_tradeIDCandelDateOverdue;
+            }
+        }
+
+        if ($checkSuccess && ($tradeData[0]->cancel == "Y")) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000942_tradeIDHadCanceled;
+        }
+
+        if ($checkSuccess && ($tradeData[0]->cancel_pay == "Y")) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000943_tradeIDCannotCancel;
+        }
+
+        if ($checkSuccess && ($tradeData[0]->trade_price != $price)) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000944_tradePriceIncorrect;
+        }
+
+        //Step 4. Cancel Trade
+        if ($checkSuccess) {
+            DB::beginTransaction();
+
+            try {
+                $pointData = $this->qpayMemberPointRepository->getPointDataByRowID($tradeData[0]->member_point_row_id);
+
+                $tradeSuccess = "Y";
+
+                if ($tradeData[0]->multiple_pay == "N") {
+                    //Not a Multiple Point Trade
+                    $newStoredNow = $pointData[0]->stored_now + $price;
+                    $newStoredUsed = $pointData[0]->stored_used - $price;
+                } else {
+                    //Multiple Point Trade
+                    $newStoredNow = $pointData[0]->stored_now + $tradeData[0]->multiple_point;
+                    $newStoredUsed = $pointData[0]->stored_used - $tradeData[0]->multiple_point;
+                }
+
+                $updatePointDataResult = $this->qpayMemberPointRepository->updatePointData($pointData[0]->row_id, $newStoredNow, $newStoredUsed);
+
+                if ($updatePointDataResult != 1) {
+                    $tradeSuccess = "N";
+                }
+
+                $newTradeID = $this->qpayTradeLogRepository->newTradeRecord(
+                    $pointData[0]->member_row_id,
+                    $pointData[0]->row_id,
+                    $pointData[0]->stored_now,
+                    $pointData[0]->stored_used,
+                    $newStoredNow,
+                    $newStoredUsed,
+                    $shopID,
+                    $tradeData[0]->multiple_pay,
+                    0,
+                    $tradeData[0]->multiple_point,
+                    $price,
+                    $tradeSuccess,
+                    $resultCode,
+                    "N",
+                    "Y",
+                    intval($tradeID),
+                    $reason
+                );
+
+                if ($tradeSuccess == "Y") {
+                    $this->qpayTradeLogRepository->cancelTradeRecord(intval($tradeID));
+                }
+
+                if ($tradeData[0]->multiple_pay == "Y") {
+                    //Multiple Point Trade - Second Data
+                    $pointData = $this->qpayMemberPointRepository->getPointDataByRowID($tradeData[1]->member_point_row_id);
+
+                    $tradeSuccess = "Y";
+                    $newStoredNow = $pointData[0]->stored_now + $tradeData[1]->multiple_point;
+                    $newStoredUsed = $pointData[0]->stored_used - $tradeData[1]->multiple_point;
+
+                    $updatePointDataResult = $this->qpayMemberPointRepository->updatePointData($pointData[0]->row_id, $newStoredNow, $newStoredUsed);
+
+                    if ($updatePointDataResult != 1) {
+                        $tradeSuccess = "N";
+                    }
+
+                    $this->qpayTradeLogRepository->newTradeRecord(
+                        $pointData[0]->member_row_id,
+                        $pointData[0]->row_id,
+                        $pointData[0]->stored_now,
+                        $pointData[0]->stored_used,
+                        $newStoredNow,
+                        $newStoredUsed,
+                        $shopID,
+                        $tradeData[1]->multiple_pay,
+                        $newTradeID,
+                        $tradeData[1]->multiple_point,
+                        $price,
+                        $tradeSuccess,
+                        $resultCode,
+                        "N",
+                        "Y",
+                        intval($tradeData[1]->row_id),
+                        $reason
+                    );
+
+                    if ($tradeSuccess == "Y") {
+                        $this->qpayTradeLogRepository->cancelTradeRecord(intval($tradeData[1]->row_id));
+                    }
+                }
+
+                if ($tradeSuccess == "Y") {
+                    $resultCode = ResultCode::_1_reponseSuccessful;
+
+                    //Send Push Message
+                    $shopData = $this->qpayShopRepository->getShopInfoByShopID($shopID);
+                    $successTradeID = "T".str_pad($newTradeID, 6, "0", STR_PAD_LEFT);
+
+                    $queryParam =  array(
+                        'lang' => $lang
+                    );
+                    $form = $shopData[0]->user_domain . "\\" . $shopData[0]->login_id;
+
+                    //Push for Shop
+                    $to = array(
+                        $shopData[0]->user_domain . "\\" . $shopData[0]->login_id
+                    );
+                    $title = trans("messages.MSG_QPAY_1");
+                    $text = str_replace("%0", date("m/d H:i", time() + 8*3600), trans("messages.MSG_QPAY_4"));
+                    $text = str_replace("%1", $price, $text);
+                    $text = str_replace("%2", $successTradeID, $text);
+                    $extra = [];
+
+                    PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
+
+                    //Push for Emp
+                    $userEmp = CommonUtil::getUserInfoByRowID($pointData[0]->user_row_id);
+
+                    $to = array(
+                        $userEmp->user_domain."\\".$userEmp->login_id
+                    );
+                    $title = trans("messages.MSG_QPAY_1");
+                    $text = str_replace("%0", date("m/d H:i", time() + 8*3600), trans("messages.MSG_QPAY_5"));
+                    $text = str_replace("%1", $price, $text);
+                    $text = str_replace("%2", $shopData[0]->emp_name, $text);
+                    $text = str_replace("%3", $successTradeID, $text);
+                    $extra = [];
+
+                    PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
+                }
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
+        } else {
+            //Step 5. Create Trade Fail Log
+            $tradeSuccess = "N";
+
+            $newTradeID = $this->qpayTradeLogRepository->newTradeRecord(
+                $tradeData[0]->member_row_id,
+                0,
+                0,
+                0,
+                0,
+                0,
+                $shopID,
+                "N",
+                0,
+                0,
+                $price,
+                $tradeSuccess,
+                $resultCode,
+                "N",
+                "Y",
+                "",
+                ""
+            );
+        }
+
+        //Step Final. Return Result
+        $tradeSerialID = "T".str_pad($newTradeID, 6, "0", STR_PAD_LEFT);
+
+        if (!$checkSuccess || $tradeSuccess == "N") {
+            $result = [
+                "result_code" => $resultCode,
+                "message" => CommonUtil::getMessageContentByCode($resultCode)
+            ];
+        } else {
+            $result = [
+                "result_code" => $resultCode,
+                "message" => CommonUtil::getMessageContentByCode($resultCode),
+                "content" => [
+                    "cancel_trade_id" => $tradeSerialID,
+                    "cancel_price" => $price,
+                    "cancel_time" => time()
+                ]
+            ];
+        }
 
         return $result;
     }

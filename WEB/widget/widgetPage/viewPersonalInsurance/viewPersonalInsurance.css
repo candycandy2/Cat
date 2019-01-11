@@ -1,0 +1,189 @@
+/********************************************** PersonalInsurace *********************************************/
+
+.health-insur-list {
+    width: 86.5vw;
+    height: 14.5vw;
+    padding: 3vw 6.71vw;
+}
+
+.health-insur-list > div {
+    float: left;
+}
+
+.health-insur-list ::after {
+    clear: both;
+}
+
+.health-insur-list > .content-list-only-img {
+    width: 64.5vw; 
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.health-insur-list > .content-list-text-img {
+    width: 66.5vw;
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.group-list > div:nth-of-type(2),
+.health-insur-list > div:nth-of-type(1) > div:nth-of-type(2),
+.health-insur-list > div:nth-of-type(1) > div:nth-of-type(3) {
+    margin-top: 1.16vw;
+}
+
+.health-insur-list > .list-only-img {
+    width: 22vw;
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.health-insur-list > .list-text-img {
+    width: 20vw;
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.health-insur-list > div:nth-of-type(2) > label {
+    display: inline-block;
+    color: #e92729;
+}
+
+.empty-list, .group-list {padding: 3vw 6.71vw;}
+
+.family-edit {
+    width: 6.2vw;
+    height: 6.2vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
+}
+
+.family-delete {
+    width: 5.2vw;
+    height: 5.2vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
+    display: none;
+}
+
+.family-next, .family-add {
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 14vw;
+    margin-top: -1vw;
+}
+
+.family-text-img {
+    vertical-align: middle;
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 3vw;
+    margin-top: -1vw;
+}
+
+.family-notice {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 4.3vw;
+    margin-left: 3.71vw;
+}
+
+.family-notice div {
+    line-height: 1.5;
+}
+
+.family-add-img {
+    position: fixed;
+    bottom: 4.3vw;
+    right: 6.727vw;
+    z-index: 1;
+}
+
+.family-add-img img {
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
+.activity-line {
+    width: 100vw;
+    height: 1px;
+    /*margin-left: 3.71vw;*/
+    background-color: #d6d6d6;
+    overflow: hidden;
+}
+
+.cancelFailMsg >.ui-content,
+.recordFailMsg >.ui-content,
+.detailTimeOverMsg >.ui-content,
+.signupTimeOverMsg >.ui-content,
+.manageTimeOverMsg >.ui-content,
+.selectTimeOverMsg >.ui-content,
+.recordTimeOverMsg >.ui-content,
+.confirmCancelApply >.ui-content,
+.confirmCancelPendingApply >.ui-content,
+.confirmCancelApplyToDetail >.ui-content {
+    padding: 0 !important;
+}
+
+.cancelFailMsg .ui-content>.header,
+.recordFailMsg .ui-content>.header,
+.detailTimeOverMsg .ui-content>.header,
+.signupTimeOverMsg .ui-content>.header,
+.manageTimeOverMsg .ui-content>.header,
+.selectTimeOverMsg .ui-content>.header,
+.recordTimeOverMsg .ui-content>.header,
+.confirmCancelApply .ui-content>.header,
+.confirmCancelPendingApply .ui-content>.header,
+.confirmCancelApplyToDetail .ui-content>.header {
+    margin-top: 14%;
+}
+
+.cancelFailMsg .ui-content>.main,
+.recordFailMsg .ui-content>.main,
+.detailTimeOverMsg .ui-content>.main,
+.signupTimeOverMsg .ui-content>.main,
+.manageTimeOverMsg .ui-content>.main,
+.selectTimeOverMsg .ui-content>.main,
+.recordTimeOverMsg .ui-content>.main,
+.confirmCancelApply .ui-content>.main 
+.confirmCancelApplyToDetail .ui-content>.main {
+    margin-top: 12%;
+}
+
+.confirmCancelPendingApply .ui-content>.main {
+    margin-top: 6%;
+}
+
+/*多個view有使用到*/
+.popup-msg-style {
+    width: 28VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 6.2VW 1VW 6.2VW 1VW;
+    position: fixed;
+    top: 70vw;
+    left: 36vw;
+    background-color: #666;
+    border-radius: 1.5px;
+    color: #F0F0F0;
+    font-size: 3.6VW;
+    text-align: center;
+    z-index: 2;
+    display: none;
+}
+
+.app-popup .main-cancel {
+    text-align: center;
+    color: #0f0f0f;
+    padding: 0 5.36vw;
+    margin: 0 0 8.5vw;
+}

@@ -66,6 +66,30 @@
     text-align: center;
     font-size: 24px;
 }
+.loading-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    opacity: 0.4;
+    z-index: 2000;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+.loading-mask-icon {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+}
+.loading-mask-str {
+    position: absolute;
+    left: 45%;
+    top: 55%;
+    color: #FFF;
+}
 </style>
 
 <!--********************************** Import QPayMember member *************************************-->
@@ -221,6 +245,21 @@
     </div>
 </div>
 
+<div class="modal fade" id="dialogErrorPointEmpNo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{trans('messages.QPAY_MEMBER_EMP_NO_ERROR_POINT')}}</h4>
+            </div>
+            <div class="modal-body">
+                1234466
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="dialogStoreConfirm">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -239,6 +278,10 @@
     </div>
 </div>
 
+<div class="loading-mask">
+    <img class="loading-mask-icon" src="{{asset('/css/images/loading.gif')}}">
+    <div class="loading-mask-str">處理中, 請勿關閉或是重整視窗</div>
+</div>
 
 <script type="text/javascript">
 $(function() {
@@ -292,7 +335,7 @@ $(function() {
                     $("#nextBtn").hide();
                     $("#nextPreviewBtn").show();
 
-                } else {
+                } else if (response.result_code == "000901") {
                     var errorString = "";
 
                     $.each(response.error_empno, function(key, val) {
@@ -301,6 +344,17 @@ $(function() {
 
                     $("#dialogErrorEmpNo .modal-content .modal-body").html(errorString);
                     $('#dialogErrorEmpNo').modal('show');
+                    $("#uploadExcel").val("");
+                    $("#fileName").html("");
+                } else if (response.result_code == "000923") {
+                    var errorString = "";
+
+                    $.each(response.error_empno, function(key, val) {
+                        errorString =  errorString + val.toString() + "<br>";
+                    });
+
+                    $("#dialogErrorPointEmpNo .modal-content .modal-body").html(errorString);
+                    $('#dialogErrorPointEmpNo').modal('show');
                     $("#uploadExcel").val("");
                     $("#fileName").html("");
                 }
@@ -359,6 +413,7 @@ $(function() {
     $("#storeConfirm").on("click", function() {
         $("#dialogStoreConfirm").modal("hide");
         storePoint();
+        $(".loading-mask").show();
     });
 
     //Chech Stored Record
@@ -379,8 +434,11 @@ $(function() {
                     $("#preViewPage #previewToolbar").hide();
                     $("#preViewPage .finish-review").show();
                 }
+                $(".loading-mask").hide();
             },
-            error: function (e) {}
+            error: function (e) {
+                $(".loading-mask").hide();
+            }
         });
 
     }

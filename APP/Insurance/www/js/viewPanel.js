@@ -38,15 +38,18 @@ $(document).one("pagebeforeshow", function() {
 
     $("#mypanel #mypanelviewPersonalInsurance").on("click", function() {
         editLeaveForm = false; 
-        changePageByPanel("viewPersonalInsurance");
+        //changePageByPanel("viewPersonalInsurance");
+        checkWidgetPage('viewPersonalInsurance', visitedPageList);
     });
 
     $("#mypanel #mypanelviewFamilyData").on("click", function() {
-        changePageByPanel("viewFamilyData");
+        //changePageByPanel("viewFamilyData");
+        checkWidgetPage('viewFamilyData', visitedPageList);
     });
 
     $("#mypanel #mypanelviewContact").on("click", function() {
-        changePageByPanel("viewContact");
+        //changePageByPanel("viewContact");
+        checkWidgetPage('viewContact', visitedPageList);
     });
 
     $(".menu-btn .insuranceMenu").on("click", function() {

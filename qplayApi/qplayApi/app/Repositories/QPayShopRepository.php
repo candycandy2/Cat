@@ -25,7 +25,7 @@ class QPayShopRepository
        return $this->qpayShop
              ->join('qp_user','qp_user.row_id','=','qpay_shop.user_row_id')
              ->where('user_row_id',$userId)
-             ->select('qpay_shop.row_id', 'qp_user.emp_name')
+             ->select('qpay_shop.row_id', 'qp_user.emp_name', 'qpay_shop.trade_password')
              ->first();
     }
 

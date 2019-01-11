@@ -68,6 +68,8 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
             Route::get('/newTrade', 'TradeController@newTrade');
             Route::get('/getTradeRecordEmp', 'TradeController@getTradeRecordEmp');
             Route::get('/getTradeRecordShop', 'TradeController@getTradeRecordShop');
+            Route::get('/checkTradeID', 'TradeController@checkTradeID');
+            Route::get('/cancelTrade', 'TradeController@cancelTrade');
         });
         //for web
         Route::get('/loginQPayWeb', 'WebController@loginQPayWeb');
@@ -82,9 +84,29 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
         //for app
         Route::group(['middleware' => 'auth.token'], function () {
             Route::post('/newEmpService', 'ServiceController@newEmpService');
+            Route::post('/deleteEmpService', 'ServiceController@deleteEmpService');
+            Route::post('/getEmpServiceList', 'ServiceController@getEmpServiceList');
             Route::post('/setEmpServiceTarget', 'TargetController@setEmpServiceTarget');
+            Route::post('/getEmpServiceTargetList', 'TargetController@getEmpServiceTargetList');
+            Route::post('/newReserve', 'ReserveController@newReserve');
+            Route::post('/getReserveRecord', 'ReserveController@getReserveRecord');
+            Route::post('/getTargetReserveData', 'ReserveController@getTargetReserveData');
+            Route::post('/getMyReserve', 'ReserveController@getMyReserve');
+            Route::post('/setReserveComplete', 'ReserveController@setReserveComplete');
         });
     });
+
+    //Status API
+    Route::group(['namespace' => 'Status'], function()
+    {   
+       //for app
+       Route::group(['middleware' => 'auth.token'], function () {
+            Route::post('/setStatus', 'StatusController@setStatus');
+            Route::post('/getStatus', 'StatusController@getStatus');
+            Route::post('/deleteStatus', 'StatusController@deleteStatus');
+       });
+    });
+    
 });
 
 //syncUser

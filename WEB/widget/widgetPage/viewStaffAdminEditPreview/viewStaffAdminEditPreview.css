@@ -5,11 +5,16 @@
     position: fixed;
 }
 
-.edit-preview-text{
+.edit-preview-title,
+.edit-preview-content{
     width: 92.58vw;
     padding: 5vw 3.71vw 0;
     color: #253137;
     font-size: 3.768vw;
+}
+
+.edit-preview-content img{
+    width: 92.58vw;
 }
 
 .edit-preview-time{

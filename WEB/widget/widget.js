@@ -53,10 +53,16 @@ var widget = {
             var contentItem = $('<div class="' + widgetItem + '"></div>');
             div.append(contentItem);
 
-            $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
+            $.getScript(serverURL + "/widget/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
                 .done(function(script, textStatus) {
-                    if (typeof window[widgetItem] != 'undefined')
+                    if (typeof window[widgetItem] != 'undefined') {
                         window[widgetItem].init(contentItem);
+                        //是否需要plugin
+                        if(typeof window[widgetItem].plugin != 'undefined') {
+                            window[widgetItem].plugin();
+                        }
+                    }
+
                 });
 
         });
@@ -110,5 +116,94 @@ var widget = {
         } else {
             appEnvironment = "";
         }
+    },
+    plugin: function(arr) {
+        for(var i = 0; i < arr.length; i++) {
+            let status = false;
+            for(var j = 0; j < pluginList.length; j++) {
+                if(arr[i] == pluginList[j]) {
+                    status = true;
+                    break;
+                }
+            }
+            if(!status) {
+                pluginList.push(arr[i]);
+                $.getScript(serverURL + '/widget/widgetPlugin/' + arr[i] + '.js');
+            }
+        }
     }
 };
+
+
+//覆盖App.min.js中checkWidgetPage，可用于上架到staging和production
+function checkWidgetPage(pageID, pageVisitedList, parmData) {
+    //新增参数：用于不同页面间传值
+    parmData = parmData || null;
+    if(parmData != null && typeof parmData == 'object') {
+        window.sessionStorage.setItem(pageID + "_parmData", JSON.stringify(parmData));
+    }
+
+    var url = serverURL + '/widget/widgetPage/' + pageID + '/' + pageID;
+    var pageLength = $('#' + pageID).length;
+
+    //0表示没有该元素，直接从local添加，既第一次添加
+    //1表示有该元素，直接跳转，不用添加
+    if (pageLength == 0) {
+
+        $.get(url + '.html', function(data) {
+            //1. css
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url + '.css';
+            document.head.appendChild(link);
+
+            //2. html
+            $.mobile.pageContainer.append(data);
+            $('#' + pageID).page().enhanceWithin();
+
+            //3. language string
+            setViewLanguage(pageID);
+
+            //4. water mark
+            //According to the data [waterMarkPageList] which set in index.js
+            if (!(typeof waterMarkPageList === 'undefined')) {
+                if (waterMarkPageList.indexOf(pageID) !== -1) {
+                    $('#' + pageID).css('background-color', 'transparent');
+                }
+            }
+
+            //5. js
+            setTimeout(function() {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = url + '.js';
+                document.head.appendChild(script);
+
+                //6. change page
+                $.mobile.changePage('#' + pageID);
+                if (window.ga !== undefined) {
+                    window.ga.trackView(pageID);
+                }
+
+            }, 200);
+            pageVisitedList.push(pageID);
+
+        }, 'html');
+
+    } else {
+
+        //如果即将跳转的页面正好是当前页面（既visited最后一页），触发pageshow即可
+        if (pageID == pageVisitedList[pageVisitedList.length - 1]) {
+            $('#' + pageID).trigger('pageshow');
+
+        } else {
+            $.mobile.changePage('#' + pageID);
+            if (window.ga !== undefined) {
+                window.ga.trackView(pageID);
+            }
+            pageVisitedList.push(pageID);
+        }
+
+    }
+}

@@ -940,11 +940,11 @@
 }
 
 .store-near-img>img {
-    width: 18vw;
-    height: 11.27vw;
-    /*width: 10.63vw;*/
-    /*margin-left: 50%;*/
-    margin-left: 40%;
+    /*width: 18vw;
+    height: 11.27vw;*/
+    width: 10.63vw;
+    margin-left: 50%;
+    /*margin-left: 40%;*/
     border-radius: 2px;
 }
 
@@ -961,8 +961,8 @@
 
 .store-near {
     margin-left: 35%;
-    /*color: #253137;*/
-    color: #dfdfdf;
+    color: #253137;
+    /*color: #dfdfdf;*/
     font-size: 3.768vw;
 }
 
@@ -985,6 +985,38 @@
     text-indent: 0;
     font-size: 3.349vw;
     color: #666;
+}
+
+.staff-img,
+.staffAdmin-img {
+    width: 20vw;
+    height: 20vw;
+    margin-left: 40vw;
+}
+
+.staff-img img,
+.staffAdmin-img img {
+    width: 20vw;
+}
+
+.staff-btn,
+.staffAdmin-btn {
+    width: 100%;
+    height: 8vw;
+    padding: 5vw 0 3.27vw;
+}
+
+.staff-btn div,
+.staffAdmin-btn div {
+    width: 20vw;
+    height: 8vw;
+    margin: 0 auto;
+    background: #4FAEA5;
+    color: #FFF;
+    line-height: 8.5vw;
+    text-align: center;
+    font-size: 3.768vw;
+    border-radius: 2px;
 }
 
 /*********************** staff menu ***********************/

@@ -23,128 +23,145 @@
     </div>
     <div data-role="main" class="ui-content page-main">
         <div>
-            <div class="add-tea-title">
-                <div>
-                    <img src="" class="tea-user-photo">
+            <div class="user-main-title">
+                <div class="user-main-img">
                     <div></div>
+                    <div class="user-main-status"></div>
                 </div>
-                <div>總機服務中</div>
-                <div>
-                    <div class="tea-user-today"></div>
-                    <div class="tea-user-name"></div>
+                <div class="user-main-text">
+                    <div class="user-text-row1">
+                        <div class="user-status-text">總機暫停服務</div>
+                        <div class="user-today-date"></div>
+                    </div>
+                    <div class="user-text-row2">
+                        <div class="user-status-desc"></div>
+                        <div class="user-today-name"></div>
+                    </div>
                 </div>
             </div>
             <!--服務中-->
-            <div class="service-online">
+            <div class="service-online" style="display:none;">
                 <div class="add-tea-room">
                     <div>您的會議地點</div>
                     <div>
-                        <span>BQT/QTT</span>
-                        <span>T01</span>
+                        <div>BQT/QTT</div>
+                        <div id="userChooseMeetingRoom"></div>
                     </div>
                 </div>
                 <div class="add-tea-radio">
                     <div>需要茶水嗎?</div>
                     <div>
-                        <div class="radio-need-cup">
-                            <span><img src="" class="need-cup"></span>
-                            <span>需要杯子</span>
-                        </div>
-                        <div class="radio-need-water">
-                            <span><img src="" class="need-water"></span>
-                            <span>已有杯子，只需補充茶水</span>
-                        </div>
+                        <input type="radio" name="teaType" value="needTea" id="needTea" checked>
+                        <label for="needTea">需要杯子</label>
+                        <input type="radio" name="teaType" value="needWater" id="needWater">
+                        <label for="needWater">已有杯子，只需補充茶水</label>
                     </div>
                 </div>
                 <div class="add-tea-count">
                     <div>
                         <div>茶(杯)</div>
                         <div>
-                            <div class="count-select">
-                                <div>
-                                    <img src="" class="subtract">
-                                </div>
-                                <div class="result">0</div>
-                                <div>
-                                    <img src="" class="add">
-                                </div>
+                            <div class="count-select" data-type="tea">
+                                <div class="tea-subtraction"></div>
+                                <div class="tea-result">0</div>
+                                <div class="tea-addition"></div>
                             </div>
                         </div>
                     </div>
                     <div>
                         <div>水(杯)</div>
                         <div>
-                            <div class="count-select">
-                                <div>
-                                    <img src="" class="subtract">
-                                </div>
-                                <div class="result">0</div>
-                                <div>
-                                    <img src="" class="add">
-                                </div>
+                            <div class="count-select" data-type="water">
+                                <div class="water-subtraction"></div>
+                                <div class="water-result">0</div>
+                                <div class="water-addition"></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="add-tea-btn">
-                    <div>加茶水</div>
+                    <div class="addTeaBtn">加茶水</div>
                 </div>
                 <div class="add-tea-notice">*爲維護品質，請大家結束會議後，記得將杯子送至回收台喔！</div>
                 <div class="add-tea-today">
                     <div class="today-room-title">
-                        <span>在T01預約茶水的同仁</span>
-                        <span>
-                            <img src="" class="room-refresh">
-                        </span>
+                        <span>在</span><span class="followRoomChange"></span><span>預約茶水的同仁</span>
+                        <span class="refreshTargetRoom"></span>
                     </div>
                     <div class="today-room-time">
-                        <span>更新時間</span><span>2018/11/21 14:00</span>
+                        <span>更新時間</span>&nbsp;
+                        <span class="user-main-update-time"></span>
                     </div>
                     <div class="today-room-none">本會議室今日暫無茶水預約</div>
-                    <div class="today-room-list" style="display:none;">
+                    <div class="today-room-list">
                         <ul>
-                            <li>
+                            <!-- <li>
                                 <span>18:00</span>
                                 <span>Allen預約茶5杯</span>
                                 <span></span>
-                            </li>
-                            <li>
-                                <span>16:00</span>
-                                <span>Allen預約茶5杯</span>
-                                <span></span>
-                            </li>
-                            <li class="past-time">
-                                <span>14:00</span>
-                                <span>Allen預約茶5杯</span>
-                                <span>(13:55已送達)</span>
-                            </li>
-                            <li class="past-time">
-                                <span>12:00</span>
-                                <span>Allen加水5杯</span>
-                                <span>(12:05已送達)</span>
-                            </li>
-                            <li class="past-time">
-                                <span>10:00</span>
-                                <span>Allen預約茶5杯</span>
-                                <span>(09:55已送達)</span>
                             </li>
                             <li class="past-time">
                                 <span>08:00</span>
                                 <span>Allen加水5杯</span>
                                 <span>(08:05已送達)</span>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>
             </div>
             <!--暫停服務-->
-            <div class="service-offline" style="display:none;">
+            <div class="service-offline">
                 <div>
                     <div>很抱歉!目前總機暫停服務<br>請您自行去茶水區取用</div>
                     <div class="update-service">
                         <div>重新整理</div>
                         <div></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmAddTeaPopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">您確定要</span>
+                </div>
+                <div class="font-style3 header-title"></div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style11 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">取消</div>
+                    <div class="btn-cancel userAddTeaBtn">確定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup adminBusyPopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">目前總機在忙碌中</span>
+                </div>
+                <div class="font-style3 header-title">請您稍等10分鐘</div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">自行取用</div>
+                    <div class="btn-cancel userWaitBtn">願意等待</div>
                 </div>
             </div>
         </div>

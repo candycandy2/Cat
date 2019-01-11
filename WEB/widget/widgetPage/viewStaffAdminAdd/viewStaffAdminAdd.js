@@ -1,38 +1,58 @@
 $("#viewStaffAdminAdd").pagecontainer({
     create: function(event, ui) {
 
-        let noticeTitle = '',
-            noticeContext = '',
-            imgURL = '/widget/widgetPage/viewStaffAdminAdd/img/';
-
+        let imgURL = '/widget/widgetPage/viewStaffAdminAdd/img/',
+            postURL = '';
+            
+        //是否取消新增的提示
         function openConfirmPopup() {
+            let postTitle = $.trim($('.new-notice-title').val());
+            let postContent = $.trim($('.new-notice-context').val());
             //當未輸入任何信息時，直接返回上一頁；否則提示用戶
-            if(noticeTitle == '' && noticeContext == '') {
+            if(postTitle == '' && postContent == '') {
                 onBackKeyDown();
             } else {
                 popupMsgInit('.cancelAddNotice');
             }
         }
 
+        //检查标题和内容是否为空，为空不能预览
         function checkTextarea() {
-            if(noticeTitle != '' && noticeContext != '') {
+            let postTitle = $.trim($('.new-notice-title').val());
+            let postContent = $.trim($('.new-notice-context').val());
+            if(postTitle != '' && postContent != '') {
                 $('.addNoticePreviewBtn').addClass('active-btn-green');
             } else {
                 $('.addNoticePreviewBtn').removeClass('active-btn-green');
             }
         }
 
+        //初始化该页面
         function initThisPage() {
+            $('.remove-img-now').trigger('click');
             $('.new-notice-title').val('');
             $('.new-notice-context').val('');
-            noticeTitle = '';
-            noticeContext = '';
+            $('.addNoticePreviewBtn').removeClass('active-btn-green');
+            postURL = '';
         }
+
+        //拍照或图库成功
+        function onSuccess(imageURI) {
+            $('.add-notice-img').show();
+            postURL = 'data:image/jpeg;base64,' + imageURI;
+            $('.add-img-now').html('').append('<img src="' + postURL + '">');
+        }
+
+        function onFail(message) {}
 
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminAdd").on("pagebeforeshow", function(event, ui) {
-
+            let init = window.sessionStorage.getItem('InitAdminAddPage');
+            if(init != null) {
+                initThisPage();
+                window.sessionStorage.removeItem('InitAdminAddPage');
+            }
         });
 
         $("#viewStaffAdminAdd").one("pageshow", function(event, ui) {
@@ -51,11 +71,16 @@ $("#viewStaffAdminAdd").pagecontainer({
         $("#viewStaffAdminAdd").on("pagehide", function(event, ui) {
             document.removeEventListener("backbutton", openConfirmPopup, false);
             document.addEventListener("backbutton", onBackKeyDown, false);
-            //initThisPage();
         });
 
 
         /********************************** dom event *************************************/
+        //如果已输入内容，返回上一页，需要popup提示
+        $('#viewStaffAdminAdd').on('click', '.page-back', function() {
+            openConfirmPopup();
+            return false;
+        });
+
         //確定取消新增，返回上一頁
         $('.confirmCancelAddNotice').on('click', function() {
             setTimeout(function() {
@@ -66,21 +91,43 @@ $("#viewStaffAdminAdd").pagecontainer({
 
         //獲取textarea
         $('.new-notice-title').on('input', function() {
-            noticeTitle = $.trim($(this).val());
             checkTextarea();
         });
         $('.new-notice-context').on('input', function() {
-            noticeContext = $.trim($(this).val());
             checkTextarea();
+        });
+
+        //upload img
+        $('.add-upload-icon').on('click', function() {
+            navigator.camera.getPicture(onSuccess, onFail, {
+                quality: 100,
+                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+                destinationType: Camera.DestinationType.DATA_URL,
+                allowEdit: true,
+                targetWidth: 1000,
+                targetHeight: 1000
+            });
+        });
+
+        //remove img
+        $('.remove-img-now').on('click', function() {
+            $('.add-notice-img').hide();
+            $('.add-img-now').html('');
+            postURL = '';
         });
 
         //预览
         $('.addNoticePreviewBtn').on('click', function() {
             let has = $(this).hasClass('active-btn-green');
             if(has) {
-                checkWidgetPage('viewStaffAdminAddPreview', pageVisitedList)
+                let postData = {
+                    'postTitle': $.trim($('.new-notice-title').val()),
+                    'postContent': $.trim($('.new-notice-context').val()),
+                    'postURL': postURL
+                };
+                checkWidgetPage('viewStaffAdminAddPreview', pageVisitedList, postData);
             }
-        })
+        });
 
 
     }

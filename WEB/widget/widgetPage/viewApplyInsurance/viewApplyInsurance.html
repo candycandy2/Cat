@@ -1,0 +1,432 @@
+<div data-role="page" id="viewApplyInsurance">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
+            <img src="img/component/back_nav.png" id="backPersonalInsuranceFromApply">
+            <img src="img/component/back_nav.png" id="backPersonalInsuranceFromDetail">
+            <img src="img/component/back_nav.png" id="backFamilyDataFromDetail">
+            <img src="img/component/back_nav.png" id="backApplyInsurance">
+            <img src="img/component/back_nav.png" id="backWithdrawDetail">
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                <!--加保/退保/停保申請/眷屬健保-->
+                <span class="langStr apply-insur-title"></span>
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main">
+        <!--1.加保/退保/停保/復保申請-->
+        <div id="viewInsurApplication" class="hide">
+            <div class="apply-insurance-form">
+                <div class="font-style11">
+                    <!-- 眷屬 -->
+                    <span class="langStr" data-id="str_115"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="familyName"></span>
+                </div>
+            </div>
+            <div class="apply-insurance-form">
+                <div for="applyDate" class="font-style11">
+                    <!--加保/退保/停保日期-->
+                    <span class="langStr insurDate"></span>
+                </div>
+                <input name="applyDate" id="applyDate" data-role="none" class="family-input-calendar" style="margin-left: 0vw;" readonly>
+            </div>
+            <div class="apply-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 加保原因 -->
+                    <span class="langStr" data-id="str_117"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="applyReason" class="font-style3"></div>
+            </div>
+            <div class="withdraw-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 退保原因 -->
+                    <span class="langStr" data-id="str_123"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="withdrawReason" class="font-style3"></div>
+            </div>
+            <div class="stop-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 停保原因 -->
+                    <span class="langStr" data-id="str_124"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="stopReason" class="font-style3"></div>
+            </div>
+            <div class="recover-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 復保原因 -->
+                    <span class="langStr" data-id="str_127"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="recoverReason" class="font-style3"></div>
+            </div>
+            <div id="newSubsidy">
+                <div class="font-style11">
+                    <!-- 是否有殘等或補助 -->
+                    <span class="langStr" data-id="str_118"></span>
+                </div>
+                <div>
+                    <input type="radio" data-role="none" name="setSubsidy" id="subsidyYes" value='subsidyYes'>
+                    <label data-role="none" class="overlap-label-icon" for="subsidyYes"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 是 -->
+                        <span class="langStr" data-id="str_128" class="font-style3"></span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" data-role="none" name="setSubsidy" id="subsidyNo" value='subsidyNo'>
+                    <label data-role="none" class="overlap-label-icon" for="subsidyNo"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 否 -->
+                        <span class="langStr" data-id="str_129" class="font-style3"></span>
+                    </label>
+                </div>
+            </div>   
+            <div id="newCertificate">
+                <div class="font-style11">
+                    <!-- 是否需要開立證明 -->
+                    <span class="langStr" data-id="str_119"></span>
+                </div>
+                <div>
+                    <input type="radio" data-role="none" name="setCertificate" id="certiYes" value='certiYes'>
+                    <label data-role="none" class="overlap-label-icon" for="certiYes"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 是 -->
+                        <span class="langStr" data-id="str_128" class="font-style3"></span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" data-role="none" name="setCertificate" id="certiNo" value='certiNo'>
+                    <label data-role="none" class="overlap-label-icon" for="certiNo"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 否 -->
+                        <span class="langStr" data-id="str_129" class="font-style3"></span>
+                    </label>
+                </div>
+            </div>  
+            <div id="newHealthcard">
+                <div class="font-style11">
+                    <!-- 健保卡製作 -->
+                    <span class="langStr" data-id="str_120"></span>
+                </div>   
+                <div>
+                    <input type="radio" data-role="none" name="setHealthcard" id="cardYes" value='cardYes'>
+                    <label data-role="none" class="overlap-label-icon" for="cardYes"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 是 -->
+                        <span class="langStr" data-id="str_128" class="font-style3"></span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" data-role="none" name="setHealthcard" id="cardNo" value='cardNo'>
+                    <label data-role="none" class="overlap-label-icon" for="cardNo"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 否 -->
+                        <span class="langStr" data-id="str_129" class="font-style3"></span>
+                    </label>
+                </div>
+            </div> 
+            <div class="apply-form-bottom">
+                <div class="font-style11">
+                    <!-- 備註 -->
+                    <span class="langStr" data-id="str_121"></span>
+                </div>
+                <div>
+                    <textarea data-role="none" id="applyRemark" class="reason-textarea"></textarea>
+                </div>
+            </div> 
+        </div>
+        <div class="insur-button-style">
+            <div id="previewBtn" class="font-style3">
+                <!-- 預覽申請 -->
+                <span class="langStr" data-id="str_131"></span>
+            </div>
+        </div> 
+
+        <!--2.預覽加保/退保/停保/復保申請-->
+        <div id="viewPreviewApplication" class="hide">
+            <div class="insurance-main">
+                <div class="font-style11 insurance-main-title">
+                    <!-- 眷屬 -->
+                    <span class="langStr" data-id="str_115"></span>
+                </div> 
+                <div class="health-insurance-content font-style7">
+                    <div style="margin-bottom:1.16vw;">
+                        <span id="previewNameAge"></span>
+                    </div>
+                    <div style="margin-bottom:1.16vw;">
+                        <span id="previewBirthday"></span>
+                    </div>
+                    <div>
+                        <span id="previewID"></span>
+                    </div>
+                </div>    
+                <div class="font-style11 insurance-main-title">
+                    <!-- 加保/退保/停保/復保資訊 -->
+                    <span class="langStr insur-info-title"></span>
+                </div> 
+                <div class="health-insurance-content font-style7">
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewDate"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewReason"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewSubsidy"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewCertificate"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewHealthcard"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="perviewApplyDate"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="perviewStatus"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="perviewDealday"></span>
+                    </div>
+                </div>              
+            </div>
+            <div class="apply-button-style">
+                <div id="applyBtn" class="font-style3">
+                    <!-- 確定送出 -->
+                    <span class="langStr" data-id="str_135"></span>
+                </div>
+                <div id="cancelBtn" class="font-style3">
+                    <!-- 取消申請 -->
+                    <span class="langStr" data-id="str_144"></span>
+                </div>
+                <div id="insurBtn" class="font-style3">
+                    <!-- 加保 -->
+                    <span class="langStr" data-id="str_148"></span>
+                </div>
+                <div id="recoverBtn" class="font-style3">
+                    <!-- 復保 -->
+                    <span class="langStr" data-id="str_156"></span>
+                </div>
+            </div> 
+            <div class="two-button-style">
+                <div class="left-apply-button-style">
+                    <div id="withdrawBtn" class="font-style3">
+                        <!-- 退保 -->
+                        <span class="langStr" data-id="str_150"></span>
+                    </div>
+                </div> 
+                <div class="right-apply-button-style">
+                    <div id="stopBtn" class="font-style3">
+                        <!-- 停保 -->
+                        <span class="langStr" data-id="str_151"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+    </div>
+
+    <!--確定刪除眷屬資料-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteFamily" for="confirmDeleteFamily"
+        id="confirmDeleteFamily">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定刪除眷屬資料-->
+                        <span class="langStr" data-id="str_074"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmDeleteFamilyBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--確定取消新增(回申請表的前一頁)-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelApply" for="confirmCancelApply"
+        id="confirmCancelApply">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定取消申請-->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-cancel font-style3"> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmCancelApplyBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!--確定取消新增(回X保明細)-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelApplyToDetail" for="confirmCancelApplyToDetail"
+        id="confirmCancelApplyToDetail">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定取消申請-->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-cancel font-style3"> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmCancelApplyToDetailBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--確定取消申請(XX待處理取消申請)-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelPendingApply" for="confirmCancelPendingApply"
+        id="confirmCancelPendingApply">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定取消申請-->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-cancel font-style3"> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmCancelPendingApplyBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--新增眷屬資料失敗/更新眷屬資料失敗/刪除眷屬資料失敗-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup familyErrorMsg" for="familyErrorMsg"
+        id="familyErrorMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--新增眷屬資料失敗-->
+                        <span class="langStr" data-id="str_041"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup familyAddCheckMsg" for="familyAddCheckMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'><img src="img/urgent.png"></span>
+                    <span class="header-text">                
+                        <!--新增失敗-->
+                        <span class="langStr" data-id="str_096"></span>                   
+                        <!--證號長度錯誤-->
+                        <span class="langStr lengthErr view-hide" data-id="str_097"></span>  
+                        <!--證號格式錯誤-->
+                        <span class="langStr formatErr view-hide" data-id="str_098"></span> 
+                        <!--證號重複-->
+                        <span class="langStr idDulErr view-hide" data-id="str_099"></span> 
+                        <!--配偶只能一個-->
+                        <span class="langStr oneSpouseErr view-hide" data-id="str_100"></span> 
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

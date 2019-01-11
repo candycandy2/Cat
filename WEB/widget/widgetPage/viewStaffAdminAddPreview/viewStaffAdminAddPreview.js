@@ -1,18 +1,143 @@
 $("#viewStaffAdminAddPreview").pagecontainer({
     create: function(event, ui) {
 
-        let imgURL = '/widget/widgetPage/viewStaffAdminAddPreview/img/';
+        let imgURL = '/widget/widgetPage/viewStaffAdminAddPreview/img/',
+            staffKey = 'appempservice',
+            postData = {},
+            announceBoardID = '';
+
+        //获取预览内容
+        function getPreviewData() {
+            announceBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffAnnounce']['board_id'].toString();
+            postData = JSON.parse(window.sessionStorage.getItem('viewStaffAdminAddPreview_parmData'));
+            $('.add-preview-title').text(postData['postTitle']);
+            $('.add-preview-content').text(postData['postContent']);
+            $('.add-preview-time').text(new Date().yyyymmdd('/'));
+            //是否有图档
+            if(postData['postURL'] != '') {
+                $('.add-preview-img').html('').append('<img src="' + postData['postURL'] + '">').show();
+            } else {
+                $('.add-preview-img').hide();
+            }
+        }
+
+        //获取新post_id
+        function getNewPostID() {
+            var queryData = "<LayoutHeader><emp_no>" +
+                loginData["emp_no"] +
+                "</emp_no><source>" +
+                staffKey +
+                appEnvironment +
+                "</source></LayoutHeader>";
+
+            var successCallback = function(data) {
+                //console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    let postID = data['Content'];
+                    //如果有图档，先上传图档，否则可以直接送出
+                    if(postData['postURL'] != '') {
+                        uploadFile(postID);
+                    } else {
+                        sendNewPost(postID);
+                    }
+                }
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                QForumPlugin.CustomAPI("POST", false, "getPostId", successCallback, failCallback, queryData, "");
+            }();
+        }
+
+        //上传图档
+        function uploadFile(id) {
+            var self = this;
+
+            let imgFile = QStoragePlugin.dataURLtoFile(postData['postURL']);
+            let queryData = new FormData();
+            queryData.append('files', imgFile);
+            let resource = announceBoardID + '/' + id;
+
+            this.successCallback = function (data) {
+                //console.log(data);
+
+                if (data['ResultCode'] == '1') {
+                    let postURL = data['Content']['thumbnail_1024_url'];
+                    let target = data['Content']['target'];
+                    sendNewPost(id, postURL, target);
+                }
+            };
+
+            this.failCallback = function (data) {};
+
+            var __construct = function () {
+                QStoragePlugin.QStorageAPI("POST", false, 'appqforum', 'picture/upload', self.successCallback, self.failCallback, queryData, '', resource);
+            }();
+        }
+
+        //发送公告
+        function sendNewPost(id, url, tar) {
+            url = url || null;
+            tar = tar || null;
+
+            let fileList = '';
+            if(url != null) {
+                fileList = '<file_list><file>' + url + '</file></file_list>';
+            }
+
+            //content文本转html
+            let contentHtml = '<div class="postImg">' +
+                (url == null ? '' : '<img src="' + url + '" data-target="' + tar + '">') +
+                '</div><div class="postContent">' +
+                postData['postContent'] +
+                '</div>';
+
+            let xmlData = {
+                emp_no: loginData["emp_no"],
+                source: staffKey + appEnvironment,
+                board_id: announceBoardID,
+                post_id: id,
+                post_title: postData['postTitle'],
+                content: contentHtml
+                //content: postData['postContent']
+            };
+
+            let queryData = "<LayoutHeader>" + QForumPlugin.createXMLDataString(xmlData) + fileList + "</LayoutHeader>";
+
+            var successCallback = function(data) {
+                //console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    //成功后回退到公告页
+                    pageVisitedList.pop();
+                    onBackKeyDown();
+                    //只有当新增成功时才需要初始化新增页(前一页)
+                    window.sessionStorage.setItem('InitAdminAddPage', 'Y');
+                }
+
+                loadingMask('hide');
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                QForumPlugin.CustomAPI("POST", true, "newPost", successCallback, failCallback, queryData, "");
+            }();
+        }
 
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminAddPreview").on("pagebeforeshow", function(event, ui) {
-
+            getPreviewData();
         });
 
         $("#viewStaffAdminAddPreview").one("pageshow", function(event, ui) {
-            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            let mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminAddPreview .page-main').css('height', mainHeight);
             $('.addNoticeSendBtn').show();
+            getPreviewData();
         });
 
         $("#viewStaffAdminAddPreview").on("pageshow", function(event, ui) {
@@ -25,7 +150,11 @@ $("#viewStaffAdminAddPreview").pagecontainer({
 
 
         /********************************** dom event *************************************/
-
+        $('.addNoticeSendBtn').on('click', function() {
+            loadingMask('show');
+            //API:get post id first then uploadfile or send new post
+            getNewPostID();
+        });
 
 
     }

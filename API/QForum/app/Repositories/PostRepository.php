@@ -76,6 +76,7 @@ class PostRepository
                             'qp_post.status as post_status',
                             'qp_post.deleted_at as post_delete_time'
                         )
+                    ->orderby('qp_post.created_at','desc')
                     ->get();
     }
 }

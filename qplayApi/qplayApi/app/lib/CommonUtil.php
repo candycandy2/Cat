@@ -50,7 +50,7 @@ class CommonUtil
             -> where('qp_user.resign', '=', 'N')
             -> where('qp_user.login_id', '=', $loginId)
             -> where('qp_user.user_domain', '=', $domain)
-            -> select('qp_user.row_id')->get();
+            -> select('qp_user.row_id', 'qp_user.ad_flag')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -67,7 +67,7 @@ class CommonUtil
             -> where('qp_user.resign', '=', 'N')
             -> where('qp_user.emp_no', '=', $empNo)
             -> where('qp_user.user_domain', '=', $domain)
-            -> select('qp_user.row_id')->get();
+            -> select('qp_user.row_id', 'qp_user.ad_flag')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -111,7 +111,8 @@ class CommonUtil
                                           'qp_user.emp_name',
                                           'qp_user.user_domain',
                                           'qp_user.department',
-                                          'qp_user.email')->get();
+                                          'qp_user.email',
+                                          'qp_user.ad_flag')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -137,7 +138,8 @@ class CommonUtil
                                           'qp_user.emp_name',
                                           'qp_user.user_domain',
                                           'qp_user.department',
-                                          'qp_user.email')->get();
+                                          'qp_user.email',
+                                          'qp_user.ad_flag')->get();
         if(count($userList) < 1) {
             return null;
         }

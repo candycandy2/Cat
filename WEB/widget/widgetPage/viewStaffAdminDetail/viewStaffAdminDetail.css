@@ -5,11 +5,20 @@
     position: fixed;
 }
 
-.notice-detail-text{
+.notice-detail-title,
+.notice-detail-content{
     width: 92.58vw;
     padding: 5vw 3.71vw 0;
     color: #253137;
     font-size: 3.768vw;
+}
+
+.notice-detail-content{
+    display: none;
+}
+
+.notice-detail-content img{
+    width: 92.58vw;
 }
 
 .notice-detail-time{
@@ -30,7 +39,7 @@
     position: absolute;
     width: 35.5vw;
     height: 10.5vw;
-    bottom: 15vw;
+    bottom: 12vw;
     left: 32.25vw;
     text-align: center;
     line-height: 10.5vw;
@@ -43,7 +52,7 @@
 .deleteNoticeBtn{
     position: absolute;
     width: 20vw;
-    bottom: 5vw;
+    bottom: 2vw;
     left: 40vw;
     text-align: center;
     line-height: 10.5vw;

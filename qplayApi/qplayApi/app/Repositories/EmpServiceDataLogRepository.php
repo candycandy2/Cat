@@ -48,7 +48,8 @@ class EmpServiceDataLogRepository
                     "login_id" => $loginId,
                     "domain" => $domain,
                     "emp_no" => $empNo,
-                    "content" =>self::getFormatContent($content)
+                    "content" =>self::getFormatContent($content),
+                    "created_at" => date('Y-m-d H:i:s',time())
                 ];
     }
     
@@ -65,5 +66,34 @@ class EmpServiceDataLogRepository
             array_keys($input)
         ));
 
+    }
+
+    /**
+     * Get lasted updated user info by table and row_id
+     * @param  string $tableName  table name
+     * @param  int $tableRowId record row_id
+     * @return mixed
+     */
+    public static function getLastUpdatedUser($tableName, $tableRowId){
+        $dataLog = new EmpService_Data_Log();
+        return $dataLog->where('table_name',$tableName)
+                    ->where('table_row_id',$tableRowId)
+                    ->orderby('created_at','desc')
+                    ->first();
+    }
+
+    /**
+     * Get table record last add user
+     * @param  string $tableName  table name
+     * @param  int $tableRowId    record row_id
+     * @return mixed
+     */
+    public static function getLastCreatedUser($tableName, $tableRowId){
+        $dataLog = new EmpService_Data_Log();
+        return $dataLog->where('table_name', $tableName)
+                    ->where('table_row_id', $tableRowId)
+                    ->where('action','add')
+                    ->orderby('created_at','desc')
+                    ->first();
     }
 }

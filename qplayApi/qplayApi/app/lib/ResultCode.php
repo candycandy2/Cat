@@ -60,10 +60,27 @@ abstract class ResultCode
     const _000930_newTradePasswordIncorrect = "000930"; //新的交易密碼格式錯誤
     const _000931_newLoginPasswordIncorrect = "000931"; //新的登入密碼格式錯誤
     const _000932_shopNotExistError = "000932"; //店家資料異常
+    const _000933_statusStatusIDExist = "000933"; //Status ID 已經存在 
+    const _000934_statusStatusIDNotExist = "000934";//status_id 不存在
+    const _000935_statusStatusTypeNotExist = "000935";//status type 不存在
+    const _000936_statusStatusDateRangeInvalid = "000936";//生命週期的日期範圍錯誤
+    const _000937_statusStatusLifeCrontabNotExist = "000937";//生命週期不存在
+    const _000938_statusStatusLifeCrontabCanNotNull = "000938";//生命週期不可以為空值
+    const _000939_tradeIDNotExist = "000939";//交易碼不存在
+    const _000940_tradeIDNotMatchStore = "000940";//交易碼和店家不符合
+    const _000941_tradeIDCandelDateOverdue = "000941";//交易碼的取消時間逾期
+    const _000942_tradeIDHadCanceled = "000942";//交易碼已經被取消
+    const _000943_tradeIDCannotCancel = "000943";//交易碼無法取消
+    const _000944_tradePriceIncorrect = "000944";//交易金額不正確
     //TODO 以下为各系统扩展
     
     //Emp Service
     const _052001_empServiceExist = "052001"; //emp service id 已經存在
     const _052002_empServiceNotExist = "052002"; //emp service id 不存在
-    
+    const _052003_empServiceTypeNotExist = "052003"; //emp service type 不存在
+    const _052004_empServiceTargetNotExist = "052004";//emp service target 不存在
+    const _052005_empServiceDateRangeInvalid = "052005"; //生命週期的日期範圍錯誤
+    const _052006_empServicePushDataInvalid = "052006"; //推播對象的設定資料格式錯誤
+    const _052007_empServiceReserveNotExist = "052007"; //預約不存在
+    const _052008_empServiceReserveHasCompleted = "052008";//預約已經完成
 }

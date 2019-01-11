@@ -5,8 +5,8 @@
         <div class="header-style">
             <h1 class="ui-title">
                 <div>
-                	<!--我附近的商店-->
-        		    <span class="langStr" data-id="wgt_103"></span>
+                    <!--我附近的商店-->
+                    <span class="langStr" data-id="wgt_103"></span>
                 </div>
             </h1>
         </div>
@@ -15,38 +15,80 @@
                 <img src="img/component/back_nav.png" width="100%" height="100%">
             </div>
         </a>
+        <a href="#" data-role="none" class="ui-btn-right" id="search">
+            <div class="q-btn-header">
+                <img class="searchImg" width="100%" height="100%">
+            </div>
+        </a>
     </div>
     <div data-role="main" class="page-main" style="line-height: initial !important;">
         <div id="map" style="width:100vw; height:90vh;"></div>
+        <div id="infowindow-content">
+            <img id="place-icon" src="" height="16" width="16">
+            <span id="place-name"  class="title"></span><br>
+            Place ID <span id="place-id"></span><br>
+            <span id="place-address"></span>
+        </div>
         <script>
-            function initMap() {
-                var myStyles = [{
-                    featureType: "poi",
-                    elementType: "labels",
-                    stylers: [{
-                        visibility: "off"
-                    }]
-                }];
+        var map;
+        var markers = [];
 
-                var uluru = {lat: 25.0811469, lng: 121.56481370000006};
+        function initMap() {
 
-                window.map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 18,
-                    center: uluru,
-                    mapTypeControl: false,
-                    streetViewControl: false,
-                    rotateControl: false,
-                    fullscreenControl: false,
-                    styles: myStyles
-                });
+            var origin = { lat: 25.0811469, lng: 121.56481370000006 };
 
-                window.geocoder = new google.maps.Geocoder();
-                console.log(window.geocoder);
-            }
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: origin
+            });
+            window.geocoder = new google.maps.Geocoder();
+        }
         </script>
-        <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfNc3zYF_DVZRjsqJrkxU2-WbjYmPxEjg&callback=initMap">
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfNc3zYF_DVZRjsqJrkxU2-WbjYmPxEjg&libraries=places&callback=initMap">
         </script>
     </div>
     <!--popup-->
+    <!--template @popup content > Store Info -->
+    <template id="tplStoreInfoPopup">
+        <div class="header">
+            <div class="close-popup">
+                <img src="img/component/close.png" width="9.6vw" height="9.6vw">
+            </div>
+                <div class="basic-info font-style10">
+                    <div>
+                        <img src="" class="detail-type-img">
+                </div>
+                        <div class="qstore-list-detail read-font-normal">
+                            <div>愛兒家產後護理之家</div>
+                        </div>
+                        <div class="qstore-distance">
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="address-info font-style10">
+                        <div>
+                            <img src="" class="pin-img">
+                </div>
+                            <div class="address-detail">台北市大安區忠孝東路4段87號6樓</div>
+                        </div>
+                        <div class="phone-info font-style10">
+                            <div>
+                                <img src="" class="phone-img">
+                </div>
+                                <a class="phone-type" rel="external" href="">03-331-9931</a>
+                            </div>
+                        </div>
+                        <div class="main">
+                            <div class="summary-title font-style11">
+                                <!--特約優惠-->
+                                <span class="langStr" data-id="wgt_111"></span>
+                            </div>
+                            <div class="summary-content font-style7">享九折優惠</div>
+                            <div class="date-title font-style11">
+                                <!--特約優惠-->
+                                <span class="langStr" data-id="wgt_112"></span>
+                            </div>
+                            <div class="date-content font-style7">無限期</div>
+                        </div>
+    </template>
 </div>

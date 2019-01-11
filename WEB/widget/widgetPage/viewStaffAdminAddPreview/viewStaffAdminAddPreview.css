@@ -5,7 +5,8 @@
     position: fixed;
 }
 
-.add-preview-text{
+.add-preview-title,
+.add-preview-content{
     width: 92.58vw;
     padding: 5vw 3.71vw 0;
     color: #253137;
@@ -21,9 +22,14 @@
 
 .add-preview-img{
     width: 92.58vw;
-    height: 50vw;
+    height: 92.58vw;
     margin: 5vw 3.71vw 0;
-    background: lightgray;
+    overflow: hidden;
+    display: none;
+}
+
+.add-preview-img img{
+    width: 92.58vw;
 }
 
 .addNoticeSendBtn{

@@ -42,13 +42,29 @@ class QPayTradeService
      * @param  int $endDate   query end date time (unix timestamp)
      * @return mixed
      */
-    public function getQPayReimbursePurchaseList($userRowID, $startDate, $endDate){
+    public function getQPayReimbursePurchaseList($userRowID, $startDate, $endDate)
+    {
+        $purchaseData = $this->qpayPointTradeLogRepository->getQPayReimbursePurchaseList($userRowID, $startDate, $endDate);
 
-        return $this->qpayPointTradeLogRepository->getQPayReimbursePurchaseList($userRowID, $startDate, $endDate);
+        foreach ($purchaseData as $index => $data) {
+            if ($data["cancel_pay"] == "N") {
+                $data["trade_point"] = "-".$data["trade_point"];
 
+                if ($data["cancel"] == "Y") {
+                    $data["cancel_reason"] = "退款";
+                }
+            } else if ($data["cancel_pay"] == "Y") {
+                if ($data["trade_success"] == "Y") {
+                    $data["cancel_reason"] = "T".str_pad($data["cancel_row_id"], 6, "0", STR_PAD_LEFT)." 退款:".$data["cancel_reason"];
+                } else {
+                    $data["cancel_reason"] = "退款失敗";
+                }
+            }
+        }
+
+        return $purchaseData;
     }
 
-    
     /**
      * Get trade log in wich sepcific shop and point type by interval
      * @param  int      $shopID         shop row_id
@@ -63,9 +79,37 @@ class QPayTradeService
      */
     public function getTradeRecord($userRowID, $startDate, $endDate, $pointTypeID, $limit, $offset, $sort, $order)
     {
-        return $this->qpayPointTradeLogRepository
-                    ->getTradeRecord($userRowID, $startDate, $endDate, $pointTypeID, $limit, $offset, $sort, $order);
-                    
+        $recordData = $this->qpayPointTradeLogRepository
+                        ->getTradeRecord($userRowID, $startDate, $endDate, $pointTypeID, $limit, $offset, $sort, $order);
+
+        $cancelTradeData = [];
+
+        foreach ($recordData as $index => $data) {
+            if ($data["cancel_pay"] == "Y") {
+                $data["trade_point"] = "-".$data["trade_point"];
+
+                if ($data["multiple_row_id"] == 0) {
+                    $cancelTradeData[$data["trade_id"]] = $data["cancel_row_id"];
+                    $cancledTradeID = $data["cancel_row_id"];
+                    $data["cancel_reason"] = "T".str_pad($cancledTradeID, 6, "0", STR_PAD_LEFT)." 退款:".$data["cancel_reason"];
+                }
+            }
+
+            if ($data["cancel"] == "Y") {
+                $data["cancel_reason"] = "退款";
+            }
+        }
+
+        foreach ($recordData as $index => $data) {
+            if ($data["cancel_pay"] == "Y") {
+                if ($data["multiple_row_id"] != 0) {
+                    $cancledTradeID = $cancelTradeData["T".str_pad($data["multiple_row_id"], 6, "0", STR_PAD_LEFT)];
+                    $data["cancel_reason"] = "T".str_pad($cancledTradeID, 6, "0", STR_PAD_LEFT)." 退款:".$data["cancel_reason"];
+                }
+            }
+        }
+
+        return $recordData;
     }
 
     /**

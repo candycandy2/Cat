@@ -44,7 +44,6 @@ class QPayShopRepository
                         'login_id',
                         'trade_status',
                         'ext_no',
-                        'emp_id',
                         'emp_name')
                 ->orderBy('qpay_shop.created_at','desc')
                 ->get();
@@ -119,7 +118,6 @@ class QPayShopRepository
                         'login_id',
                         'trade_status',
                         'ext_no',
-                        'emp_id',
                         'emp_name')
                 ->orderBy('status','desc')
                 ->orderBy('user_delete_at','asc')
@@ -148,9 +146,23 @@ class QPayShopRepository
                         'login_id',
                         'trade_status',
                         'ext_no',
-                        'emp_id',
                         'emp_name as shop_name')
                 ->first();
+    }
+
+    /**
+     * Update QPay Trade Password
+     * @param  int    $userId qpay_shop.user_row_id as user id
+     * @param  string $newPwd new pass word
+     */
+    public function updateTradePassword($userId, $newPwd, $updatedUser, $updatedAt = null){
+
+        return  $this->qpayShop
+                ->where('user_row_id', $userId)
+                ->update(['trade_password'=>$newPwd,
+                         'updated_user'=>$updatedUser,
+                         'updated_at'=>$updatedAt
+                ]);
     }
 
 }

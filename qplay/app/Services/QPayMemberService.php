@@ -64,21 +64,15 @@ class QPayMemberService
      * @return string  ResultCode    
      */
     public function resetTradPassword($userId){
-        
+
         $userInfo = CommonUtil::getUserInfoByRowId($userId);
-        $newPwd = substr($userInfo->emp_id, -4);
 
         $qpayMember = $this->qpayMemberRepository->getQPayMemberInfo($userId);
         if(is_null($qpayMember)){
             return null;
         }
-       
-        $options = [
-            'cost' => '08',
-        ];
-        $pwd = password_hash($newPwd, PASSWORD_BCRYPT, $options);
 
-        $this->qpayMemberRepository->resetTradPassword($qpayMember->row_id, $pwd);
+        $this->qpayMemberRepository->resetTradPassword($qpayMember->row_id, $userInfo->password_original);
 
         return ResultCode::_1_reponseSuccessful;
     }

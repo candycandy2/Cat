@@ -180,10 +180,17 @@ class SyncUserService
                 $empID = strval(trim($EHRData["emp_id"]));
                 $empNO = strval(trim($EHRData["emp_no"]));
 
+                //Create QAccount Password
                 $options = [
                     'cost' => '08'
                 ];
-                $pwd = password_hash($empID, PASSWORD_BCRYPT, $options);
+                $pwdQAccount = password_hash($empID, PASSWORD_BCRYPT, $options);
+
+                //Create Trade Password
+                $options = [
+                    'cost' => '08'
+                ];
+                $pwdTrade = password_hash(substr($empID, -4), PASSWORD_BCRYPT, $options);
 
                 if (trim($EHRData["active"]) === "Y") {
                     $status = "Y";
@@ -205,8 +212,9 @@ class SyncUserService
                     "login_id"          => $empNO,
                     "emp_no"            => $empNO,
                     "emp_name"          => strval(trim($EHRData["emp_name"])),
-                    "password"          => $pwd,
-                    "emp_id"            => $empID,
+                    "password"          => $pwdQAccount,
+                    "password_original" => $pwdQAccount,
+                    "trade_pwd_original"=> $pwdTrade,
                     "email"             => strval(trim($EHRData["mail_account"])),
                     "ext_no"            => strval(trim($EHRData["ext_no"])),
                     "user_domain"       => $domain,
@@ -214,8 +222,9 @@ class SyncUserService
                     "department"        => strval(trim($EHRData["dept_code"])),
                     "status"            => $status,
                     "resign"            => $resign,
+                    "ad_flag"           => strval(trim($EHRData["welfare"])),
                     "register_message"  => "N",
-                    "change_pwd"         => "N",
+                    "change_pwd"        => "N",
                     "source_from"       => "ehr",
                     "created_user"      => "-1",
                     "updated_user"      => "-1",
@@ -293,12 +302,14 @@ class SyncUserService
                         "company"       => strval(trim($EHRData["company"])),
                         "user_domain"   => $domain,
                         "department"    => strval(trim($EHRData["dept_code"])),
+                        "ad_flag"       => strval(trim($EHRData["welfare"])),
                         "updated_at"    => $now
                     ];
                 } else {
                     $updateData = [
                         "company"       => strval(trim($EHRData["company"])),
                         "department"    => strval(trim($EHRData["dept_code"])),
+                        "ad_flag"       => strval(trim($EHRData["welfare"])),
                         "updated_at"    => $now
                     ];
                 }
@@ -322,19 +333,26 @@ class SyncUserService
                 }
                 */
 
-                //Check if emp_id is null
-                if (is_null($userDataArray[$empNO]["emp_id"])) {
+                //Check if password_original is null
+                if (is_null($userDataArray[$empNO]["password_original"])) {
+                    //Create QAccount Password
                     $options = [
-                        'cost' => '08',
+                        'cost' => '08'
                     ];
-                    $pwd = password_hash($empID, PASSWORD_BCRYPT, $options);
+                    $pwdQAccount = password_hash($empID, PASSWORD_BCRYPT, $options);
 
-                    $updateData["emp_id"] = $empID;
-                    $updateData["password"] = $pwd;
+                    //Create Trade Password
+                    $options = [
+                        'cost' => '08'
+                    ];
+                    $pwdTrade = password_hash(substr($empID, -4), PASSWORD_BCRYPT, $options);
+
+                    $updateData["password"] = $pwdQAccount;
+                    $updateData["password_original"] = $pwdQAccount;
+                    $updateData["trade_pwd_original"] = $pwdTrade;
                 }
 
                 $this->userSyncRepository->updateUserFromEHR($empNO, $updateData);
-
             }
         }
     }

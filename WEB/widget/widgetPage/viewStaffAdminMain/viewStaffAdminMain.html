@@ -23,6 +23,7 @@
     </div>
     <div data-role="main" class="ui-content page-main">
         <div>
+            <!--header-->
             <div class="admin-main-title">
                 <div class="main-title-img">
                     <div></div>
@@ -31,10 +32,10 @@
                 <div class="main-title-text">
                     <div class="title-text-row1">
                         <div>
-                            <span>總機</span><span class="title-text-status">暫停服務</span>&nbsp;
+                            <span>總機</span><span class="title-text-status"></span>&nbsp;
                             <span id="adminSettingBtn"></span>
                         </div>
-                        <div>11月30日星期五</div>
+                        <div class="admin-today-date"></div>
                     </div>
                     <div class="title-text-row2">
                         <div class="title-text-now"></div>
@@ -44,6 +45,7 @@
             </div>
             <!--dropdownlist:hidden-->
             <div id="adminSettingHidden"></div>
+            <!--tab-->
             <div class="admin-main-navbar">
                 <div class="active-navbar" data-type="today">
                     <div>本日</div>
@@ -56,88 +58,47 @@
             </div>
             <div class="admin-main-update">
                 <span>更新時間</span>&nbsp;
-                <span>2018/11/30 09:30</span>
+                <span class="admin-main-update-time"></span>
             </div>
             <!--本日-->
             <div class="admin-main-today">
-                <div class="today-no-data" style="display:none;">
-                    <span>本會議室</span><span>今日</span><span>暫無茶水預約</span>
+                <div class="today-no-data">
+                    <span>本日</span><span>暫無茶水預約</span>
                 </div>
                 <div>
                     <ul class="main-today-ul">
-                        <li class="today-list">
+                        <!-- <li class="today-list">
                             <div class="today-item">15:00 T01 添加茶5杯水5杯 / Allen.Z.Yuan</div>
                             <div class="today-handle">
                                 <div class="today-done-btn"></div>
                                 <div class="today-tel-btn"></div>
                             </div>
-                        </li>
-                        <li class="today-list">
-                            <div class="today-item">14:00 T01 添加茶5杯水5杯 / Benjemin</div>
-                            <div class="today-handle">
-                                <div class="today-done-btn"></div>
-                                <div class="today-tel-btn"></div>
-                            </div>
-                        </li>
-                        <li class="today-list">
-                            <div class="today-item">13:00 T03 添加茶5杯水5杯 / Samuel</div>
-                            <div class="today-handle">
-                                <div class="today-done-btn"></div>
-                                <div class="today-tel-btn"></div>
-                            </div>
-                        </li>
+                        </li> -->
                     </ul>
                     <ul class="main-complete-ul">
-                        <li class="complete-list">
+                        <!-- <li class="complete-list">
                             <div>14:00 T01 添加茶5杯水5杯 / Allen.Z.Yuan</div>
                             <div></div>
-                        </li>
-                        <li class="complete-list">
-                            <div>12:00 T02 添加茶10杯 / Alan.Tu</div>
-                            <div></div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
             <!--明日-->
-            <div class="admin-main-tomorrow" style="display:none;">
+            <div class="admin-main-tomorrow">
                 <div class="tomorrow-no-data">
-                    <span>本會議室</span><span>明日</span><span>暫無茶水預約</span>
+                    <span>明日</span><span>暫無茶水預約</span>
                 </div>
                 <div>
-                    <ul>
-                        <li class="tomorrow-list"></li>
+                    <ul class="main-tomorrow-ul">
+                        <!-- <li class="tomorrow-list">
+                            <div>13:00 T03 添加茶5杯水5杯 / Samuel</div>
+                        </li> -->
                     </ul>
                 </div>
             </div>
+            <!--Telephone-->
+            <div class="currentTelephone"></div>
         </div>
     </div>
-    <!--popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup adminStatus">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon btn-cancel'>
-                        <img src="img/component/close.png">
-                    </span>
-                </div>
-                <div class="font-style3 header-title">
-                    <input type="text" maxlength="12" placeholder="總機公告（限12字）">
-                </div>
-            </div>
-            <div class="main">
-                <!-- <p class="main-paragraph font-style11 font-color3"></p> -->
-                <ul>
-                    <li>服務中</li>
-                    <li>忙碌中</li>
-                    <li>暫停服務</li>
-                </ul>
-            </div>
-            <!-- <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">OK</div>
-                </div>
-            </div> -->
-        </div>
-    </div>
+    <div class="popup-msg-style" id="noTelephoneData">無該員工號碼</div>
 </div>

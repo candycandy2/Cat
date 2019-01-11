@@ -44,7 +44,7 @@ class QPayShopService
      * @param  string $pwd      password
      * @return boolean
      */
-    public function newQPayShop($name, $address, $tel, $loginId, $pwd){
+    public function newQPayShop($name, $address, $tel, $loginId, $pwd, $pwd_trade){
 
         $now = date('Y-m-d H:i:s',time());
 
@@ -52,12 +52,14 @@ class QPayShopService
             'cost' => '08',
         ];
         $pwdEncode = password_hash($pwd, PASSWORD_BCRYPT, $options);
+        $tradePwdEncode = password_hash($pwd_trade, PASSWORD_BCRYPT, $options);
 
         $data = ['emp_name'     =>$name,
                 'ext_no'        =>$tel,
                 'login_id'      =>$loginId,
                 'password'      =>$pwdEncode,
-                'emp_id'        =>$pwd,
+                'password_original' =>$pwdEncode,
+                'trade_pwd_original' =>$tradePwdEncode,
                 'emp_no'        =>$loginId,
                 'user_domain'   =>'shop',
                 'site_code'     =>'shop',
@@ -65,6 +67,7 @@ class QPayShopService
                 'department'    =>'shop',
                 'status'        =>'Y',
                 'resign'        =>'N',
+                'ad_flag'       =>'N',
                 'source_from'   =>'shop',
                 'created_at'    =>$now,
                 'created_user'  =>Auth::user()->row_id
@@ -73,6 +76,7 @@ class QPayShopService
 
         $shopInfo = [
                 'user_row_id'   =>$newUserId,
+                'trade_password'=>$tradePwdEncode,
                 'address'       =>$address,
                 'trade_status'  =>'N',
                 'created_at'    =>$now,
@@ -121,8 +125,32 @@ class QPayShopService
             return null;
         }
 
-        if($resetPwd == null){
-            $resetPwd = $user->emp_id;
+        if ($resetPwd == null) {
+            $pwd = $user->password_original;
+        } else {
+            $options = [
+                'cost' => '08',
+            ];
+
+            $pwd = password_hash($resetPwd, PASSWORD_BCRYPT, $options);
+        }
+
+        return $this->userRepository->resetQAccountPassword($userId, $pwd, Auth::user()->row_id, $updatedAt);
+    }
+
+    /**
+     * Update Trade Password
+     * @param  int $userId       qp_user.row_id
+     * @param  string $resetPwd  the password which will be updated to
+     * @param  string $updatedAt update time
+     * @return boolean
+     */
+    public function updateTradePwd($userId, $resetPwd, $updatedAt){
+
+        $user = $this->userRepository->getUserInfo($userId);
+
+        if(is_null($user)){
+            return null;
         }
 
         $options = [
@@ -130,8 +158,8 @@ class QPayShopService
         ];
 
         $pwd = password_hash($resetPwd, PASSWORD_BCRYPT, $options);
-        
-        return $this->userRepository->resetQAccountPassword($userId, $pwd, Auth::user()->row_id, $updatedAt);
+
+        return $this->qpayShopRepository->updateTradePassword($userId, $pwd, Auth::user()->row_id, $updatedAt);
     }
 
     /**

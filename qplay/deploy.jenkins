@@ -1,3 +1,168 @@
+<strong>Jan-11-19 00:36:23</strong>
+- Reason : daily build, 711
+- Commit# : 
+
+
+<strong>Jan-10-19 00:35:11</strong>
+- Reason : daily build, 710
+- Commit# : 
+8d0f48e81 - CleoWChan, 8 hours ago : [Status API] add back route group
+db35cc537 - CleoWChan, 15 hours ago : [QForum] Fix bug
+5971ae102 - CleoWChan, 15 hours ago : [Status API] add note
+
+<strong>Jan-09-19 00:40:11</strong>
+- Reason : daily build, 709
+- Commit# : 
+
+
+<strong>Jan-08-19 00:36:24</strong>
+- Reason : daily build, 708
+- Commit# : 
+324840da0 - Darren Ti, 7 hours ago : [QPlayDoc]Update Status_API/PESPIS_EmpService_Status
+
+<strong>Jan-07-19 00:35:42</strong>
+- Reason : daily build, 707
+- Commit# : 
+
+
+<strong>Jan-06-19 00:36:10</strong>
+- Reason : daily build, 706
+- Commit# : 
+
+
+<strong>Jan-05-19 00:36:39</strong>
+- Reason : daily build, 705
+- Commit# : 
+
+
+<strong>Jan-04-19 00:36:01</strong>
+- Reason : daily build, 704
+- Commit# : 
+f1337c793 - Darren Ti, 11 hours ago : [QPlayDoc]Update QPlay DB Schema
+
+<strong>Jan-03-19 00:35:19</strong>
+- Reason : daily build, 703
+- Commit# : 
+d34f66fbe - CleoWChan, 9 hours ago : [EmpService] Phase 1 fix bug of getMyReserve API
+08adf7d6f - CleoWChan, 9 hours ago : [Status API] Phase1 Add deleteStatus
+9a5dff457 - CleoWChan, 14 hours ago : [Status API] Phase 1 fix bug of validate message
+
+<strong>Jan-02-19 00:37:20</strong>
+- Reason : daily build, 702
+- Commit# : 
+
+
+<strong>Jan-01-19 00:35:20</strong>
+- Reason : daily build, 701
+- Commit# : 
+
+
+<strong>Dec-31-18 00:35:49</strong>
+- Reason : daily build, 700
+- Commit# : 
+
+
+<strong>Dec-30-18 00:35:58</strong>
+- Reason : daily build, 699
+- Commit# : 
+
+
+<strong>Dec-29-18 00:35:44</strong>
+- Reason : daily build, 698
+- Commit# : 
+3a1c26b24 - CleoWChan, 13 hours ago : [EmpService] Phase1 Add deleteEmpService
+f370ff6f6 - Darren Ti, 13 hours ago : [QPay]Overwrite CSS of Bootstrap
+81f0813da - Darren Ti, 14 hours ago : [QPay]Backend- Add Trade Pwd for Shop
+
+<strong>Dec-28-18 00:35:42</strong>
+- Reason : daily build, 697
+- Commit# : 
+77cc6a898 - Darren Ti, 14 hours ago : [QPlayDoc]Status API-PESPIS & API Spec
+
+<strong>Dec-27-18 00:35:19</strong>
+- Reason : daily build, 696
+- Commit# : 
+a2f46511e - CleoWChan, 14 hours ago : [EmpService] fix bug of PR #3786
+1c0307a34 - CleoWChan, 15 hours ago : [EmpService] Phase1 add get reserve APIs order by
+f2918d7dd - CleoWChan, 16 hours ago : [EmpService] Phase1 fix start_date end_date validation
+
+<strong>Dec-26-18 00:39:34</strong>
+- Reason : daily build, 695
+- Commit# : 
+0db4b74b0 - Darren Ti, 10 hours ago : [QPay]Update for API of check emp_no data type
+d0bdd8792 - CleoWChan, 10 hours ago : [EmpService] Phase1 add comment
+a9602b6f1 - CleoWChan, 11 hours ago : [EmpService] Add setReserveComplete and fix bug
+05692af4c - Darren Ti, 15 hours ago : [QPlayDoc]Update Doc
+e1850daca - CleoWChan, 16 hours ago : [EmpService] fix bug getLastCreatedUser
+
+<strong>Dec-25-18 00:35:54</strong>
+- Reason : daily build, 694
+- Commit# : 
+
+
+<strong>Dec-24-18 00:35:22</strong>
+- Reason : daily build, 693
+- Commit# : 
+
+
+<strong>Dec-23-18 00:36:04</strong>
+- Reason : daily build, 692
+- Commit# : 
+
+
+<strong>Dec-22-18 00:35:47</strong>
+- Reason : daily build, 691
+- Commit# : 
+e4b7f3eea - Darren Ti, 10 hours ago : [QPay]FixBug-set timezone by another way
+
+<strong>Dec-21-18 00:36:49</strong>
+- Reason : daily build, 690
+- Commit# : 
+f502fbc51 - CleoWChan, 13 hours ago : [EmpService] Phase1 fix bug getEmpServiceTargetList
+
+<strong>Dec-20-18 10:47:02</strong>
+- Reason : daily build, 689
+- Commit# : 
+a71cf4081 - CleoWChan, 24 hours ago : [EmpService] add getEmpServiceTargetList API
+470779657 - Darren Ti, 2 days ago : [QPlay]Remove `qp_user`.emp_id
+8a528b75f - CleoWChan, 2 days ago : [EmpService] add getEmpServiceList API
+44d618b69 - Darren Ti, 6 days ago : [QPlayDoc]Update PESPIS-ServiceAPI+StatusAPI
+df66012cf - Darren Ti, 6 days ago : [QPlay]Update for `qp_user`.ad_flag
+15e60305a - CleoWChan, 7 days ago : [EmpService] Add setEmpServiceTarget API
+3e828bf4f - CleoWChan, 7 days ago : [EmpService] fix bug of newEmpService
+7ec8eec86 - CleoWChan, 7 days ago : [EmpService] fix Models timestamps attribute
+9a6093a61 - CleoWChan, 7 days ago : [EmpService] remove lower case request data
+
+<strong>Dec-20-18 00:39:13</strong>
+- Reason : daily build, 688
+- Commit# : 
+
+
+<strong>Dec-19-18 00:40:45</strong>
+- Reason : daily build, 687
+- Commit# : 
+
+
+<strong>Dec-18-18 00:34:36</strong>
+- Reason : daily build, 686
+- Commit# : 
+
+
+<strong>Dec-17-18 00:35:42</strong>
+- Reason : daily build, 685
+- Commit# : 
+
+
+<strong>Dec-16-18 00:39:48</strong>
+- Reason : daily build, 684
+- Commit# : 
+
+
+<strong>Dec-15-18 00:35:01</strong>
+- Reason : daily build, 683
+- Commit# : 
+
+
 <strong>Dec-14-18 00:36:49</strong>
 - Reason : daily build, 682
 - Commit# : 
