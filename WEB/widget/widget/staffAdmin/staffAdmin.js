@@ -10,15 +10,17 @@ var staffAdminWidget = {
                 //2.img
                 var teaImg = $('<img>').attr('src', serverURL + '/widget/widget/staffAdmin/img/widget_tea.png');
                 $('.staff-icon').html('').append(teaImg);
-                var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/staffAdmin/img/more_green.png');
-                $('.staff-admin-more').html('').append(moreImg);
-                //3.update
-                $('.staff-update-time').text(updateTime());
+                // var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/staffAdmin/img/more_green.png');
+                // $('.staff-admin-more').html('').append(moreImg);
+                // //3.update
+                // $('.staff-update-time').text(updateTime());
+                let staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
+                $('.staffAdmin-img').html('').append(staffIcon);
 
             }, "html");
 
             //点击更多，跳转到快速叫茶
-            contentItem.on('click', '.staff-admin-more', function() {
+            contentItem.on('click', '.staff-admin-more, div.staffAdmin-btn', function() {
                 var targetPage = $('.adminStaffMenu .active-menu').data('view');
                 checkWidgetPage(targetPage, pageVisitedList);
             });
