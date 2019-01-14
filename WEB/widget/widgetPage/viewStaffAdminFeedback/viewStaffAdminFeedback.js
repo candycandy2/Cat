@@ -3,7 +3,7 @@ $("#viewStaffAdminFeedback").pagecontainer({
 
         let imgURL = '/widget/widgetPage/viewStaffAdminFeedback/img/',
             staffKey = 'appempservice';
-        
+
         //获取所有反馈问题
         function getFAQPostList() {
             let faqBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffFAQ']['board_id'].toString();

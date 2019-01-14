@@ -46,6 +46,7 @@ $("#viewStaffUserNotice").pagecontainer({
             }();
         }
 
+
         /********************************** page event ***********************************/
         $("#viewStaffUserNotice").on("pagebeforeshow", function(event, ui) {
 

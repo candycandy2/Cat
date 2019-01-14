@@ -3,6 +3,8 @@
     width: 100vw;
     padding: 0 !important;
     position: fixed;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .admin-feedback-list{
