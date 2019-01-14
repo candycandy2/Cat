@@ -1,0 +1,37 @@
+/********************************************** viewInsuranceMain *********************************************/
+
+#mainTab > div > div.ui-radio label {
+    line-height: 1;
+    border: 1px solid #2a88bc !important;
+    border-left-width: 0 !important;
+    background-color: #fff !important;
+}
+
+#mainTab > div > div.ui-radio:nth-of-type(1) label{
+    border-left-width: 1px !important;
+}
+
+#mainTab > div > div.ui-radio label.ui-btn-active {
+    background-color: #2a88bc !important;
+    color: white !important;
+}
+
+#mainTab.ui-radio-50w div.ui-radio {
+    width: 30.6vw !important;
+}
+
+#mainTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
+
+#groupIndurancePDF {
+    color:#2e89bc;
+    margin-left:3.71vw;
+    display: flex;
+}
+
+.dowloadPDF {
+    background: url('../viewInsuranceMain/img/btn_qplay_download.png') no-repeat;
+    background-size: 8%;
+    margin-left:2.066vw;
+    width: 8%;
+    align-self: center;
+}
