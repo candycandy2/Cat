@@ -420,8 +420,9 @@ $("#viewStaffAdminMain").pagecontainer({
                 if(data['ResultCode'] == '1') {
                     //只取第一个电话号码
                     let tel = $.trim(data['Content'][0]['Ext_No']).split(';')[0];
-                    $('.currentTelephone').html('').append('<a href="tel:' + tel + '">' + tel + '</a>');
-                    $('.currentTelephone a')[0].click();
+                    // $('.currentTelephone').html('').append('<a href="tel://' + tel + '" id="targetTelephone">' + tel + '</a>');
+                    // document.getElementById('targetTelephone').click();
+                    window.location.href = "tel://" + tel;
                     //Email测试
                     // let mail = $.trim(data['Content'][0]['EMail']);
                     // $('.currentTelephone').html('').append('<a href="mailto:' + mail + '?subject=會議室協調_12/26">' + mail + '</a>');

@@ -224,8 +224,8 @@ $("#viewStaffUserMain").pagecontainer({
                 //console.log(data);
 
                 if(data['result_code'] == '1') {
-                    let arr = data['content']['data_list'];
 
+                    let arr = data['content']['data_list'];
                     if(arr.length > 0) {
                         $('.today-room-none').hide();
 
@@ -243,10 +243,9 @@ $("#viewStaffUserMain").pagecontainer({
                                 '</span></li>';
                         }
 
-                        $('.today-room-list ul').html('').append(content);
+                        $('.today-room-list ul').append(content);
 
                     } else {
-                        $('.today-room-list ul').html('');
                         $('.today-room-none').show();
                     }
                 }
@@ -258,6 +257,8 @@ $("#viewStaffUserMain").pagecontainer({
                 //更新时间
                 let nowTime = new Date().yyyymmdd('/') + ' ' + getTimeBySecond();
                 $('.user-main-update-time').text(nowTime);
+                //清空列表
+                $('.today-room-list ul').html('');
                 //API
                 EmpServicePlugin.QPlayAPI("POST", "getTargetReserveData", self.successCallback, self.failCallback, queryData, '');
             }();
@@ -307,7 +308,7 @@ $("#viewStaffUserMain").pagecontainer({
                     //預約成功後初始化
                     initCountData();
                     //刷新数据
-                    $('.refreshTargetRoom').trigger('click');
+                    $('.refreshTargetRoom').trigger('tap');
                 }
                 
             };
@@ -422,12 +423,19 @@ $("#viewStaffUserMain").pagecontainer({
 
         /********************************** dom event *************************************/
         //更新总机状态
-        $('.update-service').on('click', function() {
+        $('.update-service').on('tap', function() {
+            //添加旋转动画
+            $('.update-service div:eq(1)').addClass('refresh-rotate');
+            //判断是否在服务时段
             var needStatus = checkAdminWorkTime();
             if(needStatus) {
                 //获取总机状态
                 getStaffStatus();
             }
+            //取消旋转动画
+            setTimeout(function(){
+                $('.update-service div:eq(1)').removeClass('refresh-rotate');
+            }, 800);
         });
 
         //切换会议室
@@ -442,9 +450,16 @@ $("#viewStaffUserMain").pagecontainer({
         });
 
         //刷新當前room的預約
-        $('.refreshTargetRoom').on('click', function() {
+        $('.refreshTargetRoom').on('tap', function() {
+            //添加旋转动画
+            $('.refreshTargetRoom').addClass('refresh-rotate');
             //再次点击已选的会议室，主动触发select onchange事件getReserveByTarget()
             $('#userChooseRoom-option-list li.tpl-dropdown-list-selected').trigger('click');
+            //取消旋转动画
+            setTimeout(function(){
+                $('.refreshTargetRoom').removeClass('refresh-rotate');
+            }, 800);
+            
         });
 
         //单选茶还是水
@@ -464,13 +479,13 @@ $("#viewStaffUserMain").pagecontainer({
         });
 
         //加法-茶水
-        $('.add-tea-count .count-select').on('click', '.tea-addition, .water-addition', function() {
+        $('.add-tea-count .count-select').on('tap', '.tea-addition, .water-addition', function() {
             let teaType = $(this).parent().data('type');
             additionCount(teaType);
         });
 
         //减法-茶水
-        $('.add-tea-count .count-select').on('click', '.tea-subtraction, .water-subtraction', function() {
+        $('.add-tea-count .count-select').on('tap', '.tea-subtraction, .water-subtraction', function() {
             let teaType = $(this).parent().data('type');
             subtractionCount(teaType);
         });
