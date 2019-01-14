@@ -3,6 +3,7 @@
     width: 100vw;
     padding: 0 !important;
     position: fixed;
+    -webkit-overflow-scrolling: touch;
 }
 
 .admin-main-title{
@@ -266,10 +267,6 @@
     background: #F9F9F9;
     overflow: hidden;
 }
-
-/* .currentTelephone{
-    display: none;
-} */
 
 .adminStatus .header-title-main{
     text-align: right;

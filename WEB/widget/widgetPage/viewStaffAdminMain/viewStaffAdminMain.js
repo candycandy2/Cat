@@ -11,8 +11,9 @@ $("#viewStaffAdminMain").pagecontainer({
                 {id: 0, item: '暫停服務'},
             ],
             status_row_id,
-            pullControl = null,
-            refreshInterval = null;
+            adminRefresh = null,
+            refreshInterval = null,
+            headerHeight;
 
         //获取当前时间并精确到秒
         function getTimeSec() {
@@ -420,8 +421,6 @@ $("#viewStaffAdminMain").pagecontainer({
                 if(data['ResultCode'] == '1') {
                     //只取第一个电话号码
                     let tel = $.trim(data['Content'][0]['Ext_No']).split(';')[0];
-                    // $('.currentTelephone').html('').append('<a href="tel://' + tel + '" id="targetTelephone">' + tel + '</a>');
-                    // document.getElementById('targetTelephone').click();
                     window.location.href = "tel://" + tel;
                     //Email测试
                     // let mail = $.trim(data['Content'][0]['EMail']);
@@ -439,6 +438,32 @@ $("#viewStaffAdminMain").pagecontainer({
             }();
         }
 
+        //scroll事件
+        $('#viewStaffAdminMain .page-main').on('scroll', function() {
+            let mainTop = $('#viewStaffAdminMain .page-main > div').offset().top;
+            if(device.platform === "iOS") {
+                mainTop -= iOSFixedTopPX();
+            }
+            //判断是否需要下拉更新
+            if(Math.abs(mainTop - headerHeight) < 3) {
+                if(adminRefresh == null) {
+                    adminRefresh = PullToRefresh.init({
+                        mainElement: '.admin-main-update',
+                        onRefresh: function() {
+                            getTodayAllReserve();
+                            getTomorrowAllReserve();
+                        }
+                    });
+                }
+            } else {
+                if(adminRefresh != null) {
+                    adminRefresh.destroy();
+                    $('#viewStaffAdminMain .ptr--ptr').remove();
+                    adminRefresh = null;
+                }
+            }
+        });
+
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminMain").on("pagebeforeshow", function(event, ui) {
@@ -450,6 +475,7 @@ $("#viewStaffAdminMain").pagecontainer({
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminMain .page-main').css('height', mainHeight);
             $('.admin-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
+            headerHeight = $('#viewStaffAdminMain .page-header').height();
             //初始化总机状态设定dropdownlist
             initAdminSetting();
             //是否有总机状态
@@ -459,13 +485,13 @@ $("#viewStaffAdminMain").pagecontainer({
             //获取所有staff的board主题
             getBoardType();
             //pull refresh
-            pullControl = PullToRefresh.init({
-                mainElement: '.admin-main-update',
-                onRefresh: function() {
-                    getTodayAllReserve();
-                    getTomorrowAllReserve();
-                }
-            });
+            // adminRefresh = PullToRefresh.init({
+            //     mainElement: '.admin-main-update',
+            //     onRefresh: function() {
+            //         getTodayAllReserve();
+            //         getTomorrowAllReserve();
+            //     }
+            // });
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
@@ -483,6 +509,12 @@ $("#viewStaffAdminMain").pagecontainer({
             if(refreshInterval != null) {
                 clearInterval(refreshInterval);
                 refreshInterval = null;
+            }
+            //去除下拉更新
+            if(adminRefresh != null) {
+                adminRefresh.destroy();
+                $('#viewStaffAdminMain .ptr--ptr').remove();
+                adminRefresh = null;
             }
         });
 
