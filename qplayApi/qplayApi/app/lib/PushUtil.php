@@ -66,26 +66,51 @@ class PushUtil
         return $result;
     }
 
-    public static function PushMessageWithJPushWebAPI($message_title, $message_text, $to, $parameter = '', $send_by_tag = false, $appKey = null) {
+    public static function PushMessageWithJPushWebAPI($message_title, $message_text, $to, $parameter = '', $send_by_tag = false, $appKey = null, $sendWithContent) 
+    {
+
         $result = array();
         $result["result"] = true;
         $response = null;
-        if(is_null($appKey)){
+
+        if (is_null($appKey)) {
             $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
-        }else{
+        } else {
             $appName = CommonUtil::getProjectName($appKey);
             $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
             $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
             $client = new JPush($appId, $masterSecret);
         }
+
         try {
             $platform = array('ios', 'android');
 
-            $alert_ios = array(
-                'title' => $message_title,
-                'body' => $message_text
-            );
-            $alert_android = $message_text;
+            if ($sendWithContent) {
+                $alert_ios = array(
+                    'title' => $message_title,
+                    'body' => $message_text
+                );
+                $alert_android = $message_text;
+
+                $android_notification = array(
+                    'title' => $message_title,
+                    'extras' => array(
+                        'Parameter'=> $parameter
+                    ),
+                );
+
+                $content = $message_text;
+            } else {
+                $alert = $message_title;
+
+                $android_notification = array(
+                    'extras' => array(
+                        'Parameter'=> $parameter
+                    ),
+                );
+
+                $content = $message_title;
+            }
 
             $ios_notification = array(
                 'sound' => 'default',
@@ -94,14 +119,7 @@ class PushUtil
                     'Parameter'=> $parameter
                 ),
             );
-            $android_notification = array(
-                'title' => $message_title,
-                'extras' => array(
-                    'Parameter'=> $parameter
-                ),
-            );
 
-            $content = $message_text;
             $message = array(
                 'title' => $message_title,
                 'content_type' => 'text',
@@ -109,71 +127,118 @@ class PushUtil
                     'Parameter'=> $parameter
                 ),
             );
+
             $time2live =  Config::get('app.time_to_live',864000);
             $apnsFlag = Config::get('app.apns_flag',true);
             $options = array(
                 'time_to_live'=>$time2live,
                 'apns_production'=>$apnsFlag
             );
-            if($send_by_tag) {
-                $response = $client->push()->setPlatform($platform)
-                    ->addTag($to)
-                    ->setNotificationAlert("")
-                    ->iosNotification($alert_ios, $ios_notification)
-                    ->androidNotification($alert_android, $android_notification)
-                    ->message($content, $message)
-                    ->options($options)
-                    ->send();
+
+            if ($sendWithContent) {
+                if ($send_by_tag) {
+                    $response = $client->push()->setPlatform($platform)
+                        ->addTag($to)
+                        ->setNotificationAlert("")
+                        ->iosNotification($alert_ios, $ios_notification)
+                        ->androidNotification($alert_android, $android_notification)
+                        ->message($content, $message)
+                        ->options($options)
+                        ->send();
+                } else {
+                    $response = $client->push()->setPlatform($platform)
+                        ->addRegistrationId($to)
+                        ->setNotificationAlert("")
+                        ->iosNotification($alert_ios, $ios_notification)
+                        ->androidNotification($alert_android, $android_notification)
+                        ->message($content, $message)
+                        ->options($options)
+                        ->send();
+                }
             } else {
-                $response = $client->push()->setPlatform($platform)
-                    ->addRegistrationId($to)
-                    ->setNotificationAlert("")
-                    ->iosNotification($alert_ios, $ios_notification)
-                    ->androidNotification($alert_android, $android_notification)
-                    ->message($content, $message)
-                    ->options($options)
-                    ->send();
+                if ($send_by_tag) {
+                    $response = $client->push()->setPlatform($platform)
+                        ->addTag($to)
+                        ->iosNotification($alert, $ios_notification)
+                        ->androidNotification($alert, $android_notification)
+                        ->message($content, $message)
+                        ->options($options)
+                        ->send();
+                } else {
+                    $response = $client->push()->setPlatform($platform)
+                        ->addRegistrationId($to)
+                        ->iosNotification($alert, $ios_notification)
+                        ->androidNotification($alert, $android_notification)
+                        ->message($content, $message)
+                        ->options($options)
+                        ->send();
+                }
             }
         } catch (APIConnectionException $e) {
             $result["result"] = false;
             $result["info"] = "APIConnection Exception occurred".$e;
-        }catch (APIRequestException $e) {
+        } catch (APIRequestException $e) {
             $result["result"] = false;
             $result["info"] = "APIRequest Exception occurred:".$e;
-        }catch (JPushException $e) {
+        } catch (JPushException $e) {
             $result["result"] = false;
             $result["info"] = "JPush Exception occurred";
-        }catch (\ErrorException $e) {
+        } catch (\ErrorException $e) {
             $result["result"] = false;
             $result["info"] = "Error Exception occurred";
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $result["result"] = false;
             $result["info"] = "Exception occurred";
         }
         return $result;
     }
 
-    public static function PushScheduleMessageWithJPushWebAPI($schedule_name, $schedule_datetime, $message_title, $message_text, $to, $parameter = '', $send_by_tag = false, $appKey = null) {
+    public static function PushScheduleMessageWithJPushWebAPI($schedule_name, $schedule_datetime, $message_title, $message_text, $to, $parameter = '', $send_by_tag = false, $appKey = null, $sendWithContent) 
+    {
+
         $result = array();
         $result["result"] = true;
         $result["info"] = "success";
         $response = null;
-        if(is_null($appKey)){
+
+        if (is_null($appKey)) {
             $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
-        }else{
+        } else {
             $appName = CommonUtil::getProjectName($appKey);
             $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
             $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
             $client = new JPush($appId, $masterSecret);
         }
+
         try {
             $platform = array('ios', 'android');
 
-            $alert_ios = array(
-                'title' => $message_title,
-                'body' => $message_text
-            );
-            $alert_android = $message_text;
+            if ($sendWithContent) {
+                $alert_ios = array(
+                    'title' => $message_title,
+                    'body' => $message_text
+                );
+                $alert_android = $message_text;
+
+                $android_notification = array(
+                    'title' => $message_title,
+                    'extras' => array(
+                        'Parameter'=> $parameter
+                    ),
+                );
+
+                $content = $message_text;
+            } else {
+                $alert = $message_title;
+
+                $android_notification = array(
+                    'extras' => array(
+                        'Parameter'=> $parameter
+                    ),
+                );
+
+                $content = $message_title;
+            }
 
             $ios_notification = array(
                 'sound' => 'default',
@@ -182,13 +247,7 @@ class PushUtil
                     'Parameter'=> $parameter
                 ),
             );
-            $android_notification = array(
-                'extras' => array(
-                    'Parameter'=> $parameter
-                ),
-            );
 
-            $content = $message_text;
             $scheduleName = $schedule_name; //time();//$message;
             $message = array(
                 'title' => $message_title,
@@ -197,32 +256,56 @@ class PushUtil
                     'Parameter'=> $parameter
                 ),
             );
+
             $time2live =  Config::get('app.time_to_live',864000);
             $apnsFlag = Config::get('app.apns_flag',true);
             $options = array(
                 'time_to_live'=>$time2live,
                 'apns_production'=>$apnsFlag
             );
-            if($send_by_tag) {
-                $payload = $client->push()
-                    ->setPlatform($platform)
-                    ->setNotificationAlert("")
-                    ->iosNotification($alert_ios, $ios_notification)
-                    ->androidNotification($alert_android, $android_notification)
-                    ->message($content, $message)
-                    ->options($options)
-                    ->addTag($to) //以Tag发送
-                    ->build();
+
+            if ($sendWithContent) {
+                if ($send_by_tag) {
+                    $payload = $client->push()
+                        ->setPlatform($platform)
+                        ->setNotificationAlert("")
+                        ->iosNotification($alert_ios, $ios_notification)
+                        ->androidNotification($alert_android, $android_notification)
+                        ->message($content, $message)
+                        ->options($options)
+                        ->addTag($to) //以Tag发送
+                        ->build();
+                } else {
+                    $payload = $client->push()
+                        ->setPlatform($platform)
+                        ->setNotificationAlert("")
+                        ->iosNotification($alert_ios, $ios_notification)
+                        ->androidNotification($alert_android, $android_notification)
+                        ->message($content, $message)
+                        ->options($options)
+                        ->addRegistrationId($to)  //以注册ID发送
+                        ->build();
+                }
             } else {
-                $payload = $client->push()
-                    ->setPlatform($platform)
-                    ->setNotificationAlert("")
-                    ->iosNotification($alert_ios, $ios_notification)
-                    ->androidNotification($alert_android, $android_notification)
-                    ->message($content, $message)
-                    ->options($options)
-                    ->addRegistrationId($to)  //以注册ID发送
-                    ->build();
+                if($send_by_tag) {
+                    $payload = $client->push()
+                        ->setPlatform($platform)
+                        ->iosNotification($alert, $ios_notification)
+                        ->androidNotification($alert, $android_notification)
+                        ->message($content, $message)
+                        ->options($options)
+                        ->addTag($to) //以Tag发送
+                        ->build();
+                } else {
+                    $payload = $client->push()
+                        ->setPlatform($platform)
+                        ->iosNotification($alert, $ios_notification)
+                        ->androidNotification($alert, $android_notification)
+                        ->message($content, $message)
+                        ->options($options)
+                        ->addRegistrationId($to)  //以注册ID发送
+                        ->build();
+                }
             }
 
             $schedule = $client->schedule();
@@ -238,16 +321,16 @@ class PushUtil
         } catch (APIConnectionException $e) {
             $result["result"] = false;
             $result["info"] = "APIConnection Exception occurred:".$e->getMessage();
-        }catch (APIRequestException $e) {
+        } catch (APIRequestException $e) {
             $result["result"] = false;
             $result["info"] = "APIRequest Exception occurred:".$e->getMessage();
-        }catch (JPushException $e) {
+        } catch (JPushException $e) {
             $result["result"] = false;
             $result["info"] = "JPush Exception occurred:".$e->getMessage();
-        }catch (\ErrorException $e) {
+        } catch (\ErrorException $e) {
             $result["result"] = false;
             $result["info"] = "Error Exception occurred:".$e->getMessage();
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $result["result"] = false;
             $result["info"] = "Exception occurred:".$e->getMessage();
         }
@@ -427,9 +510,9 @@ class PushUtil
      * @param  Array  $queryParam 
      * @return json               訊息推播結果
      */
-    public static function sendPushMessage($from, Array $to, $title, $text, $extra, Array $queryParam=[])
+    public static function sendPushMessageWithContent($from, Array $to, $title, $text, $extra, Array $queryParam=[])
     {
-            $apiFunction = 'sendPushMessage';
+            $apiFunction = 'sendPushMessageWithContent';
             $signatureTime = time();
             $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
 

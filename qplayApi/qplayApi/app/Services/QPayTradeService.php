@@ -353,7 +353,7 @@ class QPayTradeService
                     $text = str_replace("%2", $successTradeID, $text);
                     $extra = [];
 
-                    PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
+                    PushUtil::sendPushMessageWithContent($form, $to, $title, $text, $extra, $queryParam);
 
                     //Push for Emp
                     $to = array(
@@ -366,7 +366,7 @@ class QPayTradeService
                     $text = str_replace("%3", $successTradeID, $text);
                     $extra = [];
 
-                    PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
+                    PushUtil::sendPushMessageWithContent($form, $to, $title, $text, $extra, $queryParam);
                 }
 
                 DB::commit();
@@ -834,7 +834,7 @@ class QPayTradeService
                     $text = str_replace("%2", $successTradeID, $text);
                     $extra = [];
 
-                    PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
+                    PushUtil::sendPushMessageWithContent($form, $to, $title, $text, $extra, $queryParam);
 
                     //Push for Emp
                     $userEmp = CommonUtil::getUserInfoByRowID($pointData[0]->user_row_id);
@@ -849,7 +849,7 @@ class QPayTradeService
                     $text = str_replace("%3", $successTradeID, $text);
                     $extra = [];
 
-                    PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
+                    PushUtil::sendPushMessageWithContent($form, $to, $title, $text, $extra, $queryParam);
                 }
 
                 DB::commit();

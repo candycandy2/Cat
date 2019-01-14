@@ -2455,8 +2455,13 @@ SQL;
             return response()->json($result);
         }
     }
-    
-    public function sendPushMessage()
+
+    public function sendPushMessageWithContent()
+    {
+        self::sendPushMessage(true);
+    }
+
+    public function sendPushMessage($sendWithContent = false)
     {
         $Verify = new Verify();
         $verifyResult = $Verify->verifyCustom(false);
@@ -2649,10 +2654,10 @@ SQL;
                                     }
                                 }
 
-                                if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $message_text, $to, $extraParam, true, $pushAppKey);
+                                if ($isSchedule) {
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $message_text, $to, $extraParam, true, $pushAppKey, $sendWithContent);
                                 } else {
-                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $message_text, $to, $extraParam, true, $pushAppKey);
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $message_text, $to, $extraParam, true, $pushAppKey, $sendWithContent);
                                 }
 
                                 if(!$result["result"]) {
@@ -2874,10 +2879,10 @@ SQL;
                                     }
                                 }
 
-                                if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $message_text, $to, $extraParam, false, $pushAppKey);
+                                if ($isSchedule) {
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $message_text, $to, $extraParam, false, $pushAppKey, $sendWithContent);
                                 } else {
-                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $message_text, $to, $extraParam, false, $pushAppKey);
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $message_text, $to, $extraParam, false, $pushAppKey, $sendWithContent);
                                 }
                                 if(!$result["result"]) {
                                     if($showInMessageList){
