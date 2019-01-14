@@ -350,7 +350,7 @@
 }
 
 .service-offline>div>div:nth-of-type(2){
-    width: 30vw;
+    width: 24vw;
     height: 6vw;
     margin: 1vw auto;
 }
@@ -364,16 +364,15 @@
     width: 18vw;
     color: #3399CC;
     font-size: 3.14vw;
-    text-align: right;
+    text-align: center;
     line-height: 6vw;
     text-decoration: underline;
 }
 
 .service-offline>div>div:nth-of-type(2)>div:nth-of-type(2){
-    width: 8vw;
+    width: 6vw;
     background: url(img/loading_blue.png) no-repeat;
     background-size: 6vw;
-    background-position: 2vw;
 }
 
 #userChooseRoom{
@@ -407,4 +406,9 @@
 .adminBusyPopup .ui-content>.header,
 .adminBusyPopup .ui-content>.footer{
     margin-top: 8vw;
+}
+
+.refresh-rotate {
+    transform: rotate(360deg);
+    transition: all 0.75s;
 }
