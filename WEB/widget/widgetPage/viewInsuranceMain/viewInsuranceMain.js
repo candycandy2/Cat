@@ -9,7 +9,7 @@ var encryptConfig = {
     password: "currentUserPassword"
 };
 
-$("#viewMain").pagecontainer({
+$("#viewInsuranceMain").pagecontainer({
     create: function(event, ui) {
         //page init
         /********************************** function *************************************/
@@ -17,7 +17,7 @@ $("#viewMain").pagecontainer({
 
         /********************************** page event *************************************/
 
-        $("#viewMain").on("pageshow", function(event, ui) {  
+        $("#viewInsuranceMain").on("pageshow", function(event, ui) {  
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
