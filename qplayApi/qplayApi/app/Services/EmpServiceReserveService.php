@@ -84,7 +84,7 @@ class EmpServiceReserveService
         foreach ($pushList as $item) {
             $from = $item['from'];
             $to = (array)$item['to'];
-            PushUtil::sendPushMessage($from, $to, $title, $text, $extra, $queryParam);
+            PushUtil::sendPushMessageWithContent($from, $to, $title, $text, $extra, $queryParam);
         }
         
         return [$result,$logData];
