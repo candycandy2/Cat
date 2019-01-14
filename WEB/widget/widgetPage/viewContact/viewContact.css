@@ -1,5 +1,10 @@
 /********************************** viewContact *************************************/
 
+#backContactInfo {
+    width: 4.934VW;
+    display: none;
+}
+
 .q-result-grid {
     text-align: center;
 }

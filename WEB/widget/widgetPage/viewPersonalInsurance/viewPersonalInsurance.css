@@ -1,5 +1,10 @@
 /********************************************** PersonalInsurace *********************************************/
 
+#backMain {
+    width: 4.934VW;
+    display: none;
+}
+
 .health-insur-list {
     width: 86.5vw;
     height: 14.5vw;
@@ -187,3 +192,14 @@
     padding: 0 5.36vw;
     margin: 0 0 8.5vw;
 }
+
+#pageInsurStatus-1, #pageInsurStatus-2 { margin-left: 0 !important; margin-right: 0 !important;}
+
+#pageInsurStatus-1 div.ui-select {
+    width: 45vw !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 3vh 0 3vh 0;
+}
+
+#insurTab{ margin-top: 3.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
