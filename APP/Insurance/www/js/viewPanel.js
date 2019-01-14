@@ -33,7 +33,8 @@ $(document).one("pagebeforeshow", function() {
     }
 
     $("#mypanel #mypanelviewMain").on("click", function() {
-        changePageByPanel("viewMain");
+        //changePageByPanel("viewMain");
+        checkWidgetPage('viewInsuranceMain', visitedPageList);
     });
 
     $("#mypanel #mypanelviewPersonalInsurance").on("click", function() {

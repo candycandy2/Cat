@@ -4,8 +4,8 @@ var initialAppName = "Insurance";
 var appKeyOriginal = "appinsurance";
 var appKey = "appinsurance";
 var appSecretKey = "e85c0c548016c12b5ef56244067ab616";
-var pageList = ["viewMain", "viewPanel"];
-var visitedPageList = ["viewMain"];
+var pageList = ["viewPanel"];
+var visitedPageList = [];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var viewListInit = true, viewSignupInit = true;
 var clickEditSettingID = '';
@@ -21,7 +21,8 @@ var familyNo = 'NULL';
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
     //loadingMask("show");
-    $.mobile.changePage('#viewMain');
+    //$.mobile.changePage('#viewMain');
+    checkWidgetPage('viewInsuranceMain', visitedPageList);
     if (device.platform === "iOS") {
         $('.page-main').css({'padding-top': '0.1vw'});
     }
