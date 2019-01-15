@@ -489,6 +489,16 @@ $("#viewStaffAdminMain").pagecontainer({
             getStaffEmpService();
             //获取所有staff的board主题
             getBoardType();
+            //下拉更新
+            if(adminRefresh == null) {
+                adminRefresh = PullToRefresh.init({
+                    mainElement: '.admin-main-update',
+                    onRefresh: function() {
+                        getTodayAllReserve();
+                        getTomorrowAllReserve();
+                    }
+                });
+            }
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
