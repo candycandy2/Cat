@@ -2,7 +2,7 @@
 var panel = htmlContent
         +'<div data-role="panel" id="mypanel" data-display="overlay" style="position:fixed;">'
         +   '<div class="ios-fix-overlap-div"></div>'
-        +   '<div class="panel-content" id="mypanelviewMain">'
+        +   '<div class="panel-content" id="mypanelviewInsuranceMain">'
         //+       '<span class="panel-text">保險概要</span>'
         +       '<span class="panel-text">' + langStr["str_050"] + '</span>'
         +   '</div>'
@@ -14,7 +14,7 @@ var panel = htmlContent
         //+       '<span class="panel-text">眷屬資料維護</span>'
         +       '<span class="panel-text">' + langStr["str_052"] + '</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewContact">'
+        +   '<div class="panel-content" id="mypanelviewInsuranceContact">'
         //+       '<span class="panel-text">服務窗口</span>'
         +       '<span class="panel-text">' + langStr["str_053"] + '</span>'
         +   '</div>'
@@ -24,15 +24,15 @@ var panel = htmlContent
 $(document).one("pagebeforeshow", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
-    $("#mypanel #mypanelviewMain").css("background", "#503f81");
-    $("#mypanel #mypanelviewMain").css("color", "#fff");
+    $("#mypanel #mypanelviewInsuranceMain").css("background", "#503f81");
+    $("#mypanel #mypanelviewInsuranceMain").css("color", "#fff");
 
     if (device.platform === "iOS") {
-        $("#mypanelviewMain").css("margin-top", "20px");
+        $("#mypanelviewInsuranceMain").css("margin-top", "20px");
         $(".page-mask").css("top", "20px");
     }
 
-    $("#mypanel #mypanelviewMain").on("click", function() {
+    $("#mypanel #mypanelviewInsuranceMain").on("click", function() {
         //changePageByPanel("viewMain");
         checkWidgetPage('viewInsuranceMain', visitedPageList);
     });
@@ -48,9 +48,9 @@ $(document).one("pagebeforeshow", function() {
         checkWidgetPage('viewFamilyData', visitedPageList);
     });
 
-    $("#mypanel #mypanelviewContact").on("click", function() {
+    $("#mypanel #mypanelviewInsuranceContact").on("click", function() {
         //changePageByPanel("viewContact");
-        checkWidgetPage('viewContact', visitedPageList);
+        checkWidgetPage('viewInsuranceContact', visitedPageList);
     });
 
     $(".menu-btn .insuranceMenu").on("click", function() {
