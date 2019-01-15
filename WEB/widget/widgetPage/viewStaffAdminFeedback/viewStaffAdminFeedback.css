@@ -33,6 +33,16 @@
     -webkit-line-clamp: 2;
 }
 
+.no-feedback-data{
+    width: 100vw;
+    height: 150vw;
+    text-align: center;
+    line-height: 40;
+    color: #666666;
+    font-size: 3.14vw;
+    display: none;
+}
+
 .unread{
     font-weight: bold;
 }

@@ -221,7 +221,7 @@ $("#viewStaffAdminMain").pagecontainer({
                 } else if(data['result_code'] == '1') {
                     let arr = data['content']['service_type_list'];
 
-                    //1. 先找到staff服务
+                    //1.先找到staff服务
                     let staffArr = [];
                     for(var i in arr) {
                         if(arr[i]['service_type'] == staffServiceType) {
@@ -230,7 +230,7 @@ $("#viewStaffAdminMain").pagecontainer({
                         }
                     }
 
-                    //2. 再找到meetingroom服务
+                    //2.再找到meetingroom服务
                     let serviceArr = [];
                     for(var i in staffArr) {
                         if(staffArr[i]['service_id'] == staffServiceID) {
@@ -239,10 +239,15 @@ $("#viewStaffAdminMain").pagecontainer({
                         }
                     }
 
-                    //3. save to session
+                    //3.排序
+                    serviceArr.sort(function(a, b) {
+                        return a['target_id'].localeCompare(b['target_id']);
+                    });
+
+                    //4.save to session
                     window.sessionStorage.setItem('meetingroomServiceTargetList', JSON.stringify(serviceArr));
 
-                    //4. 获取当日和明日所有预约
+                    //5.获取当日和明日所有预约
                     getTodayAllReserve();
                     getTomorrowAllReserve();
                 }
@@ -484,14 +489,6 @@ $("#viewStaffAdminMain").pagecontainer({
             getStaffEmpService();
             //获取所有staff的board主题
             getBoardType();
-            //pull refresh
-            // adminRefresh = PullToRefresh.init({
-            //     mainElement: '.admin-main-update',
-            //     onRefresh: function() {
-            //         getTodayAllReserve();
-            //         getTomorrowAllReserve();
-            //     }
-            // });
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {

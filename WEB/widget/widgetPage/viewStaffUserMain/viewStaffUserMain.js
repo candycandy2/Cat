@@ -151,7 +151,7 @@ $("#viewStaffUserMain").pagecontainer({
                 if(data['result_code'] == '1') {
                     let arr = data['content']['service_type_list'];
 
-                    //1. 先找到staff服务
+                    //1.先找到staff服务
                     let staffArr = [];
                     for(var i in arr) {
                         if(arr[i]['service_type'] == staffType) {
@@ -160,7 +160,7 @@ $("#viewStaffUserMain").pagecontainer({
                         }
                     }
 
-                    //2. 再找到meetingroom服务
+                    //2.再找到meetingroom服务
                     let serviceArr = [];
                     for(var i in staffArr) {
                         if(staffArr[i]['service_id'] == staffService) {
@@ -169,10 +169,15 @@ $("#viewStaffUserMain").pagecontainer({
                         }
                     }
 
-                    //3. save to session
+                    //3.排序
+                    serviceArr.sort(function(a, b) {
+                        return a['target_id'].localeCompare(b['target_id']);
+                    });
+
+                    //4.save to session
                     window.sessionStorage.setItem('meetingroomServiceTargetList', JSON.stringify(serviceArr));
 
-                    //4. meetingroom dropdownlist
+                    //5.meetingroom dropdownlist
                     initMeetingRoomDropDdown(serviceArr);
                 }
             };
