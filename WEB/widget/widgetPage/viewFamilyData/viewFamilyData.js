@@ -513,9 +513,8 @@ $("#viewFamilyData").pagecontainer({
             $("#mypanelviewFamilyData").removeAttr("style");
             $("#mypanel #mypanelviewPersonalInsurance").css("background", "#503f81");
             $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
-            nextPage = "addDetail";
-            $.mobile.changePage("#viewApplyInsurance");    
-            checkWidgetPage('viewApplyInsurance', visitedPageList);
+            nextPage = "addDetail"; 
+            checkWidgetPage('viewInsuranceApply', visitedPageList);
         }
         
         /********************************** page event *************************************/
