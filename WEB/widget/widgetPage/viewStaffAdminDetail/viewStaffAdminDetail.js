@@ -111,6 +111,9 @@ $("#viewStaffAdminDetail").pagecontainer({
                 if(data['ResultCode'] == '1') {
                     //删除成功跳转会上一页
                     onBackKeyDown();
+                } else if(data['ResultCode'] == '047906') {
+                    //无权删除
+                    $("#noAllowDelete").fadeIn(100).delay(2000).fadeOut(100);
                 }
             };
 

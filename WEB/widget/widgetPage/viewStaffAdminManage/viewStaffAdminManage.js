@@ -2,8 +2,8 @@ $("#viewStaffAdminManage").pagecontainer({
     create: function(event, ui) {
 
         var imgURL = '/widget/widgetPage/viewStaffAdminManage/img/',
-            limitMeetingRoom = ['T00', 'T13'],//限制预定会议室
             siteMeetingRoom,//BQT所有会议室
+            bqtSiteCode = '2',
             targetMeetingRoom = JSON.parse(window.sessionStorage.getItem('meetingroomServiceTargetList'));//已选择的会议室，通过API获得
 
         function getMeetingRoom() {
@@ -22,7 +22,7 @@ $("#viewStaffAdminManage").pagecontainer({
                     window.localStorage.setItem('AllMeetingRoomData', JSON.stringify(meetingRoomObj));
 
                     //1.获取BQT所有会议室，代号2
-                    siteMeetingRoom = getMeetingRoomBySite(meetingRoomArr, limitMeetingRoom, '2');
+                    siteMeetingRoom = getMeetingRoomBySite(meetingRoomArr, bqtSiteCode);
                     //2.根据楼层生成dropdownlist
                     createFloorSelect(siteMeetingRoom);
                 }
@@ -36,7 +36,7 @@ $("#viewStaffAdminManage").pagecontainer({
                     CustomAPI("POST", true, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "");
                 } else {
                     //1.获取BQT所有会议室，代号2
-                    siteMeetingRoom = getMeetingRoomBySite(meetingRoomData['content'], limitMeetingRoom, '2');
+                    siteMeetingRoom = getMeetingRoomBySite(meetingRoomData['content'], bqtSiteCode);
                     //2.根据楼层生成dropdownlist
                     createFloorSelect(siteMeetingRoom);
                 }
@@ -44,26 +44,17 @@ $("#viewStaffAdminManage").pagecontainer({
         }
 
         //MeetingRoomSite: 1:QTY、2:BQT/QTT、43:双星、100:QTH
-        function getMeetingRoomBySite(arr, limit, site) {
+        function getMeetingRoomBySite(arr, site) {
             var siteObj = {};
             for(var i in arr) {
                 //找site
                 if(site == arr[i]['MeetingRoomSite']) {
-                    var status = false;
-                    for(var j in limit) {
-                        //找limit
-                        if(arr[i]['MeetingRoomName'] == limit[j]) {
-                            status = true;
-                            break;
-                        }
+                    //找floor
+                    if(typeof siteObj[arr[i]['MeetingRoomFloor']] == 'undefined') {
+                        siteObj[arr[i]['MeetingRoomFloor']] = [];
                     }
-                    if(!status) {
-                        //找floor
-                        if(typeof siteObj[arr[i]['MeetingRoomFloor']] == 'undefined') {
-                            siteObj[arr[i]['MeetingRoomFloor']] = [];
-                        }
-                        siteObj[arr[i]['MeetingRoomFloor']].push(arr[i]);
-                    }
+                    siteObj[arr[i]['MeetingRoomFloor']].push(arr[i]);
+                    
                 }
             }
 
