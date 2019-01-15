@@ -3,11 +3,6 @@ var url = "";
 var mimeType = "application/pdf";
 var options = {};
 var tab1ScrollHeight = false, tab2ScrollHeight = false, tab3ScrollHeight = false;
-var encryptConfig = {
-    clientId: "myAppName",
-    username: "currentUser",
-    password: "currentUserPassword"
-};
 
 $("#viewInsuranceMain").pagecontainer({
     create: function(event, ui) {
@@ -17,6 +12,16 @@ $("#viewInsuranceMain").pagecontainer({
 
         /********************************** page event *************************************/
 
+        $("#viewInsuranceMain").one("pageshow", function(event, ui) {  
+            $.get(serverURL + "/widget/widgetPage/viewInsurancePanel/viewInsurancePanel.html", function(data) {
+                $.mobile.pageContainer.append(data);
+                //ios top
+                if(device.platform === "iOS") {
+                    $('.insuranceMenu').css('top', iOSFixedTopPX().toString() + 'px');
+                }
+            }, "html");
+        });
+
         $("#viewInsuranceMain").on("pageshow", function(event, ui) {  
             $('#pageOne').show();
             $('#pageTwo').hide();
@@ -24,6 +29,15 @@ $("#viewInsuranceMain").pagecontainer({
             $("label[for=tab3]").removeClass('ui-btn-active');
             $("label[for=tab2]").removeClass('ui-btn-active');
             $("label[for=tab1]").addClass('ui-btn-active');
+            //去除上一頁菜單樣式
+            var prevPage = visitedPageList[visitedPageList.length - 2];
+            $("#mypanel" + " #mypanel" + prevPage).css("background", "#f6f6f6");
+            $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f");
+            //此頁添加菜單樣式
+            var nowPage = visitedPageList[visitedPageList.length - 1];
+            $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81");
+            $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
+
             activePageListID = visitedPageList[visitedPageList.length - 1];   
             scrollClassName = 'insur-main-scroll';       
             if (!tab1ScrollHeight) {         
