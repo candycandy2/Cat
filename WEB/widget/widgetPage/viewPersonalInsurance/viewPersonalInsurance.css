@@ -202,4 +202,19 @@
     padding: 3vh 0 3vh 0;
 }
 
+#insurTab > div > div.ui-radio label {  
+    line-height: 1 !important;  
+    border: 1px solid #2c89bc !important;   
+    padding: 2.8vw 0 2.6vw; 
+}   
+
+ #insurTab > div > div.ui-radio label.ui-btn-active {   
+    background-color: #2c89bc !important;   
+    color: white !important;    
+}   
+
+ #insurTab.ui-radio-50w div.ui-radio {  
+    width: 46vw !important; 
+}
+
 #insurTab{ margin-top: 3.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
