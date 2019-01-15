@@ -296,7 +296,7 @@ $("#viewPersonalInsurance").pagecontainer({
         }
 
         /********************************** page event *************************************/
-        $("#viewPersonalInsurance").one("pagebeforeshow", function(event, ui) {
+        $("#viewPersonalInsurance").one("pageshow", function(event, ui) {
             $('#pageInsurStatus-1').show();
             $('#pageInsurStatus-2').hide();
             $("label[for=fam-insur-tab-2]").removeClass('ui-btn-active');
