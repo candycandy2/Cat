@@ -7,14 +7,14 @@ var insurStaff = [{cName:"陳毓慈", site:"台北", ext:"0918-930118", time:"�
                   {cName:"黃千芩", site:"桃園", ext:"0958-946371", time:"星期一、星期四 12:00~13:20", room:"2F OK旁走廊", email:"vivi732329@gmail.com"}];
 var contactScrollHeight = false;
 
-$("#viewContact").pagecontainer({
+$("#viewInsuranceContact").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
         function QueryContactInfo() {
             var hrHtmlContent = "";
             var insurHtmlContent = "";
-            var imgURL = "/widget/widgetPage/viewContact/img/";
+            var imgURL = "/widget/widgetPage/viewInsuranceContact/img/";
             for (var i=0; i<HR.length; i++){
                 var hrContent = hrHtmlContent
                     + '<li>'
@@ -76,11 +76,11 @@ $("#viewContact").pagecontainer({
         } 
 
         /********************************** page event *************************************/
-        $("#viewContact").on("pagebeforeshow", function(event, ui){
+        $("#viewInsuranceContact").on("pagebeforeshow", function(event, ui){
 
         });
 
-        $("#viewContact").on("pageshow", function(event, ui) {
+        $("#viewInsuranceContact").on("pageshow", function(event, ui) {
             loadingMask("hide");
             activePageListID = visitedPageList[visitedPageList.length - 1];   
             scrollClassName = 'insur-contactinfo-scroll';
@@ -103,7 +103,7 @@ $("#viewContact").pagecontainer({
             $('.contact-info').hide();
             $('.contact-detail').show();
             $('#backContactInfo').show();
-            $('#viewContact .insuranceMenu').hide();
+            $('#viewInsuranceContact .insuranceMenu').hide();
             var hrID = $(this).find('div > p > a:nth-child(1)').attr('value'); 
             var DetailHtmlContent = ""          
             DetailHtmlContent += '<div class="name font-style1">' + HR[hrID].eName + '</div>'                  
@@ -132,7 +132,7 @@ $("#viewContact").pagecontainer({
             $('.contact-info').hide();
             $('.contact-detail').show();
             $('#backContactInfo').show();
-            $('#viewContact .insuranceMenu').hide();
+            $('#viewInsuranceContact .insuranceMenu').hide();
             var insurID = $(this).find('div > p > a:nth-child(1)').attr('value');   
             var DetailHtmlContent = ""          
             DetailHtmlContent += '<div class="name font-style1">' + insurStaff[insurID].cName + '</div>'                  
@@ -161,10 +161,10 @@ $("#viewContact").pagecontainer({
             $('.contact-info').show();
             $('.contact-detail').hide();
             $('#backContactInfo').hide(); 
-            $('#viewContact .insuranceMenu').show();         
+            $('#viewInsuranceContact .insuranceMenu').show();         
         });
 
-        $(document).on('click', '#viewContact .insuranceMenu', function() {
+        $(document).on('click', '#viewInsuranceContact .insuranceMenu', function() {
             $("#mypanel").panel("open");
             $(".page-mask").show();
         })
