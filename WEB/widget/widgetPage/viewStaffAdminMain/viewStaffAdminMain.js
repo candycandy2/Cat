@@ -6,9 +6,9 @@ $("#viewStaffAdminMain").pagecontainer({
             staffServiceType = 'staff',//茶水服务类型
             staffKey = 'appempservice',
             statusList = [
-                {id: 1, item: '服務中'},
-                {id: 2, item: '忙碌中'},
-                {id: 0, item: '暫停服務'},
+                {id: 1, item: langStr['wgt_114']},
+                {id: 2, item: langStr['wgt_115']},
+                {id: 0, item: langStr['wgt_116']},
             ],
             status_row_id,
             adminRefresh = null,
@@ -28,8 +28,8 @@ $("#viewStaffAdminMain").pagecontainer({
             var settingData = {
                 id: "adminSettingPopup",
                 option: [],
-                title: '<input type="text" id="adminSettingNotice" maxlength="15" placeholder="總機公告(限15字)" />',
-                defaultText: '暫停服務',
+                title: '<input type="text" id="adminSettingNotice" maxlength="15" placeholder="' + langStr['wgt_122'] + '" />',
+                defaultText: langStr['wgt_116'],
                 defaultValue: 100,
                 changeDefaultText: true,
                 attr: {

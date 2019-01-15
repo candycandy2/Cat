@@ -84,7 +84,7 @@ $("#viewStaffAdminEditPreview").pagecontainer({
                     }
                     onBackKeyDown();
                 } else if(data['ResultCode'] == '047906') {
-                    //无权限修改他人内容
+                    //无权修改
                     $("#noAllowFix").fadeIn(100).delay(2000).fadeOut(100);
                 }
 
