@@ -1,5 +1,5 @@
 
-$("#viewApplyInsurance").pagecontainer({
+$("#viewInsuranceApply").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var applyDate, applyDateVal, reasonVal, subsidyVal, certiVal, cardVal, remarkVal, detailType, applyType = ""; 
@@ -96,7 +96,7 @@ $("#viewApplyInsurance").pagecontainer({
                     return item.name;
                 }
             });
-            //將QueryHealthInsuranceFamily回傳的值傳遞至viewApplyInsurance
+            //將QueryHealthInsuranceFamily回傳的值傳遞至viewInsuranceApply
             clickInsID = $.trim(clickFamilyData[0].ins_id);
             clickAppID = $.trim(clickFamilyData[0].app_id);
             clickFamilyID = $.trim(clickFamilyData[0].family_id);
@@ -133,7 +133,7 @@ $("#viewApplyInsurance").pagecontainer({
                 }
             };
             //生成申請加保reason dropdownlist
-            tplJS.DropdownList("viewApplyInsurance", "applyReason", "prepend", "typeB", applyReasonData);
+            tplJS.DropdownList("viewInsuranceApply", "applyReason", "prepend", "typeB", applyReasonData);
         }
 
         //退保原因DDL生成
@@ -167,7 +167,7 @@ $("#viewApplyInsurance").pagecontainer({
                 }
             };
             //生成申請加保reason dropdownlist
-            tplJS.DropdownList("viewApplyInsurance", "withdrawReason", "prepend", "typeB", withdrawReasonData);
+            tplJS.DropdownList("viewInsuranceApply", "withdrawReason", "prepend", "typeB", withdrawReasonData);
         }
 
         //停保原因DDL生成
@@ -193,7 +193,7 @@ $("#viewApplyInsurance").pagecontainer({
                 }
             };
             //生成申請加保reason dropdownlist
-            tplJS.DropdownList("viewApplyInsurance", "stopReason", "prepend", "typeB", stopReasonData);
+            tplJS.DropdownList("viewInsuranceApply", "stopReason", "prepend", "typeB", stopReasonData);
         }
 
         //復保原因DDL生成
@@ -218,7 +218,7 @@ $("#viewApplyInsurance").pagecontainer({
                 }
             };
             //生成申請加保reason dropdownlist
-            tplJS.DropdownList("viewApplyInsurance", "recoverReason", "prepend", "typeB", recoverReasonData);
+            tplJS.DropdownList("viewInsuranceApply", "recoverReason", "prepend", "typeB", recoverReasonData);
         }
 
         function setDefaultStatus(applyType) {
@@ -397,14 +397,14 @@ $("#viewApplyInsurance").pagecontainer({
         }
 
         /********************************** page event *************************************/
-        $("#viewApplyInsurance").one("pageshow", function (event, ui) {
+        $("#viewInsuranceApply").one("pageshow", function (event, ui) {
             if (device.platform === "iOS") {
                 $('.page-main').css({'padding-top': '0.1vw'});
             }
             $("#applyRemark").attr("placeholder", langStr["str_130"]);
         });
 
-        $("#viewApplyInsurance").on("pageshow", function (event, ui) {  
+        $("#viewInsuranceApply").on("pageshow", function (event, ui) {  
             $('.apply-insur-title').text("");   
             if (nextPage == "addDetail") {  
                 $('.apply-insur-title').text(langStr["str_111"]); 
@@ -569,7 +569,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $('#applyReason').on("click", function () {
-            $('#viewApplyInsurance').css({
+            $('#viewInsuranceApply').css({
                 'position': 'fixed'
             }); 
             $("#applyReason-popup-option-popup").css({
@@ -578,7 +578,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $('#withdrawReason').on("click", function () {
-            $('#viewApplyInsurance').css({
+            $('#viewInsuranceApply').css({
                 'position': 'fixed'
             }); 
             $("#withdrawReason-popup-option-popup").css({
@@ -587,7 +587,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $('#stopReason').on("click", function () {
-            $('#viewApplyInsurance').css({
+            $('#viewInsuranceApply').css({
                 'position': 'fixed'
             }); 
             $("#stopReason-popup-option-popup").css({
@@ -596,7 +596,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $('#recoverReason').on("click", function () {
-            $('#viewApplyInsurance').css({
+            $('#viewInsuranceApply').css({
                 'position': 'fixed'
             }); 
             $("#recoverReason-popup-option-popup").css({
@@ -735,7 +735,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
         
         $(document).on("popupafterclose", "#applyReason-popup-option", function() { 
-            $('#viewApplyInsurance').css({
+            $('#viewInsuranceApply').css({
                 'position': ''
             }); 
             $("#applyReason-popup-option-popup").css({
@@ -745,7 +745,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $(document).on("popupafterclose", "#withdrawReason-popup-option", function() { 
-            $('#viewApplyInsurance').css({
+            $('#viewInsuranceApply').css({
                 'position': ''
             }); 
             $("#withdrawReason-popup-option-popup").css({
@@ -755,7 +755,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $(document).on("popupafterclose", "#stopReason-popup-option", function() { 
-            $('#viewApplyInsurance').css({
+            $('#viewInsuranceApply').css({
                 'position': ''
             }); 
             $("#stopReason-popup-option-popup").css({
@@ -765,7 +765,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $(document).on("popupafterclose", "#recoverReason-popup-option", function() { 
-            $('#viewApplyInsurance').css({
+            $('#viewInsuranceApply').css({
                 'position': ''
             }); 
             $("#recoverReason-popup-option-popup").css({
