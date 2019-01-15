@@ -11,33 +11,28 @@ var weatherWidget = {
         }
 
         function setWeatherData() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
-            }
+            // if (navigator.geolocation) {
+            //     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
+            // }
+            var pos = {"coords":{"latitude":25.0811469,"longitude":121.56481370000006}};//QTT
+            locationSuccess(pos);
         }
 
         function locationSuccess(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
-            var searchtext = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='(" + lat + "," + lon + ")') and u='c'"
-            $.getJSON("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json").success(function(data) {
-                //console.log(data.query.results.channel);
-                var result = data.query.results.channel;
-                var city = result.location.city;
-                var region = result.location.region;
-                var wea = result.item.condition.text;
-                var temp = result.item.condition.temp;
-                var high = result.item.forecast[0].high;
-                var low = result.item.forecast[0].low;
-                var img = result.item.description.split('CDATA[')[1].split('<BR />')[0];
-
-                $(".current-temp").text(temp);
-                $(".high-temp").text(high);
-                $(".low-temp").text(low);
-                $(".loca-city").text(city);
-                $(".loca-text").text(wea);
-                $('.weather-img').html('').append(img);
-            });
+            $.getJSON("http://api.openweathermap.org/data/2.5/weather?units=metric&lang=zh_tw&q=taipei,tw&lat=" + lat + "&lon=" + lon + "&APPID=efc3a7bc381b3a08366d87a686e01812").success(
+                function(data) {
+                    //{"coord":{"lon":139,"lat":35},"weather":[{"id":520,"main":"Rain","description":"light intensity shower rain","icon":"09d"}],"base":"stations","main":{"temp":282.19,"pressure":1023,"humidity":100,"temp_min":281.15,"temp_max":283.15},"visibility":10000,"wind":{"speed":1,"deg":330},"clouds":{"all":75},"dt":1547512020,"sys":{"type":1,"id":8024,"message":0.0051,"country":"JP","sunrise":1547502702,"sunset":1547538895},"id":1851632,"name":"Shuzenji","cod":200}
+                    //http://jsoneditoronline.org/
+                    //https://openweathermap.org/current
+                    $(".current-temp").text(Math.round(data.main.temp));
+                    $(".high-temp").text(Math.round(data.main.temp_max));
+                    $(".low-temp").text(Math.round(data.main.temp_min));
+                    $(".loca-city").text(data.name);
+                    $(".loca-text").text(data.weather[0].description);
+                }
+            );
         }
 
         function locationError(error) {
