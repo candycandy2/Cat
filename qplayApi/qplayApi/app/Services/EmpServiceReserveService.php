@@ -74,6 +74,17 @@ class EmpServiceReserveService
         if(substr($push, 0, 1)){
             array_push($pushList,['from'=>$domain . "\\" . $loginId,
                                 'to'=>$managerDomain . "\\" . $managerLoginId]);
+
+            //20190116 Darren - For special case, Only can run correctly in Staging / Production
+            if ($managerLoginId == "QTTReceptionist") {
+                $specialManagerID = ["Mendy.MH.Lai", "Vinnie.YJ.Lin", "Joanna.YS.Weng"];
+                $specialManagerDomain = ["BenQ", "BenQ", "BenQ"];
+
+                foreach ($specialManagerID as $index => $val) {
+                    array_push($pushList,['from'=>$domain . "\\" . $loginId,
+                                'to'=>$specialManagerDomain[$index] . "\\" . $specialManagerID[$index]]);
+                }
+            }
         }
         //add to push to user
         if(substr($push, 1, 1)){
