@@ -457,6 +457,7 @@ $("#viewMessageList").pagecontainer({
             var self = this;
             var currentType = $(self).text();
             var lowerCase = $(self).attr('data-item');
+            var apiCategory = $(self).attr('api-category');
 
             if (lowerCase != messageType) {
                 //save type
@@ -475,11 +476,7 @@ $("#viewMessageList").pagecontainer({
                     //portal不用编辑
                     $('#editListview').hide();
                     showDiffMessageByType(messageType);
-                    if (lowerCase == 'idea') {
-                        QueryPortalList(lowerCase.toUpperCase());
-                    } else {
-                        QueryPortalList(currentType);
-                    }
+                    QueryPortalList(apiCategory);
                 }
             }
 
