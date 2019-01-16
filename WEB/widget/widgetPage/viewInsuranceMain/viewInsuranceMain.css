@@ -29,7 +29,11 @@
 }
 
 .dowloadPDF {
+    background: url(../viewInsuranceMain/img/btn_qplay_download.png) no-repeat;
+    background-size: 6.44vw;
+    background-position: 0;
     margin-left:2.066vw;
-    width: 8%;
-    align-self: center;
+    width: 6.44vw;
+    height: 6.44vw;
+    align-self: center; 
 }
