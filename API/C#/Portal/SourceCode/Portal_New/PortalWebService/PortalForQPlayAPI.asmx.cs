@@ -73,6 +73,9 @@ namespace PortalWebService
                         case "IDEA":
                             strSQL = " Select * From myBenQ_Talk_IDEA_View with(nolock) ";
                             break;
+                        case "LIFESTYLE":
+                            strSQL = " Select * From myBenQ_Talk_Lifestyle_View with(nolock) ";
+                            break;
                         default:
                             break;
 
