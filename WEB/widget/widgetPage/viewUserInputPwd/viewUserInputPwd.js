@@ -14,7 +14,7 @@ $("#viewUserInputPwd").pagecontainer({
             shop_id = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_id'];
             shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
 
-            var queryStr = '&emp_no=' + loginData['emp_no'] + '&price=' + trade_price + '&shop_id=' + shop_id;
+            var queryStr = '&emp_no=' + loginData['emp_no'] + '&price=' + trade_price + '&shop_id=' + shop_id + '&action=new';
 
             this.successCallback = function (data) {
                 console.log(data);

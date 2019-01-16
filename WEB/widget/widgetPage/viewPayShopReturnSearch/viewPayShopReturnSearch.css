@@ -1,0 +1,42 @@
+/*************************** viewPayShopReturnSearch ********************************/
+#viewPayShopReturnSearch .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+.return-search-row1{
+    width: 92.58vw;
+    padding: 6.5vw 3.71vw 2.14vw;
+    color: #253137;
+}
+
+.return-search-row2{
+    width: 92.58vw;
+    padding: 0 3.71vw 6vw;
+    color: #989898;
+}
+
+.return-search-row3 input{
+    border: none;
+    outline: none;
+    padding: 0;
+    background-color: #F9F9F9;
+}
+
+.return-search-row4{
+    width: 100vw;
+    height: 10vw;
+    padding: 10vw 0 0;
+}
+
+.return-search-row4 div{
+    width: 35.5vw;
+    height: 10vw;
+    margin: auto;
+    text-align: center;
+    line-height: 10.5vw;
+    background: #d6d6d6;
+    color: #989898;
+    font-size: 4.18vw;
+}
