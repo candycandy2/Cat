@@ -73,7 +73,7 @@ $("#viewNewsEvents2-3").pagecontainer({
         window.QueryPortalList = function(type) {
             (function(type) {
 
-                //type: Announcement, Communication, CIP, CSD, ITS
+                //type: Announcement, Communication, CIP, CSD, ITS, LIFESTYLE
                 var queryData = "<LayoutHeader><PortalCategory>" + type + "</PortalCategory></LayoutHeader>";
 
                 var successCallback = function(data) {

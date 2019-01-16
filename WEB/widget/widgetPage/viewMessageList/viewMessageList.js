@@ -15,7 +15,7 @@ $("#viewMessageList").pagecontainer({
         function QueryPortalList(type) {
             (function(type) {
 
-                //type: Announcement, Communication, CIP, CSD, ITS
+                //type: Announcement, Communication, CIP, CSD, ITS, LIFESTYLE
                 var queryData = "<LayoutHeader><PortalCategory>" + type + "</PortalCategory></LayoutHeader>";
 
                 var successCallback = function(data) {
@@ -124,6 +124,7 @@ $("#viewMessageList").pagecontainer({
                             $('div[data-item="cip"]').show();
                             $('div[data-item="csd"]').show();
                             $('div[data-item="its"]').show();
+                            $('div[data-item="lifestyle"]').show();
                         } else {
                             $('div[data-item="idea"]').hide();
                             $('div[data-item="announcement"]').hide();
@@ -131,6 +132,7 @@ $("#viewMessageList").pagecontainer({
                             $('div[data-item="cip"]').hide();
                             $('div[data-item="csd"]').hide();
                             $('div[data-item="its"]').hide();
+                            $('div[data-item="lifestyle"]').hide();
                         }
                         break;
                     }
@@ -142,6 +144,7 @@ $("#viewMessageList").pagecontainer({
                 $('div[data-item="cip"]').hide();
                 $('div[data-item="csd"]').hide();
                 $('div[data-item="its"]').hide();
+                $('div[data-item="lifestyle"]').hide();
             }
         }
 
