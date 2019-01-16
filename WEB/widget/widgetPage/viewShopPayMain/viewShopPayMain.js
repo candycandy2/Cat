@@ -1,11 +1,13 @@
 $("#viewShopPayMain").pagecontainer({
     create: function (event, ui) {
 
+        let imgURL = '/widget/widgetPage/viewShopPayMain/img/';
+
         function getQPayInfoShop() {
             var self = this;
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     //1. 消费券类型列表
@@ -60,6 +62,9 @@ $("#viewShopPayMain").pagecontainer({
             //头像和名称
             checkPhotoUpload($('#shopPhoto'));
             $('.name-shop').text(loginData['loginid']);
+            //img
+            $('.shop-return div:eq(0)').append('<img src="' + serverURL + imgURL + 'icon_return.png" width="100%">');
+            $('.shop-change div:eq(0)').append('<img src="' + serverURL + imgURL + 'icon_change.png" width="100%">');
             //API:获取店家信息
             getQPayInfoShop();
         });
@@ -82,6 +87,16 @@ $("#viewShopPayMain").pagecontainer({
         //店家记录
         $('.shop-record').on('click', function () {
             checkWidgetPage('viewShopQueryRecord', pageVisitedList);
+        });
+
+        //退货申请
+        $('.shop-return').on('click', function () {
+            checkWidgetPage('viewPayShopReturnSearch', pageVisitedList);
+        });
+
+        //更改交易密码
+        $('.shop-change').on('click', function () {
+            //checkWidgetPage('viewShopQueryRecord', pageVisitedList);
         });
 
 
