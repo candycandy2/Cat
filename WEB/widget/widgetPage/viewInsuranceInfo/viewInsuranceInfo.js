@@ -11,7 +11,7 @@
 var healthInsurArr = {};
 var tab1FamiScrollHeight = false, tab2FamiScrollHeight = false;
 
-$("#viewPersonalInsurance").pagecontainer({
+$("#viewInsuranceInfo").pagecontainer({
     create: function(event, ui) {
         //page init
         /********************************** function *************************************/
@@ -130,7 +130,7 @@ $("#viewPersonalInsurance").pagecontainer({
                         var dealwithStr, canapplyStr = "";
                         var inInsur= false;
                         var notInsur = false;
-                        var imgURL = "/widget/widgetPage/viewPersonalInsurance/img/"; 
+                        var imgURL = "/widget/widgetPage/viewInsuranceInfo/img/"; 
                         for (var i=0; i<healthInsurArr.length; i++ ) {
                             dealwithStr = $.trim(healthInsurArr[i]["dealwith"]);
                             canapplyStr = $.trim(healthInsurArr[i]["can_apply"]);
@@ -296,14 +296,14 @@ $("#viewPersonalInsurance").pagecontainer({
         }
 
         /********************************** page event *************************************/
-        $("#viewPersonalInsurance").one("pageshow", function(event, ui) {
+        $("#viewInsuranceInfo").one("pageshow", function(event, ui) {
             $('#pageInsurStatus-1').show();
             $('#pageInsurStatus-2').hide();
             $("label[for=fam-insur-tab-2]").removeClass('ui-btn-active');
             $("label[for=fam-insur-tab-1]").addClass('ui-btn-active');           
         });
 
-        $("#viewPersonalInsurance").on("pageshow", function(event, ui) { 
+        $("#viewInsuranceInfo").on("pageshow", function(event, ui) { 
             activePageListID = visitedPageList[visitedPageList.length - 1];
             scrollClassName = 'insur-personal-scroll';
             $('#pageInsurStatus-1').show();
@@ -405,7 +405,7 @@ $("#viewPersonalInsurance").pagecontainer({
             checkWidgetPage('viewInsuranceApply', visitedPageList);
         });   
 
-        $(document).on('click', '#viewPersonalInsurance .insuranceMenu', function() {
+        $(document).on('click', '#viewInsuranceInfo .insuranceMenu', function() {
             $("#mypanel").panel("open");
             $(".page-mask").show();
         })          

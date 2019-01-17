@@ -78,7 +78,7 @@ $("#viewInsuranceApply").pagecontainer({
             this.successCallback = function(data) {
                 if (data['ResultCode'] === "1") {
                     viewPersonalInsuranceShow = false;
-                    changePageByPanel("viewPersonalInsurance");
+                    changePageByPanel("viewInsuranceInfo");
                     $("#applyInsurDoneMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                 }
             };
@@ -526,7 +526,7 @@ $("#viewInsuranceApply").pagecontainer({
         });
 
         $("#backFamilyDataFromDetail").on("click", function () {
-            $("#mypanelviewPersonalInsurance").removeAttr("style");
+            $("#mypanelviewInsuranceInfo").removeAttr("style");
             $("#mypanel #mypanelviewInsuranceFamilyData").css("background", "#503f81");
             $("#mypanel #mypanelviewInsuranceFamilyData").css("color", "#fff");   
             checkWidgetPage('viewInsuranceFamilyData', visitedPageList);
@@ -543,8 +543,8 @@ $("#viewInsuranceApply").pagecontainer({
             var nowPage = visitedPageList[visitedPageList.length - 1];
             $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81");
             $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
-            checkWidgetPage('viewPersonalInsurance', visitedPageList); 
-            //$.mobile.changePage("#viewPersonalInsurance");
+            checkWidgetPage('viewInsuranceInfo', visitedPageList); 
+            //$.mobile.changePage("#viewInsuranceInfo");
         });
 
         //返回到保險申請，彈窗popup
@@ -666,7 +666,7 @@ $("#viewInsuranceApply").pagecontainer({
         $("#confirmCancelApplyBtn").on("click", function () {
             $('#backPersonalInsuranceFromApply').hide();
             //$.mobile.changePage("#viewPersonalInsurance"); 
-            checkWidgetPage('viewPersonalInsurance', visitedPageList);
+            checkWidgetPage('viewInsuranceInfo', visitedPageList);
         });
 
         //確定取消新增，跳轉至明細
