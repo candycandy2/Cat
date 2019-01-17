@@ -4,7 +4,6 @@ var initialAppName = "Insurance";
 var appKeyOriginal = "appinsurance";
 var appKey = "appinsurance";
 var appSecretKey = "e85c0c548016c12b5ef56244067ab616";
-var pageList = ["viewPanel"];
 var visitedPageList = [];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var viewListInit = true, viewSignupInit = true;
