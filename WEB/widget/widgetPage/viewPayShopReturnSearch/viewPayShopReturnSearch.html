@@ -24,10 +24,35 @@
                 <span class="langStr" data-id="wgt_151"></span>
             </div>
             <div class="return-search-row3">
-                <input type="number" id="returnTradeCode" data-role="none" placeholder="請輸入交易碼後六位數字">
+                <input type="number" id="returnTradeCode" data-role="none" placeholder="請輸入交易碼後六位數字" maxlength="6">
             </div>
             <div class="return-search-row4">
-                <div class="returnToReason">下一步</div>
+                <div class="returnToReason">
+                    <span class="langStr" data-id="wgt_018"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup tradeCodeFailPopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                </div>
+                <div class="font-style3 header-title">已通知相關單位處理:)</div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3 font-color3">請您再次確認輸入資料</p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <span class="langStr" data-id="wgt_050"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

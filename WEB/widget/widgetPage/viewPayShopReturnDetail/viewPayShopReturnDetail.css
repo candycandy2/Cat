@@ -1,0 +1,77 @@
+/*************************** viewPayShopReturnDetail ********************************/
+#viewPayShopReturnDetail .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+.return-detail-row1{
+    width: 92.58vw;
+    margin-left: 3.71vw;
+    padding-top: 4vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.return-detail-row2{
+    width: 92.58vw;
+    margin-left: 3.71vw;
+    padding-top: 4vw;
+}
+
+.return-detail-row1>div,
+.return-detail-row2>div{
+    padding-bottom: 2vw;
+    text-indent: 2vw;
+}
+
+.return-detail-row1>div:nth-of-type(1),
+.return-detail-row2>div:nth-of-type(1){
+    color: #253137;
+    font-size: 3.349vw;
+}
+
+.return-detail-row1>div:nth-of-type(2){
+    color: #2c87ba;
+    font-size: 4.18vw;
+}
+
+#qpayReturnReason select{
+    padding: 0;
+}
+
+.return-detail-row3{
+    position: absolute;
+    width: 100vw;
+    height: 10vw;
+    bottom: 15vw;
+    display: none;
+}
+
+.return-detail-row3>div{
+    width: 35.5vw;
+    height: 10vw;
+    margin: auto;
+    text-align: center;
+    line-height: 10.5vw;
+    background: #d6d6d6;
+    color: #989898;
+    font-size: 4.18vw;
+}
+
+.return-detail-textarea{
+    display: none;
+}
+
+.return-detail-textarea textarea{
+    width: 90.58vw;
+    height: 35vw !important;
+    max-width: 92.58vw;
+    max-height: 20vw;
+    resize: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    outline: none;
+    box-shadow: 0px 0px 0px rgba(0,0,0,0);
+    margin: 0 0 0 5.71vw;
+}

@@ -7,22 +7,29 @@ $("#viewPayShopReturnSearch").pagecontainer({
 
             let trade_id = $('#returnTradeCode').val();
             let shop_id = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_id'];
+            let shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
             let queryStr = '&trade_id=' + trade_id + '&shop_id=' + shop_id;
 
             this.successCallback = function (data) {
                 console.log(data);
 
                 if (data['result_code'] == '1') {
-                    
-                } else if(data['result_code'] == '000933') {
+                    let obj = {
+                        trade_shop: shop_name,
+                        trade_id: data['content']['trade_id'],
+                        trade_price: data['content']['trade_price'],
+                        trade_time: data['content']['trade_time']
+                    };
+                    checkWidgetPage('viewPayShopReturnDetail', pageVisitedList, obj);
+                } else if(data['result_code'] == '000939') {
                     //此交易码不存在
-                } else if(data['result_code'] == '000934') {
+                } else if(data['result_code'] == '000940') {
                     //交易码与店家不符
-                } else if(data['result_code'] == '000935') {
+                } else if(data['result_code'] == '000941') {
                     //交易逾期，超过7天
-                } else if(data['result_code'] == '000936') {
+                } else if(data['result_code'] == '000942') {
                     //已退款成功
-                } else if(data['result_code'] == '000937') {
+                } else if(data['result_code'] == '000943') {
                     //无法取消
                 }
             };
