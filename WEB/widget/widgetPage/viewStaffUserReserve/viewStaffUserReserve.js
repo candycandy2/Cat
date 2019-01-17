@@ -14,6 +14,8 @@ $("#viewStaffUserReserve").pagecontainer({
                 emp_no: loginData['emp_no'],
                 service_id: staffService,
                 service_type: staffType,
+                reserve_id: "20190118T01330", //undefined for reserve_unique
+                reserve_unique: true, //undefined for reserve_unique
                 start_date: new Date(new Date().yyyymmdd('/') + ' 00:00').getTime() / 1000,
                 end_date: new Date(new Date().yyyymmdd('/') + ' 00:00').getTime() / 1000 + 14 * 24 * 60 * 60
             });
