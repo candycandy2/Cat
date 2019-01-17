@@ -25,8 +25,8 @@ $("#viewInsurancePanel").pagecontainer({
 
         /********************************** dom event *************************************/
 
-        //调出菜单(如果需要在其他頁面使用，必須添加樣式staff-menu-btn)
-        $(document).on('click', '.staff-menu-btn', function() {
+        //调出菜单(如果需要在其他頁面使用，必須添加樣式insur-menu-btn)
+        $(document).on('click', '.insur-menu-btn', function() {
             $('.insuranceMenu').show();
             $('.insuranceMenu .staff-menu-main').animate({right: '40vw'}, 300);
         });
@@ -77,5 +77,5 @@ $("#viewInsurancePanel").pagecontainer({
             insurBackKey();
         });
         document.addEventListener("backbutton", insurBackKey, false);
-
+    }
 });
