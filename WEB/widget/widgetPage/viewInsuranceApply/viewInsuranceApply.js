@@ -409,7 +409,7 @@ $("#viewInsuranceApply").pagecontainer({
             if (nextPage == "addDetail") {  
                 $('.apply-insur-title').text(langStr["str_111"]); 
                 var prevPage = visitedPageList[visitedPageList.length - 2];
-                if ( prevPage == "viewFamilyData") {
+                if ( prevPage == "viewInsuranceFamilyData") {
                     $('#backFamilyDataFromDetail').show();
                     $('#backPersonalInsuranceFromApply').hide();
                 } else {
@@ -527,9 +527,9 @@ $("#viewInsuranceApply").pagecontainer({
 
         $("#backFamilyDataFromDetail").on("click", function () {
             $("#mypanelviewPersonalInsurance").removeAttr("style");
-            $("#mypanel #mypanelviewFamilyData").css("background", "#503f81");
-            $("#mypanel #mypanelviewFamilyData").css("color", "#fff");   
-            checkWidgetPage('viewFamilyData', visitedPageList);
+            $("#mypanel #mypanelviewInsuranceFamilyData").css("background", "#503f81");
+            $("#mypanel #mypanelviewInsuranceFamilyData").css("color", "#fff");   
+            checkWidgetPage('viewInsuranceFamilyData', visitedPageList);
         });
 
         //從保險明細返回到個人保險現況，
@@ -554,7 +554,7 @@ $("#viewInsuranceApply").pagecontainer({
             $('#backApplyInsurance').hide();
             $("#viewPreviewApplication").hide();
             var prevPage = visitedPageList[visitedPageList.length - 1] 
-            if (prevPage == "viewFamilyData") {
+            if (prevPage == "viewInsuranceFamilyData") {
                 $('#backFamilyDataFromDetail').show();
                 $('#backPersonalInsuranceFromApply').hide();
             } else {
