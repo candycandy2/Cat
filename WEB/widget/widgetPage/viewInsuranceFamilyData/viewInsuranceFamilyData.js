@@ -2,7 +2,7 @@
                 {family_id:"2", name:"王小美", relation:"父母", birthday:"1981/01/01", idtype:"0", idno:"A123456788"}]; */
 
 
-$("#viewFamilyData").pagecontainer({
+$("#viewInsuranceFamilyData").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var familyName, familyID , familyBirth, familyRelation, typeNo, addFamilyStatus = "";
@@ -95,7 +95,7 @@ $("#viewFamilyData").pagecontainer({
             var queryData = '<empid>'+ myEmpNo +'</empid>';
             this.successCallback = function(data) { 
                 //replace (familyArr != null) to (data["ResultCode"] == "1")  
-                var imgURL = "/widget/widgetPage/viewFamilyData/img/";    
+                var imgURL = "/widget/widgetPage/viewInsuranceFamilyData/img/";    
                 if (data["ResultCode"] == "1") {
                     familyArr = data["Content"].sort(sortByRelationship("relation", "name"));
                     var familyList = "";                   
@@ -293,7 +293,7 @@ $("#viewFamilyData").pagecontainer({
             relationshipData["option"][9]["text"] = langStr["str_091"];
 
             $("#relationshipDropdownlist").empty();
-            tplJS.DropdownList("viewFamilyData", "relationshipDropdownlist", "prepend", "typeB", relationshipData);
+            tplJS.DropdownList("viewInsuranceFamilyData", "relationshipDropdownlist", "prepend", "typeB", relationshipData);
 
             //證號類別
             idTypeData["option"][0] = {};
@@ -307,7 +307,7 @@ $("#viewFamilyData").pagecontainer({
             idTypeData["option"][2]["text"] = langStr["str_094"];
 
             $("#typeDropdownlist").empty();
-            tplJS.DropdownList("viewFamilyData", "typeDropdownlist", "prepend", "typeB", idTypeData);
+            tplJS.DropdownList("viewInsuranceFamilyData", "typeDropdownlist", "prepend", "typeB", idTypeData);
 
         }
 
@@ -361,7 +361,7 @@ $("#viewFamilyData").pagecontainer({
             $('#backFamilyList').hide();
             $(".family-save-btn").hide();
             $("#viewFamilyEdit").hide();
-            $('#viewFamilyData .insuranceMenu').show();
+            $('#viewInsuranceFamilyData .insuranceMenu').show();
             //After connect to API:QueryFamilyData, delete 'familyArr == null'
             if (familyArr.length == 0) {
                 $("#viewFamilyNone").show();
@@ -379,7 +379,7 @@ $("#viewFamilyData").pagecontainer({
 
         //“編輯”和“新增”的跳轉
         function changeViewToDetail() {
-            $("#viewFamilyData .insuranceMenu").hide();
+            $("#viewInsuranceFamilyData .insuranceMenu").hide();
             //After connect to API:QueryFamilyData, delete 'familyArr == null'
             if (familyArr.length == 0) {
                 $("#viewFamilyNone").hide();
@@ -510,7 +510,7 @@ $("#viewFamilyData").pagecontainer({
             clickAge = transferBirthToAge(familyBirth);
             clickBirth = $.trim(familyBirth);
             clickID = $.trim(familyID)
-            $("#mypanelviewFamilyData").removeAttr("style");
+            $("#mypanelviewInsuranceFamilyData").removeAttr("style");
             $("#mypanel #mypanelviewPersonalInsurance").css("background", "#503f81");
             $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
             nextPage = "addDetail"; 
@@ -518,11 +518,11 @@ $("#viewFamilyData").pagecontainer({
         }
         
         /********************************** page event *************************************/
-        $("#viewFamilyData").one("pageshow", function (event, ui) {
+        $("#viewInsuranceFamilyData").one("pageshow", function (event, ui) {
             setDropdownlistByFamily();
         });
 
-        $("#viewFamilyData").on("pageshow", function (event, ui) {
+        $("#viewInsuranceFamilyData").on("pageshow", function (event, ui) {
             loadingMask("show");
             activePageListID = visitedPageList[visitedPageList.length - 1];   
             scrollClassName = 'insur-family-scroll';
@@ -554,7 +554,7 @@ $("#viewFamilyData").pagecontainer({
         });
 
         /********************************** dom event *************************************/
-        $("#viewFamilyData").keypress(function (event) {
+        $("#viewInsuranceFamilyData").keypress(function (event) {
 
         });
 
@@ -747,13 +747,13 @@ $("#viewFamilyData").pagecontainer({
         });
 
         //點擊關係列表，觸發change事件
-        $("#viewFamilyData").on("click", "#relationship-popup-option ul li", function () {
+        $("#viewInsuranceFamilyData").on("click", "#relationship-popup-option ul li", function () {
             var self = $(this).text();
             $("#familyRelationship").val($.trim(self));
             checkFormByFamily();
         });
 
-        $("#viewFamilyData").on("popupafterclose", "#relationship-popup-option", function () {
+        $("#viewInsuranceFamilyData").on("popupafterclose", "#relationship-popup-option", function () {
             var self = $("#relationship-popup").val();
             if (self !== langStr["str_095"]) {
                 familyRelation = self;
@@ -770,13 +770,13 @@ $("#viewFamilyData").pagecontainer({
         });
 
         //點擊證號類別列表，觸發change事件
-        $("#viewFamilyData").on("click", "#idType-popup-option ul li", function () {
+        $("#viewInsuranceFamilyData").on("click", "#idType-popup-option ul li", function () {
             var self = $(this).text();
             $("#idType").val($.trim(self));
             checkFormByFamily();
         });
 
-        $("#viewFamilyData").on("popupafterclose", "#idType-popup-option", function () {
+        $("#viewInsuranceFamilyData").on("popupafterclose", "#idType-popup-option", function () {
             var self = $("#idType-popup").val();
             if (self !== langStr["str_095"]) {
                 typeNo = self;
@@ -807,7 +807,7 @@ $("#viewFamilyData").pagecontainer({
             checkFormByFamily();
         });
 
-        $(document).on('click', '#viewFamilyData .insuranceMenu', function() {
+        $(document).on('click', '#viewInsuranceFamilyData .insuranceMenu', function() {
             $("#mypanel").panel("open");
             $(".page-mask").show();
         })
