@@ -58,6 +58,12 @@
     color: #fff !important;
 }
 
+.dropdown-arrow-incline {
+    background: url('widget/qpay/img/dropdown_incline.png') right transparent;
+    background-size: 2vw 2vw;
+    background-repeat: no-repeat;
+}
+
 /******************** carousel ********************/
 .carousel-widget {
     width: 100vw !important;
