@@ -81,10 +81,10 @@ $("#viewInsuranceMain").pagecontainer({
             window.open(encodeURI(insurPDFUrl), '_system');          
         });  
 
-        $(document).on('click', '#viewInsuranceMain .insuranceMenu', function() {
+        /*$(document).on('click', '#viewInsuranceMain .insuranceMenu', function() {
             $("#mypanel").panel("open");
             $(".page-mask").show();
-        })           
+        }) */          
 
     }
 });

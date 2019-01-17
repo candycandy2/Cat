@@ -22,6 +22,9 @@ window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
     //loadingMask("show");
     //$.mobile.changePage('#viewMain');
+ 
+    loadScript(serverURL + "/widget/widgetPage/viewInsurancePanel/viewInsurancePanel.js");
+
     checkWidgetPage('viewInsuranceMain', visitedPageList);
     if (device.platform === "iOS") {
         $('.page-main').css({'padding-top': '0.1vw'});
@@ -31,6 +34,13 @@ window.initialSuccess = function() {
     document.removeEventListener("backbutton", onBackKeyDown, false);
     //监听本页自己的backkey logic
     document.addEventListener("backbutton", onBackKeyDownSpecial, false);
+}
+
+function loadScript(url) {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = url;
+    document.body.appendChild(script);
 }
 
 function onBackKeyDownSpecial() {
