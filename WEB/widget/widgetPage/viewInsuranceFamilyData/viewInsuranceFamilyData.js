@@ -511,8 +511,8 @@ $("#viewInsuranceFamilyData").pagecontainer({
             clickBirth = $.trim(familyBirth);
             clickID = $.trim(familyID)
             $("#mypanelviewInsuranceFamilyData").removeAttr("style");
-            $("#mypanel #mypanelviewPersonalInsurance").css("background", "#503f81");
-            $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
+            $("#mypanel #mypanelviewInsuranceInfo").css("background", "#503f81");
+            $("#mypanel #mypanelviewInsuranceInfo").css("color", "#fff");   
             nextPage = "addDetail"; 
             checkWidgetPage('viewInsuranceApply', visitedPageList);
         }

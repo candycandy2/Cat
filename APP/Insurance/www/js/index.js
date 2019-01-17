@@ -81,7 +81,7 @@ function onBackKeyDownSpecial() {
             $("label[for=tab2]").removeClass('ui-btn-active');
             $("label[for=tab3]").removeClass('ui-btn-active');
         }
-    } else if (activePageID === "viewPersonalInsurance") {
+    } else if (activePageID === "viewInsuranceInfo") {
         if ($("label[for=fam-insur-tab-1]").hasClass("ui-btn-active")) {
             visitedPageList.pop();
             changePageByPanel(prePageID);
