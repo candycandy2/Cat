@@ -134,7 +134,9 @@
     z-index: 1;
 }
 
-.family-add-img img {
+.family-add-img div {
+    background: url(../viewInsuranceFamilyData/img/floating_add.png) no-repeat;
+    background-size: 13.848vw;
     width: 13.848vw;
     height: 13.848vw;
 }
@@ -169,9 +171,13 @@
 }
 
 .addInsuranceImg { 
+    background: url(../viewInsuranceFamilyData/img/btn_addfriend.png) no-repeat;
+    background-size: 8vw;
+    background-position: 0;
     margin-right: 3.2vw; 
     align-self:center; 
-    width: 13%;
+    width: 8vw;
+    height: 8vw;
     display: none;
 }
 
