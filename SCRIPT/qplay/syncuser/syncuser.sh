@@ -12,37 +12,27 @@
 #			   according to command parameter,pass env patameter to error_handle
 #   2018/07/23 Cleo.W.Chan Fix Bug
 #              if download file all fail,delete storage/app/syncuser folder
+#   2019/01/17 Cleo.W.Chan Modify API Link
+#              no longer need first parameter
 # assign dev/staging/production server address
 case $1 in
 	"staging")
         ServerADD=sa.benq.com
         Protocol='https'
         env='test'
-        if [ "$2" == "first" ]
-            then curlGetAddress="http://qplaytest.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
-        else
-            curlGetAddress="http://qplaytest.benq.com/qplayApi/public/v101/qplay/syncUserJob"
-        fi
+        curlGetAddress="http://qplaytest.benq.com/qplayApi/public/v101/qplay/syncUserJob"
         ;;
     "production")
         ServerADD=sa.benq.com
         Protocol='https'
         env=''
-        if [ "$2" == "first" ]
-            then curlGetAddress="http://qplay.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
-        else
-            curlGetAddress="http://qplay.benq.com/qplayApi/public/v101/qplay/syncUserJob"
-        fi
+        curlGetAddress="http://qplay.benq.com/qplayApi/public/v101/qplay/syncUserJob"
         ;;
     *) # dev or typo
         ServerADD=10.82.239.140
         Protocol='http'
         env='dev'
-        if [ "$2" == "first" ]
-            then curlGetAddress="http://qplaydev.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
-        else
-            curlGetAddress="http://qplaydev.benq.com/qplayApi/public/v101/qplay/syncUserJob"
-        fi
+        curlGetAddress="http://qplaydev.benq.com/qplayApi/public/v101/qplay/syncUserJob"
         ;;
 esac
 
@@ -52,10 +42,12 @@ echo 'start sync QPlay user : '$DATE
 #new log folder
 mkdir -p log
 # this array defined the which url need to sync, you can append as [$source_from]='$url'
+# if you want to add new source to parse, you also need to add qplayApi\config\syncuser.php
 declare -A arr
 arr+=(
 ["flower"]=$Protocol'://'$ServerADD'/QTunnel/Sync/'
 ["qcsflower"]=$Protocol'://'$ServerADD'/QTunnel/SyncQCS/'
+["ehr"]=$Protocol'://'$ServerADD'/QTunnel/SynceHR/'
 )
 
 for sourceFrom in ${!arr[@]}; do
@@ -90,6 +82,5 @@ for sourceFrom in ${!arr[@]}; do
     sleep 3
 done
     echo 'call syncUserJob ... '
-    #if fist time sync,please set first=Y to set source_from to user who are already in qp_user
     curl -X GET $curlGetAddress
 exit 0

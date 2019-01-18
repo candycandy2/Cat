@@ -35,6 +35,7 @@ class syncUserController extends Controller
      * @return json
      */
     public function syncUserJob(Request $request){
+
         Log::info('==========Start SyncUserJob==========');
         ini_set("memory_limit","2048M");
         set_time_limit(0);
@@ -48,47 +49,65 @@ class syncUserController extends Controller
 
             $files = Storage::allFiles($undo);
             foreach ($files as $fileName) {
+
                 Log::info('[Sync '.$sourceFrom.'-'.$fileName.']');
-                //1.1 read from excel and batch insert into user_sync and user_resign as temp
+                //User Data Sync - 1. read from excel and batch insert into user_sync and user_resign as temp
                 $readyToSync = $this->syncUserService->insertUserDataIntoTemp($fileName, $sourceFrom);
 
                 if( $readyToSync > 0){
                     Log::info('Ready To Sync: '.$readyToSync);
                 }
-                //1.2 merge qp_user_sync into qp_user
-                $first = false;
-                if((!is_null($request->input('first'))) && (strtolower($request->input('first')) == 'y')){
-                    $first = true;
-                }
-                //1.3 delete register information and Jpush Tag
+                //User Data Sync - 2. delete register information and Jpush Tag
                 $delUsers =  $this->syncUserService->getResignUsers();
                 if(count($delUsers) > 0){
                     $this->registerService->unRegisterUserbyUserIds($delUsers);
                 }
-                //1.4 merge user
-                $mergeResult = $this->syncUserService->mergeUser($sourceFrom, $first);
+                //User Data Sync - 3. merge user
+                $mergeResult = $this->syncUserService->mergeUser($sourceFrom);
+
                 Log::info('Update Inactive User Count: '.$mergeResult['updateInactive']);
                 Log::info('Update Active User Count: '.$mergeResult['updateActive']);
                 Log::info('New User Count: '.$mergeResult['insertNew']);
+
                 $totalCount = $mergeResult['updateInactive'] + $mergeResult['updateActive'] + $mergeResult['insertNew'];
+
                 Log::info('Total: '.$totalCount);
                 
-                //1.5 delete merged file
+                //User Data Sync - 4. delete merged file
                 Storage::delete($fileName);
+
                 Log::info('Delete File: '.$fileName);
            }
         }
+        
+        $ehrUndo = self::SYNC_FOLDER.DIRECTORY_SEPARATOR.
+                        'ehr'.DIRECTORY_SEPARATOR.
+                        self::UNDO_FOLDER.DIRECTORY_SEPARATOR;
+        $ehrFiles = Storage::allFiles($ehrUndo);
 
-        //eHR Data Sync - 1. INSERT Data Into `qp_user` from `qp_ehr_user` which emp_no not exist in `qp_user`
-        $this->syncUserService->insertFromQPeHRUser();
+        foreach ($ehrFiles as $ehrFileName) {
 
-        //eHR Data Sync - 2. UPDATE Data in `qp_user` from `qp_ehr_user`, ignore the Data which was just INSERT.
-        $this->syncUserService->updateFromQPeHRUser();
+            Log::info('[Sync '.$sourceFrom.'-'.$ehrFileName.']');
 
-        //eHR Data Sync - 3. Delete register info and JPush Tag which the user in `qp_ehr_uaer` were resign.
-        $delUsers = $this->syncUserService->getResignUsersFromQPeHRUser();
-        if(count($delUsers) > 0){
-            $this->registerService->unRegisterUserbyUserIds($delUsers);
+            //eHR Data Sync - 0. INSERT Data Into  `qp_user_sync` which prepare to sync 
+            $readyToSyncEHR = $this->syncUserService->insertUserDataIntoTemp($ehrFileName, 'ehr');
+            if( $readyToSyncEHR > 0){
+                Log::info('Ready To Sync EHR: '.$readyToSync);
+            }
+            //eHR Data Sync - 1. INSERT Data Into `qp_user` from `qp_ehr_user` which emp_no not exist in `qp_user`
+            $newUserEHR = $this->syncUserService->insertFromQPeHRUser();
+            Log::info('New EHR User Count: '.$newUserEHR);
+            //eHR Data Sync - 2. UPDATE Data in `qp_user` from `qp_ehr_user`, ignore the Data which was just INSERT.
+            $updateUserEHR = $this->syncUserService->updateFromQPeHRUser();
+            Log::info('Update EHR User Count: '.$updateUserEHR);
+            //eHR Data Sync - 3. Delete register info and JPush Tag which the user in `qp_ehr_uaer` were resign.
+            $delUsersEHR = $this->syncUserService->getResignUsersFromQPeHRUser();
+            if(count($delUsers) > 0){
+                $this->registerService->unRegisterUserbyUserIds($delUsers);
+            }
+            Log::info('Delete EHR User Count: '.count($delUsersEHR));
+
+            Storage::delete($fileName);
         }
 
         Log::info('[Data Information]');
