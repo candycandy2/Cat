@@ -1,36 +1,36 @@
-/*************************** viewPayShopReturnDetail ********************************/
-#viewPayShopReturnDetail .page-main{
+/*************************** viewPayShopReturnReason ********************************/
+#viewPayShopReturnReason .page-main{
     width: 100vw;
     padding: 0 !important;
     position: fixed;
 }
 
-.return-detail-row1{
+.return-reason-row1{
     width: 92.58vw;
     margin-left: 3.71vw;
     padding-top: 4vw;
     border-bottom: 1px solid #d6d6d6;
 }
 
-.return-detail-row2{
+.return-reason-row2{
     width: 92.58vw;
     margin-left: 3.71vw;
     padding-top: 4vw;
 }
 
-.return-detail-row1>div,
-.return-detail-row2>div{
+.return-reason-row1>div,
+.return-reason-row2>div{
     padding-bottom: 2vw;
     text-indent: 2vw;
 }
 
-.return-detail-row1>div:nth-of-type(1),
-.return-detail-row2>div:nth-of-type(1){
+.return-reason-row1>div:nth-of-type(1),
+.return-reason-row2>div:nth-of-type(1){
     color: #253137;
     font-size: 3.349vw;
 }
 
-.return-detail-row1>div:nth-of-type(2){
+.return-reason-row1>div:nth-of-type(2){
     color: #2c87ba;
     font-size: 4.18vw;
 }
@@ -39,7 +39,7 @@
     padding: 0;
 }
 
-.return-detail-row3{
+.return-reason-row3{
     position: absolute;
     width: 100vw;
     height: 10vw;
@@ -47,7 +47,7 @@
     display: none;
 }
 
-.return-detail-row3>div{
+.return-reason-row3>div{
     width: 35.5vw;
     height: 10vw;
     margin: auto;
@@ -58,11 +58,11 @@
     font-size: 4.18vw;
 }
 
-.return-detail-textarea{
+.return-reason-textarea{
     display: none;
 }
 
-.return-detail-textarea textarea{
+.return-reason-textarea textarea{
     width: 90.58vw;
     height: 35vw !important;
     max-width: 92.58vw;

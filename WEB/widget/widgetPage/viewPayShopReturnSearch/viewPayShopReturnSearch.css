@@ -58,5 +58,13 @@
 }
 
 .tradeCodeFailPopup .ui-content>.header{
-    padding-top: 10vw;
+    padding: 10vw 6vw 0;
+}
+
+.tradeCodeFailPopup .ui-content>.main{
+    display: none;
+}
+
+.tradeCodeFailPopup .ui-content>.footer{
+    padding-top: 8vw;
 }

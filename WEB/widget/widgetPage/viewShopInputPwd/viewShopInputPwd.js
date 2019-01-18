@@ -16,7 +16,7 @@ $("#viewShopInputPwd").pagecontainer({
             shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
             current_emp = window.sessionStorage.getItem('current_emp');
 
-            var queryStr = '&emp_no=' + current_emp + '&price=' + trade_price + '&shop_id=' + shop_id;
+            var queryStr = '&emp_no=' + current_emp + '&price=' + trade_price + '&shop_id=' + shop_id + '&action=new';
 
             this.successCallback = function (data) {
                 console.log(data);
