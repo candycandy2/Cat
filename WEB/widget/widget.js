@@ -58,7 +58,7 @@ var widget = {
                     if (typeof window[widgetItem] != 'undefined') {
                         window[widgetItem].init(contentItem);
                         //是否需要plugin
-                        if(typeof window[widgetItem].plugin != 'undefined') {
+                        if (typeof window[widgetItem].plugin != 'undefined') {
                             window[widgetItem].plugin();
                         }
                     }
@@ -91,11 +91,11 @@ var widget = {
     },
     height: function() {
         let hasHeight = window.sessionStorage.getItem('pageMainHeight');
-        if(hasHeight == null) {
+        if (hasHeight == null) {
             let win = $(window).height();
             let header = $('#viewMain3 .page-header').height();
             let main;
-            if(device.platform === "iOS") {
+            if (device.platform === "iOS") {
                 main = win - header - iOSFixedTopPX();
             } else {
                 main = win - header;
@@ -118,15 +118,15 @@ var widget = {
         }
     },
     plugin: function(arr) {
-        for(var i = 0; i < arr.length; i++) {
+        for (var i = 0; i < arr.length; i++) {
             let status = false;
-            for(var j = 0; j < pluginList.length; j++) {
-                if(arr[i] == pluginList[j]) {
+            for (var j = 0; j < pluginList.length; j++) {
+                if (arr[i] == pluginList[j]) {
                     status = true;
                     break;
                 }
             }
-            if(!status) {
+            if (!status) {
                 pluginList.push(arr[i]);
                 $.getScript(serverURL + '/widget/widgetPlugin/' + arr[i] + '.js');
             }
@@ -139,7 +139,7 @@ var widget = {
 function checkWidgetPage(pageID, pageVisitedList, parmData) {
     //新增参数：用于不同页面间传值
     parmData = parmData || null;
-    if(parmData != null && typeof parmData == 'object') {
+    if (parmData != null && typeof parmData == 'object') {
         window.sessionStorage.setItem(pageID + "_parmData", JSON.stringify(parmData));
     }
 
@@ -149,6 +149,8 @@ function checkWidgetPage(pageID, pageVisitedList, parmData) {
     //0表示没有该元素，直接从local添加，既第一次添加
     //1表示有该元素，直接跳转，不用添加
     if (pageLength == 0) {
+
+        addDownloadHit(pageID);
 
         $.get(url + '.html', function(data) {
             //1. css
