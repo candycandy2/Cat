@@ -646,12 +646,6 @@ div.scrollmenu a {
     border-bottom-width: 0.1VH;
 }
 
-#mypanel #mypanelviewInsuranceInfo {
-    border-bottom: solid;
-    border-bottom-color: #666;
-    border-bottom-width: 0.1VH;
-}
-
 #mypanel div.panel-content:hover {
     background-color: #503f81;
     color: #fff;
