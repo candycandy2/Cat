@@ -66,11 +66,11 @@ abstract class ResultCode
     const _000936_statusStatusDateRangeInvalid = "000936";//生命週期的日期範圍錯誤
     const _000937_statusStatusLifeCrontabNotExist = "000937";//生命週期不存在
     const _000938_statusStatusLifeCrontabCanNotNull = "000938";//生命週期不可以為空值
-    const _000939_tradeIDNotExist = "000939";//交易碼不存在
-    const _000940_tradeIDNotMatchStore = "000940";//交易碼和店家不符合
-    const _000941_tradeIDCandelDateOverdue = "000941";//交易碼的取消時間逾期
-    const _000942_tradeIDHadCanceled = "000942";//交易碼已經被取消
-    const _000943_tradeIDCannotCancel = "000943";//交易碼無法取消
+    const _000939_tradeIDNotExist = "000939";//系統搜尋不到此筆交易碼，請重新輸入
+    const _000940_tradeIDNotMatchStore = "000940";//此筆交易非於本店家消費，請消費者重新確認店家
+    const _000941_tradeIDCandelDateOverdue = "000941";//系統只接受1日內的交易變更，您輸入的交易碼已超過效期
+    const _000942_tradeIDHadCanceled = "000942";//您輸入的交易碼已申請退款成功
+    const _000943_tradeIDCannotCancel = "000943";//此為退款成功之交易碼，您消費之物品已退款成功，請至交易紀錄查詢
     const _000944_tradePriceIncorrect = "000944";//交易金額不正確
     //TODO 以下为各系统扩展
     

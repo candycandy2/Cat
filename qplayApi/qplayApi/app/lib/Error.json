@@ -925,15 +925,15 @@
         "language_list": [
           {
             "language": "en-us",
-            "error_description": "Trade ID does not exist."
+            "error_description": "This Trade ID not exist in system, please try again."
           },
           {
             "language": "zh-tw",
-            "error_description": "交易碼不存在"
+            "error_description": "系統搜尋不到此筆交易碼，請重新輸入"
           },
           {
             "language": "zh-cn",
-            "error_description": "交易码不存在"
+            "error_description": "系统搜寻不到此笔交易码，请重新输入"
           }
         ]
       },
@@ -942,15 +942,15 @@
         "language_list": [
           {
             "language": "en-us",
-            "error_description": "Trade ID does not match store."
+            "error_description": "This Trade ID not match the store, please confirm and try again."
           },
           {
             "language": "zh-tw",
-            "error_description": "交易碼和店家不符合"
+            "error_description": "此筆交易非於本店家消費，請消費者重新確認店家"
           },
           {
             "language": "zh-cn",
-            "error_description": "交易码和店家不符合"
+            "error_description": "此笔交易非于本店家消费，请消费者重新确认店家"
           }
         ]
       },
@@ -959,15 +959,15 @@
         "language_list": [
           {
             "language": "en-us",
-            "error_description": "Trade ID cancel date overdue."
+            "error_description": "Trade can't be refund after next day."
           },
           {
             "language": "zh-tw",
-            "error_description": "交易碼的取消時間逾期"
+            "error_description": "系統只接受1日內的交易變更，您輸入的交易碼已超過效期"
           },
           {
             "language": "zh-cn",
-            "error_description": "交易码的取消时间逾期"
+            "error_description": "系统只接受1日内的交易变更，您输入的交易码已超过效期"
           }
         ]
       },
@@ -976,15 +976,15 @@
         "language_list": [
           {
             "language": "en-us",
-            "error_description": "Trade ID had canceled."
+            "error_description": "This Trade ID has been refund."
           },
           {
             "language": "zh-tw",
-            "error_description": "交易碼已經被取消"
+            "error_description": "您輸入的交易碼已申請退款成功"
           },
           {
             "language": "zh-cn",
-            "error_description": "交易码已经被取消"
+            "error_description": "您输入的交易码已申请退款成功"
           }
         ]
       },
@@ -993,15 +993,15 @@
         "language_list": [
           {
             "language": "en-us",
-            "error_description": "Trade ID cannot cancel."
+            "error_description": "This Trade ID can't be refund, please check in trade record."
           },
           {
             "language": "zh-tw",
-            "error_description": "交易碼無法取消"
+            "error_description": "此為退款成功之交易碼，您消費之物品已退款成功，請至交易紀錄查詢"
           },
           {
             "language": "zh-cn",
-            "error_description": "交易码无法取消"
+            "error_description": "此为退款成功之交易码，您消费之物品已退款成功，请至交易纪录查询"
           }
         ]
       },
