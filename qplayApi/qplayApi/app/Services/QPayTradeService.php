@@ -591,6 +591,19 @@ class QPayTradeService
             $resultCode = ResultCode::_000940_tradeIDNotMatchStore;
         }
 
+        //Check Status of Shop (QPlay Account Status / Shop Trade Status)
+        if ($checkSuccess) {
+            $shopStatus = $this->qpayShopRepository->getShopStatus($shopID);
+
+            if ($shopStatus[0]->status === "Y" && $shopStatus[0]->trade_status === "Y"){
+                //All Status Valid
+            } else {
+                //Some Status Invalid
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000923_shopTradeStatusDisabled;
+            }
+        }
+
         if ($checkSuccess) {
             $nowDate = date("Y/m/d", time() + 8*3600);
             $tradeDate = date("Y/m/d", $tradeData[0]->trade_time + 8*3600);
@@ -683,7 +696,20 @@ class QPayTradeService
             }
         }
 
-        //Step 3. Check Trade ID
+        //Step 3. Check Status of Shop (QPlay Account Status / Shop Trade Status)
+        if ($checkSuccess) {
+            $shopStatus = $this->qpayShopRepository->getShopStatus($shopID);
+
+            if ($shopStatus[0]->status === "Y" && $shopStatus[0]->trade_status === "Y"){
+                //All Status Valid
+            } else {
+                //Some Status Invalid
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000923_shopTradeStatusDisabled;
+            }
+        }
+
+        //Step 4. Check Trade ID
         if ($checkSuccess && (trim($tradeData[0]->shop_row_id) != trim($shopID))) {
             $checkSuccess = false;
             $resultCode = ResultCode::_000940_tradeIDNotMatchStore;
@@ -714,7 +740,7 @@ class QPayTradeService
             $resultCode = ResultCode::_000944_tradePriceIncorrect;
         }
 
-        //Step 4. Cancel Trade
+        //Step 5. Cancel Trade
         if ($checkSuccess) {
             DB::beginTransaction();
 
@@ -861,7 +887,7 @@ class QPayTradeService
             $tradeSuccess = "N";
         }
 
-        //Step 5. Create Trade Fail Log
+        //Step 6. Create Trade Fail Log
         if ($tradeSuccess == "N") {
             $newTradeID = $this->qpayTradeLogRepository->newTradeRecord(
                 $tradeData[0]->member_row_id,
