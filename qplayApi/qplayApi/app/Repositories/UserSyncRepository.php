@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Repositories;
-
+use App\Model\QP_User;
 use App\Model\QP_User_Sync;
-use App\Model\QP_EHR_User;
 use DB;
 use Config;
 
@@ -11,10 +10,12 @@ class UserSyncRepository
 {
 
     protected $userSync;
+    protected $user;
 
-    public function __construct(QP_User_Sync $userSync)
+    public function __construct(QP_User_Sync $userSync, QP_User $user)
     {   
         $this->userSync = $userSync;
+        $this->user = $user;
     }
 
     /**
@@ -27,23 +28,19 @@ class UserSyncRepository
      /**
      * insert mulitple data in to qp_user_sync table
      */
-    public function insertUser(Array $data){
+    public function insertUserSync(Array $data){
         $this->userSync->insert($data);
     }
 
     /**
      * get user list from qp_user_sync which is not exist qp_user
      * @param string $sourceFrom source from, ex:flower|qcsflower|ehr|partner
-     * @param  boolean $first  is first time execute 
      * @return Array
      */
-    public function getNewUser($sourceFrom, $first=false){
+    public function getNewUser($sourceFrom){
         
-         $select =  $this->userSync->whereNotIn('emp_no', function($query) use ($sourceFrom, $first) {
+         $select =  $this->userSync->whereNotIn('emp_no', function($query) use ($sourceFrom) {
                         $query = $query->select('emp_no')->from('qp_user');
-                        if(!$first){
-                            $query = $query->where('source_from',$sourceFrom);
-                        }
                     })->select(['login_name as login_id',
                                   'emp_no',
                                   'emp_name',
@@ -78,10 +75,11 @@ class UserSyncRepository
      */
     public function getEHRActiveUser()
     {
-        $result = DB::connection('mysql_dev')
-                    -> table('qp_ehr_user')
+        $result = $this->userSync
                     -> where('active', '=', 'Y')
-                    -> get();
+                    -> select()
+                    -> get() 
+                    -> toArray();
         $result = array_map(function ($value) {
             return (array) $value;
         }, $result);
@@ -95,9 +93,10 @@ class UserSyncRepository
      */
     public function getEHRAllUser()
     {
-        $result = DB::connection('mysql_dev')
-                    -> table('qp_ehr_user')
-                    -> get();
+        $result = $this->userSync
+                    -> select()
+                    -> get()
+                    -> toArray();
         $result = array_map(function ($value) {
             return (array) $value;
         }, $result);
@@ -111,10 +110,10 @@ class UserSyncRepository
      */
     public function getAllEmpNumber()
     {
-        $result = DB::connection('mysql_'.Config::get('app.env'))
-                    -> table('qp_user')
+        $result =$this->user
                     -> select('emp_no')
-                    -> get();
+                    -> get()
+                    -> toArray();
         $result = array_map(function ($value) {
             return (array) $value;
         }, $result);
@@ -128,8 +127,7 @@ class UserSyncRepository
      */
     public function insertUserFromEHR($data)
     {
-        return DB::connection('mysql_'.Config::get('app.env'))
-                 -> table("qp_user")
+        return $this->user
                  -> insertGetId($data);
     }
 
@@ -138,8 +136,7 @@ class UserSyncRepository
      */
     public function updateUserFromEHR($empNO, $data)
     {
-        DB::connection('mysql_'.Config::get('app.env'))
-          -> table("qp_user")
+        $this->user
           -> where("emp_no", "=", $empNO)
           -> update($data);
     }
@@ -150,16 +147,122 @@ class UserSyncRepository
      */
     public function getUserByEmpNO($empNOArray)
     {
-        $result = DB::connection('mysql_'.Config::get('app.env'))
-                    -> table('qp_user')
+        $result = $this->user
                     -> whereIn('emp_no', $empNOArray)
-                    -> get();
+                    -> select()
+                    -> get()
+                    -> toArray();
         $result = array_map(function ($value) {
             return (array) $value;
         }, $result);
 
         return $result;
     }
+
+     /**
+     * Join update qp_user from qp_user sync 
+     * @param   string $sourceFrom 
+     * @return  int    sync count
+     */
+    public function syncActiveUser($sourceFrom){
+        $total =  $this->userSync->count();
+        $limit =  1000;
+        $page = ceil($total / $limit);
+        $lastUserId = 0;
+        $syncCnt = 0;
+        for ($i = 1; $i <= $page; $i++) {
+            $query = $this->user->where('tmpUsers.active','Y')
+                ->join(
+                    DB::raw('(SELECT * FROM `qp_user_sync` where row_id > '.$lastUserId.' order by row_id limit '.$limit.') tmpUsers'),
+                    function($join)
+                    {
+                       $join->on('qp_user.emp_no', '=', 'tmpUsers.emp_no');
+                    });
+            
+            $updatedCnt = $query->update([
+                'qp_user.login_id' => DB::raw('tmpUsers.login_name'),
+                'qp_user.emp_name' => DB::raw('tmpUsers.emp_name'),
+                'qp_user.email' => DB::raw('tmpUsers.mail_account'),
+                'qp_user.ext_no' => DB::raw('tmpUsers.ext_no'),
+                'qp_user.user_domain' => DB::raw('tmpUsers.domain'),
+                'qp_user.company' => DB::raw('tmpUsers.company'),
+                'qp_user.department' => DB::raw('tmpUsers.dept_code'),
+                'qp_user.site_code' => DB::raw('tmpUsers.site_code'),
+                'qp_user.deleted_at' => DB::raw('tmpUsers.dimission_date'),
+                'qp_user.status' => DB::raw('tmpUsers.active'),
+                'qp_user.resign' => DB::raw('IF(tmpUsers.active="N", "Y","N")'),
+                'qp_user.source_from' => DB::raw('tmpUsers.source_from'),
+                'qp_user.updated_at' => '-1'
+              ]);
+            $lastUserId = $i * $limit;
+            $syncCnt = $syncCnt + $updatedCnt;
+        }
+        return $syncCnt;
+    }
+
+    /**
+     * Join update qp_user from qp_user sync 
+     * @param   string $sourceFrom 
+     * @return  int    sync count
+     */
+    public function syncInactiveUser($sourceFrom){
+        
+        $total =  $this->userSync->count();
+        $limit =  1000;
+        $page = ceil($total / $limit);
+        $lastUserId = 0;
+        $syncCnt = 0;
+        for ($i = 1; $i <= $page; $i++) {
+            $query = $this->user->where('tmpUsers.active','N')
+                ->join(
+                    DB::raw('(SELECT * FROM `qp_user_sync` where row_id > '.$lastUserId.' order by row_id limit '.$limit.') tmpUsers'),
+                    function($join)
+                    {
+                       $join->on('qp_user.emp_no', '=', 'tmpUsers.emp_no');
+                    });
+            
+            $updatedCnt = $query->update([
+                    'qp_user.login_id' => DB::raw('tmpUsers.login_name'),
+                    'qp_user.emp_name' => DB::raw('tmpUsers.emp_name'),
+                    'qp_user.email' => DB::raw('tmpUsers.mail_account'),
+                    'qp_user.ext_no' => DB::raw('tmpUsers.ext_no'),
+                    'qp_user.user_domain' => DB::raw('tmpUsers.domain'),
+                    'qp_user.company' => DB::raw('tmpUsers.company'),
+                    'qp_user.department' => DB::raw('tmpUsers.dept_code'),
+                    'qp_user.site_code' => DB::raw('tmpUsers.site_code'),
+                    'qp_user.deleted_at' => DB::raw('tmpUsers.dimission_date'),
+                    'qp_user.status' => DB::raw('tmpUsers.active'),
+                    'qp_user.resign' => DB::raw('IF(tmpUsers.active="N", "Y","N")'),
+                    'qp_user.source_from' => DB::raw('tmpUsers.source_from'),
+                    'qp_user.updated_at' => '-1'
+                  ]);
+            $lastUserId = $i * $limit;
+            $syncCnt = $syncCnt + $updatedCnt;
+        }
+        return $syncCnt;       
+    }
+
+    /**
+     * get same emp_no and not resign user from qp_user
+     * @return mixed
+     */
+    public function getDuplicatedUser(){
+        return $this->user->whereIn('emp_no', function($query){
+                                            $query->groupBy('emp_no')
+                                            ->having(DB::raw('count(emp_no)') , '>', 1)
+                                            ->where('resign','N')
+                                            ->select('emp_no')
+                                            ->from('qp_user');
+                                        })->orderBy('emp_no')->get();
+    }
+
+    /**
+     * insert mulitple data in to qp_user table
+     */
+    public function insertUser(Array $data){
+        $this->user->insert($data);
+    }
+
 
 }
 
