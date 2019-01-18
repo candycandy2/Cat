@@ -1278,5 +1278,53 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "wgt_161",
+    "definition": "申請店家",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_162",
+    "definition": "退款原因",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_163",
+    "definition": "退款金額",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_164",
+    "definition": "退款成功",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_165",
+    "definition": "退款失敗",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_166",
+    "definition": "退款申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]

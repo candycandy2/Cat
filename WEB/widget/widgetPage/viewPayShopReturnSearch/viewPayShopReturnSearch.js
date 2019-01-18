@@ -15,22 +15,21 @@ $("#viewPayShopReturnSearch").pagecontainer({
 
                 if (data['result_code'] == '1') {
                     let obj = {
+                        shop_id: shop_id,
                         trade_shop: shop_name,
                         trade_id: data['content']['trade_id'],
                         trade_price: data['content']['trade_price'],
                         trade_time: data['content']['trade_time']
                     };
-                    checkWidgetPage('viewPayShopReturnDetail', pageVisitedList, obj);
-                } else if(data['result_code'] == '000939') {
-                    //此交易码不存在
-                } else if(data['result_code'] == '000940') {
-                    //交易码与店家不符
-                } else if(data['result_code'] == '000941') {
-                    //交易逾期，超过7天
-                } else if(data['result_code'] == '000942') {
-                    //已退款成功
-                } else if(data['result_code'] == '000943') {
-                    //无法取消
+                    checkWidgetPage('viewPayShopReturnReason', pageVisitedList, obj);
+                } else if(data['result_code'] == '000939' ||
+                data['result_code'] == '000940' ||
+                data['result_code'] == '000941' ||
+                data['result_code'] == '000942' ||
+                data['result_code'] == '000943' ||
+                data['result_code'] == '000923') {
+                    $('.tradeCodeFailPopup .header-title').text(data['message']);
+                    popupMsgInit('.tradeCodeFailPopup');
                 }
             };
 
@@ -65,7 +64,8 @@ $("#viewPayShopReturnSearch").pagecontainer({
         //輸入交易碼後六位
         $('#returnTradeCode').on('input', function() {
             let val = $(this).val();
-            if(val != '') {
+            let valLength = $(this).val().length;
+            if(val != '' && valLength == 6) {
                 $('.returnToReason').addClass('active-btn-green');
             } else {
                 $('.returnToReason').removeClass('active-btn-green');
