@@ -1,81 +1,70 @@
+var panel = htmlContent
+        +'<div data-role="panel" id="mypanel" data-display="overlay" style="position:fixed;">'
+        +   '<div class="ios-fix-overlap-div"></div>'
+        +   '<div class="panel-content" id="mypanelviewInsuranceMain">'
+        //+       '<span class="panel-text">保險概要</span>'
+        +       '<span class="panel-text">' + langStr["str_050"] + '</span>'
+        +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewInsuranceInfo">'
+        //+       '<span class="panel-text">個人保險概要</span>'
+        +       '<span class="panel-text">' + langStr["str_051"] + '</span>'
+        +   '</div>'   
+        +   '<div class="panel-content" id="mypanelviewInsuranceFamilyData">'
+        //+       '<span class="panel-text">眷屬資料維護</span>'
+        +       '<span class="panel-text">' + langStr["str_052"] + '</span>'
+        +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewInsuranceContact">'
+        //+       '<span class="panel-text">服務窗口</span>'
+        +       '<span class="panel-text">' + langStr["str_053"] + '</span>'
+        +   '</div>'
+        +'</div>'
+        +'<div class="page-mask" style="display: none;"></div>';
 
-$("#viewInsurancePanel").pagecontainer({
-    create: function(event, ui) {
+$(document).one("pagebeforeshow", function() {
+    $.mobile.pageContainer.prepend(panel);
+    $("#mypanel").panel().enhanceWithin();
+    $("#mypanel #mypanelviewInsuranceMain").css("background", "#503f81");
+    $("#mypanel #mypanelviewInsuranceMain").css("color", "#fff");
 
-        /********************************** function *************************************/
-
-        function insurBackKey() {
-            //1. close panel
-            var panelShow = $('.insuranceMenu').css('display') == 'block' ? true : false;
-            if(panelShow) {
-                $('.insuranceMenu .staff-menu-main').animate({right: '100vw'}, 300, function(){
-                    $('.insuranceMenu').hide();
-                });
-            }
-
-            //2. change menu class
-            var curPage = visitedPageList[visitedPageList.length - 1];
-            $.each($('.insuranceMenu .staff-menu-list li'), function(index, item) {
-                if(curPage == $(item).data('view')) {
-                    $('.insuranceMenu .staff-menu-list').find('.active-menu').removeClass('active-menu');
-                    $('.insuranceMenu .staff-menu-list li[data-view="' + curPage + '"]').addClass('active-menu');
-                }
-            })
-        }
-
-        /********************************** dom event *************************************/
-
-        //调出菜单(如果需要在其他頁面使用，必須添加樣式insur-menu-btn)
-        $(document).on('click', '.insur-menu-btn', function() {
-            $('.insuranceMenu').show();
-            $('.insuranceMenu .staff-menu-main').animate({right: '40vw'}, 300);
-        });
-
-        //右滑隐藏菜单
-        $(document).on('swipeleft', '.insuranceMenu', function() {
-            $('.insuranceMenu .staff-menu-main').animate({right: '100vw'}, 300, function(){
-                $('.insuranceMenu').hide();
-            });
-        });
-
-        //点击非菜单区域隐藏菜单
-        $(document).on('tap', '.insuranceMenu', function(e) {
-            if(e.target != this) {
-                return;
-            } else {
-                $('.insuranceMenu .staff-menu-main').animate({right: '100vw'}, 300, function(){
-                    $('.insuranceMenu').hide();
-                });
-            }
-        });
-
-        //選擇菜單
-        $(document).on('tap', '.insuranceMenu .staff-menu-list li', function(e) {
-            //1. get active page & target page
-            var activePage = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
-            var targetPage = $(this).data('view');
-            if(activePage != targetPage) {
-                //2. remove class
-                $('.insuranceMenu .staff-menu-list').find('.active-menu').removeClass('active-menu');
-                //3. add class
-                $(this).addClass('active-menu');
-            }
-
-            //4. close panel
-            $('.insuranceMenu .staff-menu-main').animate({right: '100vw'}, 300, function(){
-                $('.insuranceMenu').hide();
-            });
-
-            //5. change page
-            if(activePage != targetPage) {
-                checkWidgetPage(targetPage, visitedPageList);
-            }
-        });
-
-        //sync menu when back key
-        $(document).on('click', '.staff-back', function() {
-            insurBackKey();
-        });
-        document.addEventListener("backbutton", insurBackKey, false);
+    if (device.platform === "iOS") {
+        $("#mypanelviewInsuranceMain").css("margin-top", "20px");
+        $(".page-mask").css("top", "20px");
     }
+
+    $("#mypanel #mypanelviewInsuranceMain").on("click", function() {
+        //changePageByPanel("viewMain");
+        checkWidgetPage('viewInsuranceMain', visitedPageList);
+    });
+
+    $("#mypanel #mypanelviewInsuranceInfo").on("click", function() {
+        editLeaveForm = false; 
+        //changePageByPanel("viewPersonalInsurance");
+        checkWidgetPage('viewInsuranceInfo', visitedPageList);
+    });
+
+    $("#mypanel #mypanelviewInsuranceFamilyData").on("click", function() {
+        //changePageByPanel("viewFamilyData");
+        checkWidgetPage('viewInsuranceFamilyData', visitedPageList);
+    });
+
+    $("#mypanel #mypanelviewInsuranceContact").on("click", function() {
+        //changePageByPanel("viewContact");
+        checkWidgetPage('viewInsuranceContact', visitedPageList);
+    });
+
+    $(".menu-btn .insuranceMenu").on("click", function() {
+        $("#mypanel").panel("open");
+        $(".page-mask").show();
+    });
+
+    $(document).on("swipeleft", function(event) {
+        if($(".ui-page-active").jqmData("panel") === "open") {
+            $("#mypanel").panel("close");
+            $(".page-mask").hide();
+        }
+    });
+
+    $(document).on("panelbeforeclose", "#mypanel", function() {
+        $(".page-mask").hide();
+    });
 });
