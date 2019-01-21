@@ -47,6 +47,7 @@ declare -A arr
 arr+=(
 ["flower"]=$Protocol'://'$ServerADD'/QTunnel/Sync/'
 ["qcsflower"]=$Protocol'://'$ServerADD'/QTunnel/SyncQCS/'
+["partner"]='http://bpm.partner.com.tw/QTunnel/Sync/'
 ["ehr"]=$Protocol'://'$ServerADD'/QTunnel/SynceHR/'
 )
 
