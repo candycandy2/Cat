@@ -71,4 +71,23 @@ class QPayShopRepository
                 -> get();
 
     }
+
+    /**
+     * update shop's QPay trade password
+     * @param  int $QPayShopId qpay_shop.row_id
+     * @param  string $newPwd new pass word
+     */
+    public function changeTradePassword($QPayShopId, $newPwd, $userId)
+    {
+        $nowTimestamp = time();
+        $now = date('Y-m-d H:i:s',$nowTimestamp);
+
+        $this->qpayShop
+                ->where('row_id', $QPayShopId)
+                ->update([
+                    'trade_password' => $newPwd,
+                    'updated_user' => $userId,
+                    'updated_at' => $now
+                ]);
+    }
 }

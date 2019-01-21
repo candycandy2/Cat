@@ -33,12 +33,11 @@ class QPayMemberRepository
      * @param  int $QPayMemberId qpay_member.row_id
      * @param  string $newPwd new pass word
      */
-    public function changeTradPassword($QPayMemberId, $newPwd){
-
+    public function changeTradePassword($QPayMemberId, $newPwd)
+    {
         $user = $this->qpayMember::find($QPayMemberId);
         $user->trade_password = $newPwd;
         $user->timestamps = false;
         $user->save();
-
     }
 }

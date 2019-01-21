@@ -17,7 +17,8 @@ class QPayMemberService
 
     /**
      * QPayMemberService constructor.
-     * @param UserRepository $UserRepository
+     * @param QPayMemberRepository $qpayMemberRepository
+     * @param QPayMemberPointRepository $qpayMemberPointRepository
      */
     public function __construct(QPayMemberRepository $qpayMemberRepository,
                                 QPayMemberPointRepository $qpayMemberPointRepository)
@@ -27,16 +28,16 @@ class QPayMemberService
     }
 
     /**
-     * change QPay trad password
+     * change QPay trade password For Emp
      * @param  int $userId qp_user.row_id
      * @param  string $oldPwd old password
      * @param  string $newPwd new password
      * @return string  ResultCode    
      */
-    public function changeTradPassword($userId, $oldPwd, $newPwd){
-        
+    public function changeTradePassword($userId, $oldPwd, $newPwd)
+    {
         $qpayMember = $this->qpayMemberRepository->getQPayMemberInfo($userId);
-        if(is_null($qpayMember)){
+        if (is_null($qpayMember)) {
             return ResultCode::_000901_userNotExistError;
         }
 
@@ -50,7 +51,7 @@ class QPayMemberService
         ];
         $pwd = password_hash($newPwd, PASSWORD_BCRYPT, $options);
 
-        $this->qpayMemberRepository->changeTradPassword($qpayMember->row_id, $pwd);
+        $this->qpayMemberRepository->changeTradePassword($qpayMember->row_id, $pwd);
 
         return ResultCode::_1_reponseSuccessful;
     }

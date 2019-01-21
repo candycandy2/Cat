@@ -4,6 +4,7 @@ namespace App\Http\Controllers\QPay;
 
 use App\Http\Controllers\Controller;
 use App\Services\QPayMemberService;
+use App\Services\QPayShopService;
 use App\Services\LogService;
 use Illuminate\Http\Request;
 use App\lib\Verify;
@@ -15,16 +16,20 @@ use DB;
 class MemberController extends Controller
 {   
     protected $qpayMemberService;
+    protected $qpayShopService;
 
      /**
      * qpalyAccountController constructor.
-     * @param UserService $qpayMemberService
+     * @param MemberService $qpayMemberService
+     * @param ShopService $qpayShopService
      * @param LogService $logService
      */
     public function __construct(QPayMemberService $qpayMemberService,
+                                QPayShopService $qpayShopService,
                                 LogService $logService)
     {
         $this->qpayMemberService = $qpayMemberService;
+        $this->qpayShopService = $qpayShopService;
         $this->logService = $logService;
     }
 
@@ -67,8 +72,13 @@ class MemberController extends Controller
                 $nowTimestamp = time(); 
                 $now = date('Y-m-d H:i:s',$nowTimestamp);
 
-                $updateRs = $this->qpayMemberService
-                                 ->changeTradPassword($userInfo->row_id, $oldPwd, $newPwd);
+                if ($userInfo->company == "shop") {
+                    $updateRs = $this->qpayShopService
+                                     ->changeTradePassword($userInfo->row_id, $oldPwd, $newPwd);
+                } else {
+                    $updateRs = $this->qpayMemberService
+                                     ->changeTradePassword($userInfo->row_id, $oldPwd, $newPwd);
+                }
 
                 $this->logService
                      ->writePasswordLog($userInfo->row_id,
