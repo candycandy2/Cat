@@ -1,4 +1,4 @@
-$("#viewPayShopReturnPassword").pagecontainer({
+$("#viewQPayShopReturnPassword").pagecontainer({
     create: function (event, ui) {
 
         var pwdNum = '',
@@ -7,7 +7,7 @@ $("#viewPayShopReturnPassword").pagecontainer({
         //获取交易token
         function getTradeToken(pwd) {
             var self = this;
-            let trad_info = JSON.parse(window.sessionStorage.getItem('viewPayShopReturnPassword_parmData'));
+            let trad_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnPassword_parmData'));
             let trade_price = trad_info['trade_price'];
             let shop_id = trad_info['shop_id'];
 
@@ -38,7 +38,7 @@ $("#viewPayShopReturnPassword").pagecontainer({
         function cancelTargetTrade() {
             var self = this;
 
-            let trade_info = JSON.parse(window.sessionStorage.getItem('viewPayShopReturnPassword_parmData'));
+            let trade_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnPassword_parmData'));
             let shop_id = trade_info['shop_id'];
             let trade_pwd = pwdNum;
             let trade_price = trade_info['trade_price'];
@@ -65,7 +65,7 @@ $("#viewPayShopReturnPassword").pagecontainer({
                     trade_info['success'] = 'N';
                 }
 
-                checkWidgetPage('viewPayShopReturnResult', pageVisitedList, trade_info);
+                checkWidgetPage('viewQPayShopReturnResult', pageVisitedList, trade_info);
 
             };
 
@@ -86,15 +86,15 @@ $("#viewPayShopReturnPassword").pagecontainer({
 
 
         /********************************** page event ***********************************/
-        $("#viewPayShopReturnPassword").on("pagebeforeshow", function (event, ui) {
+        $("#viewQPayShopReturnPassword").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewPayShopReturnPassword").on("pageshow", function (event, ui) {
+        $("#viewQPayShopReturnPassword").on("pageshow", function (event, ui) {
 
         });
 
-        $("#viewPayShopReturnPassword").on("pagehide", function (event, ui) {
+        $("#viewQPayShopReturnPassword").on("pagehide", function (event, ui) {
             initialPage();
         });
 

@@ -1,4 +1,4 @@
-$("#viewPayShopReturnSearch").pagecontainer({
+$("#viewQPayShopReturnSearch").pagecontainer({
     create: function(event, ui) {
 
         //获取该交易的详细信息
@@ -21,13 +21,14 @@ $("#viewPayShopReturnSearch").pagecontainer({
                         trade_price: data['content']['trade_price'],
                         trade_time: data['content']['trade_time']
                     };
-                    checkWidgetPage('viewPayShopReturnReason', pageVisitedList, obj);
+                    checkWidgetPage('viewQPayShopReturnReason', pageVisitedList, obj);
                 } else if(data['result_code'] == '000939' ||
                 data['result_code'] == '000940' ||
                 data['result_code'] == '000941' ||
                 data['result_code'] == '000942' ||
                 data['result_code'] == '000943' ||
-                data['result_code'] == '000923') {
+                data['result_code'] == '000923' ||
+                data['result_code'] == '000945') {
                     $('.tradeCodeFailPopup .header-title').text(data['message']);
                     popupMsgInit('.tradeCodeFailPopup');
                 }
@@ -42,20 +43,20 @@ $("#viewPayShopReturnSearch").pagecontainer({
 
 
         /********************************** page event ***********************************/
-        $("#viewPayShopReturnSearch").on("pagebeforeshow", function(event, ui) {
+        $("#viewQPayShopReturnSearch").on("pagebeforeshow", function(event, ui) {
 
         });
 
-        $("#viewPayShopReturnSearch").one("pageshow", function(event, ui) {
+        $("#viewQPayShopReturnSearch").one("pageshow", function(event, ui) {
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
-            $('#viewPayShopReturnSearch .page-main').css('height', mainHeight);
+            $('#viewQPayShopReturnSearch .page-main').css('height', mainHeight);
         });
 
-        $("#viewPayShopReturnSearch").on("pageshow", function(event, ui) {
+        $("#viewQPayShopReturnSearch").on("pageshow", function(event, ui) {
 
         });
 
-        $("#viewPayShopReturnSearch").on("pagehide", function(event, ui) {
+        $("#viewQPayShopReturnSearch").on("pagehide", function(event, ui) {
 
         });
 

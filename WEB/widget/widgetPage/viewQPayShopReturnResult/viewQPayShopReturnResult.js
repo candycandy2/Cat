@@ -1,12 +1,12 @@
-$("#viewPayShopReturnResult").pagecontainer({
+$("#viewQPayShopReturnResult").pagecontainer({
     create: function (event, ui) {
 
         var backToPage = 'viewUserPayMain',
-            imgURL = '/widget/widgetPage/viewPayShopReturnResult/img/';
+            imgURL = '/widget/widgetPage/viewQPayShopReturnResult/img/';
 
         //获取结果
         function getTradeResult() {
-            let trade_info = JSON.parse(window.sessionStorage.getItem('viewPayShopReturnResult_parmData'));
+            let trade_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnResult_parmData'));
 
             if(trade_info['success'] == 'Y') {
                 $('.user-trade-fail').hide();
@@ -44,15 +44,15 @@ $("#viewPayShopReturnResult").pagecontainer({
 
 
         /********************************** page event ***********************************/
-        $("#viewPayShopReturnResult").on("pagebeforeshow", function (event, ui) {
+        $("#viewQPayShopReturnResult").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewPayShopReturnResult").one("pageshow", function (event, ui) {
+        $("#viewQPayShopReturnResult").one("pageshow", function (event, ui) {
 
         });
 
-        $("#viewPayShopReturnResult").on("pageshow", function (event, ui) {
+        $("#viewQPayShopReturnResult").on("pageshow", function (event, ui) {
             getTradeResult();
             //解除原本的事件监听
             document.removeEventListener("backbutton", onBackKeyDown, false);
@@ -60,7 +60,7 @@ $("#viewPayShopReturnResult").pagecontainer({
             document.addEventListener("backbutton", onBackKeyDownSpecial, false);
         });
 
-        $("#viewPayShopReturnResult").on("pagehide", function (event, ui) {
+        $("#viewQPayShopReturnResult").on("pagehide", function (event, ui) {
             $('.user-trade-main').hide();
             $('.user-trade-loading').show();
             document.removeEventListener("backbutton", onBackKeyDownSpecial, false);

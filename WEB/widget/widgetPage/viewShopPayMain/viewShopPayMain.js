@@ -93,7 +93,7 @@ $("#viewShopPayMain").pagecontainer({
 
         //退货申请
         $('.shop-return').on('click', function () {
-            checkWidgetPage('viewPayShopReturnSearch', pageVisitedList);
+            checkWidgetPage('viewQPayShopReturnSearch', pageVisitedList);
         });
 
         //更改交易密码
