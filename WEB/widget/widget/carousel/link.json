@@ -1,19 +1,19 @@
 [
 {
     "term": "portal_1",
+    "definition": "viewStaffUserMain",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": "viewStaffUserMain"
+},
+{
+    "term": "portal_2",
     "definition": "viewMessageList",
     "context": "",
     "term_plural": "",
     "reference": "",
     "comment": "openIdeaPortal"
-},
-{
-    "term": "portal_2",
-    "definition": "",
-    "context": "",
-    "term_plural": "",
-    "reference": "",
-    "comment": ""
 },
 {
     "term": "portal_3",
