@@ -14,6 +14,7 @@ var widget = {
             .then(this.load(9, divItem))
             .then(this.load(10, divItem))
             .then(this.load(11, divItem))
+            .then(this.load(12, divItem))
             .then(this.env());
     },
     list: function() {
@@ -30,7 +31,8 @@ var widget = {
             { id: 8, name: 'idea', enabled: true, lang: langStr['wgt_101'] },
             { id: 9, name: 'qstore', enabled: true, lang: langStr['wgt_100'] },
             { id: 10, name: 'staff', enabled: true, lang: langStr['wgt_102'] },
-            { id: 11, name: 'staffAdmin', enabled: true, lang: langStr['wgt_102'] }
+            { id: 11, name: 'staffAdmin', enabled: true, lang: langStr['wgt_102'] },
+            { id: 12, name: 'cards', enabled: true, lang: langStr['wgt_167'] }
 
         ];
     },

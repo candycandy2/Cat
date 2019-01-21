@@ -1080,3 +1080,42 @@
     background-color: #492f7f !important;
     color: #ffffff !important;
 }
+
+/*********************** cards ***********************/
+
+.cards-widget {
+    width: 100vw;
+    min-height: 38vw;
+}
+
+.cards-widget>.cards-main {
+    height: 25vw;
+    padding-left: 5.92vw;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.qstore-widget-img>img {
+    width: 31.2vw;
+    border-radius: 2px;
+}
+
+.medical-widget-img>img {
+    width: 31.2vw;
+    border-radius: 2px;
+}
+
+.quality-widget-img>img {
+    width: 31.2vw;
+    border-radius: 2px;
+}
+
+.safety-widget-img>img {
+    width: 31.2vw;
+    border-radius: 2px;
+}
+
+.cards-main-img > * {
+    display: inline-block;
+    margin-right: 4vw;
+}
