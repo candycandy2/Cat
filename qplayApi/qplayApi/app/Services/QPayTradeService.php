@@ -628,6 +628,10 @@ class QPayTradeService
             $resultCode = ResultCode::_000943_tradeIDCannotCancel;
         }
 
+        if ($checkSuccess && ($tradeData[0]->success == "N")) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000945_tradeIDIsFailTradeCannotCancel;
+        }
 
         if ($checkSuccess) {
             $result = [
@@ -742,6 +746,11 @@ class QPayTradeService
         if ($checkSuccess && ($tradeData[0]->trade_price != $price)) {
             $checkSuccess = false;
             $resultCode = ResultCode::_000944_tradePriceIncorrect;
+        }
+
+        if ($checkSuccess && ($tradeData[0]->success == "N")) {
+            $checkSuccess = false;
+            $resultCode = ResultCode::_000945_tradeIDIsFailTradeCannotCancel;
         }
 
         //Step 5. Cancel Trade

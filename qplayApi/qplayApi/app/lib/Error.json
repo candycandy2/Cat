@@ -1023,6 +1023,23 @@
         ]
       },
       {
+        "error_code": "000945",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "This Trade ID was a fail trade can't be refund."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "此為交易失敗之交易碼，無法進行退款"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "此为交易失败之交易码，无法进行退款"
+          }
+        ]
+      },
+      {
         "error_code": "052001",
         "language_list": [
           {

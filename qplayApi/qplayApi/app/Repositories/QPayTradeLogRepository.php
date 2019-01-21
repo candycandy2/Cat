@@ -157,6 +157,7 @@ class QPayTradeLogRepository
                               "qpay_trade_log.multiple_pay",
                               "qpay_trade_log.multiple_row_id",
                               "qpay_trade_log.multiple_point",
+                              "qpay_trade_log.success",
                               "qpay_trade_log.trade_point AS trade_price",
                               DB::raw("UNIX_TIMESTAMP(qpay_trade_log.created_at) AS trade_time"),
                               "qpay_trade_log.cancel",
