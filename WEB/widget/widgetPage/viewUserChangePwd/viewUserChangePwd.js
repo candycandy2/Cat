@@ -60,7 +60,9 @@ $("#viewUserChangePwd").pagecontainer({
                 if (data['result_code'] == '1') {
                     //popup:交易密码更改成功
                     $("#userChangeSuccess").fadeIn(100).delay(2000).fadeOut(100);
-                    $('#viewUserChangePwd .page-back').trigger('click');
+                    setTimeout(function() {
+                        $('#viewUserChangePwd .page-back').trigger('click');
+                    }, 2000);
 
                 } else if(data['result_code'] == '000925') {
                     //旧密码错误 popup msg

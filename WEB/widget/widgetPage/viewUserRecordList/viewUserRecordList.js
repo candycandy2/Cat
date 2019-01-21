@@ -15,15 +15,15 @@ $("#viewUserRecordList").pagecontainer({
             let queryStr = "&start_date=" + start_time.toString() + "&end_date=" + end_time.toString();
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     var record_list = data['content']['store_record'];
                     var content = '';
                     for (var i in record_list) {
                         var store_time = record_list[i].store_time;
-                        var storeDate = new Date(store_time * 1000).toLocaleDateString('zh');
-                        var storeTime = new Date(store_time * 1000).toTimeString().substr(0, 5);
+                        var storeDate = new Date(store_time * 1000).yyyymmdd('/');
+                        var storeTime = new Date(store_time * 1000).hhmm();
 
                         content += '<li class="user-record-list" data-index="' + store_time.toString() +
                             '"><div><div>' + record_list[i].point_type + langStr['wgt_096'] + ' / No.' + record_list[i].store_id +
@@ -67,13 +67,23 @@ $("#viewUserRecordList").pagecontainer({
 
                         if(record_list[i]['trade_success'] == 'Y') {
                             var trade_time = record_list[i].trade_time;
-                            var tradeDate = new Date(trade_time * 1000).toLocaleDateString('zh');
-                            var tradeTime = new Date(trade_time * 1000).toTimeString().substr(0, 5);
+                            var tradeDate = new Date(trade_time * 1000).yyyymmdd('/');
+                            var tradeTime = new Date(trade_time * 1000).hhmm();
 
-                            content += '<li class="user-record-list" data-index="' + trade_time.toString() +
-                                '"><div><div>' + record_list[i].shop_name + ' / No.' + record_list[i].trade_id +
-                                '</div><div>TWD -' + record_list[i].trade_point + '</div></div><div><div></div><div>' +
-                                tradeDate + ' ' + tradeTime + '</div></div></li>';
+                            content += '<li class="user-record-list" data-index="' +
+                                trade_time.toString() +
+                                '"><div><div>' +
+                                record_list[i].shop_name +
+                                ' / No.' +
+                                record_list[i].trade_id +
+                                '</div><div>TWD ' +
+                                (record_list[i].cancel_trade == 'Y' ? '' : '-') +
+                                record_list[i].trade_point +
+                                '</div></div><div><div>' +
+                                (record_list[i].cancel_trade == 'Y' ? record_list[i].cancel_reason : '') +
+                                '</div><div>' +
+                                tradeDate + ' ' + tradeTime +
+                                '</div></div></li>';
                         }
                         
                     }
