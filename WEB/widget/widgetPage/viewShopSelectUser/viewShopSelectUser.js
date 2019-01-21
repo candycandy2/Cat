@@ -11,7 +11,7 @@ $("#viewShopSelectUser").pagecontainer({
             let queryStr = '&start_date=' + start.toString() + '&end_date=' + end.toString();
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     var shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
@@ -20,12 +20,21 @@ $("#viewShopSelectUser").pagecontainer({
                     for (var i in record_list) {
 
                         if(record_list[i]['trade_success'] == 'Y') {
-                            let tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
-                            let tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
+                            let tradeDate = new Date(record_list[i].trade_time * 1000).yyyymmdd('/');
+                            let tradeTime = new Date(record_list[i].trade_time * 1000).hhmm();
 
-                            content += '<li class="qplay-user-list"><div><div>' + shop_name + ' / No.' +
-                                record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point +
-                                '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
+                            content += '<li class="qplay-user-list"><div><div>' +
+                                shop_name +
+                                ' / No.' +
+                                record_list[i].trade_id +
+                                '</div><div>TWD ' +
+                                (record_list[i]['cancel_trade'] == 'Y' ? '-' : '') +
+                                record_list[i].trade_point +
+                                '</div></div><div><div>' +
+                                (record_list[i]['cancel_trade'] == 'Y' ? record_list[i]['cancel_reason'] : '') +
+                                '</div><div>' +
+                                tradeDate + ' ' + tradeTime +
+                                '</div></div></li>';
                         }
                         
                     }

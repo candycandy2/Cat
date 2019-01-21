@@ -116,9 +116,9 @@ $("#viewPayShopReturnPassword").pagecontainer({
             var num = $(this).attr('data-value');
             if (pwdNum.length < 4) {
                 pwdNum += num;
-                $('.shop-trade-pwd-keyboard .pwd-box:eq(' + (pwdNum.length - 1).toString() + ')').removeClass('pwd-active');
-                $('.shop-trade-pwd-keyboard .pwd-circle:eq(' + (pwdNum.length - 1).toString() + ')').show();
-                $('.shop-trade-pwd-keyboard .pwd-box:eq(' + pwdNum.length.toString() + ')').addClass('pwd-active');
+                $('.shop-trade-pwd-number .pwd-box:eq(' + (pwdNum.length - 1).toString() + ')').removeClass('pwd-active');
+                $('.shop-trade-pwd-number .pwd-circle:eq(' + (pwdNum.length - 1).toString() + ')').show();
+                $('.shop-trade-pwd-number .pwd-box:eq(' + pwdNum.length.toString() + ')').addClass('pwd-active');
             }
 
             if (pwdNum.length == 4) {
@@ -135,9 +135,9 @@ $("#viewPayShopReturnPassword").pagecontainer({
 
             if (pwdNum.length > 0) {
                 pwdNum = pwdNum.substring(0, pwdNum.length - 1);
-                $('.shop-trade-pwd-keyboard .pwd-box:eq(' + (pwdNum.length + 1).toString() + ')').removeClass('pwd-active');
-                $('.shop-trade-pwd-keyboard .pwd-circle:eq(' + pwdNum.length.toString() + ')').hide();
-                $('.shop-trade-pwd-keyboard .pwd-box:eq(' + pwdNum.length.toString() + ')').addClass('pwd-active');
+                $('.shop-trade-pwd-number .pwd-box:eq(' + (pwdNum.length + 1).toString() + ')').removeClass('pwd-active');
+                $('.shop-trade-pwd-number .pwd-circle:eq(' + pwdNum.length.toString() + ')').hide();
+                $('.shop-trade-pwd-number .pwd-box:eq(' + pwdNum.length.toString() + ')').addClass('pwd-active');
             }
 
             //'下一步'按钮不可用

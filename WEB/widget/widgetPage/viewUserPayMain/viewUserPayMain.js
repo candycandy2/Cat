@@ -37,7 +37,7 @@ $("#viewUserPayMain").pagecontainer({
             return new Date(year + '/12/31').toLocaleDateString(browserLanguage, { year: 'numeric', month: 'long', day: 'numeric' })
         }
 
-        
+
         /********************************** page event ***********************************/
         $("#viewUserPayMain").on("pagebeforeshow", function (event, ui) {
             var dirty = window.sessionStorage.getItem('user_point_dirty');
@@ -59,11 +59,7 @@ $("#viewUserPayMain").pagecontainer({
         });
 
         $("#viewUserPayMain").on("pageshow", function (event, ui) {
-            var changePwd = window.sessionStorage.getItem('userChangePwdSuccess');
-            if(changePwd == 'Y') {
-                $("#userChangeSuccess").fadeIn(100).delay(2000).fadeOut(100);
-                window.sessionStorage.removeItem('userChangePwdSuccess');
-            }
+
         });
 
         $("#viewUserPayMain").on("pagehide", function (event, ui) {

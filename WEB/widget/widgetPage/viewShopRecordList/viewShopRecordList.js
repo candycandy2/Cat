@@ -39,12 +39,21 @@ $("#viewShopRecordList").pagecontainer({
                     for (var i in record_list) {
 
                         if(record_list[i]['trade_success'] == 'Y') {
-                            var tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
-                            var tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
+                            var tradeDate = new Date(record_list[i].trade_time * 1000).yyyymmdd('/');
+                            var tradeTime = new Date(record_list[i].trade_time * 1000).hhmm();
 
-                            content += '<li class="shop-record-list"><div><div>' + shop_name + ' / No.' +
-                                record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point + 
-                                '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
+                            content += '<li class="shop-record-list"><div><div>' +
+                                shop_name +
+                                ' / No.' +
+                                record_list[i].trade_id +
+                                '</div><div>TWD ' +
+                                (record_list[i].cancel_trade == 'Y' ? '-' : '') +
+                                record_list[i].trade_point + 
+                                '</div></div><div><div>' +
+                                (record_list[i].cancel_trade == 'Y' ? record_list[i].cancel_reason : '') +
+                                '</div><div>' +
+                                tradeDate + ' ' + tradeTime +
+                                '</div></div></li>';
                         }
 
                     }

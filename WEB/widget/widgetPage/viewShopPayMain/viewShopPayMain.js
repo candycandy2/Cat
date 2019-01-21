@@ -63,6 +63,8 @@ $("#viewShopPayMain").pagecontainer({
             checkPhotoUpload($('#shopPhoto'));
             $('.name-shop').text(loginData['loginid']);
             //img
+            $('.shop-pay div:eq(0)').append('<img src="' + serverURL + imgURL + 'icon_qpay.png" width="100%">');
+            $('.shop-record div:eq(0)').append('<img src="' + serverURL + imgURL + 'icon_history.png" width="100%">');
             $('.shop-return div:eq(0)').append('<img src="' + serverURL + imgURL + 'icon_return.png" width="100%">');
             $('.shop-change div:eq(0)').append('<img src="' + serverURL + imgURL + 'icon_change.png" width="100%">');
             //API:获取店家信息
@@ -96,7 +98,8 @@ $("#viewShopPayMain").pagecontainer({
 
         //更改交易密码
         $('.shop-change').on('click', function () {
-            //checkWidgetPage('viewShopQueryRecord', pageVisitedList);
+            //与User端共用同一个页面
+            checkWidgetPage('viewUserChangePwd', pageVisitedList);
         });
 
 

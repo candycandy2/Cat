@@ -24,7 +24,7 @@
                 <span class="langStr" data-id="wgt_151"></span>
             </div>
             <div class="return-search-row3">
-                <input type="number" id="returnTradeCode" data-role="none" placeholder="請輸入交易碼後六位數字" maxlength="6">
+                <input type="number" id="returnTradeCode" data-role="none" placeholder="請輸入交易碼後六位數字" oninput="if(value.length>6)value=value.slice(0,6)">
             </div>
             <div class="return-search-row4">
                 <div class="returnToReason">

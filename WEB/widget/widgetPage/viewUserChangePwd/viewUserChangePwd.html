@@ -6,7 +6,7 @@
             <h1 class="ui-title">
                 <div>
                     <!--更改密码-->
-                    <span class="langStr" data-id="wgt_040"></span>
+                    <span class="langStr" data-id="wgt_014"></span>
                 </div>
             </h1>
         </div>
@@ -22,10 +22,10 @@
                 <input type="password" data-role="none" id="userOldPwd" maxlength="4">
             </div>
             <div class="user-change-main">
-                <input type="number" data-role="none" id="userNewPwd" maxlength="4">
+                <input type="number" data-role="none" id="userNewPwd" oninput="if(value.length>4)value=value.slice(0,4)">
             </div>
             <div class="user-change-main">
-                <input type="number" data-role="none" id="userCofirmPwd" maxlength="4">
+                <input type="number" data-role="none" id="userCofirmPwd" oninput="if(value.length>4)value=value.slice(0,4)">
             </div>
             <div class="user-change-btn">
                 <div class="user-change-pwd">
@@ -41,6 +41,10 @@
                     <span class="langStr" data-id="wgt_043"></span>
                 </div>
             </div>
+        </div>
+        <div class="popup-msg-style" id="userChangeSuccess">
+            <!--密码更改成功-->
+            <span class="langStr" data-id="wgt_015"></span>
         </div>
     </div>
     <!--popup-->
