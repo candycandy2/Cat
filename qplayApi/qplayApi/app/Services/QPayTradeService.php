@@ -461,7 +461,11 @@ class QPayTradeService
         $tradePointTotal = 0;
 
         foreach ($resultData as $data) {
-            $tradePointTotal += $data->trade_point;
+            if ($data->cancel_trade == "N") {
+                $tradePointTotal += $data->trade_point;
+            } else if ($data->cancel_trade == "Y") {
+                $tradePointTotal -= $data->trade_point;
+            }
             unset($data["point_type_name"]);
         }
 
