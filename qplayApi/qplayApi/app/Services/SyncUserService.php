@@ -21,12 +21,7 @@ class SyncUserService
         $this->userRepository = $userRepository;
         $this->userSyncRepository = $userSyncRepository;
     }
-    public function test(){
-       $this->eHRAllUser =  $this->userSyncRepository->getEHRAllUser();
-       foreach ($this->eHRAllUser as $EHRData) {
-        var_dump($EHRData);
-       }
-    }
+
     /**
      * remove all data from user sync table
      */
