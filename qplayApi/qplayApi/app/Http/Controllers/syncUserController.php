@@ -92,7 +92,7 @@ class syncUserController extends Controller
             //eHR Data Sync - 0. INSERT Data Into  `qp_user_sync` which prepare to sync 
             $readyToSyncEHR = $this->syncUserService->insertUserDataIntoTemp($ehrFileName, 'ehr');
             if( $readyToSyncEHR > 0){
-                Log::info('Ready To Sync EHR: '.$readyToSync);
+                Log::info('Ready To Sync EHR: '.$readyToSyncEHR);
             }
             //eHR Data Sync - 1. INSERT Data Into `qp_user` from `qp_ehr_user` which emp_no not exist in `qp_user`
             $newUserEHR = $this->syncUserService->insertFromQPeHRUser();
@@ -107,7 +107,7 @@ class syncUserController extends Controller
             }
             Log::info('Delete EHR User Count: '.count($delUsersEHR));
 
-            Storage::delete($fileName);
+            Storage::delete($ehrFileName);
         }
 
         Log::info('[Data Information]');
