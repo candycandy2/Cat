@@ -102,8 +102,8 @@ class syncUserController extends Controller
             Log::info('Update EHR User Count: '.$updateUserEHR);
             //eHR Data Sync - 3. Delete register info and JPush Tag which the user in `qp_ehr_uaer` were resign.
             $delUsersEHR = $this->syncUserService->getResignUsersFromQPeHRUser();
-            if(count($delUsers) > 0){
-                $this->registerService->unRegisterUserbyUserIds($delUsers);
+            if(count($delUsersEHR) > 0){
+                $this->registerService->unRegisterUserbyUserIds($delUsersEHR);
             }
             Log::info('Delete EHR User Count: '.count($delUsersEHR));
 
