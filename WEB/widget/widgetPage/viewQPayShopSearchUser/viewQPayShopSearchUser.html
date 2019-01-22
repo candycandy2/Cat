@@ -1,0 +1,107 @@
+<!-- viewQPayShopSearchUser -->
+<div data-role="page" id="viewQPayShopSearchUser">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="header-style">
+            <h1 class="ui-title">
+                <div>
+                    <!--QPay结帐-->
+                    <span class="langStr" data-id="wgt_051"></span>
+                </div>
+            </h1>
+        </div>
+        <a href="#" data-role="none">
+            <div class="q-btn-header page-back">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+        <a href="#" data-role="none" class="ui-btn-right" id="qplayRefresh">
+            <div class="q-btn-header">
+                <img src="img/refresh.png" width="100%" height="100%">
+            </div>
+        </a>
+    </div>
+    <div data-role="main" class="ui-content page-main">
+        <div class="select-user-type">
+            <div class="qplay-user-title type-active" data-type="qplay">
+                <div>
+                    <!--QPlay使用者-->
+                    <span class="langStr" data-id="wgt_056"></span>
+                </div>
+                <div></div>
+            </div>
+            <div class="other-user-title" data-type="other">
+                <div>
+                    <!--非QPlay使用者-->
+                    <span class="langStr" data-id="wgt_057"></span>
+                </div>
+                <div></div>
+            </div>
+        </div>
+        <div class="select-user-blank"></div>
+        <div class="select-user-scroll">
+            <div class="qplay-user">
+                <div class="today-no-record">
+                    <!--您今日尚无任何交易-->
+                    <span class="langStr" data-id="wgt_098"></span>
+                </div>
+                <ul data-role="none" class="qplay-user-ul">
+                    <!-- <li class="qplay-user-list">
+                        <div>
+                            <div>QTY 早餐吧 / No.12463</div>
+                            <div>TWD 70</div>
+                        </div>
+                        <div>
+                            <div></div>
+                            <div>18/30/2018 14:30</div>
+                        </div>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+        <div class="other-user">
+            <div class="other-user-input">
+                <input type="number" data-role="none" id="inputEmpNo"><img src="img/field_clear.png" id="clearEmpNo">
+            </div>
+            <div class="other-user-btn">
+                <div class="other-user-pwd">
+                    <!--下一步-->
+                    <span class="langStr" data-id="wgt_018"></span>
+                </div>
+            </div>
+            <div class="other-user-foot">
+                <!--*请将手机交给消费者输入-->
+                <span class="langStr" data-id="wgt_058"></span>
+            </div>
+        </div>
+    </div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup shopEmpError" for="shopEmpError" id="shopEmpError">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <!--員工信息錯誤-->
+                    <span class="header-text langStr" data-id="wgt_095"></span>
+                </div>
+                <div class="font-style3 header-title">
+                    <!--请重新输入-->
+                    <span class="header-text langStr" data-id="wgt_045"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style11 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--确定-->
+                        <span class="langStr" data-id="wgt_050"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

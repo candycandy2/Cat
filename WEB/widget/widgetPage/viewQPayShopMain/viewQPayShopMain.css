@@ -1,0 +1,76 @@
+/***************************** viewQPayShopMain ********************************/
+#viewQPayShopMain .ui-content {
+    padding: 0 !important;
+}
+
+.shop-pay-main {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: #EEF2F5;
+}
+
+.shop-photo-setting {
+    width: 100vw;
+    height: 61vw;
+}
+
+.shop-photo-setting > div:nth-of-type(1) {
+    width: 26.5vw;
+    height: 26.5vw;
+    padding-top: 14vw;
+    padding-left: 37vw;
+}
+
+.shop-photo-setting > div:nth-of-type(1) img {
+    border-radius: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.shop-photo-setting > div:nth-of-type(2) {
+    width: 100vw;
+    height: 8vw;
+    margin-top: 3vw;
+    text-align: center;
+    color: #263238;
+    font-weight: normal;
+    font-size: 4.18vw !important;
+}
+
+.link-shop > div {
+    width: 90vw;
+    height: 13vw;
+    padding: 4vw 3.71vw 4vw 6vw;
+    background: #fff;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+/* .link-shop > div:last-of-type {
+    border: none;
+} */
+
+.link-shop > div > div {
+    float: left;
+}
+
+.link-shop > div > div:nth-of-type(1) {
+    width: 13vw;
+}
+
+.link-shop > div > div:nth-of-type(2) {
+    width: 67vw;
+    height: 13vw;
+    line-height: 13vw;
+    text-indent: 3vw;
+    color: #263238;
+    font-weight: bold;
+    font-size: 3.55vw !important;
+}
+
+.link-shop > div > div:nth-of-type(3) {
+    width: 6.44vw;
+    padding-top: 3vw;
+}
