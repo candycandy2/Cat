@@ -1,0 +1,16 @@
+/********************************************** viewCardsMain *********************************************/
+
+.cardsBack {
+    width: 4.934VW;
+    display: none;
+}
+
+.cards-img {
+	width: 87.5vw;
+	margin-top: 7.8vw;
+	margin-left: 5.92vw;
+}
+
+.ui-title {
+	margin: 0 20% !important;
+}

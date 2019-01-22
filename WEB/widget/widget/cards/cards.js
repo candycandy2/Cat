@@ -27,9 +27,33 @@ var cardsWidget = {
             }, "html");
 
             //點擊小卡，跳轉viewCardsMain
-            /*contentItem.on('click', '.qstore-widget-img', function() {
-                checkWidgetPage('viewCardsMain', pageVisitedList);
-            });*/
+            contentItem.on('click', '.qstore-widget-img', function() {
+                let postData = {
+                    'cardsType': "qstore"
+                }
+                checkWidgetPage('viewCardsMain', pageVisitedList, postData);
+            });
+
+            contentItem.on('click', '.medical-widget-img', function() {
+                let postData = {
+                    'cardsType': "medical"
+                }
+                checkWidgetPage('viewCardsMain', pageVisitedList, postData);
+            });
+
+            contentItem.on('click', '.quality-widget-img', function() {
+                let postData = {
+                    'cardsType': "quality"
+                }
+                checkWidgetPage('viewCardsMain', pageVisitedList, postData);
+            });
+
+            contentItem.on('click', '.safety-widget-img', function() {
+                let postData = {
+                    'cardsType': "safety"
+                }
+                checkWidgetPage('viewCardsMain', pageVisitedList, postData);
+            });
         }
 
         $.fn.cards = function(options) {
