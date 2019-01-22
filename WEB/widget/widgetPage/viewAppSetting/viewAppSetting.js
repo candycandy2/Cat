@@ -234,7 +234,7 @@ $("#viewAppSetting").pagecontainer({
 
         //修改密码
         $('.change-password').on('click', function () {
-            checkWidgetPage('viewShopChangePwd', pageVisitedList);
+            checkWidgetPage('viewQPayShopChangePassword', pageVisitedList);
         });
 
         //注销

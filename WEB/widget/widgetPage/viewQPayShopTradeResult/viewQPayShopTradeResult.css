@@ -1,0 +1,183 @@
+/******************************* viewQPayShopTradeResult *******************************/
+#viewQPayShopTradeResult .ui-content {
+    padding: 0 !important;
+}
+
+.shop-trade-loading {
+    width: 92.58vw;
+    height: 100vh;
+    position: fixed;
+    padding: 6.58vw 3.71vw 0;
+}
+
+.shop-loading-icon {
+    width: 100%;
+    height: 22vw;
+    padding-bottom: 10vw;
+}
+
+.shop-loading-icon div {
+    width: 22vw;
+    height: 22vw;
+    margin: auto;
+    background: #E5E6E6;
+    border-radius: 50%;
+}
+
+.shop-loading-total {
+    width: 100%;
+    height: 15.6vw;
+    padding-bottom: 13.8vw;
+}
+
+.shop-loading-total div {
+    width: 41.3vw;
+    height: 100%;
+    margin: auto;
+    background: #E5E6E6;
+}
+
+.shop-loading-short {
+    width: 100%;
+    height: 3.39vw;
+    padding-bottom: 1.16vw;
+}
+
+.shop-loading-short div {
+    width: 21vw;
+    height: 100%;
+    margin-left: 1.68vw;
+    background: #E5E6E6;
+}
+
+.shop-loading-long {
+    width: 100%;
+    height: 5vw;
+    padding-bottom: 5.46vw;
+}
+
+.shop-loading-long div {
+    width: 89.22vw;
+    height: 100%;
+    margin-left: 1.68vw;
+    background: #E5E6E6;
+}
+
+.shop-loading-foot {
+    width: 100%;
+    height: 10.35vw;
+}
+
+.shop-loading-foot div {
+    width: 35.5vw;
+    height: 100%;
+    margin: auto;
+    background: #E5E6E6;
+}
+
+.shop-trade-main {
+    width: 92.58vw;
+    height: 100vh;
+    position: fixed;
+    padding: 6.58vw 3.71vw 0;
+    display: none;
+}
+
+.shop-trade-icon {
+    width: 100%;
+    height: 19.52vw;
+    padding-bottom: 3vw;
+}
+
+.shop-trade-icon div {
+    width: 24.15vw;
+    height: 100%;
+    margin: auto;
+    position: relative;
+}
+
+.shop-trade-icon img {
+    width: 19.52vw;
+    position: absolute;
+    left: 2.13vw;
+    bottom: 0;
+}
+
+.shop-trade-status {
+    width: 100%;
+    height: 4vw;
+    padding-bottom: 5.5vw;
+    text-align: center;
+    font-size: 4.18vw;
+}
+
+.shop-trade-unit {
+    width: 100%;
+    height: 4vw;
+    padding-bottom: 3.3vw;
+    text-align: center;
+    font-size: 4.18vw;
+    color: #253137;
+}
+
+.shop-trade-money {
+    width: 100%;
+    height: 10vw;
+    padding-bottom: 2.9vw;
+    text-align: center;
+    line-height: 1;
+    font-size: 12.54vw;
+    color: #253137;
+}
+
+.shop-trade-time {
+    width: 100%;
+    height: 3vw;
+    padding-bottom: 2vw;
+    text-align: center;
+    font-size: 3.14vw;
+    color: #989898;
+}
+
+.shop-trade-item {
+    width: 100%;
+    border-bottom: 1px solid #D6D6D6;
+    padding-top: 4.3vw;
+}
+
+.shop-trade-item > div:nth-of-type(1) {
+    width: 100%;
+    height: 5vw;
+    text-indent: 1.68vw;
+    color: #253137;
+    font-size: 3.349vw;
+}
+
+.shop-trade-item > div:nth-of-type(2) {
+    width: 100%;
+    height: 6vw;
+    text-indent: 1.68vw;
+    color: #2C87BA;
+    font-size: 4.18vw;
+}
+
+.shop-trade-fail {
+    display: none;
+}
+
+.shop-trade-btn {
+    width: 100%;
+    height: 10.35vw;
+    padding-top: 4.43vw;
+}
+
+.shop-trade-back {
+    width: 35.5vw;
+    height: 100%;
+    margin: auto;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
+}

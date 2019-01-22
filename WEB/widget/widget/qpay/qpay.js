@@ -20,12 +20,12 @@ var qpayWidget = {
 
             //点击前往，跳转user pay
             contentItem.on('click', '.qpay-toMain', function() {
-                checkWidgetPage('viewUserPayMain', pageVisitedList);
+                checkWidgetPage('viewQPayUserMain', pageVisitedList);
             });
 
             //点击更多，跳转shop pay
             contentItem.on('click', '.qpay-more', function() {
-                checkWidgetPage('viewShopPayMain', pageVisitedList);
+                checkWidgetPage('viewQPayShopMain', pageVisitedList);
             });
         }
 
@@ -79,7 +79,6 @@ var qpayWidget = {
                 if(data['result_code'] == '1') {
                     var point_now = data['content'].point_now;
                     $('.qpay-money').text(point_now);
-                    //window.sessionStorage.setItem('QPayWidgetPoint', point_now);
                 } else {
                     $('.qpay-money').text('0');
                 }
