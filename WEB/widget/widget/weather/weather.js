@@ -12,9 +12,10 @@ var weatherWidget = {
 
         function setWeatherData() {
             // if (navigator.geolocation) {
-            //     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
+            //     navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
             // }
             var pos = {"coords":{"latitude":25.0811469,"longitude":121.56481370000006}};//QTT
+            // var pos = {"coords":{"latitude":31.305428,"longitude":120.525748}};//QCS
             locationSuccess(pos);
         }
 
