@@ -43,7 +43,10 @@ $("#viewQPayShopReturnReason").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewQPayShopReturnReason").on("pagebeforeshow", function(event, ui) {
-
+            //如果原因不是“请选择”恢复成请选择，第一次不需要处理，只有第二次进来才需要处理
+            if($('#returnReason').val() != '0') {
+                $('#returnReason-option-list li:eq(0)').trigger('click');
+            }
         });
 
         $("#viewQPayShopReturnReason").one("pageshow", function(event, ui) {
