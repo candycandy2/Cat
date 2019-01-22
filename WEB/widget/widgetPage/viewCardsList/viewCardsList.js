@@ -8,7 +8,6 @@ $("#viewCardsList").pagecontainer({
         /********************************** page event *************************************/
 
         $("#viewCardsList").on("pageshow", function(event, ui) {  
-
            
         });
 
