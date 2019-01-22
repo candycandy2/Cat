@@ -263,6 +263,29 @@ class UserSyncRepository
         $this->user->insert($data);
     }
 
+    /**
+     * Get user which not been updated today in specific sources
+     * @return mixed
+     */
+    public function getUserNotUpdateToday($sourceAll){
+        $today = date('Y-m-d 00:00:00',time());
+        return $this->user->where('updated_at', '<', $today)
+                   ->where('resign', '=', 'N')
+                   ->whereIn('source_from', $sourceAll)
+                   ->select('row_id')
+                   ->get();
 
+    }
+
+    /**
+     * Update `qp_user` with data where in userRowIdList 
+     * @param  Array $UserRowIdList [description]
+     * @param  Array $data          [description]
+     * @return [type]                [description]
+     */
+    public function updateUserInUserRowIdList($UserRowIdList, $data){
+        $this->user->whereIn('row_id',$UserRowIdList)
+                    ->update($data);
+    }
 }
 

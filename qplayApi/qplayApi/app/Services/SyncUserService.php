@@ -309,6 +309,10 @@ class SyncUserService
                     $this->resignUserFormEHR[] = $userDataArray[$empNO];
                 }
 
+                if(trim($EHRData["active"]) === "Y"){
+                    
+                }
+
                 //Check if login_id is not English/Number
                 /*
                 if (!preg_match('/^[a-zA-Z0-9@-_. ]+$/', $userDataArray[$empNO]["login_id"])) {
@@ -434,5 +438,25 @@ class SyncUserService
             ];
 
         return $data;
+    }
+
+    /**
+     * Update user which not been updated todate to be resign
+     * @return int updated count
+     */
+    public function autoResignUser($sourceAll){
+
+        $userRowIdList = $this->userSyncRepository->getUserNotUpdateToday($sourceAll)->toArray();
+        
+        $now = date('Y-m-d H:i:s',time());
+
+        $updateData = ['resign'=> 'Y',
+                        'status' => 'N',
+                        'deleted_at' => $now,
+                        'updated_user' => -1];
+
+        $this->userSyncRepository->updateUserInUserRowIdList($userRowIdList, $updateData);
+        
+        return $userRowIdList;
     }
 }
