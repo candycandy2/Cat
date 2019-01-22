@@ -52,7 +52,7 @@ var widget = {
         return new Promise((resolve, reject) => {
 
             var widgetItem = this.list()[id].name + "Widget";
-            var contentItem = $('<div class="' + widgetItem + '"></div>');
+            var contentItem = $('<div id="' + widgetItem + '" class="' + widgetItem + '"></div>');
             div.append(contentItem);
 
             $.getScript(serverURL + "/widget/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
