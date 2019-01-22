@@ -59,8 +59,7 @@ $("#viewQPayShopMain").pagecontainer({
         });
 
         $("#viewQPayShopMain").one("pageshow", function (event, ui) {
-            //头像和名称
-            checkPhotoUpload($('#shopPhoto'));
+            //名称
             $('.name-shop').text(loginData['loginid']);
             //img
             $('.shop-pay div:eq(0)').append('<img src="' + serverURL + imgURL + 'icon_qpay.png" width="100%">');
@@ -72,7 +71,8 @@ $("#viewQPayShopMain").pagecontainer({
         });
 
         $("#viewQPayShopMain").on("pageshow", function (event, ui) {
-
+            //头像
+            checkPhotoUpload($('#shopPhoto'));
         });
 
         $("#viewQPayShopMain").on("pagehide", function (event, ui) {
