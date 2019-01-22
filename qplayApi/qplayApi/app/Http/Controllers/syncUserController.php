@@ -59,9 +59,8 @@ class syncUserController extends Controller
                 }
                 //User Data Sync - 2. delete register information and Jpush Tag
                 $delUsers =  $this->syncUserService->getResignUsers();
-                if(count($delUsers) > 0){
-                    $this->registerService->unRegisterUserbyUserIds($delUsers);
-                }
+                $this->registerService->unRegisterUserbyUserIds($delUsers);
+
                 //User Data Sync - 3. merge user
                 $mergeResult = $this->syncUserService->mergeUser($sourceFrom);
 
@@ -102,22 +101,30 @@ class syncUserController extends Controller
             Log::info('Update EHR User Count: '.$updateUserEHR);
             //eHR Data Sync - 3. Delete register info and JPush Tag which the user in `qp_ehr_uaer` were resign.
             $delUsersEHR = $this->syncUserService->getResignUsersFromQPeHRUser();
-            if(count($delUsersEHR) > 0){
-                $this->registerService->unRegisterUserbyUserIds($delUsersEHR);
-            }
+            $this->registerService->unRegisterUserbyUserIds($delUsersEHR);
+            
             Log::info('Delete EHR User Count: '.count($delUsersEHR));
 
             Storage::delete($ehrFileName);
         }
 
         Log::info('[Data Information]');
-        //2. insert new company
+
+        //2. Insert new company
         $companyRole = $this->roleService->addNewCompany();
         Log::info('Add company role:'.count($companyRole));
-        //3. duplicate emp_no handle
+
+        //3. Duplicate emp_no handle
         $duplicateUsers = $this->syncUserService->handlDuplicatedUser();
         Log::info('Duplicate users :'.count($duplicateUsers));
 
+        //4. Auto resign user which was not been updated today
+        $sourceAll = Config::get('syncuser.source');
+        array_push($sourceAll, 'ehr');
+        $autoResignUsers = $this->syncUserService->autoResignUser($sourceAll);
+        $this->registerService->unRegisterUserbyUserIds($autoResignUsers);
+        Log::info('Auto Resign users :'.count($autoResignUsers));
+    
         Storage::deleteDirectory(self::SYNC_FOLDER);
         Log::info('Delete Folder: '.self::SYNC_FOLDER);
 

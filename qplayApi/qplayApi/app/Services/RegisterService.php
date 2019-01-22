@@ -26,29 +26,38 @@ class RegisterService
     /**
      * unregister users by qp_user.row_id 
      * @param  Array  $UserIds delete user id list
+     * @return int
      */
     public function unRegisterUserbyUserIds(Array $UserIds){
+        
+        if(count($UserIds) > 0){
+           
+            $registerInfo = $this->registerRepository->getRegisterInfoByUserIds($UserIds);
+            $delRegisterIds = $registerInfo['registerIds'];
+            $delUuids =  $registerInfo['UUIDs'];
             
-        $registerInfo = $this->registerRepository->getRegisterInfoByUserIds($UserIds);
-        $delRegisterIds = $registerInfo['registerIds'];
-        $delUuids =  $registerInfo['UUIDs'];
-        
-        $this->sessionRepository->deleteSessionByUserIds($UserIds);
-        $this->registerRepository->deleteRegisterByUserIds($UserIds);
-        $this->pushTokenRepository->deletePushTokenByUserIds($delRegisterIds);
-        
-       foreach ($delUuids as $uuid) {
-            $delDeviceInfo =  PushUtil::getDeviceInfoWithJPushWebAPI($uuid);
-            if($delDeviceInfo["result"]) {
-                $tags = $delDeviceInfo['info']['body']['tags'];
-                foreach ($tags as $tag) {
-                    $removeResult = PushUtil::RemoveTagsWithJPushWebAPI($tag, $uuid);
-                    if(!$removeResult["result"]) {
-                        Log::error('['.$uuid.'] remove tag error'.':'.$tag);
+            $this->sessionRepository->deleteSessionByUserIds($UserIds);
+            $this->registerRepository->deleteRegisterByUserIds($UserIds);
+            $this->pushTokenRepository->deletePushTokenByUserIds($delRegisterIds);
+            
+           foreach ($delUuids as $uuid) {
+                $delDeviceInfo =  PushUtil::getDeviceInfoWithJPushWebAPI($uuid);
+                if($delDeviceInfo["result"]) {
+                    $tags = $delDeviceInfo['info']['body']['tags'];
+                    foreach ($tags as $tag) {
+                        $removeResult = PushUtil::RemoveTagsWithJPushWebAPI($tag, $uuid);
+                        if(!$removeResult["result"]) {
+                            Log::error('['.$uuid.'] remove tag error'.':'.$tag);
+                        }
                     }
                 }
-            }
-       }
-       return count($delUuids);
+           }
+            return count($delUuids);
+       
+        }else{
+            
+            return 0;
+        
+        }
     }
 }
