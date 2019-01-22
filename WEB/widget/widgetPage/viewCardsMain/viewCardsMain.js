@@ -45,5 +45,9 @@ $("#viewCardsMain").pagecontainer({
 
         /********************************** dom event *************************************/
 
+        $(document).on('click', '#viewCardsMain #allCardsBtn', function() {
+            checkWidgetPage('viewCardsList', pageVisitedList);
+        });
+
     }
 });
