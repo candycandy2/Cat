@@ -17,11 +17,13 @@ var cardsWidget = {
                 $('.quality-widget-img').html('').append(qualityImg);
                 var safetyImg = $('<img>').attr('src', serverURL + '/widget/widget/cards/img/enviro_safety_widget.png');
                 $('.safety-widget-img').html('').append(safetyImg);
+                var calendarImg = $('<img>').attr('src', serverURL + '/widget/widget/cards/img/2019_calendar_widget.png');
+                $('.calendar-widget-img').html('').append(calendarImg);
 
                 //計算有幾個小卡
                 var cardsQuantity = $('.cards-main-img').children().length;
                 //小卡寬*小卡數量+邊界
-                var contentWidth = (31.2+4) * cardsQuantity + 5.92;
+                var contentWidth = (31.5+4) * cardsQuantity + 5.92;
                 $('.cards-main-img').css('width', contentWidth + 'vw');
 
             }, "html");
@@ -51,6 +53,13 @@ var cardsWidget = {
             contentItem.on('click', '.safety-widget-img', function() {
                 let postData = {
                     'cardsType': "safety"
+                }
+                checkWidgetPage('viewCardsMain', pageVisitedList, postData);
+            });
+
+            contentItem.on('click', '.calendar-widget-img', function() {
+                let postData = {
+                    'cardsType': "calendar"
                 }
                 checkWidgetPage('viewCardsMain', pageVisitedList, postData);
             });

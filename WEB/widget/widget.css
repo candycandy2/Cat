@@ -1095,22 +1095,11 @@
     -webkit-overflow-scrolling: touch;
 }
 
-.qstore-widget-img>img {
-    width: 31.2vw;
-    border-radius: 2px;
-}
-
-.medical-widget-img>img {
-    width: 31.2vw;
-    border-radius: 2px;
-}
-
-.quality-widget-img>img {
-    width: 31.2vw;
-    border-radius: 2px;
-}
-
-.safety-widget-img>img {
+.qstore-widget-img>img,
+.medical-widget-img>img,
+.quality-widget-img>img,
+.safety-widget-img>img,
+.calendar-widget-img>img {
     width: 31.2vw;
     border-radius: 2px;
 }

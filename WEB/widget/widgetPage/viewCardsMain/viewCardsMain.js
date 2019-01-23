@@ -45,6 +45,12 @@ $("#viewCardsMain").pagecontainer({
                     cardsUrl = serverURL + imgURL + cardsImg;
                     showOneImg(cardsUrl);
                     break;
+                case "calendar":
+                    headerName = "2019行事曆";
+                    cardsImg = "2019_calendar_card.png";
+                    cardsUrl = serverURL + imgURL + cardsImg;
+                    showOneImg(cardsUrl);
+                    break;
                 case "safety":
                     headerName = langStr["wgt_171"];
                     for (var i = 0; i < 2; i++) {
