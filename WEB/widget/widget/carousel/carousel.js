@@ -59,11 +59,10 @@ var carouselWidget = {
                     content += '<li id= "' + i + '" class="sw-slide"><img class="portal_' + (i + 1) + '" src="' + serverURL + '/widget/widget/carousel/img/portal_' + (i + 1) + '.jpg"/></li>';
                 }
 
-                $('.swipslider ul').append(content);
-
+                $('.carousel-widget ul').append(content);
 
                 setTimeout(function() {
-                    $('.swipslider').swipeslider({
+                    $('.carousel-widget').swipeslider({
                         prevNextButtons: false,
                         autoPlayTimeout: 3000
                     });
