@@ -14,3 +14,27 @@
 .ui-title {
 	margin: 0 20% !important;
 }
+
+.sw-slides img {
+    width: 87.5vw;
+	height: 130vw;
+}
+
+.cards-img {
+	display: none;
+	position: fixed;
+}
+
+#viewCardsMain .swipslider {
+	display: none;
+	position: initial !important;
+}
+
+#viewCardsMain .sw-bullet {
+	bottom: 10% !important;
+}
+
+#viewCardsMain .sw-bullet li {
+	width: 1.9vw !important;
+	height: 1.9vw !important;
+}
