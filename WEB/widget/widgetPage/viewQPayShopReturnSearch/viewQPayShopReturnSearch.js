@@ -44,7 +44,12 @@ $("#viewQPayShopReturnSearch").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewQPayShopReturnSearch").on("pagebeforeshow", function(event, ui) {
-
+            let isInit = window.sessionStorage.getItem('cancelTradeSuccess');
+            if(isInit != null) {
+                $('#returnTradeCode').val('');
+                $('.returnToReason').removeClass('active-btn-green');
+                window.sessionStorage.removeItem('cancelTradeSuccess');
+            }
         });
 
         $("#viewQPayShopReturnSearch").one("pageshow", function(event, ui) {
