@@ -14,7 +14,7 @@ var weatherWidget = {
             // if (navigator.geolocation) {
             //     navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
             // }
-            var pos = {"coords":{"latitude":25.0811469,"longitude":121.56481370000006}};//QTT
+            var pos = { "coords": { "latitude": 25.0811469, "longitude": 121.56481370000006 } }; //QTT
             // var pos = {"coords":{"latitude":31.305428,"longitude":120.525748}};//QCS
             locationSuccess(pos);
         }
@@ -27,11 +27,17 @@ var weatherWidget = {
                     //{"coord":{"lon":139,"lat":35},"weather":[{"id":520,"main":"Rain","description":"light intensity shower rain","icon":"09d"}],"base":"stations","main":{"temp":282.19,"pressure":1023,"humidity":100,"temp_min":281.15,"temp_max":283.15},"visibility":10000,"wind":{"speed":1,"deg":330},"clouds":{"all":75},"dt":1547512020,"sys":{"type":1,"id":8024,"message":0.0051,"country":"JP","sunrise":1547502702,"sunset":1547538895},"id":1851632,"name":"Shuzenji","cod":200}
                     //http://jsoneditoronline.org/
                     //https://openweathermap.org/current
+                    //http://openweathermap.org/img/w/10d.png
+                    //var img = result.item.description.split('CDATA[')[1].split('<BR />')[0];
                     $(".current-temp").text(Math.round(data.main.temp));
                     $(".high-temp").text(Math.round(data.main.temp_max));
                     $(".low-temp").text(Math.round(data.main.temp_min));
                     $(".loca-city").text(data.name);
                     $(".loca-text").text(data.weather[0].description);
+                    //$('.weather-img').html('').append('http://openweathermap.org/img/w/' + data.weather[0].icon + '.png');
+
+                    var weatherImg = $('<img>').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png');
+                    $('.weather-img').html('').append(weatherImg);
                 }
             );
         }
