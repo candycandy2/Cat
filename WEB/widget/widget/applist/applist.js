@@ -155,7 +155,7 @@ var applistWidget = {
 
         $.fn.applist.defaults = {}
 
-        $('.reserveWidget').applist();
+        $('.applistWidget').applist();
     },
     refresh: function() {
     },
