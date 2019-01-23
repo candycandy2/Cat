@@ -28,7 +28,7 @@ var weatherWidget = {
                     //http://jsoneditoronline.org/
                     //https://openweathermap.org/current
                     //http://openweathermap.org/img/w/10d.png
-                    //var img = result.item.description.split('CDATA[')[1].split('<BR />')[0];
+                    //<img src="//openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/04d.png" width="128" height="128" alt="Weather in Taipei, TW" class="weather-left-card__img">
                     $(".current-temp").text(Math.round(data.main.temp));
                     $(".high-temp").text(Math.round(data.main.temp_max));
                     $(".low-temp").text(Math.round(data.main.temp_min));
@@ -36,7 +36,7 @@ var weatherWidget = {
                     $(".loca-text").text(data.weather[0].description);
                     //$('.weather-img').html('').append('http://openweathermap.org/img/w/' + data.weather[0].icon + '.png');
 
-                    var weatherImg = $('<img>').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png');
+                    var weatherImg = $('<img width="128" height="128" >').attr('src', 'https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/' + data.weather[0].icon + '.png');
                     $('.weather-img').html('').append(weatherImg);
                 }
             );
