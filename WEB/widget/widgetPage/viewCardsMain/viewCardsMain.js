@@ -15,7 +15,6 @@ $("#viewCardsMain").pagecontainer({
         $("#viewCardsMain").one("pageshow", function(event, ui) {
              var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewCardsMain .page-main').css('height', mainHeight);
-
             var imgURL = "/widget/widgetPage/viewCardsMain/img/";
             $(".allCardsImg").attr("src", serverURL + imgURL + "icon_widget_cards.png");
         });
