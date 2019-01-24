@@ -41,5 +41,12 @@ $("#viewCardsList").pagecontainer({
             checkWidgetPage('viewCardsMain', pageVisitedList, postData);
         });
 
+        $(document).on('click', '#viewCardsList .calendar-card', function() {
+            let postData = {
+                'cardsType': "calendar"
+            }
+            checkWidgetPage('viewCardsMain', pageVisitedList, postData);
+        });
+
     }
 });
