@@ -1,4 +1,13 @@
 /********************************************** viewCardsMain *********************************************/
+#viewCardsMain .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+#viewCardsMain .ui-title {
+	margin: 0 20% !important;
+}
 
 .cardsBack {
     width: 4.934VW;
@@ -11,18 +20,13 @@
 	margin-left: 5.92vw;
 }
 
-.ui-title {
-	margin: 0 20% !important;
-}
-
 #viewCardsMain .sw-slides img {
     width: 87.5vw;
 	height: 130vw;
 }
 
-.cards-img {
+.fixedcard {
 	display: none;
-	position: fixed;
 }
 
 #viewCardsMain .swipslider {
@@ -31,7 +35,7 @@
 }
 
 #viewCardsMain .sw-bullet {
-	bottom: 10% !important;
+	bottom: 2% !important;
 }
 
 #viewCardsMain .sw-bullet li {
