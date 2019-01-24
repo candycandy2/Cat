@@ -241,12 +241,12 @@
 }
 
 .weather-img {
-    width: 17.5vw;
+    width: 30vw;
     height: 100%;
 }
 
 .weather-img img {
-    /*margin-top: 7vw;*/
+    width: 30vw;
 }
 
 /******************** reserve ********************/

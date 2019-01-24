@@ -36,7 +36,7 @@ var weatherWidget = {
                     $(".loca-text").text(data.weather[0].description);
                     //$('.weather-img').html('').append('http://openweathermap.org/img/w/' + data.weather[0].icon + '.png');
 
-                    var weatherImg = $('<img width="128" height="128" >').attr('src', 'https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/' + data.weather[0].icon + '.png');
+                    var weatherImg = $('<img>').attr('src', 'https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/' + data.weather[0].icon + '.png');
                     $('.weather-img').html('').append(weatherImg);
                 }
             );
