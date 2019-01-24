@@ -48,5 +48,9 @@ $("#viewCardsList").pagecontainer({
             checkWidgetPage('viewCardsMain', pageVisitedList, postData);
         });
 
+        $(document).on('click', '.cards-list-back', function() {
+            checkWidgetPage('viewMain3', pageVisitedList);
+        })
+
     }
 });
