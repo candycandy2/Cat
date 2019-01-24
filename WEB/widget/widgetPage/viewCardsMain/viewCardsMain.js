@@ -5,27 +5,47 @@ $("#viewCardsMain").pagecontainer({
         /********************************** function *************************************/ 
 
         function showOneImg(cardsUrl) {
+            $("#viewCardsMain .swipslider").hide();
             $(".cards-img").attr("src", cardsUrl);
             $(".fixedcard").show();
-            $("#viewCardsMain .swipslider").hide();
+        }
+
+        function showSliderImg(countImg, cardsUrl) {
+            var content = '';
+            for (var i = 0; i < countImg; i++) {
+                content += '<li id= "' + i + '" class="sw-slide"><img class="enviro_safety_' + (i + 1) + '" src="' + cardsUrl + (i + 1) + '.png"/></li>';
+            } 
+            $("#viewCardsMain .swipslider ul").append(content);
+            $(".fixedcard").hide();
+            $("#viewCardsMain .swipslider").show();
+            $("#viewCardsMain .swipslider").swipeslider({
+                prevNextButtons: false,
+                autoPlay: false
+            });
         }
 
         /********************************** page event *************************************/
 
+        $("#viewCardsMain").on("pagebeforeshow", function(event, ui) {
+            //清空前一頁Img URL
+            $(".cards-img").attr("src", "");
+            $("#viewCardsMain .swipslider ul").remove();
+            $("#viewCardsMain .swipslider").append('<ul class="sw-slides"></ul>');
+
+        });
+
         $("#viewCardsMain").one("pageshow", function(event, ui) {
-             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewCardsMain .page-main').css('height', mainHeight);
             var imgURL = "/widget/widgetPage/viewCardsMain/img/";
             $(".allCardsImg").attr("src", serverURL + imgURL + "icon_widget_cards.png");
         });
 
         $("#viewCardsMain").on("pageshow", function(event, ui) {  
-            $(".cards-img").attr("src", "");
             var imgURL = "/widget/widgetPage/viewCardsMain/img/";  
             var postData = JSON.parse(window.sessionStorage.getItem("viewCardsMain_parmData"));
-            var cardsTpye = postData.cardsType;
+            var cardsTpye = postData.cardsType;    
             var cardsImg, headerName, cardsUrl;
-            var content = '';
 
             switch(cardsTpye) {
                 case "qstore":
@@ -54,17 +74,8 @@ $("#viewCardsMain").pagecontainer({
                     break;
                 case "safety":
                     headerName = langStr["wgt_171"];
-                    for (var i = 0; i < 2; i++) {
-                        content += '<li id= "' + i + '" class="sw-slide"><img class="enviro_safety_' + (i + 1) + '" src="' + serverURL + imgURL + 'enviro_safety_' + (i + 1) + '.png"/></li>';
-                    } 
-                    $("#viewCardsMain .swipslider ul").empty().append(content);
-                    $("#viewCardsMain .sw-bullet").remove();
-                    $(".fixedcard").hide();
-                    $("#viewCardsMain .swipslider").show();
-                    $("#viewCardsMain .swipslider").swipeslider({
-                        prevNextButtons: false,
-                        autoPlay: false
-                    });
+                    cardsUrl = serverURL + imgURL + "enviro_safety_"
+                    showSliderImg(2, cardsUrl);
                     break;
             }
 
