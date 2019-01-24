@@ -7,6 +7,8 @@ var cardsWidget = {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
+                var calendarImg = $('<img>').attr('src', serverURL + '/widget/widget/cards/img/2019_calendar_widget.png');
+                $('.calendar-widget-img').html('').append(calendarImg);
                 var cardsImg = $('<img>').attr('src', serverURL + '/widget/widget/cards/img/icon_widget_crads.png');
                 $('.cards-icon').html('').append(cardsImg);
                 var qstoreImg = $('<img>').attr('src', serverURL + '/widget/widget/cards/img/qstore_widget.png');
@@ -17,9 +19,7 @@ var cardsWidget = {
                 $('.quality-widget-img').html('').append(qualityImg);
                 var safetyImg = $('<img>').attr('src', serverURL + '/widget/widget/cards/img/enviro_safety_widget.png');
                 $('.safety-widget-img').html('').append(safetyImg);
-                var calendarImg = $('<img>').attr('src', serverURL + '/widget/widget/cards/img/2019_calendar_widget.png');
-                $('.calendar-widget-img').html('').append(calendarImg);
-
+               
                 //計算有幾個小卡
                 var cardsQuantity = $('.cards-main-img').children().length;
                 //小卡寬*小卡數量+邊界

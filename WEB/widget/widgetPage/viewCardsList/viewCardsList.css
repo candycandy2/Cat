@@ -2,8 +2,7 @@
 
 .qstore-card {
     background: url(../viewCardsList/img/qstore_list.png) no-repeat;
-    background-size: 100vw;
-    margin-top: 7.8vw;	
+    background-size: 100vw;	
     width: 100vw;
     height: 30vw;
     align-self: center;	      
@@ -36,6 +35,7 @@
 .calendar-card {
     background: url(../viewCardsList/img/2019_calendar_list.png) no-repeat;
     background-size: 100vw;
+    margin-top: 7.8vw;  
     width: 100vw;
     height: 30vw;
     align-self: center;       
