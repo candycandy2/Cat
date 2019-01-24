@@ -36,3 +36,49 @@
 .show {
     display: block;
 }
+
+.default-widget-list,
+.more-widget-list{
+    background: #fff;
+}
+
+.default-widget-list>div:nth-of-type(1),
+.more-widget-list>div:nth-of-type(1){
+    width: 92.58vw;
+    padding: 6.422vw 3.71vw 2.5vw;
+    color: #263238;
+    font-size: 3.768vw;
+}
+
+.default-widget-list li,
+.more-widget-list li{
+    width: 100vw;
+    height: 14.5vw;
+    border-bottom: 1px solid #bdbcbc;
+}
+
+.default-widget-list li > div,
+.more-widget-list li > div{
+    float: left;
+    height: 100%;
+}
+
+.default-widget-list li > div:nth-of-type(1),
+.more-widget-list li > div:nth-of-type(1){
+    width: 15vw;
+}
+
+.default-widget-list li > div:nth-of-type(2),
+.more-widget-list li > div:nth-of-type(2){
+    width: 15vw;
+}
+
+.default-widget-list li > div:nth-of-type(3),
+.more-widget-list li > div:nth-of-type(3){
+    width: 60vw;
+}
+
+.default-widget-list li > div:nth-of-type(4),
+.more-widget-list li > div:nth-of-type(4){
+    width: 10vw;
+}

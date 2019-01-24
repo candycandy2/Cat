@@ -209,12 +209,12 @@
 }
 
 .weather-temp {
-    width: 32vw;
+    width: 32.5vw;
     height: 100%;
 }
 
 .weather-loca {
-    width: 30vw;
+    width: 32.5vw;
     height: 100%;
     font-size: 4.8vw;
 }
