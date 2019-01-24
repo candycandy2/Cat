@@ -3,7 +3,8 @@
 $("#viewGeneralSetting").pagecontainer({
     create: function (event, ui) {
 
-        var widgetArr = null,
+        var widgetArr = JSON.parse(window.localStorage.getItem('widgetList')),
+            imgURL = '/widget/widgetPage/viewGeneralSetting/img/',
             changeWidgetOrderDirty = 'N';
 
         //根据widgetlist获取一般设定的顺序
@@ -20,6 +21,36 @@ $("#viewGeneralSetting").pagecontainer({
             $('#defaultList').html('').append(content);
         }
 
+        //widgetlist分類
+        function setWidgetList(arr) {
+            let defaultContent = '';
+            let moreContent = '';
+            for(let i in arr) {
+                if(arr[i]['show'] == true) {
+                    defaultContent += '<li class="' +
+                        (arr[i].name == 'carousel' || !arr[i].enabled ? 'hide' : 'show') +
+                        '"><div><img src="' +
+                        serverURL + imgURL +
+                        'delete.png"></div><div><img src="' +
+                        serverURL + imgURL + 'widget_' + arr[i]['name'] + '.png"></div><div>' +
+                        arr[i]['name'] +
+                        '</div><div></div></li>';
+                } else {
+                    moreContent += '<li class="' +
+                        (arr[i].name == 'carousel' || !arr[i].enabled ? 'hide' : 'show') +
+                        '"><div><img src="' +
+                        serverURL + imgURL +
+                        'add.png"></div><div><img src="' +
+                        serverURL + imgURL + 'widget_' + arr[i]['name'] + '.png"></div><div>' +
+                        arr[i]['name'] +
+                        '</div><div></div></li>';
+                }
+            }
+
+            $('.default-widget-list ul').html('').append(defaultContent);
+            $('.more-widget-list ul').html('').append(moreContent);
+        }
+
 
         /********************************** page event ***********************************/
         $("#viewGeneralSetting").on("pagebeforeshow", function (event, ui) {
@@ -27,8 +58,10 @@ $("#viewGeneralSetting").pagecontainer({
         });
 
         $("#viewGeneralSetting").one("pageshow", function (event, ui) {
-            //1. widget list (just get only once)
-            widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewGeneralSetting .page-main').css('height', mainHeight);
+
+            //setWidgetList(widgetArr);
 
             //2. create content
             setGeneralSetting(widgetArr);
@@ -45,10 +78,6 @@ $("#viewGeneralSetting").pagecontainer({
 
             //$("#defaultList").sortable('disable'); //禁用
             //$("#defaultList").sortable('enable'); //啓用
-
-            //4. set main height
-            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
-            $('#viewGeneralSetting .page-main').css('height', mainHeight);
         });
 
         $("#viewGeneralSetting").on("pageshow", function (event, ui) {
