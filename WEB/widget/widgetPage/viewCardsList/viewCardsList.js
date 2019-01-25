@@ -7,8 +7,9 @@ $("#viewCardsList").pagecontainer({
 
         /********************************** page event *************************************/
 
-        $("#viewCardsList").on("pageshow", function(event, ui) {  
-           
+        $("#viewCardsList").one("pageshow", function(event, ui) {  
+            var backToPage = 'viewMain3';
+            window.sessionStorage.setItem('viewCardsList_backTo', backToPage);
         });
 
         /********************************** dom event *************************************/
@@ -47,10 +48,6 @@ $("#viewCardsList").pagecontainer({
             }
             checkWidgetPage('viewCardsMain', pageVisitedList, postData);
         });
-
-        $(document).on('click', '.cards-list-back', function() {
-            checkWidgetPage('viewMain3', pageVisitedList);
-        })
 
     }
 });
