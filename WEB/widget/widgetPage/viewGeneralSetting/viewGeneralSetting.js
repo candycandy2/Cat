@@ -5,50 +5,80 @@ $("#viewGeneralSetting").pagecontainer({
 
         var widgetArr = JSON.parse(window.localStorage.getItem('widgetList')),
             imgURL = '/widget/widgetPage/viewGeneralSetting/img/',
-            changeWidgetOrderDirty = 'N';
-
-        //根据widgetlist获取一般设定的顺序
-        function setGeneralSetting(widgetArr_) {
-            var content = '';
-            for (var i in widgetArr_) {
-                content += '<div class="default-item ' +
-                    (widgetArr_[i].name == 'carousel' || !widgetArr_[i].enabled ? 'hide' : 'show') +
-                    '" data-item="' + widgetArr_[i].name + '" data-index="' +
-                    i + '"><div>' + widgetArr_[i].lang +
-                    '</div><div><img src="img/move.png" width="90%"></div></div>';
-            }
-
-            $('#defaultList').html('').append(content);
-        }
+            changeWidgetOrderDirty = 'N',
+            disabledWidgetList = [];
 
         //widgetlist分類
         function setWidgetList(arr) {
             let defaultContent = '';
             let moreContent = '';
             for(let i in arr) {
-                if(arr[i]['show'] == true) {
-                    defaultContent += '<li class="' +
-                        (arr[i].name == 'carousel' || !arr[i].enabled ? 'hide' : 'show') +
-                        '"><div><img src="' +
-                        serverURL + imgURL +
-                        'delete.png"></div><div><img src="' +
-                        serverURL + imgURL + 'widget_' + arr[i]['name'] + '.png"></div><div>' +
-                        arr[i]['name'] +
-                        '</div><div></div></li>';
+                if(arr[i].enabled) {
+                    if(arr[i]['show']) {
+                        defaultContent += '<li data-id="' +
+                            arr[i]['id'] +
+                            (arr[i].name == 'carousel' ? '" class="hide"' : '"') +
+                            '><div class="delete-widget"></div><div><img src="' +
+                            serverURL + imgURL + 'widget_' + arr[i]['name'] +
+                            '.png"></div><div>' +
+                            arr[i]['lang'] +
+                            '</div><div class="move"></div></li>';
+                    } else {
+                        moreContent += '<li data-id="' +
+                            arr[i]['id'] +
+                            (arr[i].name == 'carousel' ? '" class="hide"' : '"') +
+                            '><div class="add-widget"></div><div><img src="' +
+                            serverURL + imgURL + 'widget_' + arr[i]['name'] +
+                            '.png"></div><div>' +
+                            arr[i]['lang'] +
+                            '</div><div></div></li>';
+                    }
                 } else {
-                    moreContent += '<li class="' +
-                        (arr[i].name == 'carousel' || !arr[i].enabled ? 'hide' : 'show') +
-                        '"><div><img src="' +
-                        serverURL + imgURL +
-                        'add.png"></div><div><img src="' +
-                        serverURL + imgURL + 'widget_' + arr[i]['name'] + '.png"></div><div>' +
-                        arr[i]['name'] +
-                        '</div><div></div></li>';
+                    disabledWidgetList.push(arr[i]);
                 }
             }
 
-            $('.default-widget-list ul').html('').append(defaultContent);
-            $('.more-widget-list ul').html('').append(moreContent);
+            $('.default-widget-ul').html('').append(defaultContent);
+            $('.more-widget-ul').html('').append(moreContent);
+        }
+
+        //根据id获取widget info
+        function getWidgetInfoByID(id, status) {
+            status = (status === true || status === false ? status : null);
+            for(let i in widgetArr) {
+                if(id == widgetArr[i]['id']) {
+                    if(status != null) {
+                        widgetArr[i]['show'] = status;
+                    }
+                    return widgetArr[i];
+                }
+            }
+        }
+
+        //从默认中删除
+        function removeToDefault(obj) {
+            let content = '<li data-id="' +
+                obj['id'] +
+                '"><div class="add-widget"></div><div><img src="' +
+                serverURL + imgURL + 'widget_' + obj['name'] +
+                '.png"></div><div>' +
+                obj['lang'] +
+                '</div><div></div></li>';
+
+            $('.more-widget-ul').append(content);
+        }
+
+        //添加到默认
+        function addToDefault(obj) {
+            let content = '<li data-id="' +
+                obj['id'] +
+                '"><div class="delete-widget"></div><div><img src="' +
+                serverURL + imgURL + 'widget_' + obj['name'] +
+                '.png"></div><div>' +
+                obj['lang'] +
+                '</div><div></div></li>';
+
+            $('.default-widget-ul').append(content);
         }
 
 
@@ -61,23 +91,18 @@ $("#viewGeneralSetting").pagecontainer({
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewGeneralSetting .page-main').css('height', mainHeight);
 
-            //setWidgetList(widgetArr);
+            //1.widget分组
+            setWidgetList(widgetArr);
 
-            //2. create content
-            setGeneralSetting(widgetArr);
-
-            //3. sort listview
-            $("#defaultList").sortable();
-            $("#defaultList").sortable({
-                delay: 1000
-            });
-            $("#defaultList").disableSelection();
-            $("#defaultList").on("sortstop", function (event, ui) {
+            //2.sortable
+            $('.default-widget-ul').sortable();
+            $('.default-widget-ul').disableSelection();
+            $('.default-widget-ul').on("sortstop", function (event, ui) {
                 changeWidgetOrderDirty = 'Y';
+                $('.default-widget-ul').sortable('disable');
             });
+            $('.default-widget-ul').sortable('disable');
 
-            //$("#defaultList").sortable('disable'); //禁用
-            //$("#defaultList").sortable('enable'); //啓用
         });
 
         $("#viewGeneralSetting").on("pageshow", function (event, ui) {
@@ -86,22 +111,26 @@ $("#viewGeneralSetting").pagecontainer({
 
         $("#viewGeneralSetting").on("pagehide", function (event, ui) {
             if (changeWidgetOrderDirty == 'Y') {
-
-                //1. 记录新index
-                var newSettingIndex = [];
-                $.each($('.default-item'), function (index, item) {
-                    newSettingIndex.push(parseInt($(item).attr('data-index')));
+                //1.按照排序记录widget id
+                let idArr = [];
+                $('.default-widget-ul li').each(function(index, item) {
+                    idArr.push($(item).data('id'));
+                });
+                $('.more-widget-ul li').each(function(index, item) {
+                    idArr.push($(item).data('id'));
+                });
+                $.each(disabledWidgetList, function(index, item) {
+                    idArr.push($(item)['id']);
                 });
 
-                //2. 记录新顺序
-                var arr = [];
-                for (var j in newSettingIndex) {
-                    var item = widgetArr[newSettingIndex[j]];
-                    arr.push(item);
+                //2.根据排好序的id将widgetlist排序
+                let currentArr = [];
+                for(let i in idArr) {
+                    currentArr.push(getWidgetInfoByID(idArr[i]));
                 }
 
                 //3. 更新到local
-                window.localStorage.setItem('widgetList', JSON.stringify(arr));
+                window.localStorage.setItem('widgetList', JSON.stringify(currentArr));
                 window.sessionStorage.setItem('widgetListDirty', 'Y');
 
                 changeWidgetOrderDirty = 'N';
@@ -109,6 +138,45 @@ $("#viewGeneralSetting").pagecontainer({
 
         });
 
+
         /********************************** dom event *************************************/
+        //长按拖动
+        $('.default-widget-ul').on('taphold', 'li', function() {
+            $('.default-widget-ul').sortable('enable');
+        });
+
+        //删除default
+        $('.default-widget-ul').on('click', '.delete-widget', function() {
+            //1.get id
+            let infoID = $(this).parent().data('id');
+            //2.remove element
+            $(this).parent().remove();
+            //3.get info
+            let infoObj = getWidgetInfoByID(infoID, false);
+            //4.append more list
+            removeToDefault(infoObj);
+            //5.refresh sortable
+            $('.default-widget-ul').sortable('refresh');
+            //6.dirty
+            changeWidgetOrderDirty = 'Y';
+        });
+
+        //添加default
+        $('.more-widget-ul').on('click', '.add-widget', function() {
+            //1.get id
+            let infoID = $(this).parent().data('id');
+            //2.remove element
+            $(this).parent().remove();
+            //3.get info
+            let infoObj = getWidgetInfoByID(infoID, true);
+            //4.append default list
+            addToDefault(infoObj);
+            //5.refresh sortable
+            $('.default-widget-ul').sortable('refresh');
+            //6.dirty
+            changeWidgetOrderDirty = 'Y';
+        });
+
+
     }
 });

@@ -1,7 +1,7 @@
 $("#viewQPayUserTradeResult").pagecontainer({
     create: function (event, ui) {
 
-        var backToPage = 'viewQPayUserPayMain';
+        var backToPage = 'viewQPayUserMain';
 
         //进行交易
         function makeNewTrade(tradeInfo) {

@@ -212,9 +212,79 @@ function checkWidgetPage(pageID, pageVisitedList, parmData) {
     }
 }
 
+
 //重设dropdownlist宽度
 function setDropdownlistWidth(num) {
     let pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
     let vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + num;
     return vwWidth;
+}
+
+
+//检查widgetlist顺序
+function checkWidgetListOrder() {
+
+    var checkFunctionList = setInterval(function() {
+        var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+        var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'));
+
+        if (widget_list != null) {
+            clearInterval(checkFunctionList);
+
+            if (widgetArr == null) {
+                //1. 如果local没有数据，直接获取widget.js
+                var widget_arr = widget.list();
+
+                //2. 遍历widgetlist，已functionlist为主
+                var widgetArray = compareWidgetAndFunction(widget_arr, widget_list['widget_list']);
+
+                //3. 数据存到local
+                window.localStorage.setItem('widgetList', JSON.stringify(widgetArray));
+
+            } else {
+                //1. check widget.js add
+                for (var i = 0; i < widget.list().length; i++) {
+                    var found = false;
+                    var obj = {};
+                    for (var j = 0; j < widgetArr.length; j++) {
+                        if (widget.list()[i].id == widgetArr[j].id) {
+                            found = true;
+                            obj = $.extend({}, widgetArr[j], widget.list()[i]);
+                            //show的值以localStorage为准
+                            obj['show'] = widgetArr[j].show; 
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        widgetArr.splice(j, 1, obj);
+                    } else {
+                        widgetArr.push(widget.list()[i]);
+                    }
+                }
+
+                //2. check widget.js delete
+                for (var j = 0; j < widgetArr.length; j++) {
+                    var found = false;
+                    for (var i = 0; i < widget.list().length; i++) {
+                        if (widgetArr[j].id == widget.list()[i].id) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        widgetArr.splice(j, 1);
+                        j--;
+                    }
+                }
+
+                //3. check FunctionList
+                var widgetArray = compareWidgetAndFunction(widgetArr, widget_list['widget_list']);
+                window.localStorage.setItem('widgetList', JSON.stringify(widgetArray));
+            }
+        }
+
+    }, 500);
+
 }
