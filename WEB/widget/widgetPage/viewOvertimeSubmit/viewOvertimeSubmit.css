@@ -1,0 +1,76 @@
+/********************************************** viewOvertimeSubmit *********************************************/
+
+#backOvertime,
+#backOTQueryDetail,
+#backActualOTApply {
+    width: 4.934VW;
+    display: none;
+}
+
+#actualApplyTitle,
+#actualOTInterval,
+#actualOTHours,
+#applyOTPaid,
+.overtime-paid,
+#previewActualOTBtn,
+#confirmActualOTBtn {
+    display: none;
+}
+
+.overtime-reason,
+.overtime-paid {
+    color: #0f0f0f;
+}
+
+.overtime-reason>div:nth-of-type(2) {
+    margin-top: 2.14vw;
+}
+
+#paid-type-popup {
+    height: 8vw;
+}
+
+.apply-overtime-time {
+    height: 21.3vw;
+    color: #0f0f0f;
+}
+
+.apply-overtime-time>div:nth-of-type(1),
+.apply-overtime-time>div:nth-of-type(2) {
+    height: 5vw;
+}
+
+.apply-overtime-time>div:nth-of-type(2)>div {
+    display: inline-block;
+    width: 46vw;
+    height: 5vw;
+    line-height: 5vw;
+}
+
+.apply-overtime-time>div:nth-of-type(3) {
+    height: 7vw;
+}
+
+.apply-overtime-time>div:nth-of-type(3)>div {
+    display: inline-block;
+    width: 46vw;
+    height: 7vw;
+    line-height: 7vw;
+}
+
+.apply-overtime-date>div:nth-of-type(1),
+.apply-overtime-date>div:nth-of-type(2) {
+    height: 5vw;
+}
+
+#confirmOvertime,
+#confirmActualOvertime {
+    min-height: 0vw;
+}
+
+#confirmOvertime .footer,
+#confirmActualOvertime .footer {
+    color: #1678E5;
+    font-size: 5.02vw;
+    text-align: center;
+}
