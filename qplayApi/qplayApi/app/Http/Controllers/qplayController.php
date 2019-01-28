@@ -15,6 +15,7 @@ use App\Http\Requests;
 use App\lib\ResultCode;
 use App\lib\Verify;
 use DB;
+use Mail;
 
 class qplayController extends Controller
 {   
@@ -2458,6 +2459,49 @@ SQL;
 
     public function sendPushMessageWithContent()
     {
+        $sendMail = true;
+        $input = Input::get();
+
+        if (array_key_exists("send_mail", $input)) {
+            if ($input["send_mail"] == "N") {
+                $sendMail = false;
+            }
+        }
+
+        if ($sendMail) {
+            $content = file_get_contents('php://input');
+            $content = CommonUtil::prepareJSON($content);
+
+            if (\Request::isJson($content)) {
+                $jsonContent = json_decode($content, true);
+                $message_title = CommonUtil::jsUnescape(base64_decode($jsonContent['message_title']));
+                $message_text = CommonUtil::jsUnescape(base64_decode($jsonContent['message_text']));
+
+                //From
+                $mailFrom = [
+                    "email" => "no-reply@benq.com",
+                    "name" => "QPlay",
+                    "subject" => $message_title
+                ];
+
+                //To
+                $emailTo = array();
+
+                foreach ($jsonContent['destination_user_id'] as $destinationUser) {
+                    $userid = explode('\\', $destinationUser)[1];
+                    $domain = explode('\\', $destinationUser)[0];
+
+                    $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
+                    array_push($emailTo, $destinationUserInfo->email);
+                }
+
+                Mail::raw($message_text, function ($message) use($mailFrom, $emailTo) {
+                    $message->from($mailFrom["email"], $mailFrom["name"]);
+                    $message->to($emailTo)->subject($mailFrom["subject"]);
+                });
+            }
+        }
+
         self::sendPushMessage(true);
     }
 
