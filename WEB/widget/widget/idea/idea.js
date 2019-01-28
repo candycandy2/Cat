@@ -1,8 +1,7 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var ideaWidget = {
 
-    init: function (contentItem, status) {
-        status = status || null;
+    init: function (contentItem) {
 
         function createContent(contentItem) {
 
@@ -14,10 +13,6 @@ var ideaWidget = {
                 $('.idea-icon').html('').append(ideaImg);
                 var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/idea/img/more_green.png');
                 $('.idea-more').html('').append(moreImg);
-
-                if(status != null) {
-                    ideaWidget.show();
-                }
 
             }, "html");
 

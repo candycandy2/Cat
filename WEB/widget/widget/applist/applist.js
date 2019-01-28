@@ -1,18 +1,14 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var applistWidget = {
 
-    init: function(contentItem, status) {
-        status = status || null;
+    init: function(contentItem) {
+
         var favoriteApp = null;
 
         function createContent() {
             $.get(serverURL + '/widget/widget/applist/applist.html', function(data) {
                 contentItem.html('').append(data);
                 getFavoriteApp();
-
-                if(status != null) {
-                    applistWidget.show();
-                }
             }, 'html');
 
             //最爱列表打开APP
