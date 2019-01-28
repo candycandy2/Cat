@@ -100,7 +100,8 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewOvertimeSubmit").on("click", function() {
-        changePageByPanel("viewOvertimeSubmit");
+        //changePageByPanel("viewOvertimeSubmit");
+        checkWidgetPage('viewOvertimeSubmit', visitedPageList);
     });
 
     $("#mypanel #mypanelviewOvertimeQuery").on("click", function() {

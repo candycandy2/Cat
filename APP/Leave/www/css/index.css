@@ -456,6 +456,7 @@ html body .ui-group-theme-a a:visited {
     height: 2.75vw;
 }
 
+/* Public use CSS */
 .apply-empty-div1 {
     height: 4.3vw;
 }
@@ -496,6 +497,8 @@ html body .ui-group-theme-a a:visited {
     line-height: 7vw;
 }
 
+
+/* Public use CSS for date-component */
 .date-component {
     position: fixed;
     top: 0;
@@ -509,6 +512,7 @@ html body .ui-group-theme-a a:visited {
     opacity: 0 !important;
 }
 
+/* Public use CSS for 時數 */
 .apply-leave-count {
     height: 11.5vw;
     color: #0f0f0f;
@@ -1272,83 +1276,6 @@ li.ui-body-a {
 .tooltip table {
     margin: 0;
     padding: 0;
-}
-
-/********************************************** viewOvertimeSubmit *********************************************/
-
-#backOvertime,
-#backOTQueryDetail,
-#backActualOTApply {
-    width: 4.934VW;
-    display: none;
-}
-
-#actualApplyTitle,
-#actualOTInterval,
-#actualOTHours,
-#applyOTPaid,
-.overtime-paid,
-#previewActualOTBtn,
-#confirmActualOTBtn {
-    display: none;
-}
-
-.overtime-reason,
-.overtime-paid {
-    color: #0f0f0f;
-}
-
-.overtime-reason>div:nth-of-type(2) {
-    margin-top: 2.14vw;
-}
-
-#paid-type-popup {
-    height: 8vw;
-}
-
-.apply-overtime-time {
-    height: 21.3vw;
-    color: #0f0f0f;
-}
-
-.apply-overtime-time>div:nth-of-type(1),
-.apply-overtime-time>div:nth-of-type(2) {
-    height: 5vw;
-}
-
-.apply-overtime-time>div:nth-of-type(2)>div {
-    display: inline-block;
-    width: 46vw;
-    height: 5vw;
-    line-height: 5vw;
-}
-
-.apply-overtime-time>div:nth-of-type(3) {
-    height: 7vw;
-}
-
-.apply-overtime-time>div:nth-of-type(3)>div {
-    display: inline-block;
-    width: 46vw;
-    height: 7vw;
-    line-height: 7vw;
-}
-
-.apply-overtime-date>div:nth-of-type(1),
-.apply-overtime-date>div:nth-of-type(2) {
-    height: 5vw;
-}
-
-#confirmOvertime,
-#confirmActualOvertime {
-    min-height: 0vw;
-}
-
-#confirmOvertime .footer,
-#confirmActualOvertime .footer {
-    color: #1678E5;
-    font-size: 5.02vw;
-    text-align: center;
 }
 
 /********************************************** viewOvertimeQuery *********************************************/
