@@ -2,6 +2,8 @@ var widget = {
 
     init: function(divItem) {
 
+        this.env();
+
         this.load(0, divItem)
             .then(this.load(1, divItem))
             .then(this.load(2, divItem))
@@ -14,8 +16,7 @@ var widget = {
             .then(this.load(9, divItem))
             .then(this.load(10, divItem))
             .then(this.load(11, divItem))
-            .then(this.load(12, divItem))
-            .then(this.env());
+            .then(this.load(12, divItem));
     },
     list: function() {
 
@@ -36,13 +37,14 @@ var widget = {
 
         ];
     },
-    load: function(id, div) {
+    load: function(id, div, status) {
+        status = status || null;
 
         var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
         if (widgetArr !== null) {
             for (var j = 0; j < widgetArr.length; j++) {
                 if (id == widgetArr[j].id) {
-                    if (widgetArr[j].enabled == false)
+                    if (widgetArr[j].enabled == false || widgetArr[j].show == false)
                         return new Promise((resolve, reject) => {});
                     break;
                 }
@@ -57,8 +59,9 @@ var widget = {
 
             $.getScript(serverURL + "/widget/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
                 .done(function(script, textStatus) {
+                    
                     if (typeof window[widgetItem] != 'undefined') {
-                        window[widgetItem].init(contentItem);
+                        window[widgetItem].init(contentItem, status);
                         //是否需要plugin
                         if (typeof window[widgetItem].plugin != 'undefined') {
                             window[widgetItem].plugin();
@@ -72,12 +75,27 @@ var widget = {
     show: function() {
 
         this.height();
-        $.each(this.list(), function(key, value) {
-            var widgetItem = value.name + "Widget";
-            if (value.enabled == true && window[widgetItem] != undefined && window[widgetItem].show != undefined) {
-                window[widgetItem].show();
+
+        let widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+        for (var i = 0; i < widgetArr.length; i++) {
+            let widgetItem = $('.' + widgetArr[i]['name'] + 'Widget');
+            //1.原来有，现在没有
+            if(widgetItem.length > 0 && widgetArr[i]['show'] == false) {
+                widgetItem.remove();
+            //2.原来没有，现在有
+            } else if(widgetItem.length == 0 && widgetArr[i]['show'] == true) {
+                widget.load(widgetArr[i]['id'], $('#widgetList'), 'new');
+            //3.原来有，现在也有（或者即将要有）
+            } else if(widgetItem.length > 0 && widgetArr[i]['show'] == true) {
+                let key = widgetArr[i]['name'] + 'Widget';
+                if(typeof window[key] != 'undefined' && typeof window[key].show != 'undefined') {
+                    window[key].show();
+                } else if(typeof window[key] == 'undefined') {
+                    widget.load(widgetArr[i]['id'], $('#widgetList'), 'new');
+                }
             }
-        });
+            //4.原来没有，现在也没有，nothing to do
+        }
     },
     refresh: function() {
 
