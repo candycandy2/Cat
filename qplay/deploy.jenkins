@@ -1,3 +1,11 @@
+<strong>Jan-29-19 00:36:46</strong>
+- Reason : daily build, 731
+- Commit# : 
+3748d8f39 - CleoWChan, 6 hours ago : [MonthlyTable] add monthlyTable API
+2e1966181 - Darren Ti, 8 hours ago : [QPlayDoc]Update QPlay_API
+a82be0274 - Darren Ti, 8 hours ago : [QPlayAPI]sendPushMessageWithContent - also send EMail
+38056476b - Darren Ti, 14 hours ago : [QPlayDoc]For EmpService & Status
+
 <strong>Jan-28-19 00:36:52</strong>
 - Reason : daily build, 730
 - Commit# : 
