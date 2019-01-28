@@ -1,7 +1,8 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var qpayWidget = {
 
-    init: function(contentItem) {
+    init: function(contentItem, status) {
+        status = status || null;
 
         function createContent() {
             $.get(serverURL + "/widget/widget/qpay/qpay.html", function (data) {
@@ -15,6 +16,10 @@ var qpayWidget = {
                 //3. due date
                 var dueDate = getDueDay();
                 $('.qpay-due-date').text(dueDate);
+
+                if(status != null) {
+                    qpayWidget.show();
+                }
 
             }, "html");
 
