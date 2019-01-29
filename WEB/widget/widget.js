@@ -43,7 +43,7 @@ var widget = {
         var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
         if (widgetArr !== null) {
             for (var j = 0; j < widgetArr.length; j++) {
-                if (id == widgetArr[j].id) {
+                if (widgetArr[j] != null && id == widgetArr[j].id) {
                     if (widgetArr[j].enabled == false || widgetArr[j].show == false)
                         return new Promise((resolve, reject) => {});
                     break;
@@ -59,7 +59,7 @@ var widget = {
 
             $.getScript(serverURL + "/widget/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
                 .done(function(script, textStatus) {
-                    
+
                     if (typeof window[widgetItem] != 'undefined') {
                         window[widgetItem].init(contentItem, status);
                         //是否需要plugin
@@ -80,17 +80,17 @@ var widget = {
         for (var i = 0; i < widgetArr.length; i++) {
             let widgetItem = $('.' + widgetArr[i]['name'] + 'Widget');
             //1.原来有，现在没有
-            if(widgetItem.length > 0 && widgetArr[i]['show'] == false) {
+            if (widgetItem.length > 0 && widgetArr[i]['show'] == false) {
                 widgetItem.remove();
-            //2.原来没有，现在有
-            } else if(widgetItem.length == 0 && widgetArr[i]['show'] == true) {
+                //2.原来没有，现在有
+            } else if (widgetItem.length == 0 && widgetArr[i]['show'] == true) {
                 widget.load(widgetArr[i]['id'], $('#widgetList'), 'new');
-            //3.原来有，现在也有（或者即将要有）
-            } else if(widgetItem.length > 0 && widgetArr[i]['show'] == true) {
+                //3.原来有，现在也有（或者即将要有）
+            } else if (widgetItem.length > 0 && widgetArr[i]['show'] == true) {
                 let key = widgetArr[i]['name'] + 'Widget';
-                if(typeof window[key] != 'undefined' && typeof window[key].show != 'undefined') {
+                if (typeof window[key] != 'undefined' && typeof window[key].show != 'undefined') {
                     window[key].show();
-                } else if(typeof window[key] == 'undefined') {
+                } else if (typeof window[key] == 'undefined') {
                     widget.load(widgetArr[i]['id'], $('#widgetList'), 'new');
                 }
             }
@@ -265,11 +265,11 @@ function checkWidgetListOrder() {
                     var found = false;
                     var obj = {};
                     for (var j = 0; j < widgetArr.length; j++) {
-                        if (widget.list()[i].id == widgetArr[j].id) {
+                        if (widgetArr[j] != null && widget.list()[i].id == widgetArr[j].id) {
                             found = true;
                             obj = $.extend({}, widgetArr[j], widget.list()[i]);
                             //show的值以localStorage为准
-                            obj['show'] = widgetArr[j].show; 
+                            obj['show'] = widgetArr[j].show;
                             break;
                         }
                     }
@@ -285,7 +285,7 @@ function checkWidgetListOrder() {
                 for (var j = 0; j < widgetArr.length; j++) {
                     var found = false;
                     for (var i = 0; i < widget.list().length; i++) {
-                        if (widgetArr[j].id == widget.list()[i].id) {
+                        if (widgetArr[j] != null && widgetArr[j].id == widget.list()[i].id) {
                             found = true;
                             break;
                         }
