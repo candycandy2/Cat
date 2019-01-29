@@ -105,7 +105,8 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewOvertimeQuery").on("click", function() {
-        changePageByPanel("viewOvertimeQuery");
+        //changePageByPanel("viewOvertimeQuery");
+        checkWidgetPage('viewOvertimeQuery', visitedPageList);
     });
 
     $(".menu-btn .leaveMenu").on("click", function() {

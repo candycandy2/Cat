@@ -1,0 +1,39 @@
+/********************************************** viewOvertimeQuery *********************************************/
+
+#backOTDetailList,
+#backSignOTList,
+#backActualOTDetailList,
+#backActualSignOTList {
+    width: 4.934VW;
+    display: none;
+}
+
+#overtimeWithdraw,
+#overtimeRevoke,
+#overtimeDelete {
+    display: none;
+}
+
+.not-apply-submit-btn {
+    height: 10vw;
+}
+
+.not-apply-submit-btn>div {
+    width: 64vw;
+    height: 10vw;
+    margin-left: 14.8vw;
+    background-color: #d6d6d6;
+    color: #999999;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 10vw;
+}
+
+#signOvertimeDetail { 
+    background: url(../viewOvertimeQuery/img/info.png) no-repeat;
+    background-size: 6vw;
+    background-position: 0;
+    align-self:center; 
+    width: 6vw;
+    height: 6vw;
+}
