@@ -2492,7 +2492,10 @@ SQL;
                     $domain = explode('\\', $destinationUser)[0];
 
                     $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
-                    array_push($emailTo, $destinationUserInfo->email);
+
+                    if (trim($destinationUserInfo->email) != "") {
+                        array_push($emailTo, $destinationUserInfo->email);
+                    }
                 }
 
                 Mail::raw($message_text, function ($message) use($mailFrom, $emailTo) {
