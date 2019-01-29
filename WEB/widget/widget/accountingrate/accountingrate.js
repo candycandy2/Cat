@@ -39,8 +39,8 @@ var accountingrateWidget = {
                     if(i < 3) {
                         content += '<li class="rate-list-li"><div><img src="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' +
                             favorateRateList[i]['fromStatus'] + '.png"></div><div>1' + favorateRateList[i]['fromStatus'] +
-                            '</div><div>=</div><div><img src="https://qplaydev.benq.com/widget/widgetPage/viewAccountingRate/img/favorite.png">'+
-                            '</div><div><img src="https://qplaydev.benq.com/widget/widgetPage/viewAccountingRate/img/tmp/' + favorateRateList[i]['toStatus'] +
+                            '</div><div>=</div><div><img src="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/favorite.png">'+
+                            '</div><div><img src="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' + favorateRateList[i]['toStatus'] +
                             '.png"></div><div>' + favorateRateList[i]['rate'] + favorateRateList[i]['toStatus'] + '</div></li>';
                     }
                 }
