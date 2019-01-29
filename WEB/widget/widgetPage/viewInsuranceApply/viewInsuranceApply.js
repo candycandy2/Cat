@@ -535,14 +535,7 @@ $("#viewInsuranceApply").pagecontainer({
         //從保險明細返回到個人保險現況，
         $("#backPersonalInsuranceFromDetail").on("click", function () {
             $('#backPersonalInsuranceFromDetail').hide(); 
-            //去除上一頁菜單樣式
-            var prevPage = visitedPageList[visitedPageList.length - 2];
-            $("#mypanel" + " #mypanel" + prevPage).css("background", "#f6f6f6");
-            $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f");
-            //此頁添加菜單樣式
-            var nowPage = visitedPageList[visitedPageList.length - 1];
-            $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81");
-            $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
+            changeInsurPanelBKColor();
             checkWidgetPage('viewInsuranceInfo', visitedPageList); 
             //$.mobile.changePage("#viewInsuranceInfo");
         });
