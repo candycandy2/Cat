@@ -120,7 +120,7 @@ $("#viewGeneralSetting").pagecontainer({
                     idArr.push($(item).data('id'));
                 });
                 $.each(disabledWidgetList, function(index, item) {
-                    idArr.push($(item)['id']);
+                    idArr.push(item['id']);
                 });
 
                 //2.根据排好序的id将widgetlist排序
