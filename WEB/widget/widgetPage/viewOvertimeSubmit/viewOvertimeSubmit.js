@@ -237,7 +237,7 @@ $("#viewOvertimeSubmit").pagecontainer({
             activePageListID = visitedPageList[visitedPageList.length - 1];
             $('#applyOTDay').text(applyDay);
             $('#previewApplyDate').text(applyDay);
-            changeInsurPanelBKColor();
+            changeLeavePanelBKColor();
             //從編輯加班單按鈕跳轉
             if (viewEditOTApplyShow) {
                 var expOTHours = "0";

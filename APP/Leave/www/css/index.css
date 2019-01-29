@@ -1277,34 +1277,3 @@ li.ui-body-a {
     margin: 0;
     padding: 0;
 }
-
-/********************************************** viewOvertimeQuery *********************************************/
-
-#backOTDetailList,
-#backSignOTList,
-#backActualOTDetailList,
-#backActualSignOTList {
-    width: 4.934VW;
-    display: none;
-}
-
-#overtimeWithdraw,
-#overtimeRevoke,
-#overtimeDelete {
-    display: none;
-}
-
-.not-apply-submit-btn {
-    height: 10vw;
-}
-
-.not-apply-submit-btn>div {
-    width: 64vw;
-    height: 10vw;
-    margin-left: 14.8vw;
-    background-color: #d6d6d6;
-    color: #999999;
-    border-radius: 20px;
-    text-align: center;
-    line-height: 10vw;
-}
