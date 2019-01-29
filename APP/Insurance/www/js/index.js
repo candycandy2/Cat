@@ -202,4 +202,3 @@ function changeInsurPanelBKColor() {
     $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81");
     $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
 }
-  
