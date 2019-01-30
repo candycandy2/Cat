@@ -55,15 +55,18 @@
     height: 100%;
 }
 
-.default-widget-ul li > div:nth-of-type(1){
+.default-widget-ul li > div:nth-of-type(1),
+.more-widget-ul li > div:nth-of-type(1){
     width: 15vw;
+}
+
+.delete-widget{
     background: url(img/delete.png) no-repeat;
     background-size: 5vw;
     background-position: 6.2vw 5vw;
 }
 
-.more-widget-ul li > div:nth-of-type(1){
-    width: 15vw;
+.add-widget{
     background: url(img/add.png) no-repeat;
     background-size: 5vw;
     background-position: 6.2vw 5vw;

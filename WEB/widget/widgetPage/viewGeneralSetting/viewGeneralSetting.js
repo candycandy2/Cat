@@ -18,7 +18,9 @@ $("#viewGeneralSetting").pagecontainer({
                         defaultContent += '<li data-id="' +
                             arr[i]['id'] +
                             (arr[i].name == 'carousel' ? '" class="hide"' : '"') +
-                            '><div class="delete-widget"></div><div><img src="' +
+                            '><div' +
+                            (arr[i]['deletable'] == true ? ' class="delete-widget"' : '') +
+                            '></div><div><img src="' +
                             serverURL + imgURL + 'widget_' + arr[i]['name'] +
                             '.png"></div><div>' +
                             arr[i]['lang'] +
