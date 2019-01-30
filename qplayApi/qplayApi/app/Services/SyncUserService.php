@@ -196,6 +196,13 @@ class SyncUserService
                     $resign = "Y";
                 }
 
+                // If has no AD , no email
+                if(trim($EHRData["ad_flag"]) == 'N'){
+                    $email = ""; 
+                }else{
+                    $email = strval(trim($EHRData["mail_account"]));
+                }
+
                 $now = date('Y-m-d H:i:s',time());
 
                 $insertData = [
@@ -205,7 +212,7 @@ class SyncUserService
                     "password"          => strval(trim($EHRData["password"])),
                     "password_original" => strval(trim($EHRData["password_original"])),
                     "trade_pwd_original"=> strval(trim($EHRData["trade_pwd_original"])),
-                    "email"             => strval(trim($EHRData["mail_account"])),
+                    "email"             => $email,
                     "ext_no"            => strval(trim($EHRData["ext_no"])),
                     "user_domain"       => strval(trim($EHRData["domain"])),
                     "company"           => strval(trim($EHRData["company"])),
@@ -275,14 +282,23 @@ class SyncUserService
             }
 
             if (in_array($empNO, $oldExistData)) {
+                
                 $updateCount ++;
+                
                 $now = date('Y-m-d H:i:s',time());
+                
+                // If has no AD , no email
+                if(trim($EHRData["ad_flag"]) == 'N'){
+                    $email = ""; 
+                }else{
+                    $email = strval(trim($EHRData["mail_account"]));
+                }
 
                 //Check if source_form=ehr or other
                 if ($userDataArray[$empNO]["source_from"] == "ehr") {
                     $updateData = [
                         "emp_name"      => strval(trim($EHRData["emp_name"])),
-                        "email"         => strval(trim($EHRData["mail_account"])),
+                        "email"         => $email,
                         "ext_no"        => strval(trim($EHRData["ext_no"])),
                         "company"       => strval(trim($EHRData["company"])),
                         "user_domain"   => strval(trim($EHRData["domain"])),
@@ -292,6 +308,7 @@ class SyncUserService
                     ];
                 } else {
                     $updateData = [
+                        "email"         => $email,
                         "company"       => strval(trim($EHRData["company"])),
                         "department"    => strval(trim($EHRData["dept_code"])),
                         "ad_flag"       => strval(trim($EHRData["ad_flag"])),
@@ -301,16 +318,13 @@ class SyncUserService
 
                 //Only process `qp_ehr_user`.active = N
                 if (trim($EHRData["active"]) === "N") {
+
                     $updateData["resign"] = "Y";
                     $updateData["status"] = "N";
                     $updateData["deleted_at"] = $EHRData["dimission_date"];
 
                     //Store all regisn user from eHR
                     $this->resignUserFormEHR[] = $userDataArray[$empNO];
-                }
-
-                if(trim($EHRData["active"]) === "Y"){
-                    
                 }
 
                 //Check if login_id is not English/Number
@@ -324,9 +338,11 @@ class SyncUserService
 
                 //Check if password_original is null
                 if (is_null($userDataArray[$empNO]["password_original"])) {
+
                     $updateData["password"] = $EHRData["password"];
                     $updateData["password_original"] = $EHRData["password_original"];
                     $updateData["trade_pwd_original"] = $EHRData["trade_pwd_original"];
+
                 }
 
                 $this->userSyncRepository->updateUserFromEHR($empNO, $updateData);
