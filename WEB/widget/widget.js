@@ -21,19 +21,19 @@ var widget = {
     list: function() {
 
         return [
-            { id: 0, name: 'carousel', enabled: true, show: true, lang: langStr['wgt_001'] },
-            { id: 1, name: 'weather', enabled: true, show: true, lang: langStr['wgt_002'] },
-            { id: 2, name: 'reserve', enabled: true, show: true, lang: langStr['wgt_003'] },
-            { id: 3, name: 'message', enabled: true, show: true, lang: langStr['wgt_004'] },
-            { id: 4, name: 'applist', enabled: true, show: true, lang: langStr['wgt_005'] },
-            { id: 5, name: 'qpay', enabled: true, show: true, lang: langStr['wgt_009'] },
-            { id: 6, name: 'accountingrate', enabled: true, show: false, lang: langStr['wgt_070'] },
-            { id: 7, name: 'yellowpage', enabled: true, show: false, lang: 'Yellow Page' },
-            { id: 8, name: 'idea', enabled: true, show: false, lang: langStr['wgt_101'] },
-            { id: 9, name: 'qstore', enabled: true, show: false, lang: langStr['wgt_100'] },
-            { id: 10, name: 'staff', enabled: true, show: true, lang: langStr['wgt_102'] },
-            { id: 11, name: 'staffAdmin', enabled: true, show: false, lang: langStr['wgt_102'] },
-            { id: 12, name: 'cards', enabled: true, show: false, lang: langStr['wgt_167'] }
+            { id: 0, name: 'carousel', enabled: true, show: true, deletable: false, lang: langStr['wgt_001'] },
+            { id: 1, name: 'weather', enabled: true, show: true, deletable: false, lang: langStr['wgt_002'] },
+            { id: 2, name: 'reserve', enabled: true, show: true, deletable: true, lang: langStr['wgt_003'] },
+            { id: 3, name: 'message', enabled: true, show: true, deletable: true, lang: langStr['wgt_004'] },
+            { id: 4, name: 'applist', enabled: true, show: true, deletable: true, lang: langStr['wgt_005'] },
+            { id: 5, name: 'qpay', enabled: true, show: true, deletable: true, lang: langStr['wgt_009'] },
+            { id: 6, name: 'accountingrate', enabled: true, show: false, deletable: true, lang: langStr['wgt_070'] },
+            { id: 7, name: 'yellowpage', enabled: true, show: false, deletable: true, lang: 'Yellow Page' },
+            { id: 8, name: 'idea', enabled: true, show: false, deletable: true, lang: langStr['wgt_101'] },
+            { id: 9, name: 'qstore', enabled: true, show: false, deletable: true, lang: langStr['wgt_100'] },
+            { id: 10, name: 'staff', enabled: true, show: true, deletable: true, lang: langStr['wgt_102'] },
+            { id: 11, name: 'staffAdmin', enabled: true, show: false, deletable: true, lang: langStr['wgt_102'] },
+            { id: 12, name: 'cards', enabled: true, show: false, deletable: false, lang: langStr['wgt_167'] }
 
         ];
     },
