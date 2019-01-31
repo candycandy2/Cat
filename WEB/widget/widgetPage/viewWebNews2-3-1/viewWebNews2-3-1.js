@@ -304,7 +304,7 @@ $("#viewWebNews2-3-1").pagecontainer({
 
                     //If template_id == 999, it's Portal Event,
                     //need to be render become canvas
-                    if (content.template_id === 999) {
+                    if (content.template_id === 999 || content.template_id === 17) {
                         //review by alan
                         //loadingMask("show");
 
