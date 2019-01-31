@@ -95,6 +95,57 @@ $("#viewStaffUserAppointment").pagecontainer({
             }();
         }
 
+        //检查某时段否是有预约，有预约就不能再预约，没有预约才能新增预约
+        function checkReserveByHour() {
+            let date_hour = $('.active-hour').data('hour');//已选时段有且只有一个
+            let target_row_id = $('.appointment-room-list .active-staff').data('id');
+            let target_date = $('.appointment-date-list .active-staff').data('item');
+
+            var self = this;
+            let queryData = JSON.stringify({
+                target_id_row_id: target_row_id,
+                start_date: new Date(target_date + ' ' + date_hour).getTime() / 1000,
+                end_date: new Date(target_date + ' ' + date_hour).getTime() / 1000 + 30 * 60//往后推30分钟
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {
+                    //length等于0表示没有预约
+                    let reserveArr = data['content']['data_list'];
+                    if(reserveArr.length == 0) {
+                        newReserveByHour();
+                    } else {
+                        let noReserve = true;
+                        for(var i in reserveArr) {
+                            //如果开始时间与结束时间不相等，表示有预约
+                            if(reserveArr[i]['start_date'] != reserveArr[i]['end_date']) {
+                                noReserve = false;
+                                //do some thing
+                                initDataAndUI();
+                                let target_name = $('.appointment-room-list .active-staff').text();
+                                let target_date = $('.appointment-date-list .active-staff').data('item');
+                                let target_key = target_name + ':' + target_date;
+                                window.sessionStorage.removeItem(target_key);
+                                getReserveByTarget();
+                                break;
+                            }
+                        }
+                        if(noReserve) {
+                            newReserveByHour();
+                        }
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                EmpServicePlugin.QPlayAPI("POST", "getTargetReserveData", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
         //返回可选日期区间，从当天开始
         function getDateList(length) {
             let nowDate = new Date();
@@ -345,6 +396,10 @@ $("#viewStaffUserAppointment").pagecontainer({
                 } else if(active) {
                     $(this).removeClass('active-hour');
                     activeCount--;
+                } else if(!active && activeCount > 0) {
+                    //切换其他时段，还是有且只有一个
+                    $('.active-hour').removeClass('active-hour');
+                    $(this).addClass('active-hour');
                 }
             }
 
@@ -372,7 +427,8 @@ $("#viewStaffUserAppointment").pagecontainer({
         $('.appointmentTeaBtn').on('click', function() {
             let has = $(this).hasClass('active-btn-green');
             if(has) {
-                newReserveByHour();
+                //检查该时段是否有预约
+                checkReserveByHour();
             }
         });
 
