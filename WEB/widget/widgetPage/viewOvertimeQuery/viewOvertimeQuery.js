@@ -26,6 +26,58 @@ $("#viewOvertimeQuery").pagecontainer({
     create: function(event, ui) {
 
         /********************************** function *************************************/
+        //獲取加班單列表——<LayoutHeader><EmpNo>0003023</EmpNo></LayoutHeader>
+        window.QueryEmployeeOvertimeApplyForm = function() {
+
+            this.successCallback = function(data) {
+                if (data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["overtimeformlist"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var formidArr = $("formid", htmlDom);
+                    var formnoArr = $("formno", htmlDom);
+                    var statusArr = $("status", htmlDom);
+                    var periodArr = $("period", htmlDom);
+                    var overtimehoursArr = $("hours", htmlDom);
+
+                    overtimeListArr = [];
+                    for (var i = 0; i < formidArr.length; i++) {
+                        var overtimeObject = {};
+                        overtimeObject["formid"] = $(formidArr[i]).html();
+                        overtimeObject["formno"] = $(formnoArr[i]).html();
+                        overtimeObject["status"] = $(statusArr[i]).html();
+                        overtimeObject["period"] = $(periodArr[i]).html();
+                        overtimeObject["hours"] = ($(overtimehoursArr[i]).html().split(".")[1] == "0") ? $(overtimehoursArr[i]).html().split(".")[0] : $(overtimehoursArr[i]).html();
+
+                        //表單簽核的4種狀態
+                        if ($(statusArr[i]).html() == "AP") {
+                            overtimeObject["statusName"] = formEffected;
+                        } else if ($(statusArr[i]).html() == "RC") {
+                            overtimeObject["statusName"] = formWithdrawed;
+                        } else if ($(statusArr[i]).html() == "RJ") {
+                            overtimeObject["statusName"] = formRefused;
+                        } else if ($(statusArr[i]).html() == "WA") {
+                            overtimeObject["statusName"] = formSigning;
+                        } else if ($(statusArr[i]).html() == "WP") {
+                            overtimeObject["statusName"] = formEnter;
+                        }
+
+                        overtimeListArr.push(overtimeObject);
+                    }
+
+                    //after custom API
+                    setAllOvertimeList();
+
+                    loadingMask("hide");
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", false, "QueryEmployeeOvertimeForm", self.successCallback, self.failCallback, queryEmployeeOvertimeApplyFormQueryData, "");
+            }();
+        };
+
         //獲取加班單詳情——<LayoutHeader><EmpNo>0003023</EmpNo><formid>123456</formid></LayoutHeader>
         window.OvertimeApplyFormDetail = function() {
 
@@ -154,6 +206,56 @@ $("#viewOvertimeQuery").pagecontainer({
                 CustomAPI("POST", true, "DeleteOvertimeForm", self.successCallback, self.failCallback, deleteOvertimeFormQueryData, "");
             }();
         };
+
+        //添加所有加班到列表
+        function setAllOvertimeList() {
+            var overtimeListHtml = "";
+            if (overtimeListArr.length === 0) {
+                overtimeListHtml = "";
+            } else {
+                for (var i in overtimeListArr) {
+                    overtimeListHtml += '<div class="leave-query-list">' +
+                        '<div>' +
+                        '<div class="overtime-query-state font-style3" form-id="' + overtimeListArr[i]["formid"] + '">' +
+                        '<span>' + overtimeListArr[i]["statusName"] + '</span>' +
+                        '<img src="img/more.png">' +
+                        '</div>' +
+                        '<div class="leave-query-base font-style11">' +
+                        '<div class="leave-query-basedata">' +
+                        '<div>' +
+                        //'<span>加班單號：</span>' +
+                        '<span>' + langStr["str_209"] + ' </span>' +
+                        '<span class="leave-id">' + overtimeListArr[i]["formno"] + '</span>' +
+                        '</div>' +
+                        '</div>' +
+
+                        '<div>' +
+                        //'<span>加班區間：</span>' +
+                        '<span>' + langStr["str_210"] + ' </span>' +
+                        '<span>' + overtimeListArr[i]["period"] + '</span>' +
+                        '</div>' +
+                        '<div>' +
+                        //'<span>加班時數：</span>' +
+                        '<span>' + langStr["str_211"] + ' </span>' +
+                        '<span>' + overtimeListArr[i]["hours"] + '</span>' +
+                        //'<span> 小時</span>' +
+                        '<span> ' + langStr["str_088"] + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div></div>' +
+                        '</div>';
+                }
+            }
+            //判断请假单列表是否有数据
+            if (overtimeListArr.length == 0) {
+                $("#maxOvertimeMsg").text(langStr["str_212"]);
+                $(".overtime-query-main-list").empty().append(overtimeListHtml);
+            } else {
+                $("#maxOvertimeMsg").text(langStr["str_213"]);
+                $(".overtime-query-main-list").empty().append(overtimeListHtml);
+            }
+        }
 
         //根据formid从假单列表当中获取该假单部分信息
         function getOvertimeDetailByID(id) {
