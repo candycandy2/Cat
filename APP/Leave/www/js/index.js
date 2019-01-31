@@ -62,7 +62,7 @@ window.initialSuccess = function() {
         '</EmpNo></LayoutHeader>';
 
     //Execute checkLeaveWidgetPage func to render Leave WidgetPage before Calling GetUserAuthority API
-    checkLeaveWidgetPage()
+    checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery')
     .then(GetUserAuthority());
 
     loadingMask("show");
@@ -73,15 +73,15 @@ window.initialSuccess = function() {
     document.addEventListener("backbutton", onBackKeyDownSpecial, false);
 }
 
-function checkLeaveWidgetPage() {
+function checkLeaveWidgetPage(leaveWidgetUrl) {
     var url = serverURL + '/widget/widgetPage/';
     return new Promise(function(resolve, reject) {
-        $.get(url + 'viewOvertimeQuery/viewOvertimeQuery.html', function(data) {
+        $.get(url + leaveWidgetUrl + '.html', function(data) {
             //1. css
             var link = document.createElement('link');
             link.rel = 'stylesheet';
             link.type = 'text/css';
-            link.href = url + 'viewOvertimeQuery/viewOvertimeQuery.css';
+            link.href = url + leaveWidgetUrl + '.css';
             document.head.appendChild(link);
 
             //2. html
@@ -92,7 +92,7 @@ function checkLeaveWidgetPage() {
             setTimeout(function() {
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
-                script.src = url + 'viewOvertimeQuery/viewOvertimeQuery.js';
+                script.src = url + leaveWidgetUrl + '.js';
                 document.head.appendChild(script);
             }, 200);
 
