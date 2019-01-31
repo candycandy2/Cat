@@ -60,10 +60,11 @@ window.initialSuccess = function() {
     getUserAuthorityData = '<LayoutHeader><EmpNo>' +
         myEmpNo +
         '</EmpNo></LayoutHeader>';
+
+    //Execute checkLeaveWidgetPage func to render Leave WidgetPage before Calling GetUserAuthority API
     checkLeaveWidgetPage()
     .then(GetUserAuthority());
-    //呼叫API
-    //GetUserAuthority();
+
     loadingMask("show");
 
     //解除原本的事件监听
