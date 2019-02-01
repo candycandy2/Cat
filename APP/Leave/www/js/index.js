@@ -8,7 +8,7 @@ var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recal
     backLeaveFormLeaveDetailQueryData;
 var queryEmployeeOvertimeApplyFormQueryData, overtimeApplyFormDetailQueryData, recallOvertimeApplyFormQueryData;
 var sendApplyOvertimeQueryData, updateOvertimeQueryData, countOvertimeHoursByEndQueryData;
-var lastPageID = "viewPersonalLeave";
+var lastPageID = "";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
@@ -64,6 +64,13 @@ window.initialSuccess = function() {
     //Execute checkLeaveWidgetPage func to render Leave WidgetPage before Calling GetUserAuthority API
     checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery')
     .then(GetUserAuthority());
+    /*checkLeaveWidgetPage('viewLeaveMain/viewLeaveMain')
+        .then(checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery'));
+        //.then(GetUserAuthority());
+
+    setTimeout(function() {
+        GetUserAuthority();
+    }, 1000);*/
 
     loadingMask("show");
 
@@ -85,8 +92,9 @@ function checkLeaveWidgetPage(leaveWidgetUrl) {
             document.head.appendChild(link);
 
             //2. html
+            var viewIDName = leaveWidgetUrl.split("/");
             $.mobile.pageContainer.append(data);
-            $('#viewOvertimeQuery').page().enhanceWithin();
+            $('#' + viewIDName[1]).page().enhanceWithin();
 
             //3. js
             setTimeout(function() {
@@ -94,6 +102,7 @@ function checkLeaveWidgetPage(leaveWidgetUrl) {
                 script.type = 'text/javascript';
                 script.src = url + leaveWidgetUrl + '.js';
                 document.head.appendChild(script);
+                resolve(1);
             }, 200);
 
         }, 'html');
@@ -533,7 +542,7 @@ function startMainPage() {
 }
 
 function changeLeavePanelBKColor() {
-    //去除上一頁菜單樣式             changeInsurPanelBKColor();
+    //去除上一頁菜單樣式             
     var prevPage = visitedPageList[visitedPageList.length - 2]; 
     $("#mypanel" + " #mypanel" + prevPage).css("background", "#f6f6f6");    
     $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f"); 
