@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>後台上架修改檔案</title>
+    </head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<body>
+
+<script>
+    $(function() {
+
+        $("#OK").on("click", function() {
+            var resultStr = "";
+
+            var lineChangedFiles = $("#changedfiles").val().split('\n');
+            if (lineChangedFiles[0] == "")
+            {
+              $("#result").html(resultStr);
+              alert("Empty Input !!!");
+              return;
+            }
+
+            for(var i=0; i<lineChangedFiles.length; i++)
+            {
+              if (lineChangedFiles[i].indexOf("qplayApi/qplayApi/") >= 0)
+              {
+                var lineFile = lineChangedFiles[i].replace("qplayApi/qplayApi", "qplayApi");
+                resultStr += "sshpass -p $password rsync -vh " + lineChangedFiles[i] + " rsyncuser@$serverIP:/var/www/html/" + lineFile + "<br>";
+              }
+              else if (lineChangedFiles[i].indexOf("WEB/") >= 0)
+              {
+                var lineFile = lineChangedFiles[i].replace("WEB/", "");
+                resultStr += "sshpass -p $password rsync -vh " + lineChangedFiles[i] + " rsyncuser@$serverIP:/var/www/html/" + lineFile + "<br>";
+              }
+              else
+              {
+                resultStr += "sshpass -p $password rsync -vh " + lineChangedFiles[i] + " rsyncuser@$serverIP:/var/www/html/" + lineChangedFiles[i] + "<br>";
+              }
+            }
+
+            $("#result").html(resultStr);
+        });
+    });
+</script>
+
+<h1> Auto generate rsync command </h1>
+<h4> changed file: </h4>
+<textarea id="changedfiles" cols="60" row="50"></textarea><br><br>
+<input type="button" id="OK" value="OK"><br><br>
+<div id="result" style="font-size:10px"></div>
+
+</body>
+
+
+</html>
