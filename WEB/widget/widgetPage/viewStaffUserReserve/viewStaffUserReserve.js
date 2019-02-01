@@ -119,6 +119,7 @@ $("#viewStaffUserReserve").pagecontainer({
                 console.log(data);
 
                 if(data['result_code'] == '1') {
+                    $("#deleteReserveSuccess").fadeIn(100).delay(2000).fadeOut(100);
                     //remove DOM
                     $('.tea-reserve-list[data-id="' + id + '"]').remove();
                 }
@@ -158,26 +159,9 @@ $("#viewStaffUserReserve").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //删除今日预约
-        $('.tea-today-list').on('click', '.delete-my-reserve', function() {
-            //当日预约需要判断距离预约开始时间是否剩余超过30分钟
-            let afterHalfHour = Math.floor(new Date().getTime() / 1000) + 30 * 60;
-            let startTime = $(this).parent().data('time');
-            if(afterHalfHour < startTime) {
-                reserve_id = $(this).parent().data('id');
-                //popup
-                let content = $(this).prev().text();
-                $('.reserveTeaDelete .header-title').text(content);
-                popupMsgInit('.reserveTeaDelete');
-            } else {
-                //popup
-                popupMsgInit('.reserveTeaLate');
-            }
-            
-        });
-
-        //删除后14日预约
-        $('.tea-after-list').on('click', '.delete-my-reserve', function() {
+        //删除预约
+        $('.tea-reserve-all').on('click', '.delete-my-reserve', function() {
+            //删除预约需要判断距离预约开始时间是否剩余超过30分钟
             let afterHalfHour = Math.floor(new Date().getTime() / 1000) + 30 * 60;
             let startTime = $(this).parent().data('time');
             if(afterHalfHour < startTime) {
@@ -195,6 +179,20 @@ $("#viewStaffUserReserve").pagecontainer({
         //确认删除
         $('.confirmDeleteReserve').on('click', function() {
             //deleteMyReserve(reserve_id);
+        });
+
+        //编辑预约
+        $('.tea-reserve-all').on('click', '.edit-my-reserve', function() {
+            //编辑预约需要判断距离预约开始时间是否剩余超过30分钟
+            let afterHalfHour = Math.floor(new Date().getTime() / 1000) + 30 * 60;
+            let startTime = $(this).parent().data('time');
+            if(afterHalfHour < startTime) {
+                //reserve_id = $(this).parent().data('id');
+                //change page
+            } else {
+                //popup
+                popupMsgInit('.reserveTeaLate');
+            }
         });
 
 

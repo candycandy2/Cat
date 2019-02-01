@@ -1,5 +1,5 @@
 /*************************** viewStaffUserReserve ********************************/
-#viewStaffUserReserve .ui-content.page-main{
+#viewStaffUserReserve .page-main{
     width: 100vw;
     padding: 0 !important;
     position: fixed;
