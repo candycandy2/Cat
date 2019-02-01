@@ -8,7 +8,7 @@ var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recal
     backLeaveFormLeaveDetailQueryData;
 var queryEmployeeOvertimeApplyFormQueryData, overtimeApplyFormDetailQueryData, recallOvertimeApplyFormQueryData;
 var sendApplyOvertimeQueryData, updateOvertimeQueryData, countOvertimeHoursByEndQueryData;
-var lastPageID = "";
+var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
