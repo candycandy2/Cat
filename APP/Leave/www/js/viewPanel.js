@@ -96,7 +96,8 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewClockin").on("click", function() {
-        changePageByPanel("viewClockin");
+        //changePageByPanel("viewClockin");
+        checkWidgetPage('viewLeaveClockin', visitedPageList);
     });
 
     $("#mypanel #mypanelviewOvertimeSubmit").on("click", function() {
