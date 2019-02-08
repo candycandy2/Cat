@@ -617,8 +617,6 @@ html body .ui-group-theme-a a:visited {
 .confirmSend>.ui-content,
 .agentNotData>.ui-content,
 .deptFirst>.ui-content,
-.confirmClockin>.ui-content,
-.errMsgByClockin>.ui-content,
 .overitmeDateFirst>.ui-content,
 .starttimeFirst>.ui-content,
 .endTimeError>.ui-content,
@@ -640,8 +638,6 @@ html body .ui-group-theme-a a:visited {
 .startdayFirst>.ui-content>.header,
 .confirmSend>.ui-content>.header,
 .deptFirst>.ui-content>.header,
-.confirmClockin>.ui-content>.header,
-.errMsgByClockin>.ui-content>.header,
 .overitmeDateFirst>.ui-content>.header,
 .starttimeFirst>.ui-content>.header,
 .endTimeError>.ui-content>.header,
@@ -1031,139 +1027,6 @@ html body .ui-group-theme-a a:visited {
     margin-right: 3.71vw;
     margin-top: -5vw;
     text-align: right;   
-}
-
-/**************************************** viewClockin ********************************************/
-
-#newWorkType {
-    margin-bottom: 1vw;
-}
-
-#newWorkType .overlap-label-icon, 
-#newWorkType .overlap-label-text {
-    margin-top: 1.16vw;
-    margin-bottom: 2.14vw;
-}
-
-#newWorkType>div:nth-of-type(2) {
-    display: inline-block;
-}
-
-#newWorkType>div:nth-of-type(3) {
-    display: inline-block;
-    margin-left: 6.196vw;
-}
-
-.overlap-label-icon {
-    clear: both;
-    float: left;
-}
-
-.overlap-label-text {
-    line-height: 1;
-    padding-left: 8.6vw;
-    padding-top: 0.9vw;
-    width: 85%;
-    color: #0F0F0F;
-    font-weight: normal;
-    font-size: 4.18vw !important;
-}
-
-input[type=radio] {
-    display:none;
-}
-
-input[type=radio] + label {
-    background: url('../img/radius_n.png') no-repeat;
-    background-size: 5.47vw 5.47vw;
-    height: 5.47vw;
-    width: 5.47vw;
-    display: inline-block;
-    padding: 0 0 0 0;
-}
-
-input[type=radio]:checked + label {
-    background: url('../img/radius_s.png') no-repeat;
-    background-size: 5.47vw 5.47vw;
-    height: 5.47vw;
-    width: 5.47vw;
-    display: inline-block;
-    padding: 0 0 0 0;
-}
-
-#workDate, .apply-reason {
-    color: #0f0f0f;
-}
-
-.apply-work-name {
-    height: 23.14vw;
-    color: #0f0f0f;
-    border-bottom: 1px solid #d6d6d6;
-}
-
-#workDate>div:nth-of-type(2),
-#clockinDate>div:nth-of-type(2),
-#clockinTime>div:nth-of-type(2) {
-    margin-top: 1.16vw;
-}
-
-.apply-work-type>div:nth-of-type(2),
-.apply-reason>div:nth-of-type(2) {
-    margin-top: -1.16vw;
-}
-
-.apply-work-name>div:nth-of-type(2) {
-    margin-top: 2.14vw;
-}
-
-#clockinTime {
-    height: 12.81vw;
-}
-
-#clockinDate, .apply-work-type {
-    height: 14vw;
-    color: #0f0f0f;
-}
-
-#clockinTime {
-    color: #0f0f0f;
-    border-bottom: 1px solid #d6d6d6;
-}
-
-.datepicker-position {
-    margin: -45% 0 0 -35% !important;
-}
-
-#backClockin {
-    width: 4.934VW;
-    display: none;
-}
-
-#otherReason {
-    display: none;
-}
-
-#otherReasonArea {
-    display: none;
-}
-
-.date-component input[type="date"]>a,
-.date-component input[type="text"]>a {
-    height: 0;
-}
-
-.date-component>.ui-input-text {
-    display: none;
-}
-
-#confirmClockin {
-    min-height: 0vw;
-}
-
-#confirmClockin .footer{
-    color: #1678E5;
-    font-size: 5.02vw;
-    text-align: center;
 }
 
 /* override the css of jtsage-datebox */
