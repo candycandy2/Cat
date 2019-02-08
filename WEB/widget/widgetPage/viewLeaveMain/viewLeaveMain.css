@@ -489,16 +489,7 @@ div.scrollmenu a {
 .basedayFirst>.ui-content,
 .startdayFirst>.ui-content,
 .confirmSend>.ui-content,
-.agentNotData>.ui-content,
-.deptFirst>.ui-content,
-.confirmClockin>.ui-content,
-.errMsgByClockin>.ui-content,
-.overitmeDateFirst>.ui-content,
-.starttimeFirst>.ui-content,
-.endTimeError>.ui-content,
-.leftDaysByOT>.ui-content,
-.confirmOvertime>.ui-content,
-.confirmActualOvertime>.ui-content {
+.agentNotData>.ui-content {
     padding: 0 !important;
 }
 
@@ -512,16 +503,7 @@ div.scrollmenu a {
 .categroyFirst>.ui-content>.header,
 .basedayFirst>.ui-content>.header,
 .startdayFirst>.ui-content>.header,
-.confirmSend>.ui-content>.header,
-.deptFirst>.ui-content>.header,
-.confirmClockin>.ui-content>.header,
-.errMsgByClockin>.ui-content>.header,
-.overitmeDateFirst>.ui-content>.header,
-.starttimeFirst>.ui-content>.header,
-.endTimeError>.ui-content>.header,
-.leftDaysByOT>.ui-content>.header,
-.confirmOvertime>.ui-content>.header,
-.confirmActualOvertime>.ui-content>.header {
+.confirmSend>.ui-content>.header {
     margin-top: 12.5%;
 }
 
