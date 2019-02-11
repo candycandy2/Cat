@@ -12,7 +12,7 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewPersonalLeaveCalendar", "viewAgentLeave"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewPersonalLeaveCalendar"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var pageVisitedList = ["viewPersonalLeave"];
@@ -503,9 +503,9 @@ function startMainPage() {
     $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
     //代理請假Panel
     if (hasAgentPanel) {
-        $("#mypanelviewAgentLeave").show();
+        $("#mypanelviewLeaveAgent").show();
     } else {
-        $("#mypanelviewAgentLeave").hide();
+        $("#mypanelviewLeaveAgent").hide();
     }
     if (hasClockinOTPanel) {
         $("#mypanelviewClockin").show();
