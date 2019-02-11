@@ -113,6 +113,9 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
 //syncUser
 Route::get('/v101/qplay/syncUserJob', 'syncUserController@syncUserJob');
 
+//tableJob
+Route::get('/v101/qplay/monthlyTable', 'tableJobController@monthlyTable');
+
 //sendMail
 Route::post('/v101/qplay/sendMail', 'mailController@sendMail');
 

@@ -650,7 +650,11 @@ class CommonUtil
         if($appKey == null) {
             $appKey = "";
         }
-        $now = date('Y-m-d H:i:s',time());
+        
+        $time = time();
+        $now = date('Y-m-d H:i:s',$time);
+        $month = date('Ym',strtotime('+8 hour',$time));
+
         $ip = self::getIP();
         $url_parameter = $_SERVER["QUERY_STRING"];
         $request_header = apache_request_headers();
@@ -693,7 +697,12 @@ class CommonUtil
 
         //Mysql
         if ($logMode == 'ALL' || $logMode == 'MYSQL'){
-            \DB::table("qp_api_log")
+            
+            $monthTableName = "qp_api_log".'_'.$month.'_p0800'; //time zone +8:00
+
+            \DB::statement("CREATE TABLE IF NOT EXISTS " . $monthTableName . " like qp_api_log");
+            
+            \DB::table($monthTableName)
                 -> insert([
                     'user_row_id'=>$userId,
                     'app_key'=>$appKey,
