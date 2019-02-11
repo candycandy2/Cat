@@ -1,3 +1,10 @@
+<strong>Feb-12-19 00:35:52</strong>
+- Reason : daily build, 738
+- Commit# : 
+7b00806e4 - CleoWChan, 12 hours ago : [Monthly Table] do not drop table if already exist
+ab7e7cb19 - CleoWChan, 15 hours ago : [Monthly Table] modified url parameter
+f3348080a - CleoWChan, 15 hours ago : [Monthly Table] Add monthlyTable API
+
 <strong>Feb-11-19 00:34:30</strong>
 - Reason : daily build, 737
 - Commit# : 
