@@ -60,8 +60,6 @@ class tableJobController extends Controller
 
                         $monthTableName = $tableName.'_'.$date->month.'_'.$timeZone; //201901_p0800
 
-                        //beacuse not delete, so need to clear all table
-                        \DB::statement("DROP TABLE IF EXISTS " . $monthTableName );
                         $createTableRs = \DB::statement("CREATE TABLE IF NOT EXISTS " . $monthTableName . " like ".$tableName);
                     
                         while($times < $round){
