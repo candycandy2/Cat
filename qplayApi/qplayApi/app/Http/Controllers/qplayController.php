@@ -3097,8 +3097,16 @@ SQL;
                 'content'=>''];
             return response()->json($result);
         }
-        $now = date('Y-m-d H:i:s',time());
-        \DB::table("qp_app_download_hit")
+        
+        $time = time();
+        $now = date('Y-m-d H:i:s',$time);
+        $month = date('Ym',strtotime('+8 hour',$time));
+
+        $monthTableName = "qp_app_download_hit".'_'.$month.'_p0800'; //time zone +8:00
+
+        \DB::statement("CREATE TABLE IF NOT EXISTS " . $monthTableName . " like qp_app_download_hit");
+
+        \DB::table($monthTableName)
         -> insert([
             'login_id'=>$login_id,
             'uuid'=>$uuid,
