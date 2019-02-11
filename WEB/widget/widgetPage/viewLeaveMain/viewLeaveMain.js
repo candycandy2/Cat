@@ -852,8 +852,6 @@ $("#viewLeaveMain").pagecontainer({
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
 
-            changeLeavePanelBKColor();
-
             if (!viewPersonalLeaveBeforeshow) {
                 viewPersonalLeaveBeforeshow = true;
                 //第一次進入首頁檢查是否有代理人信息，有則檢查代理人是否在職
@@ -956,6 +954,7 @@ $("#viewLeaveMain").pagecontainer({
             }
             $('#applyDay').text(applyDay);
             $('#previewApplyDay').text(applyDay);
+            changeLeavePanelBKColor();
             loadingMask("hide");
         });
 

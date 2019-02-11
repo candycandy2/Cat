@@ -918,9 +918,9 @@ $("#viewPersonalLeave").pagecontainer({
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
             //代理請假Panel
             if (hasAgentPanel) {
-                $("#mypanelviewAgentLeave").show();
+                $("#mypanelviewLeaveAgent").show();
             } else {
-                $("#mypanelviewAgentLeave").hide();
+                $("#mypanelviewLeaveAgent").hide();
             }
             if (hasClockinOTPanel) {
                 $("#mypanelviewClockin").show();

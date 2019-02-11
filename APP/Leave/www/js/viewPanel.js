@@ -31,7 +31,7 @@ var panel = htmlContent +
     +
     '<span class="panel-text">' + langStr["str_006"] + '</span>' +
     '</div>' +
-    '<div class="panel-content" id="mypanelviewAgentLeave">'
+    '<div class="panel-content" id="mypanelviewLeaveAgent">'
     //+       '<span class="panel-text">代理請假</span>'
     +
     '<span class="panel-text">' + langStr["str_182"] + '</span>' +
@@ -91,8 +91,9 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewPersonalLeaveCalendar");
     });
 
-    $("#mypanel #mypanelviewAgentLeave").on("click", function() {
-        changePageByPanel("viewAgentLeave");
+    $("#mypanel #mypanelviewLeaveAgent").on("click", function() {
+        //changePageByPanel("viewAgentLeave");
+        checkWidgetPage('viewLeaveAgent', visitedPageList);
     });
 
     $("#mypanel #mypanelviewClockin").on("click", function() {
