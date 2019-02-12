@@ -9,6 +9,14 @@
 },
 {
     "term": "portal_2",
+    "definition": "",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+},
+{
+    "term": "portal_3",
     "definition": "viewStaffUserMain",
     "context": "",
     "term_plural": "",
@@ -16,20 +24,12 @@
     "comment": "viewStaffUserMain"
 },
 {
-    "term": "portal_3",
+    "term": "portal_4",
     "definition": "viewMessageList",
     "context": "",
     "term_plural": "",
     "reference": "",
     "comment": "openIdeaPortal"
-},
-{
-    "term": "portal_4",
-    "definition": "",
-    "context": "",
-    "term_plural": "",
-    "reference": "",
-    "comment": ""
 },
 {
     "term": "portal_5",
