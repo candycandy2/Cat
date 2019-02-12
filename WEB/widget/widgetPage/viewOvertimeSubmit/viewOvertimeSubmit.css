@@ -1,5 +1,10 @@
 /********************************************** viewOvertimeSubmit *********************************************/
 
+.ui-input-text {
+    height: 0;
+    border: none;
+}
+
 #backOvertime,
 #backOTQueryDetail,
 #backActualOTApply {

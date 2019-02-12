@@ -6,6 +6,7 @@ var overtimeday = "",
 var timeoutGetOTReason = null;
 var countOTHours = "0";
 var editOvertimeForm = false;
+var doneDateTime = {};
 var paidTypeData = {
     id: "paid-type-popup",
     option: [],

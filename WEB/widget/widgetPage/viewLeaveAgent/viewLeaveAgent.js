@@ -318,6 +318,7 @@ $("#viewLeaveAgent").pagecontainer({
                 }, 200);
                 $("#mypanelviewAgentLeave").removeAttr("style");
                 $("#mypanelviewAgentLeave").hide();
+                visitedPageList.push("viewPersonalLeave");
             }
         });
 
