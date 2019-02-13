@@ -36,7 +36,7 @@ var panel = htmlContent +
     +
     '<span class="panel-text">' + langStr["str_182"] + '</span>' +
     '</div>' +
-    '<div class="panel-content" id="mypanelviewClockin">'
+    '<div class="panel-content" id="mypanelviewLeaveClockin">'
     //+       '<span class="panel-text">補刷卡申請</span>'
     +
     '<span class="panel-text">' + langStr["str_189"] + '</span>' +
@@ -96,7 +96,7 @@ $(document).one("pagebeforeshow", function() {
         checkWidgetPage('viewLeaveAgent', visitedPageList);
     });
 
-    $("#mypanel #mypanelviewClockin").on("click", function() {
+    $("#mypanel #mypanelviewLeaveClockin").on("click", function() {
         //changePageByPanel("viewClockin");
         checkWidgetPage('viewLeaveClockin', visitedPageList);
     });
