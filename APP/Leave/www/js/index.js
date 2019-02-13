@@ -63,7 +63,9 @@ window.initialSuccess = function() {
 
     //Execute checkLeaveWidgetPage func to render Leave WidgetPage before Calling GetUserAuthority API
     checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery')
-    .then(GetUserAuthority());
+        .then(checkLeaveWidgetPage('viewOvertimeSubmit/viewOvertimeSubmit'))
+        .then(checkLeaveWidgetPage('viewLeaveClockin/viewLeaveClockin'))
+        .then(GetUserAuthority());
     /*checkLeaveWidgetPage('viewLeaveMain/viewLeaveMain')
         .then(checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery'));
         //.then(GetUserAuthority());
@@ -508,11 +510,11 @@ function startMainPage() {
         $("#mypanelviewLeaveAgent").hide();
     }
     if (hasClockinOTPanel) {
-        $("#mypanelviewClockin").show();
+        $("#mypanelviewLeaveClockin").show();
         $("#mypanelviewOvertimeSubmit").show();
         $("#mypanelviewOvertimeQuery").show();
     } else {
-        $("#mypanelviewClockin").hide();
+        $("#mypanelviewLeaveClockin").hide();
         $("#mypanelviewOvertimeSubmit").hide();
         $("#mypanelviewOvertimeQuery").hide();
     }

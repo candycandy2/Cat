@@ -924,11 +924,11 @@ $("#viewLeaveMain").pagecontainer({
                 $("#mypanelviewAgentLeave").hide();
             }
             if (hasClockinOTPanel) {
-                $("#mypanelviewClockin").show();
+                $("#mypanelviewLeaveClockin").show();
                 $("#mypanelviewOvertimeSubmit").show();
                 $("#mypanelviewOvertimeQuery").show();
             } else {
-                $("#mypanelviewClockin").hide();
+                $("#mypanelviewLeaveClockin").hide();
                 $("#mypanelviewOvertimeSubmit").hide();
                 $("#mypanelviewOvertimeQuery").hide();
             }
