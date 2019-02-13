@@ -25,7 +25,9 @@ class tableJobController extends Controller
             [
             'source_table' => 'required',
             'target_table' => 'required',
-            'time_zone' =>  ['required','size:5']
+            'time_zone' =>  ['required','size:5'],
+            'start' => ['required','size:6'],
+            'end' => ['required','size:6']
             ]
         );
 
@@ -42,69 +44,63 @@ class tableJobController extends Controller
         $hour = substr($timeZone, 1, 2);
         $minutes = substr($timeZone, 3, 2);
         try{
-                $dateArray = DB::table($sourceTale)
-                            -> select(DB::raw("date_format((CONVERT_TZ(created_at,'+00:00','".$symbol.$hour.":".$minutes."')),'%Y%m') as month"))
-                            -> distinct()
-                            -> get();
+                $dateArray = self::getDateArray($request->start, $request->end);
 
                 foreach ($dateArray as $date) {
-                    
-                    $total = DB::table($sourceTale)
-                                    -> where(DB::raw("date_format((CONVERT_TZ(created_at,'+00:00','".$symbol.$hour.":".$minutes."')),'%Y%m')"), $date->month)
-                                    -> count();
-                    if($total > 0){
+                
                         $limit = 1000;
-                        $round = ceil($total / $limit);
-                        $times = 0;
+                        $cnt;
                         $pointer = 0;
 
-                        $monthTableName = $tableName.'_'.$date->month.'_'.$timeZone; //201901_p0800
-
+                        $monthTableName = $tableName.'_'.$date.'_'.$timeZone; //201901_p0800
                         $createTableRs = \DB::statement("CREATE TABLE IF NOT EXISTS " . $monthTableName . " like ".$tableName);
                     
-                        while($times < $round){
-                            
-                            $record = DB::table($sourceTale)
-                                            -> where(DB::raw("date_format((CONVERT_TZ(created_at,'+00:00','".$symbol.$hour.":".$minutes."')),'%Y%m')"), $date->month)
-                                            -> where('row_id' ,'>', $pointer)
-                                            -> select()
-                                            -> limit($limit)
-                                            -> orderby('row_id','asc')
-                                            -> get();
-                            
-                            $cnt = count($record);
+                        do{
 
-                            if($cnt > 0){
-                                $pointer = $record[$cnt-1]->row_id; 
-                                $record = array_map(function ($value) {
-                                    $value->row_id = null;
-                                    return (array)$value;
-                                }, $record);
+                            DB::beginTransaction();
+                            try {
+                                $record = DB::table($sourceTale)
+                                                -> where(DB::raw("date_format((CONVERT_TZ(created_at,'+00:00','".$symbol.$hour.":".$minutes."')),'%Y%m')"), $date)
+                                                -> where('row_id' ,'>', $pointer)
+                                                -> select()
+                                                -> limit($limit)
+                                                -> orderby('row_id','asc')
+                                                -> get();
                                 
-                                // insert each record
-                                $chunk = array_chunk($record,1);
-                                foreach ($chunk as $data) {
-                                   \DB::table($monthTableName)->insert($data);
-                                    $movedRecords = $movedRecords + count($data);
+                                $cnt = count($record);
+
+                                if($cnt > 0){
+                                    $pointer = $record[$cnt-1]->row_id; 
+                                    $record = array_map(function ($value) {
+                                        $value->row_id = null;
+                                        return (array)$value;
+                                    }, $record);
+                                    
+                                    // insert each record
+                                    $chunk = array_chunk($record,1);
+                                    foreach ($chunk as $data) {
+                                       \DB::table($monthTableName)->insert($data);
+                                        $movedRecords = $movedRecords + count($data);
+                                    }
+                                    
+                                    /*if($insertRs){
+                                        $deleteRs = \DB::table($tableName)
+                                                -> where(\DB::raw("date_format((CONVERT_TZ(created_at,'+00:00','".$symbol.$hour.":".$minutes."')),'%Y%m')"), $date->month)
+                                                -> delete();
+                                    }*/
                                 }
-                                
-                                /*if($insertRs){
-                                    $deleteRs = \DB::table($tableName)
-                                            -> where(\DB::raw("date_format((CONVERT_TZ(created_at,'+00:00','".$symbol.$hour.":".$minutes."')),'%Y%m')"), $date->month)
-                                            -> delete();
-                                }*/
+                                DB::commit();
+                            } catch (\Exception $e) {
+                                DB::rollBack();
+                                throw $e;
                             }
 
-                            $times ++ ;
-
-                        }
-
-                    }
+                        }while($cnt > 0);
                 }
                 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                         'message'=>$movedRecords. " records have been moved"];
-            }catch (\Exception $e){               
+            }catch (\Exception $e){              
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
                         'message'=> $e->getMessage()];
             }
@@ -116,4 +112,18 @@ class tableJobController extends Controller
         return response()->json($result);
     }
 
+    private function getDateArray($start, $end){
+        $dateArray = [];
+        $startDate = date_create_from_format('Ymd H:i:s', $start.'01 00:00:00');
+        $startDate = $startDate->getTimestamp();
+        $tempDate = $startDate; 
+        $endDate = date_create_from_format('Ymd H:i:s', $end.'01 00:00:00');
+        $endDate = $endDate->getTimestamp();
+         do{
+            $dateArray[] = date('Ym', $tempDate);
+            $tempDate = strtotime('+1 month', $tempDate); 
+         }while ( $tempDate <= $endDate);
+        
+        return $dateArray;
+    }
 }
