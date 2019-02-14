@@ -79,7 +79,8 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewBackLeaveQuery").on("click", function() {
-        changePageByPanel("viewBackLeaveQuery");
+        //changePageByPanel("viewBackLeaveQuery");
+        checkWidgetPage('viewBackLeaveQuery', visitedPageList);
     });
 
     $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {
