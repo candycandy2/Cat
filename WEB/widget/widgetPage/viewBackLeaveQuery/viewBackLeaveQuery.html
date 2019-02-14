@@ -1,0 +1,275 @@
+<div data-role="page" id="viewBackLeaveQuery">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
+            <img src="img/menu.png" class="leaveMenu">
+            <img src="img/component/back_nav.png" id="backToList">
+            <img src="img/component/back_nav.png" id="backToSign">
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                <!--銷假單查詢-->
+                <span class="langStr" data-id="str_005"></span>
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main">
+        <div class="beingAgent"></div> 
+        <!-- 銷假單列表 -->
+        <div class="backLeave-query-main">           
+            <!-- backleave list -->
+            <div class="backLeave-query-main-list">
+                
+            </div>
+
+            <!-- max count msg -->
+            <div class="leave-query-max font-style12">
+                <!-- *僅顯示近10筆假單記錄 -->
+                <span id="maxBackLeaveMsg"></span>
+            </div>
+
+        </div>
+
+        <!-- popup-msg display:none -->
+        <div class="popup-msg-style" id="withdrawBackLeaveMsg">
+            <!-- 銷假單已撤回 -->
+            <span class="langStr" data-id="str_161"></span>
+        </div>
+        <div class="popup-msg-style" id="deleteBackLeaveMsg">
+            <!-- 銷假單已刪除 -->
+            <span class="langStr" data-id="str_169"></span>
+        </div>
+        <div class="popup-msg-style" id="backLeaveMsg">
+            <!-- 銷假單已送簽 -->
+            <span class="langStr" data-id="str_172"></span>
+        </div>
+
+        <!-- 表單詳情 -->
+        <div class="backLeave-query-detail-sign">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span id="backLeaveApplyDate">2017-02-08</span>
+                </div>
+                <div>
+                    <!-- 銷假單號 -->
+                    <span class="langStr" data-id="str_166"></span>
+                    <span id="backLeaveFormNo">654000</span>
+                </div> 
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 假單狀況 -->
+                            <span class="langStr" data-id="str_144"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span id="backLeaveStatus"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/info.png" class="leave-detail-img" id="backLeaveSignFlow">
+                    </div>
+                </div>
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 請假單號 -->
+                            <span class="langStr" data-id="str_165"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span id="refLeaveFormNo"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/more.png" class="leave-detail-img" id="signToLeaveDetail">
+                    </div>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 銷假理由 -->
+                    <span class="langStr" data-id="str_158"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="backLeaveApplyReason"></span>
+                </div>
+            </div>
+            <div class="apply-empty-div2"></div>
+            <!-- 撤回 -->
+            <div class="apply-submit-btn" id="backLeaveWithdraw">
+                <div id="withdrawBackLeaveBtn">
+                    <!-- 撤回 -->
+                    <span class="langStr" data-id="str_143"></span>
+                </div>
+            </div>
+            <!-- 刪除 -->
+            <div class="apply-submit-btn" id="backLeaveDelete">
+                <div id="deleteBackLeaveBtn">
+                    <!-- 刪除銷假單 -->
+                    <span class="langStr" data-id="str_168"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 撤回申請 -->
+        <div class="backLeave-query-sign-withdraw">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span id="withdrawBackLeaveApplyDate">2017-02-08</span>
+                </div>
+                <div>
+                    <!-- 銷假單號 -->
+                    <span class="langStr" data-id="str_166"></span>
+                    <span id="withdrawBackLeaveFormno">654000</span>
+                </div> 
+            </div>
+            <div class="apply-empty-div1"></div>
+            <div class="apply-leave-reason">
+                <div class="font-style11">
+                    <!-- 撤回理由 -->
+                    <span class="langStr" data-id="str_132"></span>
+                </div>
+                <div>
+                    <textarea data-role="none" id="signTowithdrawReason" class="reason-textarea"></textarea>
+                </div>
+            </div>
+            <div class="apply-empty-div2"></div>
+            <!-- withdraw btn -->
+            <div class="apply-preview-btn">
+                <div id="signToWithdrawBtn">
+                    <!-- 撤回銷假單 -->
+                    <span class="langStr" data-id="str_167"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- sign popup -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signIngFlow" for="signIngFlow" id="signIngFlow">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <ul class="backLeave-flow-ul">
+
+                </ul>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm withdraw -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmToWithdraw" for="confirmToWithdraw" id="confirmToWithdraw">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 確定撤回？ -->
+                        <span class="langStr" data-id="str_146"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="comfirmWithdrawBackLeave">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm delete -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmToDelete" for="confirmToDelete" id="confirmToDelete">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 確定刪除？ -->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>   
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="comfirmDeleteBackLeave">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- error msg N行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup backLeaveErrorMsg" for="backLeaveErrorMsg" id="backLeaveErrorMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main" style="margin-left:5.36vw;margin-right:5.36vw;">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <!-- <p class="main-paragraph font-style3"></p> -->
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

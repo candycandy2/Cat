@@ -1,0 +1,16 @@
+/**************************************** viewBackLeaveQuery ********************************************/
+
+#backLeaveQueryDetail {
+    width: 4.934vw;
+}
+
+.back-leave-apply {
+    width: 93.6vw;
+    height: 154.5vw;
+    margin-left: 3.2vw;
+}
+
+#backLeaveWithdraw,
+#backLeaveDelete {
+    display: none;
+}
