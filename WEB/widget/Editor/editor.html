@@ -16,18 +16,28 @@
             padding: 0;
         }
         #container {
-            width: 1200px;
-            height: 800px;
+            width: 1000px;
+            height: 1280px;
         }
         #container>div {
             float: left;
-            width: 600px;
-            height: 800px;
+            height: 1280px;
+        }
+        #container>div:nth-of-type(1) {
+            width: 640px;
+        }
+        #container>div:nth-of-type(2) {
+            width: 360px;
         }
         #container>div>div {
-            width: 600px;
-            height: 400px;
+            height: 640px;
             border: 1px solid #666666;
+        }
+        #container>div:nth-of-type(1)>div {
+            width: 640px;
+        }
+        #container>div:nth-of-type(2)>div {
+            width: 360px;
         }
         #output>iframe {
             width: 100%;
