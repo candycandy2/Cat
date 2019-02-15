@@ -52,7 +52,6 @@ var categroyData = {
 var pleaseSelectStr = langStr["str_069"]; //請選擇
 var selectBasedayStr = langStr["str_127"]; //選擇時間
 var otherBasedayStr = langStr["str_141"]; //選擇其他基準日
-var viewLeaveSubmitInit = false;
 var timeoutQueryEmployee = null;
 var timeoutChangeBegindate = null;
 var timeoutChangeEnddate = null;

@@ -69,11 +69,6 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewPersonalLeave");
     });
 
-    $("#mypanel #mypanelviewLeaveSubmit").on("click", function() {
-        editLeaveForm = false;
-        changePageByPanel("viewLeaveSubmit");
-    });
-
     $("#mypanel #mypanelviewLeaveQuery").on("click", function() {
         changePageByPanel("viewLeaveQuery");
     });
