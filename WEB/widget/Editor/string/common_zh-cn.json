@@ -1,0 +1,90 @@
+[
+  {
+    "term": "com_004",
+    "definition": "系统维护中，请稍后再试",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_005",
+    "definition": "请更新应用程序以立即体验新功能、获得改善效能和错误修正",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_006",
+    "definition": "更新应用程序",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_007",
+    "definition": "联机失败，请确认网络联机状态",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_008",
+    "definition": "下载失败",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_016",
+    "definition": "确定",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_022",
+    "definition": "安装",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_023",
+    "definition": "取消",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_024",
+    "definition": "[app name] 安装失败",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_025",
+    "definition": "[app name] 安装成功",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "com_026",
+    "definition": "app已移至QPlay",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  }
+]
