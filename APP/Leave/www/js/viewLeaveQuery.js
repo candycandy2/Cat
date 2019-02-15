@@ -653,7 +653,7 @@ $("#viewLeaveQuery").pagecontainer({
 
             /**************** 3.跳转 ***************/
             $("#backDetailList").click();
-            changePageByPanel("viewLeaveSubmit");
+            changePageByPanel("viewPersonalLeave");
 
             /**************** 4.计算请假数 ***************/
             setTimeout(function() {

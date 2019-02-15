@@ -52,7 +52,6 @@ var categroyData = {
 var pleaseSelectStr = langStr["str_069"]; //請選擇
 var selectBasedayStr = langStr["str_127"]; //選擇時間
 var otherBasedayStr = langStr["str_141"]; //選擇其他基準日
-var viewLeaveSubmitInit = false;
 var timeoutQueryEmployee = null;
 var timeoutChangeBegindate = null;
 var timeoutChangeEnddate = null;
@@ -413,9 +412,7 @@ $("#viewPersonalLeave").pagecontainer({
                     var activePage = $.mobile.activePage[0].id;
                     if (activePage !== "viewPersonalLeave" || reload) {
                         $("#mypanel" + activePage).removeAttr("style");
-                        $("#mypanel #mypanelviewPersonalLeave").css("background", "#503f81");
-                        $("#mypanel #mypanelviewPersonalLeave").css("color", "#fff");
-                        $.mobile.changePage("#viewPersonalLeave");
+                        changePageByPanel("viewPersonalLeave");
                         reload = false;
                     } else {
                         startMainPage();
@@ -912,10 +909,22 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
-            $("#tab-1").hide();
-            $("#tab-2").show();
-            $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
-            $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
+            if (editLeaveForm) {
+                //如果是从“假单详情（已撤回）”编辑功能跳转过来的，且该代理人不在职，popup提示重新选择代理人
+                if (employeeName == "") {
+                    popupMsgInit('.agentNotData');
+                }
+                $("#tab-1").show();
+                $("#tab-2").hide();
+                $("label[for=viewPersonalLeave-tab-1]").addClass('ui-btn-active');
+                $("label[for=viewPersonalLeave-tab-2]").removeClass('ui-btn-active');
+            } else {
+                $("#tab-1").hide();
+                $("#tab-2").show();
+                $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
+                $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
+            }
+       
             //代理請假Panel
             if (hasAgentPanel) {
                 $("#mypanelviewLeaveAgent").show();
@@ -948,9 +957,9 @@ $("#viewPersonalLeave").pagecontainer({
                 defaultSettingDone = false;
             }
             //如果是从“假单详情（已撤回）”编辑功能跳转过来的，且该代理人不在职，popup提示重新选择代理人
-            if (editLeaveForm && employeeName == "") {
+            /*if (editLeaveForm && employeeName == "") {
                 popupMsgInit('.agentNotData');
-            }
+            }*/
             $('#applyDay').text(applyDay);
             $('#previewApplyDay').text(applyDay);
             loadingMask("hide");
