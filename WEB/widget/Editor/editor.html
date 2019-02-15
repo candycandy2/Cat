@@ -8,42 +8,74 @@
     <title>Editor</title>
     <link rel="stylesheet" href="lib/codemirror.css">
     <link rel="stylesheet" href="theme/rubyblue.css">
+    <link rel="stylesheet" href="addon/fold/foldgutter.css" />
+    <link rel="stylesheet" href="addon/lint/lint.css" />
     <script src="lib/codemirror.js"></script>
     <script src="lib/jquery.min.js"></script>
+
+    <script src="mode/javascript/javascript.js"></script>
+    <script src="mode/xml/xml.js"></script>
+    <script src="mode/css/css.js"></script>
+    <script src="mode/htmlmixed/htmlmixed.js"></script>
+
+    <script src="addon/fold/foldcode.js"></script>
+    <script src="addon/fold/foldgutter.js"></script>
+    <script src="addon/fold/brace-fold.js"></script>
+    <script src="addon/fold/comment-fold.js"></script>
+
+    <script src="addon/lint/lint.js"></script>
+    <script src="addon/lint/javascript-lint.js"></script>
+    <script src="addon/lint/json-lint.js"></script>
+    <script src="addon/lint/css-lint.js"></script>
+    <script src="addon/lint/html-lint.js"></script>
+
+    <script src="addon/edit/closetag.js"></script>
+    <script src="addon/edit/closebrackets.js"></script>
+    <script src="addon/display/placeholder.js"></script>
+
     <style>
         body {
             margin: 0;
             padding: 0;
         }
+
         #container {
             width: 1000px;
             height: 1280px;
         }
+
         #container>div {
             float: left;
             height: 1280px;
         }
+
         #container>div:nth-of-type(1) {
             width: 640px;
         }
+
         #container>div:nth-of-type(2) {
             width: 360px;
         }
+
         #container>div>div {
             height: 640px;
             border: 1px solid #666666;
         }
+
         #container>div:nth-of-type(1)>div {
             width: 640px;
         }
+
         #container>div:nth-of-type(2)>div {
             width: 360px;
         }
+
         #output>iframe {
             width: 100%;
             height: 100%;
         }
-        #run_btn{
+
+        #run_btn {
             width: 80px;
             height: 40px;
         }
@@ -72,44 +104,60 @@
 
     <script>
         $(document).ready(function () {
+            //html editor
+            html_editor = CodeMirror.fromTextArea(document.querySelector("#html_text"), html_opt);
+            html_editor.setSize('100%', '100%');
+            // html_editor.on('change', function (inst, changes) {
+            //     runTextarea();
+            // });
 
+            //js editor
+            js_editor = CodeMirror.fromTextArea(document.querySelector("#js_text"), js_opt);
+            js_editor.setSize('100%', '100%');
+            // js_editor.on('change', function (inst, changes) {
+            //     runTextarea();
+            // });
 
+            //css editor
+            css_editor = CodeMirror.fromTextArea(document.querySelector("#css_text"), html_opt);
+            css_editor.setSize('100%', '100%');
+            // css_editor.on('change', function (inst, changes) {
+            //     runTextarea();
+            // });
         });
 
         //option
-        var cm_opt = {
+        var html_opt = {
             mode: 'text/html',
             theme: 'rubyblue',
+            indentUnit: 4,
             gutter: true,
             lineNumbers: true,
+            styleActiveLine: true,
             autoCloseBrackets: true,
             lineWrapping: true,
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter","CodeMirror-lint-markers"],
             matchBrackets: true,
             autoCloseTags: true
         };
 
-        //html editor
-        var html_editor = CodeMirror.fromTextArea(document.querySelector("#html_text"), cm_opt);
-        html_editor.setSize('100%', '100%');
-        // html_editor.on('change', function (inst, changes) {
-        //     runTextarea();
-        // });
+        var js_opt = {
+            mode: 'javascript',
+            theme: 'rubyblue',
+            indentUnit: 4,
+            gutter: true,
+            lineNumbers: true,
+            styleActiveLine: true,
+            autoCloseBrackets: true,
+            lineWrapping: true,
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter","CodeMirror-lint-markers"],
+            matchBrackets: true,
+            autoCloseTags: true
+        };
 
-        //js editor
-        var js_editor = CodeMirror.fromTextArea(document.querySelector("#js_text"), cm_opt);
-        js_editor.setSize('100%', '100%');
-        // js_editor.on('change', function (inst, changes) {
-        //     runTextarea();
-        // });
-
-        //css editor
-        var css_editor = CodeMirror.fromTextArea(document.querySelector("#css_text"), cm_opt);
-        css_editor.setSize('100%', '100%');
-        // css_editor.on('change', function (inst, changes) {
-        //     runTextarea();
-        // });
-
-        $('#run_btn').on('click', function() {
+        $('#run_btn').on('click', function () {
             runTextarea();
         });
 
@@ -182,6 +230,8 @@
             ifrw.document.close();
         }
     </script>
+    
+
 </body>
 
 </html>
