@@ -33,7 +33,7 @@ var widget = {
             { id: 9, name: 'qstore', enabled: true, show: false, deletable: true, lang: langStr['wgt_100'] },
             { id: 10, name: 'staff', enabled: true, show: true, deletable: true, lang: langStr['wgt_102'] },
             { id: 11, name: 'staffAdmin', enabled: true, show: false, deletable: true, lang: langStr['wgt_102'] },
-            { id: 12, name: 'cards', enabled: true, show: false, deletable: false, lang: langStr['wgt_167'] }
+            { id: 12, name: 'cards', enabled: true, show: true, deletable: false, lang: langStr['wgt_167'] }
 
         ];
     },
