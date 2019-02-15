@@ -1,0 +1,11 @@
+/********************************** viewFamilyData *************************************/
+
+
+.test-edit {
+    width: 15vw; 
+    height: 15vw;
+    background: url(img/floating_add.png) no-repeat;
+    background-size: 15vw;
+    vertical-align: middle;
+    border: 0 !important;
+}
