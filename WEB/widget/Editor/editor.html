@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Editor</title>
-    <link rel="stylesheet" href="lib/codemirror.css">
-    <link rel="stylesheet" href="theme/rubyblue.css">
+    <link rel="stylesheet" href="lib/codemirror.css" />
+    <link rel="stylesheet" href="theme/rubyblue.css" />
     <link rel="stylesheet" href="addon/fold/foldgutter.css" />
     <link rel="stylesheet" href="addon/lint/lint.css" />
     <script src="lib/codemirror.js"></script>
@@ -75,7 +75,8 @@
             height: 100%;
         }
 
-        #run_btn {
+        #runBtn,
+        #createBtn {
             width: 80px;
             height: 40px;
         }
@@ -83,6 +84,7 @@
 </head>
 
 <body>
+    <div><button id="createBtn">create</button></div>
     <div id="container">
         <div>
             <div>
@@ -99,7 +101,7 @@
             <div id="output"></div>
         </div>
     </div>
-    <div><button id="run_btn">run</button></div>
+    <div><button id="runBtn">run</button></div>
 
 
     <script>
@@ -137,7 +139,7 @@
             autoCloseBrackets: true,
             lineWrapping: true,
             foldGutter: true,
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter","CodeMirror-lint-markers"],
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
             matchBrackets: true,
             autoCloseTags: true
         };
@@ -152,12 +154,12 @@
             autoCloseBrackets: true,
             lineWrapping: true,
             foldGutter: true,
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter","CodeMirror-lint-markers"],
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
             matchBrackets: true,
             autoCloseTags: true
         };
 
-        $('#run_btn').on('click', function () {
+        $('#runBtn').on('click', function () {
             runTextarea();
         });
 
@@ -229,8 +231,19 @@
             ifrw.document.write(src);
             ifrw.document.close();
         }
+
+        $("#createBtn").on('click', function() {
+            var html_code = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>文档标题</title>\n</head>\n<body>\n\t<h1>Hello World</h1>\n</body>\n</html>\n";
+            html_editor.getDoc().setValue(html_code);
+
+            var css_code = "h1{color: red}";
+            css_editor.getDoc().setValue(css_code);
+
+            var js_code = "alert('helloworld');";
+            js_editor.getDoc().setValue(js_code);
+        });
     </script>
-    
+
 
 </body>
 
