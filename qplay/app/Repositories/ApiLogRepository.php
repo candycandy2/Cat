@@ -156,34 +156,28 @@ class ApiLogRepository
      * @return cursor
      */
     public function getPushServiceRankDetail($from, $to, $timeOffset){
+        $dateArr = explode('-',$from);
+        $month = $dateArr[0].sprintf("%02d",$dateArr[1]);
+        $sourceTale = 'qp_api_log_'.$month.'_p0800';
+        
         $actionName = 'sendPushMessage';
-        $query = [
-            ['$project'=>
-                ['action'=>1,
-                 'app_key'=>1,
-                 'created_at'=>['$add'=>['$created_at',$timeOffset]]
-                ]
-            ],
-            ['$match'=>
-                ['action'=>$actionName]
-            ],
-            ['$group' =>
-                ['_id' => ['interval'=>['$dateToString'=>['format'=>'%H:00:00','date'=>'$created_at']],
-                           'app_key'=>'$app_key'
-                           ],
-                 'count' => ['$sum' => 1],
-                ]
-            ],
-            ['$sort'=>['count' => -1]],
-        ];
-        if($from!="" && $to!=""){
-            $query[1]['$match'] = ['action'=>$actionName ,
-                                   'created_at' => ['$gte'=> new \MongoDB\BSON\UTCDateTime(new DateTime($from . " 00:00:00")),
-                                                    '$lt'=> new \MongoDB\BSON\UTCDateTime(new DateTime($to . " 23:59:59"))
-                                                    ]
-                                 ];
+        
+        $result =  DB::table($sourceTale)
+            ->where('action', $actionName)
+            ->select(DB::raw("app_key, date_format((CONVERT_TZ( (created_at),'+00:00','+08:00')),'%H') as hour"))
+            ->get();
+
+        $returnData = [];
+        foreach ($result as $value) {
+
+            $appKey = $value->app_key;
+            $interval = (int)$value->hour;
+            if(!isset($returnData[$appKey])){
+                $returnData[$appKey] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+            }
+            $returnData[$appKey][$interval] = $returnData[$appKey][$interval] + 1;
         }
-        return $this->apiLog::raw()->aggregate($query,['allowDiskUse' => true]);
+        return $returnData;
     }
 
     /**
@@ -192,25 +186,8 @@ class ApiLogRepository
      * @return cursor
      */
     public function getPushServicReportEndDate($timeOffset){
-        $actionName = 'sendPushMessage';
-        $query = [
-            ['$project'=>
-                ['action'=>1,
-                 'created_at'=>['$add'=>['$created_at',$timeOffset]],
-                 'date'=>['$dateToString'=>['format'=>'%Y-%m-%d', 'date'=>'$created_at']]
-                ]
-            ],
-            ['$match'=>
-                ['action'=>$actionName]
-            ],
-            ['$group' =>
-                ['_id' => null,
-                 'max' => ['$max' => '$date'],
-                 'min' => ['$min' => '$date'],
-                ]
-            ],
-        ];
-
-        return $this->apiLog::raw()->aggregate($query,['allowDiskUse' => true]);
+        $year = date('Y-m-d',time() + $timeOffset); 
+        return ['min' => date('Y-m-01', time()),
+                'max' => date('Y-m-d', strtotime(date('Y-m-01', time()) . ' +1 month -1 day'))];
     }
 }
