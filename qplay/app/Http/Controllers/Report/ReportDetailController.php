@@ -190,24 +190,6 @@ class ReportDetailController extends Controller
     }
 
     /**
-     * 取得推播服務最後日期
-     * @return json
-     */
-    public function getPushServicReportEndDate(){
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        $content = file_get_contents('php://input');
-        $content = CommonUtil::prepareJSON($content);
-        if (\Request::isJson($content)) {
-            $jsonContent = json_decode($content, true);
-            $timeOffset = $jsonContent['timeOffset'];
-            return json_encode($this->reportService->getPushServicReportEndDate($timeOffset));
-        }
-    }
-
-    /**
      * 取得推播讀取比例
      * @return json
      */

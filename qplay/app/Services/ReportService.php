@@ -107,27 +107,9 @@ class ReportService
      * @return array
      */
     public function getPushServiceRankReport($from, $to, $timeOffset){
-        $res = [];
-        $cursor = $this->apiLogRepository->getPushServiceRankDetail($from, $to, $timeOffset);
-        $res = $cursor->toArray();
-       
-        return $res;
+        return $this->apiLogRepository->getPushServiceRankDetail($from, $to, $timeOffset);
     }
-
-    /**
-     * 取得推播報表開始日及結束日
-     * @param  int    $timeOffset 時差
-     * @return array
-     */
-    public function getPushServicReportEndDate($timeOffset){
-        $res = [];
-        $cursor = $this->apiLogRepository->getPushServicReportEndDate($timeOffset)->toArray();
-        $res['reportEndDate'] = (count($cursor) >0)?$cursor[0]->max:"";
-        $res['reportStartDate'] = (count($cursor) >0)?$cursor[0]->min:"";
-        return $res;
-    }
-
-
+    
     /**
      * 取得各site已發送訊息數
      * @param  int    $timeOffset 時差
