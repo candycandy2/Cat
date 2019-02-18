@@ -12,18 +12,12 @@ $REPORT_TYPE = 'push_service_hours';
     <div class="col-lg-10 col-xs-12" id="">
         <div><label class="text-muted"></label></div>
         <div class="col-lg-12 col-xs-12" id="">
-            <div id="push_service_range_btn" class="btn-group blocks" data-toggle="buttons">
-            <button class="btn report-button" id="range_1" data-type="day" data-count="7"> {{str_replace('%s',7,trans('messages.N_DAY'))}}</button>
-            <button class="btn report-button" id="range_2" data-type="month" data-count="3"> {{str_replace('%s',3,trans('messages.N_MONTH'))}}</button>
-            <button class="btn report-button" id="range_3" data-type="month" data-count="6"> {{str_replace('%s',6,trans('messages.N_MONTH'))}}</button>
-            <button class="btn report-button" id="range_4" data-type="all" data-count="all"> All</button>
-            </div>
-            <div class="btn-group blocks pull-right report-input">
+            {{-- <div class="btn-group blocks pull-right report-input">
                 <span>From</span>
                 <input id="push_date_from" type="" name="">
                 <span>To</span>
                 <input id="push_date_to" type="" name="">
-            </div>
+            </div> --}}
         </div>
         <div class="col-lg-12 col-md-12 col-xs-12" id="">
             <img class="loader" id="loading-indicator" style="display:" />
