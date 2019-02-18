@@ -839,12 +839,12 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-1").hide();
             $("#tab-2").show();
             $(".beingAgent").hide();
-            if (lastPageID === "viewPersonalLeave") {
-                //viewPersonalLeave
-                tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
-                //viewLeaveSubmit
-                tplJS.DropdownList("viewPersonalLeave", "leaveAgent", "prepend", "typeB", leaveAgentData);
-            }
+        
+            //viewPersonalLeave
+            tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
+            //viewLeaveSubmit
+            tplJS.DropdownList("viewPersonalLeave", "leaveAgent", "prepend", "typeB", leaveAgentData);
+
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
 
