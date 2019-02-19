@@ -6,12 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Editor</title>
+    <!--CodeMirror-->
     <link rel="stylesheet" href="lib/codemirror.css" />
     <link rel="stylesheet" href="theme/rubyblue.css" />
     <link rel="stylesheet" href="addon/fold/foldgutter.css" />
     <link rel="stylesheet" href="addon/lint/lint.css" />
-    <script src="lib/codemirror.js"></script>
+    <!--treeview-->
+    <link rel="stylesheet" href="lib/jquery.treeview.css" />
+    <link rel="stylesheet" href="lib/screen.css" />
+    <!--self-->
+    <link rel="stylesheet" href="editor.css" />
+
+
     <script src="lib/jquery.min.js"></script>
+    <script src="lib/codemirror.js"></script>
+    <script src="lib/jquery.treeview.js"></script>
+    <script src="lib/jquery.cookie.js"></script>
 
     <script src="mode/javascript/javascript.js"></script>
     <script src="mode/xml/xml.js"></script>
@@ -34,74 +44,75 @@
     <script src="addon/display/placeholder.js"></script>
 
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
 
-        #container {
-            width: 1000px;
-            height: 1280px;
-        }
-
-        #container>div {
-            float: left;
-            height: 1280px;
-        }
-
-        #container>div:nth-of-type(1) {
-            width: 640px;
-        }
-
-        #container>div:nth-of-type(2) {
-            width: 360px;
-        }
-
-        #container>div>div {
-            height: 640px;
-            border: 1px solid #666666;
-        }
-
-        #container>div:nth-of-type(1)>div {
-            width: 640px;
-        }
-
-        #container>div:nth-of-type(2)>div {
-            width: 360px;
-        }
-
-        #output>iframe {
-            width: 100%;
-            height: 100%;
-        }
-
-        #runBtn,
-        #createBtn {
-            width: 80px;
-            height: 40px;
-        }
     </style>
 </head>
 
 <body>
-    <div><button id="createBtn">create</button></div>
-    <div id="container">
-        <div>
-            <div>
-                <textarea id="html_text" cols="30" rows="10" style="display:none;" placeholder="请输入HTML"></textarea>
+    <div id="editMain">
+        <!--treeview-->
+        <div id="treeview">
+            <div id="btnList">
+                <ul>
+                    <li id="createBtn"><button>new</button></li>
+                    <li><button>open</button></li>
+                    <li><button>save</button></li>
+                    <li id="runBtn"><button>run</button></li>
+                </ul>
             </div>
-            <div>
-                <textarea id="js_text" cols="30" rows="10" style="display:none;" placeholder="请输入JS"></textarea>
-            </div>
+            <ul id="treeviewMenu">
+                <li><span class="folder">Folder 1</span>
+                    <ul>
+                        <li><span class="folder">Item 1.1</span>
+                            <ul>
+                                <li><span class="file">Item 1.1.1</span></li>
+                            </ul>
+                        </li>
+                        <li><span class="folder">Folder 2</span>
+                            <ul>
+                                <li><span class="folder">Subfolder 2.1</span>
+                                    <ul id="folder21">
+                                        <li><span class="file">File 2.1.1</span></li>
+                                        <li><span class="file">File 2.1.2</span></li>
+                                    </ul>
+                                </li>
+                                <li><span class="folder">Subfolder 2.2</span>
+                                    <ul>
+                                        <li><span class="file">File 2.2.1</span></li>
+                                        <li><span class="file">File 2.2.2</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="closed"><span class="folder">Folder 3 (closed at start)</span>
+                            <ul>
+                                <li><span class="file">File 3.1</span></li>
+                            </ul>
+                        </li>
+                        <li><span class="file">File 4</span></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-        <div>
+        <div id="toggleTreeview"></div>
+        <!--editor-->
+        <div id="editor">
             <div>
-                <textarea id="css_text" cols="30" rows="10" style="display:none;" placeholder="请输入CSS"></textarea>
+                <div>
+                    <textarea id="html_text" cols="30" rows="10" style="display:none;" placeholder="请输入HTML"></textarea>
+                </div>
+                <div>
+                    <textarea id="js_text" cols="30" rows="10" style="display:none;" placeholder="请输入JS"></textarea>
+                </div>
             </div>
-            <div id="output"></div>
+            <div>
+                <div>
+                    <textarea id="css_text" cols="30" rows="10" style="display:none;" placeholder="请输入CSS"></textarea>
+                </div>
+                <div id="output"></div>
+            </div>
         </div>
     </div>
-    <div><button id="runBtn">run</button></div>
 
 
     <script>
@@ -126,6 +137,8 @@
             // css_editor.on('change', function (inst, changes) {
             //     runTextarea();
             // });
+
+            $('#treeviewMenu').treeview();
         });
 
         //option
@@ -232,7 +245,7 @@
             ifrw.document.close();
         }
 
-        $("#createBtn").on('click', function() {
+        $("#createBtn").on('click', function () {
             var html_code = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>文档标题</title>\n</head>\n<body>\n\t<h1>Hello World</h1>\n</body>\n</html>\n";
             html_editor.getDoc().setValue(html_code);
 
@@ -242,6 +255,16 @@
             var js_code = "alert('helloworld');";
             js_editor.getDoc().setValue(js_code);
         });
+
+        $('#toggleTreeview').on('click', function () {
+            let show = $('#treeview').css('display');
+            if (show == 'block') {
+                $('#treeview').css('display', 'none');
+            } else {
+                $('#treeview').css('display', 'block');
+            }
+        });
+
     </script>
 
 

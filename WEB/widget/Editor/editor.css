@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#editMain {
+    width: 1280px;
+    height: 1280px;
+}
+
+#editMain > div {
+    float: left;
+}
+
+#btnList {
+    width: 260px;
+    height: 80px;
+}
+
+#btnList li {
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border: 1px solid lightgray;
+    float: left;
+}
+
+#btnList li:nth-of-type(n+1) {
+    margin-left: -1px;
+}
+
+#btnList button {
+    width: 100%;
+    height: 100%;
+}
+
+#treeview {
+    width: 260px;
+    height: 1280px;
+}
+
+#toggleTreeview {
+    width: 10px;
+    height: 1280px;
+    background: lightgray;
+}
+
+#editor {
+    width: 1000px;
+    height: 1280px;
+}
+
+#editor>div {
+    float: left;
+    height: 1280px;
+}
+
+#editor>div:nth-of-type(1) {
+    width: 640px;
+}
+
+#editor>div:nth-of-type(2) {
+    width: 360px;
+}
+
+#editor>div>div {
+    height: 640px;
+    border: 1px solid #666666;
+}
+
+#editor>div:nth-of-type(1)>div {
+    width: 640px;
+}
+
+#editor>div:nth-of-type(2)>div {
+    width: 360px;
+}
+
+#output>iframe {
+    width: 100%;
+    height: 100%;
+}
