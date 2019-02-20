@@ -6,6 +6,7 @@ $("#viewGeneralSetting").pagecontainer({
         var widgetArr = JSON.parse(window.localStorage.getItem('widgetList')),
             imgURL = '/widget/widgetPage/viewGeneralSetting/img/',
             changeWidgetOrderDirty = 'N',
+            carousel_id = '',
             disabledWidgetList = [];
 
         //widgetlist分類
@@ -13,30 +14,33 @@ $("#viewGeneralSetting").pagecontainer({
             let defaultContent = '';
             let moreContent = '';
             for(let i in arr) {
-                if(arr[i].enabled) {
-                    if(arr[i]['show']) {
-                        defaultContent += '<li data-id="' +
-                            arr[i]['id'] +
-                            (arr[i].name == 'carousel' ? '" class="hide"' : '"') +
-                            '><div' +
-                            (arr[i]['deletable'] == true ? ' class="delete-widget"' : '') +
-                            '></div><div><img src="' +
-                            serverURL + imgURL + 'widget_' + arr[i]['name'] +
-                            '.png"></div><div>' +
-                            arr[i]['lang'] +
-                            '</div><div class="move"></div></li>';
-                    } else {
-                        moreContent += '<li data-id="' +
-                            arr[i]['id'] +
-                            (arr[i].name == 'carousel' ? '" class="hide"' : '"') +
-                            '><div class="add-widget"></div><div><img src="' +
-                            serverURL + imgURL + 'widget_' + arr[i]['name'] +
-                            '.png"></div><div>' +
-                            arr[i]['lang'] +
-                            '</div><div></div></li>';
-                    }
+                //将carousel排除在sortable之外，确保carousel在第一位
+                if(arr[i].name == 'carousel') {
+                    carousel_id = arr[i]['id'];
                 } else {
-                    disabledWidgetList.push(arr[i]);
+                    if(arr[i].enabled) {
+                        if(arr[i]['show']) {
+                            defaultContent += '<li data-id="' +
+                                arr[i]['id'] +
+                                '"><div' +
+                                (arr[i]['deletable'] == true ? ' class="delete-widget"' : '') +
+                                '></div><div><img src="' +
+                                serverURL + imgURL + 'widget_' + arr[i]['name'] +
+                                '.png"></div><div>' +
+                                arr[i]['lang'] +
+                                '</div><div class="move"></div></li>';
+                        } else {
+                            moreContent += '<li data-id="' +
+                                arr[i]['id'] +
+                                '"><div class="add-widget"></div><div><img src="' +
+                                serverURL + imgURL + 'widget_' + arr[i]['name'] +
+                                '.png"></div><div>' +
+                                arr[i]['lang'] +
+                                '</div><div></div></li>';
+                        }
+                    } else {
+                        disabledWidgetList.push(arr[i]['id']);
+                    }
                 }
             }
 
@@ -97,8 +101,9 @@ $("#viewGeneralSetting").pagecontainer({
             setWidgetList(widgetArr);
 
             //2.sortable
-            $('.default-widget-ul').sortable();
-            $('.default-widget-ul').disableSelection();
+            $('.default-widget-ul').sortable({
+                axis: 'y'
+            }).disableSelection();
             $('.default-widget-ul').on("sortstop", function (event, ui) {
                 changeWidgetOrderDirty = 'Y';
                 $('.default-widget-ul').sortable('disable');
@@ -115,6 +120,7 @@ $("#viewGeneralSetting").pagecontainer({
             if (changeWidgetOrderDirty == 'Y') {
                 //1.按照排序记录widget id
                 let idArr = [];
+                idArr.push(carousel_id);
                 $('.default-widget-ul li').each(function(index, item) {
                     idArr.push($(item).data('id'));
                 });
@@ -122,7 +128,7 @@ $("#viewGeneralSetting").pagecontainer({
                     idArr.push($(item).data('id'));
                 });
                 $.each(disabledWidgetList, function(index, item) {
-                    idArr.push(item['id']);
+                    idArr.push(item);
                 });
 
                 //2.根据排好序的id将widgetlist排序
