@@ -14,11 +14,11 @@ $("#viewGeneralSetting").pagecontainer({
             let defaultContent = '';
             let moreContent = '';
             for(let i in arr) {
-                //将carousel排除在sortable之外，确保carousel在第一位
-                if(arr[i].name == 'carousel') {
-                    carousel_id = arr[i]['id'];
-                } else {
-                    if(arr[i].enabled) {
+                if(arr[i].enabled) {
+                    //将carousel排除在sortable之外，确保可用状态下排在第一位
+                    if(arr[i]['name'] == 'carousel') {
+                        carousel_id = arr[i]['id'];
+                    } else {
                         if(arr[i]['show']) {
                             defaultContent += '<li data-id="' +
                                 arr[i]['id'] +
@@ -38,9 +38,9 @@ $("#viewGeneralSetting").pagecontainer({
                                 arr[i]['lang'] +
                                 '</div><div></div></li>';
                         }
-                    } else {
-                        disabledWidgetList.push(arr[i]['id']);
                     }
+                } else {
+                    disabledWidgetList.push(arr[i]['id']);
                 }
             }
 
@@ -120,7 +120,9 @@ $("#viewGeneralSetting").pagecontainer({
             if (changeWidgetOrderDirty == 'Y') {
                 //1.按照排序记录widget id
                 let idArr = [];
-                idArr.push(carousel_id);
+                if(carousel_id != '') {
+                    idArr.push(carousel_id);
+                }
                 $('.default-widget-ul li').each(function(index, item) {
                     idArr.push($(item).data('id'));
                 });
