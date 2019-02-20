@@ -4,7 +4,8 @@ $("#viewStaffUserReserve").pagecontainer({
         let imgURL = '/widget/widgetPage/viewStaffUserReserve/img/',
             staffService = 'meetingroomService',
             staffType = 'staff',
-            reserve_id;
+            reserve_id,
+            reserveArr = [];
 
         function getMyReserve() {
             var self = this;
@@ -25,16 +26,16 @@ $("#viewStaffUserReserve").pagecontainer({
                 if(data['result_code'] == '1') {
                     //分组：当日和当日之后
                     if(data['content'].length > 0) {
-                        let arr = data['content'][0]['record_list'];
+                        reserveArr = data['content'][0]['record_list'];
                         let nowDate = new Date().yyyymmdd('/');
                         let todayArr = [];
                         let afterArr = [];
-                        for(var i in arr) {
-                            let itemDate = new Date(arr[i]['start_date'] * 1000).yyyymmdd('/');
+                        for(var i in reserveArr) {
+                            let itemDate = new Date(reserveArr[i]['start_date'] * 1000).yyyymmdd('/');
                             if(nowDate == itemDate) {
-                                todayArr.push(arr[i]);
+                                todayArr.push(reserveArr[i]);
                             } else {
-                                afterArr.push(arr[i]);
+                                afterArr.push(reserveArr[i]);
                             }
                         }
 
@@ -187,8 +188,18 @@ $("#viewStaffUserReserve").pagecontainer({
             let afterHalfHour = Math.floor(new Date().getTime() / 1000) + 30 * 60;
             let startTime = $(this).parent().data('time');
             if(afterHalfHour < startTime) {
-                //reserve_id = $(this).parent().data('id');
+                reserve_id = $(this).parent().data('id');
+                let info_data;
+                for(var i in reserveArr) {
+                    if(reserve_id == reserveArr[i]['reserve_id']) {
+                        info_data = reserveArr[i]['info_data'];
+                        break;
+                    }
+                }
                 //change page
+                window.sessionStorage.setItem('viewStaffUserAppointment_parmData', info_data);
+                $('.userStaffMenu li[data-view="viewStaffUserAppointment"]').trigger('tap');
+                //checkWidgetPage('viewStaffUserAppointment', pageVisitedList, info_data);
             } else {
                 //popup
                 popupMsgInit('.reserveTeaLate');
