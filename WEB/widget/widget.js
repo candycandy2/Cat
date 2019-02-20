@@ -306,3 +306,27 @@ function checkWidgetListOrder() {
     }, 500);
 
 }
+
+
+//widget排序
+function orderWidget() {
+    var widgetListDirty = window.sessionStorage.getItem('widgetListDirty');
+
+    if (widgetListDirty == 'Y' || widgetListDirty == null) {
+
+        var widgetOrder = setInterval(function() {
+
+            var arr = JSON.parse(window.localStorage.getItem('widgetList'));
+
+            if (arr != null) {
+                clearInterval(widgetOrder);
+
+                for (var i = 0; i < arr.length - 1; i++) {
+                    $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
+                }
+
+                window.sessionStorage.setItem('widgetListDirty', 'N');
+            }
+        }, 500);
+    }
+}
