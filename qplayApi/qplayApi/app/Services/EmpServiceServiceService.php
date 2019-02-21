@@ -8,8 +8,10 @@ namespace App\Services;
 use App\Repositories\EmpServiceServiceIDRepository;
 use App\Repositories\EmpServiceDataLogRepository as EmpServiceLog;
 use App\Repositories\EmpServiceTargetIDRepository;
+use App\Repositories\EmpServicePushRepository;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
+use DB;
 
 
 class EmpServiceServiceService
@@ -17,6 +19,7 @@ class EmpServiceServiceService
 
     const TABLE = 'service_id';
     const TABLE_TARGET_ID = 'target_id';
+    const TABLE_SERVICE_PUSH = 'service_push';
 
     const ACTION_ADD = 'add';
     const ACTION_UPDATE = 'update';
@@ -24,12 +27,15 @@ class EmpServiceServiceService
     
     protected $serviceIDRepository;
     protected $serviceTargetIDRepository;
+    protected $servicePushRepository;
 
     public function __construct(EmpServiceServiceIDRepository $serviceIDRepository,
-                                EmpServiceTargetIDRepository $serviceTargetIDRepository)
+                                EmpServiceTargetIDRepository $serviceTargetIDRepository,
+                                EmpServicePushRepository $servicePushRepository)
     {
         $this->serviceIDRepository = $serviceIDRepository;
         $this->serviceTargetIDRepository = $serviceTargetIDRepository;
+        $this->servicePushRepository = $servicePushRepository;
     }
 
     public function getServiceRowId($serviceId){
@@ -45,7 +51,8 @@ class EmpServiceServiceService
      */
     public function newEmpService($serviceId, $type, $loginId, $domain, $empNo){
 
-        $serviceRs = $this->serviceIDRepository->getServiceRowId($serviceId);
+        $serviceRs = $this->serviceIDRepository->getServiceRowId($serviceId, $type);
+
         $logData = [];
 
         if(!is_null($serviceRs)){
@@ -53,19 +60,46 @@ class EmpServiceServiceService
                                  => CommonUtil::getMessageContentByCode(ResultCode::_052001_empServiceExist)
                   ];
         }else{
-            
-            $data = [
+
+            DB::beginTransaction();
+
+            try{
+                $data = [
                         'service_id' => $serviceId,
                         'type' => $type
                     ];
 
-            $newServiceRowId = $this->serviceIDRepository->newEmpService($data);
+                $newServiceRowId = $this->serviceIDRepository->newEmpService($data);
 
-            $logData = EmpServiceLog::getLogData(self::TABLE,$newServiceRowId,
-                                                 self::ACTION_ADD,$loginId,
-                                                 $domain,$empNo,
-                                                 $data);
+                $pushUserData = [
+                            'service_id_row_id' =>  $newServiceRowId,
+                            'login_id' => $loginId,
+                            'domain' => $domain,
+                            'emp_no' => $empNo
+                        ];
 
+
+                $newServicePush = $this->servicePushRepository->addServicePush($pushUserData);
+
+                $serciceLog = EmpServiceLog::getLogData(self::TABLE, $newServiceRowId,
+                                                     self::ACTION_ADD, $loginId,
+                                                     $domain ,$empNo,
+                                                     $data);
+
+                $pushLog = EmpServiceLog::getLogData(self::TABLE_SERVICE_PUSH, $newServicePush,
+                                                     self::ACTION_ADD, $loginId,
+                                                     $domain, $empNo,
+                                                     $pushUserData);
+
+                array_push($logData, $serciceLog, $pushLog); 
+
+                DB::commit();
+
+            }catch (\Exception $e){  
+
+                DB::rollBack();            
+                throw $e;
+            }
 
             $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
                        "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)

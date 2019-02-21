@@ -24,9 +24,7 @@ class EmpServiceServiceIDRepository
      * @return mixed
      */
     public function getServiceRowId($serviceId){
-        return $this->serviceId->where('service_id', $serviceId)
-                        ->where('active', 'Y')
-                        ->first();
+        return $this->serviceId->where('service_id', $serviceId)->first();
     }
 
     /**
