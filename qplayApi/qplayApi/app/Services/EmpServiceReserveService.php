@@ -147,7 +147,7 @@ class EmpServiceReserveService
 
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
-                    "content" => ['data_list' => $result]
+                    "content" => ['record_list' => $result]
                 ];
     }
     
