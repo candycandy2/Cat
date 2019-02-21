@@ -618,17 +618,18 @@ $("#viewStaffUserAppointment").pagecontainer({
         });
 
         //茶水预约
-        $('.appointmentTeaBtn').on('click', function () {
+        $('.appointmentTeaBtn').on('tap', function () {
             let has = $(this).hasClass('active-btn-green');
-            let staff_status = $(this).data('status');
+            let staff_status = $(this).attr('data-status');
             if (has) {
+                loadingMask('show');
                 if(staff_status == 'new') {
                     //检查该时段是否有预约
                     checkReserveByHour();
                 } else {
                     //updateSelfReserve(reserve_id);
+                    loadingMask('hide');
                 }
-                
             }
         });
 
