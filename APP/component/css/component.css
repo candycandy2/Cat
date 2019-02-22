@@ -540,5 +540,3 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     font-family: Inconsolata-Regular;
     src: url(../font/inconsolata/Inconsolata-Regular.ttf);
 }
-
-* { touch-action: pan-y; }
