@@ -218,6 +218,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             var __construct = function () {
                 //如果超时就不需要API，直接popup提示
                 if (overtime) {
+                    loadingMask('hide');
                     //popup
                     popupMsgInit('.reserveLatePopup');
                 } else {
