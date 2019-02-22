@@ -9,6 +9,7 @@ $("#viewMain").pagecontainer({
         window.myLatLng;
         window.allMarker = [];
         var currentPositionMarker;
+        var directionsDisplay;
         /********************************** viewMain *************************************/
         function geocodeAddress(geocoder, resultsMap, address, name) {
             //var address = document.getElementById('address').value;
@@ -554,11 +555,45 @@ $("#viewMain").pagecontainer({
         }
 
         function setMarkerPosition(marker, position) {
-            marker.setPosition(
+            /*marker.setPosition(
                 new google.maps.LatLng(
                     position.coords.latitude,
                     position.coords.longitude)
-            );
+            );*/
+            //Test Direction
+            var origin1 = { lat: position.coords.latitude, lng: position.coords.longitude };
+            var destination1 = { lat: 25.037906, lng: 121.549781 };  
+            var directionsService = new google.maps.DirectionsService;
+
+            if(typeof directionsDisplay !== "undefined") {
+                directionsDisplay.setMap(null);
+            }
+
+            directionsDisplay = new google.maps.DirectionsRenderer({
+                map: window.map,
+                preserveViewport: true
+            });
+
+            //var onChangeHandler = function() {
+                calculateAndDisplayRoute(directionsService, directionsDisplay, origin1, destination1);
+            //};                  
+        }
+
+        function calculateAndDisplayRoute(directionsService, directionsDisplay, origin1, destination1) {
+            directionsService.route({
+                origin: origin1,
+                destination: destination1,
+                travelMode: 'WALKING'
+            }, function(response, status) {
+                console.log("===========1111");
+                console.log(status);
+                console.log(response);
+                if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
         }
 
         function displayAndWatch(position) {
@@ -589,7 +624,7 @@ $("#viewMain").pagecontainer({
 
                 console.log("=========== ready");
 
-                initLocationProcedure();            
+                initLocationProcedure();  
 
             //});
 
