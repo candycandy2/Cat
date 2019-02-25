@@ -213,7 +213,7 @@ $("#viewQStoreMain").pagecontainer({
             if (device.platform === "iOS") {
                 window.open("maps://maps.google.com/maps?daddr=<lat>,<long>&amp;ll=");
             } else {
-                window.open("https://maps.google.com/maps?daddr=<lat>,<long>&amp;ll=");
+                window.open("https://maps.google.com/maps?daddr=25.037906,121.549781&amp;ll=");
             }
         }
 
