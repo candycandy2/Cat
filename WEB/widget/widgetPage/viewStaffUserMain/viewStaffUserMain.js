@@ -300,8 +300,10 @@ $("#viewStaffUserMain").pagecontainer({
                 emp_no: loginData['emp_no'],
                 start_date: rightNow,
                 end_date: rightNow,
-                info_push_title: '茶水添加',//非即時預約"茶水預約"
-                info_push_content: pushContent,
+                info_push_admin_title: '添加茶水',//非即時預約"茶水預約"
+                info_push_admin_content: pushContent,
+                info_push_emp_title: '添加茶水',//非即時預約"茶水預約"
+                info_push_emp_content: pushContent,
                 info_data: JSON.stringify(teaInfo),
                 push: '11'
             });

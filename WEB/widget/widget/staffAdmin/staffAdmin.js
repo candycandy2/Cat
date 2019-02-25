@@ -159,7 +159,7 @@ var staffAdminWidget = {
         });
 
         this.successCallback = function(data) {
-            console.log(data);
+            //console.log(data);
 
             if(data['result_code'] == '1') {
                 //判断是否有数据
@@ -174,7 +174,7 @@ var staffAdminWidget = {
                     let content = '';
                     for(var i = 0; i < arr.length; i++) {
                         if(i < 3) {
-                            content += '<li>' + arr[i]['info_push_content'] + ' / ' + arr[i]['reserve_login_id'] + '</li>';
+                            content += '<li>' + arr[i]['info_push_admin_content'] + ' / ' + arr[i]['reserve_login_id'] + '</li>';
                         } else {
                             break;
                         }

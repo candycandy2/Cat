@@ -15,7 +15,7 @@ $("#viewStaffUserReserve").pagecontainer({
                 domain: loginData['domain'],
                 emp_no: loginData['emp_no'],
                 service_id: staffService,
-                service_type: staffType,
+                //service_type: staffType,
                 start_date: new Date(new Date().yyyymmdd('/') + ' 00:00').getTime() / 1000,
                 end_date: new Date(new Date().yyyymmdd('/') + ' 00:00').getTime() / 1000 + 14 * 24 * 60 * 60
             });
@@ -24,9 +24,10 @@ $("#viewStaffUserReserve").pagecontainer({
                 console.log(data);
 
                 if(data['result_code'] == '1') {
+                    reserveArr = data['content']['service_list'][0]['record_list'];
+
                     //分组：当日和当日之后
-                    if(data['content'].length > 0) {
-                        reserveArr = data['content'][0]['record_list'];
+                    if(reserveArr.length > 0) {
                         let nowDate = new Date().yyyymmdd('/');
                         let todayArr = [];
                         let afterArr = [];
@@ -109,10 +110,10 @@ $("#viewStaffUserReserve").pagecontainer({
                 login_id: loginData['loginid'],
                 domain: loginData['domain'],
                 emp_no: loginData['emp_no'],
-                info_push_admin_title: '',
-                info_push_admin_content: '',
-                info_push_emp_title: '',
-                info_push_emp_content: '',
+                info_push_admin_title: '取消预约',
+                info_push_admin_content: '取消预约',
+                info_push_emp_title: '取消预约',
+                info_push_emp_content: '取消预约',
                 push: '11'
             });
 
@@ -179,7 +180,7 @@ $("#viewStaffUserReserve").pagecontainer({
 
         //确认删除
         $('.confirmDeleteReserve').on('click', function() {
-            //deleteMyReserve(reserve_id);
+            deleteMyReserve(reserve_id);
         });
 
         //编辑预约
