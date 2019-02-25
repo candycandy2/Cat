@@ -174,7 +174,7 @@ var staffAdminWidget = {
                     let content = '';
                     for(var i = 0; i < arr.length; i++) {
                         if(i < 3) {
-                            content += '<li>' + arr[i]['info_push_admin_content'] + ' / ' + arr[i]['reserve_login_id'] + '</li>';
+                            content += '<li>' + arr[i]['info_push_content'] + ' / ' + arr[i]['reserve_login_id'] + '</li>';
                         } else {
                             break;
                         }

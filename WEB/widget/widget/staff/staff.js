@@ -179,7 +179,7 @@ var staffWidget = {
                     let content = '';
                     for(var i = 0; i < arr.length; i++) {
                         if(i < 3) {
-                            content += '<li>' + arr[i]['info_push_emp_content'] + '</li>';
+                            content += '<li>' + arr[i]['info_push_content'] + '</li>';
                         } else {
                             break;
                         }
