@@ -26,5 +26,17 @@ class EmpServicePushRepository
     public function addServicePush($data){
         return $this->servicePush->insertGetId($data);
     }
+
+    /**
+     * get Push User by service_id.row_id
+     * @param  int $serviceIdRowId service_id.row_id
+     * @return mixed
+     */
+    public function getEmpServicePush($serviceIdRowId){
+        return $this->servicePush
+                    ->where('service_id_row_id', $serviceIdRowId)
+                    ->select()
+                    ->get();
+    }
     
 }

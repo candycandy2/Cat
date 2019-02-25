@@ -83,5 +83,7 @@ abstract class ResultCode
     const _052005_empServiceDateRangeInvalid = "052005"; //生命週期的日期範圍錯誤
     const _052006_empServicePushDataInvalid = "052006"; //推播對象的設定資料格式錯誤
     const _052007_empServiceReserveNotExist = "052007"; //預約不存在
-    const _052008_empServiceReserveHasCompleted = "052008";//預約已經完成
+    const _052008_empServiceReserveHasCompleted = "052008"; //預約已經完成
+    const _052009_empServiceReserveEmpDataIncorrct = "052009"; //建立預約服務的員工資料不正確
+    const _052010_empServiceReserveDateOverdueCannotCancel = "052010"; //預約服務即將在30分鐘內執行, 無法編輯
 }
