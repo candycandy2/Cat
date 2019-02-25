@@ -168,7 +168,7 @@ var staffWidget = {
 
             if(data['result_code'] == '1') {
                 //判断是否有数据
-                let arr = data['content']['record_list'];
+                let arr = data['content'][0]['record_list'];
                 if(arr.length == 0) {
                     //no data
                     $('.staff-main').hide();
