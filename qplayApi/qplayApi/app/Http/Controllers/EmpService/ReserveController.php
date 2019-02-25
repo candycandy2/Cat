@@ -426,7 +426,7 @@ class ReserveController extends Controller
                 return response()->json(["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
                         "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)], 200);
             }
-            
+
             if(strtotime($reserve->start_date) - time() <= 1800){
                 return response()->json(["result_code" => ResultCode::_052010_empServiceReserveDateOverdueCannotCancel, 
                         "message" => CommonUtil::getMessageContentByCode(ResultCode::_052010_empServiceReserveDateOverdueCannotCancel)], 200);
@@ -504,7 +504,6 @@ class ReserveController extends Controller
                     'info_push_admin_content' =>'required',
                     'info_push_emp_title'   =>'required',
                     'info_push_emp_content' =>'required',
-                    'info_data'         =>'required',
                     'push'              =>'required'
                 ],
                 [
