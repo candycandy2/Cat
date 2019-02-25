@@ -230,7 +230,7 @@ $("#viewStaffUserMain").pagecontainer({
 
                 if(data['result_code'] == '1') {
 
-                    let arr = data['content']['data_list'];
+                    let arr = data['content']['record_list'];
                     if(arr.length > 0) {
                         $('.today-room-none').hide();
 
