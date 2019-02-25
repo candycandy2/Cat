@@ -185,6 +185,7 @@ $("#viewQStoreMain").pagecontainer({
                                 $("#qstoreInfoPopup .phone-img").attr("src", phoneImgUrl);
                                 $("#qstoreInfoPopup .qstore-list-detail").html(title);
                                 $("#qstoreInfoPopup .address-detail").html(this.Address);
+
                                 var phoneUrl = "tel:" + this.Phone;
                                 $("#qstoreInfoPopup .phone-type").attr("href", phoneUrl);
                                 $("#qstoreInfoPopup .phone-type").html(this.Phone);
@@ -207,12 +208,29 @@ $("#viewQStoreMain").pagecontainer({
             $("#qstoreInfoPopup").popup("open");
         };
 
+        //Test open default map 
+        /*function defaultMapPopup() {
+            if (device.platform === "iOS") {
+                window.open("maps://maps.google.com/maps?daddr=<lat>,<long>&amp;ll=");
+            } else {
+                window.open("https://maps.google.com/maps?daddr=<lat>,<long>&amp;ll=");
+            }
+        }
+
+        $(document).on({
+            click: function(event) {
+                defaultMapPopup();
+            }
+        }, "#qstoreInfoPopup .address-info");
+        */
+
         $(document).on({
             click: function(event) {
                 $("#qstoreInfoPopup").popup("close");
             }
         }, "#qstoreInfoPopup .close-popup");
 
+        
         /********************************** page event ***********************************/
 
         $("#viewQStoreMain").one("pageshow", function(event, ui) {
