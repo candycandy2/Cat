@@ -311,7 +311,7 @@
 
 .today-room-list{
     width: 100vw;
-    height: 28vw;
+    height: 29vw;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }

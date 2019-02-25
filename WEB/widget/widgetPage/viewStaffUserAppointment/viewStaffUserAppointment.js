@@ -360,8 +360,10 @@ $("#viewStaffUserAppointment").pagecontainer({
                 emp_no: loginData['emp_no'],
                 start_date: start_date,
                 end_date: end_date,
-                info_push_title: '茶水預約',
-                info_push_content: pushContent,
+                info_push_admin_title: '茶水預約',
+                info_push_admin_content: pushContent,
+                info_push_emp_title: '茶水預約',
+                info_push_emp_content: pushContent,
                 info_data: JSON.stringify(teaInfo),
                 push: '11'
             });
@@ -424,8 +426,10 @@ $("#viewStaffUserAppointment").pagecontainer({
                 emp_no: loginData['emp_no'],
                 start_date: start_date,
                 end_date: end_date,
-                info_push_title: '茶水預約',
-                info_push_content: pushContent,
+                info_push_admin_title: '茶水預約',
+                info_push_admin_content: pushContent,
+                info_push_emp_title: '茶水預約',
+                info_push_emp_content: pushContent,
                 info_data: JSON.stringify(teaInfo),
                 push: '11'
             });
@@ -628,7 +632,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                     //检查该时段是否有预约
                     checkReserveByHour();
                 } else {
-                    //updateSelfReserve(reserve_id);
+                    updateSelfReserve(reserve_id);
                     loadingMask('hide');
                 }
             }

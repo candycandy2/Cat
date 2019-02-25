@@ -158,17 +158,17 @@ var staffWidget = {
             domain: loginData['domain'],
             emp_no: loginData['emp_no'],
             service_id: 'meetingroomService',
-            service_type: 'staff',
+            //service_type: 'staff',
             start_date: Math.round(new Date().getTime() / 1000),
             end_date: new Date(new Date().yyyymmdd('/') + ' 18:00').getTime() / 1000
         });
 
         this.successCallback = function(data) {
-            console.log(data);
+            //console.log(data);
 
             if(data['result_code'] == '1') {
                 //判断是否有数据
-                let arr = data['content'][0]['record_list'];
+                let arr = data['content']['service_list'][0]['record_list'];
                 if(arr.length == 0) {
                     //no data
                     $('.staff-main').hide();
