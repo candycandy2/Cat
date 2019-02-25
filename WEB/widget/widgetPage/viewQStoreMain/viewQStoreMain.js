@@ -229,7 +229,6 @@ $("#viewQStoreMain").pagecontainer({
                 $("#qstoreInfoPopup").popup("close");
             }
         }, "#qstoreInfoPopup .close-popup");
-
         
         /********************************** page event ***********************************/
 
