@@ -123,8 +123,8 @@ var qstoreWidget = {
 
                     //更新日期由近到遠
                     qstoreWidget.allQStoreList.sort(function(a, b) {
-                        let aDate = new Date(a.UpdateDate);
-                        let bDate = new Date(b.UpdateDate);
+                        var aDate = new Date(a.UpdateDate);
+                        var bDate = new Date(b.UpdateDate);
                         return aDate < bDate;
                     });
                     window.localStorage.setItem(qstoreWidget.QStoreLocalStorageKey, JSON.stringify(qstoreWidget.allQStoreList));

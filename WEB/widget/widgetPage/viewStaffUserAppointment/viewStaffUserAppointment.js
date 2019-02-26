@@ -115,7 +115,14 @@ $("#viewStaffUserAppointment").pagecontainer({
                 console.log(data);
 
                 if (data['result_code'] == '1') {
-                    reserveList = data['content']['record_list'];
+                    let tempArr = data['content']['record_list'];
+                    //剔除已取消的預約
+                    reserveList = [];
+                    for(var i in tempArr) {
+                        if(tempArr[i]['info_data'] != null) {
+                            reserveList.push(tempArr[i]);
+                        }
+                    }
                     reserveIntoHours(reserveList, time);
                     //save to session
                     window.sessionStorage.setItem(target_key, JSON.stringify(reserveList));
@@ -192,7 +199,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                         let noReserve = true;
                         for (var i in reserveArr) {
                             //如果开始时间与结束时间不相等，表示有预约
-                            if (reserveArr[i]['start_date'] != reserveArr[i]['end_date']) {
+                            if (reserveArr[i]['start_date'] != reserveArr[i]['end_date'] && reserveArr[i]['info_data'] != null) {
                                 noReserve = false;
                                 break;
                             }
@@ -348,7 +355,9 @@ $("#viewStaffUserAppointment").pagecontainer({
             //info_content
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
-            let pushContent = teaInfo['time'] +
+            let pushContent = target_date.substr(5, 5) +
+                ' ' +
+                teaInfo['time'] +
                 ' ' +
                 teaInfo['id'] +
                 ' 預約' + teaContent + waterContent;
@@ -360,9 +369,9 @@ $("#viewStaffUserAppointment").pagecontainer({
                 emp_no: loginData['emp_no'],
                 start_date: start_date,
                 end_date: end_date,
-                info_push_admin_title: '茶水預約',
-                info_push_admin_content: pushContent,
-                info_push_emp_title: '茶水預約',
+                info_push_admin_title: '同仁茶水預約通知',
+                info_push_admin_content: pushContent + ' / ' + loginData['loginid'],
+                info_push_emp_title: '茶水預約已發送',
                 info_push_emp_content: pushContent,
                 info_data: JSON.stringify(teaInfo),
                 push: '11'
@@ -413,7 +422,9 @@ $("#viewStaffUserAppointment").pagecontainer({
             //info_content
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
-            let pushContent = teaInfo['time'] +
+            let pushContent = target_date.substr(5, 5) +
+                ' ' +
+                teaInfo['time'] +
                 ' ' +
                 teaInfo['id'] +
                 ' 預約' + teaContent + waterContent;
@@ -426,9 +437,9 @@ $("#viewStaffUserAppointment").pagecontainer({
                 emp_no: loginData['emp_no'],
                 start_date: start_date,
                 end_date: end_date,
-                info_push_admin_title: '茶水預約',
-                info_push_admin_content: pushContent,
-                info_push_emp_title: '茶水預約',
+                info_push_admin_title: '同仁已修改茶水預約',
+                info_push_admin_content: pushContent + ' / ' + loginData['loginid'],
+                info_push_emp_title: '茶水預約已修改',
                 info_push_emp_content: pushContent,
                 info_data: JSON.stringify(teaInfo),
                 push: '11'

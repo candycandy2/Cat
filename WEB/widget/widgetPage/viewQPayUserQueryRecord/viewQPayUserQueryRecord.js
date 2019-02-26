@@ -35,7 +35,7 @@ $("#viewQPayUserQueryRecord").pagecontainer({
             $('#userQueryType-option-list').css('margin-top', '3vw');
 
             //预设值
-            let userRecordQuery = JSON.parse(window.localStorage.getItem('user_record_query'));
+            var userRecordQuery = JSON.parse(window.localStorage.getItem('user_record_query'));
             if(userRecordQuery == null) {
                 //如果没有记录查询条件，默认选中第一个
                 $('#userQueryType-option').find('li:eq(0)').trigger('click');

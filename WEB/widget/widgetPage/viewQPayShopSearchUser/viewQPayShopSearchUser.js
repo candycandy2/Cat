@@ -6,9 +6,9 @@ $("#viewQPayShopSearchUser").pagecontainer({
         //快速获取当天交易记录（QPlay使用者）
         function getCurrentTradeRecord(tab) {
             var self = this;
-            let start = new Date(new Date().yyyymmdd("/") + " 00:00:00").getTime() / 1000;
-            let end = new Date(new Date().yyyymmdd("/") + " 23:59:59").getTime() / 1000;
-            let queryStr = '&start_date=' + start.toString() + '&end_date=' + end.toString();
+            var start = new Date(new Date().yyyymmdd("/") + " 00:00:00").getTime() / 1000;
+            var end = new Date(new Date().yyyymmdd("/") + " 23:59:59").getTime() / 1000;
+            var queryStr = '&start_date=' + start.toString() + '&end_date=' + end.toString();
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -20,8 +20,8 @@ $("#viewQPayShopSearchUser").pagecontainer({
                     for (var i in record_list) {
 
                         if(record_list[i]['trade_success'] == 'Y') {
-                            let tradeDate = new Date(record_list[i].trade_time * 1000).yyyymmdd('/');
-                            let tradeTime = new Date(record_list[i].trade_time * 1000).hhmm();
+                            var tradeDate = new Date(record_list[i].trade_time * 1000).yyyymmdd('/');
+                            var tradeTime = new Date(record_list[i].trade_time * 1000).hhmm();
 
                             content += '<li class="qplay-user-list"><div><div>' +
                                 shop_name +

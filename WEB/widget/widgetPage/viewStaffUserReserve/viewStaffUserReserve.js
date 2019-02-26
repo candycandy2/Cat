@@ -5,6 +5,7 @@ $("#viewStaffUserReserve").pagecontainer({
             staffService = 'meetingroomService',
             staffType = 'staff',
             reserve_id,
+            reserve_info,
             reserveArr = [];
 
         function getMyReserve() {
@@ -24,7 +25,14 @@ $("#viewStaffUserReserve").pagecontainer({
                 console.log(data);
 
                 if(data['result_code'] == '1') {
-                    reserveArr = data['content']['service_list'][0]['record_list'];
+                    let tempArr = data['content']['service_list'][0]['record_list'];
+                    //剔除已取消的預約
+                    reserveArr = [];
+                    for(var i in tempArr) {
+                        if(tempArr[i]['info_data'] != null) {
+                            reserveArr.push(tempArr[i]);
+                        }
+                    }
 
                     //分组：当日和当日之后
                     if(reserveArr.length > 0) {
@@ -69,7 +77,7 @@ $("#viewStaffUserReserve").pagecontainer({
                         '" data-time="' +
                         arr[i]['start_date'] +
                         '"><div>' +
-                        arr[i]['info_push_content'] +
+                        arr[i]['info_push_content'].substr(6, arr[i]['info_push_content'].length - 6) +
                         '</div><div' +
                         (afterHalfHour < arr[i]['start_date'] ? ' class="delete-my-reserve"' : '') +
                         '></div><div' +
@@ -91,8 +99,6 @@ $("#viewStaffUserReserve").pagecontainer({
                         '" data-time="' +
                         arr[i]['start_date'] +
                         '"><div>' +
-                        new Date(arr[i]['start_date'] * 1000).mmdd('/') +
-                        ' ' +
                         arr[i]['info_push_content'] +
                         '</div><div class="delete-my-reserve"></div><div class="edit-my-reserve"></div></li>';
                 }
@@ -102,7 +108,7 @@ $("#viewStaffUserReserve").pagecontainer({
         }
 
         //删除预约
-        function deleteMyReserve(id) {
+        function deleteMyReserve(id, info) {
             var self = this;
 
             let queryData = JSON.stringify({
@@ -110,10 +116,10 @@ $("#viewStaffUserReserve").pagecontainer({
                 login_id: loginData['loginid'],
                 domain: loginData['domain'],
                 emp_no: loginData['emp_no'],
-                info_push_admin_title: '取消预约',
-                info_push_admin_content: '取消预约',
-                info_push_emp_title: '取消预约',
-                info_push_emp_content: '取消预约',
+                info_push_admin_title: '同仁已取消茶水预约',
+                info_push_admin_content: loginData['loginid'] + '已取消' + info + '之預約',
+                info_push_emp_title: '茶水預約已取消',
+                info_push_emp_content: '您已取消' + info + '之預約',
                 push: '11'
             });
 
@@ -168,6 +174,7 @@ $("#viewStaffUserReserve").pagecontainer({
             let startTime = $(this).parent().data('time');
             if(afterHalfHour < startTime) {
                 reserve_id = $(this).parent().data('id');
+                reserve_info = $(this).prev().text();
                 //popup
                 let content = $(this).prev().text();
                 $('.reserveTeaDelete .header-title').text(content);
@@ -180,7 +187,7 @@ $("#viewStaffUserReserve").pagecontainer({
 
         //确认删除
         $('.confirmDeleteReserve').on('click', function() {
-            deleteMyReserve(reserve_id);
+            deleteMyReserve(reserve_id, reserve_info);
         });
 
         //编辑预约
@@ -200,7 +207,6 @@ $("#viewStaffUserReserve").pagecontainer({
                 //change page
                 window.sessionStorage.setItem('viewStaffUserAppointment_parmData', info_data);
                 $('.userStaffMenu li[data-view="viewStaffUserAppointment"]').trigger('tap');
-                //checkWidgetPage('viewStaffUserAppointment', pageVisitedList, info_data);
             } else {
                 //popup
                 popupMsgInit('.reserveTeaLate');
