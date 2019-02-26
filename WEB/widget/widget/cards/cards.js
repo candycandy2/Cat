@@ -19,7 +19,7 @@ var cardsWidget = {
                 $('.quality-widget-img').html('').append(qualityImg);
                 var safetyImg = $('<img>').attr('src', serverURL + '/widget/widget/cards/img/enviro_safety_widget.png');
                 $('.safety-widget-img').html('').append(safetyImg);
-               
+
                 //計算有幾個小卡
                 var cardsQuantity = $('.cards-main-img').children().length;
                 //小卡寬*小卡數量+邊界
@@ -30,35 +30,35 @@ var cardsWidget = {
 
             //點擊小卡，跳轉viewCardsMain
             contentItem.on('click', '.qstore-widget-img', function() {
-                let postData = {
+                var postData = {
                     'cardsType': "qstore"
                 }
                 checkWidgetPage('viewCardsMain', pageVisitedList, postData);
             });
 
             contentItem.on('click', '.medical-widget-img', function() {
-                let postData = {
+                var postData = {
                     'cardsType': "medical"
                 }
                 checkWidgetPage('viewCardsMain', pageVisitedList, postData);
             });
 
             contentItem.on('click', '.quality-widget-img', function() {
-                let postData = {
+                var postData = {
                     'cardsType': "quality"
                 }
                 checkWidgetPage('viewCardsMain', pageVisitedList, postData);
             });
 
             contentItem.on('click', '.safety-widget-img', function() {
-                let postData = {
+                var postData = {
                     'cardsType': "safety"
                 }
                 checkWidgetPage('viewCardsMain', pageVisitedList, postData);
             });
 
             contentItem.on('click', '.calendar-widget-img', function() {
-                let postData = {
+                var postData = {
                     'cardsType': "calendar"
                 }
                 checkWidgetPage('viewCardsMain', pageVisitedList, postData);
