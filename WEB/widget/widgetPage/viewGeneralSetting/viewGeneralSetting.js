@@ -11,9 +11,9 @@ $("#viewGeneralSetting").pagecontainer({
 
         //widgetlist分類
         function setWidgetList(arr) {
-            let defaultContent = '';
-            let moreContent = '';
-            for(let i in arr) {
+            var defaultContent = '';
+            var moreContent = '';
+            for(var i in arr) {
                 if(arr[i].enabled) {
                     //将carousel排除在sortable之外，确保可用状态下排在第一位
                     if(arr[i]['name'] == 'carousel') {
@@ -51,7 +51,7 @@ $("#viewGeneralSetting").pagecontainer({
         //根据id获取widget info
         function getWidgetInfoByID(id, status) {
             status = (status === true || status === false ? status : null);
-            for(let i in widgetArr) {
+            for(var i in widgetArr) {
                 if(id == widgetArr[i]['id']) {
                     if(status != null) {
                         widgetArr[i]['show'] = status;
@@ -63,7 +63,7 @@ $("#viewGeneralSetting").pagecontainer({
 
         //从默认中删除
         function removeToDefault(obj) {
-            let content = '<li data-id="' +
+            var content = '<li data-id="' +
                 obj['id'] +
                 '"><div class="add-widget"></div><div><img src="' +
                 serverURL + imgURL + 'widget_' + obj['name'] +
@@ -76,7 +76,7 @@ $("#viewGeneralSetting").pagecontainer({
 
         //添加到默认
         function addToDefault(obj) {
-            let content = '<li data-id="' +
+            var content = '<li data-id="' +
                 obj['id'] +
                 '"><div class="delete-widget"></div><div><img src="' +
                 serverURL + imgURL + 'widget_' + obj['name'] +
@@ -119,7 +119,7 @@ $("#viewGeneralSetting").pagecontainer({
         $("#viewGeneralSetting").on("pagehide", function (event, ui) {
             if (changeWidgetOrderDirty == 'Y') {
                 //1.按照排序记录widget id
-                let idArr = [];
+                var idArr = [];
                 if(carousel_id != '') {
                     idArr.push(carousel_id);
                 }
@@ -134,8 +134,8 @@ $("#viewGeneralSetting").pagecontainer({
                 });
 
                 //2.根据排好序的id将widgetlist排序
-                let currentArr = [];
-                for(let i in idArr) {
+                var currentArr = [];
+                for(var i in idArr) {
                     currentArr.push(getWidgetInfoByID(idArr[i]));
                 }
 
@@ -158,11 +158,11 @@ $("#viewGeneralSetting").pagecontainer({
         //删除default
         $('.default-widget-ul').on('click', '.delete-widget', function() {
             //1.get id
-            let infoID = $(this).parent().data('id');
+            var infoID = $(this).parent().data('id');
             //2.remove element
             $(this).parent().remove();
             //3.get info
-            let infoObj = getWidgetInfoByID(infoID, false);
+            var infoObj = getWidgetInfoByID(infoID, false);
             //4.append more list
             removeToDefault(infoObj);
             //5.refresh sortable
@@ -174,11 +174,11 @@ $("#viewGeneralSetting").pagecontainer({
         //添加default
         $('.more-widget-ul').on('click', '.add-widget', function() {
             //1.get id
-            let infoID = $(this).parent().data('id');
+            var infoID = $(this).parent().data('id');
             //2.remove element
             $(this).parent().remove();
             //3.get info
-            let infoObj = getWidgetInfoByID(infoID, true);
+            var infoObj = getWidgetInfoByID(infoID, true);
             //4.append default list
             addToDefault(infoObj);
             //5.refresh sortable
