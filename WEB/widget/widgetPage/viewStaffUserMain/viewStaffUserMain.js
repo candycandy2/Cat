@@ -247,7 +247,7 @@ $("#viewStaffUserMain").pagecontainer({
                             content += '<li' +
                                 (arr[i]['complete'] == 'N' ? '' : ' class="past-time"') +
                                 '><span>' +
-                                arr[i]['info_push_content'] +
+                                arr[i]['info_push_content'].substr(6, arr[i]['info_push_content'].length - 6) +
                                 ' </span><span>' +
                                 (arr[i]['complete'] == 'N' ? '' : '(' + new Date(arr[i]['complete_at'] * 1000).hhmm() + '已送達)') +
                                 '</span></li>';

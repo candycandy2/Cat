@@ -107,6 +107,15 @@ $("#viewStaffUserReserve").pagecontainer({
             }
         }
 
+        //根据reserve_id查询预约
+        function getReserveByID(id) {
+            for(var i in reserveArr) {
+                if(id == reserveArr[i]['reserve_id']) {
+                    return reserveArr[i];
+                }
+            }
+        }
+
         //删除预约
         function deleteMyReserve(id, info) {
             var self = this;
@@ -130,6 +139,9 @@ $("#viewStaffUserReserve").pagecontainer({
                     $("#deleteReserveSuccess").fadeIn(100).delay(2000).fadeOut(100);
                     //remove DOM
                     $('.tea-reserve-list[data-id="' + id + '"]').remove();
+                    //removeItem sessionStorage
+                    let reserveObj = JSON.parse(getReserveByID(id)['info_data']);
+                    window.sessionStorage.removeItem(reserveObj['id'] + '_' + reserveObj['date']);
                 }
             };
 
@@ -197,15 +209,9 @@ $("#viewStaffUserReserve").pagecontainer({
             let startTime = $(this).parent().data('time');
             if(afterHalfHour < startTime) {
                 reserve_id = $(this).parent().data('id');
-                let info_data;
-                for(var i in reserveArr) {
-                    if(reserve_id == reserveArr[i]['reserve_id']) {
-                        info_data = reserveArr[i]['info_data'];
-                        break;
-                    }
-                }
+                let infoData = getReserveByID(reserve_id)['info_data'];
                 //change page
-                window.sessionStorage.setItem('viewStaffUserAppointment_parmData', info_data);
+                window.sessionStorage.setItem('viewStaffUserAppointment_parmData', infoData);
                 $('.userStaffMenu li[data-view="viewStaffUserAppointment"]').trigger('tap');
             } else {
                 //popup
