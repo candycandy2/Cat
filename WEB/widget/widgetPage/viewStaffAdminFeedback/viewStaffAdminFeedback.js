@@ -30,12 +30,14 @@ $("#viewStaffAdminFeedback").pagecontainer({
                     let faqPostList = data['Content'];
                     if(faqPostList.length > 0) {
                         $('.no-feedback-data').hide();
+                        let unreadCount = 0;
                         let content = '';
                         for(var i in faqPostList) {
                             //1.确认已读未读状态
                             let readStatus = false;
                             if(typeof readList[faqPostList[i]['post_id']] == 'undefined') {
                                 readList[faqPostList[i]['post_id']] = '';
+                                unreadCount++;
                             } else {
                                 readStatus = true;
                             }
@@ -53,6 +55,7 @@ $("#viewStaffAdminFeedback").pagecontainer({
                                 '</div></li>';
                         }
                         $('.admin-feedback-ul').html('').append(content);
+                        console.log(unreadCount);
                         //save to local
                         window.localStorage.setItem('AdminFeedbackList', JSON.stringify(readList));
                     } else {

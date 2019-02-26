@@ -165,6 +165,8 @@ $("#viewStaffUserAppointment").pagecontainer({
 
         //检查某时段否是有预约，有预约就不能再预约，没有预约才能新增预约
         function checkReserveByHour() {
+            var self = this;
+
             let target_row_id = $('.appointment-room-list .active-staff').data('id');
             let target_date = $('.appointment-date-list .active-staff').data('item');
             let target_hour = $('.active-hour').data('hour');//已选时段有且只有一个
@@ -180,7 +182,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                 }
             }
 
-            var self = this;
+            //query data
             let queryData = JSON.stringify({
                 target_id_row_id: target_row_id,
                 start_date: target_time,
@@ -344,6 +346,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             let target_hour = $('.appointment-hour .active-hour').data('hour');
             let start_date = new Date(target_date + ' ' + target_hour).getTime() / 1000;
             let end_date = start_date + 30 * 60;//开始时间的后30分钟
+
             //info_data
             let teaInfo = {
                 date: target_date,
@@ -352,6 +355,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                 tea: teaCount,
                 water: waterCount
             };
+
             //info_content
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
@@ -361,6 +365,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                 ' ' +
                 teaInfo['id'] +
                 ' 預約' + teaContent + waterContent;
+
             //queryData
             let queryData = JSON.stringify({
                 target_id_row_id: target_row_id,
@@ -411,6 +416,17 @@ $("#viewStaffUserAppointment").pagecontainer({
             let target_hour = $('.appointment-hour .active-hour').data('hour');
             let start_date = new Date(target_date + ' ' + target_hour).getTime() / 1000;
             let end_date = start_date + 30 * 60;//开始时间的后30分钟
+
+            //预约时间必须大于当前时间30分钟，所以先判断日期，再判断时间
+            let overtime = false;
+            let now_date = new Date().yyyymmdd('/');
+            if (now_date == target_date) {
+                let now_time = Math.floor(new Date().getTime() / 1000) + 30 * 60;
+                if (now_time > start_date) {
+                    overtime = true;
+                }
+            }
+
             //info_data
             let teaInfo = {
                 date: target_date,
@@ -419,6 +435,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                 tea: teaCount,
                 water: waterCount
             };
+
             //info_content
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
@@ -428,6 +445,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                 ' ' +
                 teaInfo['id'] +
                 ' 預約' + teaContent + waterContent;
+
             //queryData
             let queryData = JSON.stringify({
                 reserve_id: id,
@@ -465,7 +483,14 @@ $("#viewStaffUserAppointment").pagecontainer({
             this.failCallback = function (data) { };
 
             var __construct = function () {
-                EmpServicePlugin.QPlayAPI("POST", "editReserve", self.successCallback, self.failCallback, queryData, '');
+                //如果超时就不需要API，直接popup提示
+                if (overtime) {
+                    loadingMask('hide');
+                    //popup
+                    popupMsgInit('.reserveLatePopup');
+                } else {
+                    EmpServicePlugin.QPlayAPI("POST", "editReserve", self.successCallback, self.failCallback, queryData, '');
+                }
             }();
         }
 
@@ -639,6 +664,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             let staff_status = $(this).attr('data-status');
             if (has) {
                 loadingMask('show');
+                //根据按钮状态，判断是新增还是修改
                 if(staff_status == 'new') {
                     //检查该时段是否有预约
                     checkReserveByHour();
