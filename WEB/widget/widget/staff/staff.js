@@ -14,7 +14,7 @@ var staffWidget = {
                 $('.staff-user-more').html('').append(moreImg);
                 // //3.update
                 $('.staff-update-time').text(updateTime());
-                let staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
+                var staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
                 $('.staff-img').html('').append(staffIcon);
 
             }, "html");
@@ -153,7 +153,7 @@ var staffWidget = {
     show: function() {
         var self = this;
 
-        let queryData = JSON.stringify({
+        var queryData = JSON.stringify({
             login_id: loginData['loginid'],
             domain: loginData['domain'],
             emp_no: loginData['emp_no'],
@@ -168,7 +168,7 @@ var staffWidget = {
 
             if(data['result_code'] == '1') {
                 //判断是否有数据
-                let arr = data['content']['service_list'][0]['record_list'];
+                var arr = data['content']['service_list'][0]['record_list'];
                 if(arr.length == 0) {
                     //no data
                     $('.staff-main').hide();
@@ -176,7 +176,7 @@ var staffWidget = {
                 } else {
                     $('.staff-none').hide();
                     $('.staff-main').show();
-                    let content = '';
+                    var content = '';
                     for(var i = 0; i < arr.length; i++) {
                         if(i < 3) {
                             content += '<li>' + arr[i]['info_push_content'] + '</li>';
@@ -199,7 +199,7 @@ var staffWidget = {
         }();
     },
     plugin: function() {
-        let dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin'];
+        var dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin'];
         widget.plugin(dependency);
     }
 }
