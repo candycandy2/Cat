@@ -1,6 +1,8 @@
 $("#viewQPayShopQueryRecord").pagecontainer({
     create: function (event, ui) {
 
+        let initRecordType = false;
+
         //初始化交易类型dropdownlist
         function initialRecordType() {
             let typeData = {
@@ -63,6 +65,8 @@ $("#viewQPayShopQueryRecord").pagecontainer({
                     $('#shopQueryType-option').find('li:eq(0)').trigger('click');
                 }
             }
+
+            initRecordType = true;
 
         }
 
@@ -179,6 +183,14 @@ $("#viewQPayShopQueryRecord").pagecontainer({
                     $('#shopQueryMonth-option').find('li:eq(' + currenMonth + ')').trigger('click');
                 }
             }
+
+            //3.判断消费券类型是否初始化成功，成功才能使用查询按钮
+            let btnStatusInterval = setInterval(function() {
+                if(initRecordType) {
+                    clearInterval(btnStatusInterval);
+                    $('.shop-query-search').addClass('button-active');
+                }
+            }, 500)
         }
 
         //根据年月返回该月最后一天
