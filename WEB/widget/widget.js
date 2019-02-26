@@ -45,19 +45,19 @@ var widget = {
             for (var j = 0; j < widgetArr.length; j++) {
                 if (widgetArr[j] != null && id == widgetArr[j].id) {
                     if (widgetArr[j].enabled == false || widgetArr[j].show == false)
-                        return new Promise((resolve, reject) => {});
+                        return new Promise(function(resolve, reject) {});
                     break;
                 }
             }
         }
 
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
 
-            var widgetItem = this.list()[id].name + "Widget";
+            var widgetItem = widget.list()[id].name + "Widget";
             var contentItem = $('<div id="' + widgetItem + '" class="' + widgetItem + '"></div>');
             div.append(contentItem);
 
-            $.getScript(serverURL + "/widget/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
+            $.getScript(serverURL + "/widget/widget/" + widget.list()[id].name + "/" + widget.list()[id].name + ".js")
                 .done(function(script, textStatus) {
 
                     if (typeof window[widgetItem] != 'undefined') {
@@ -76,9 +76,9 @@ var widget = {
 
         this.height();
 
-        let widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+        var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
         for (var i = 0; i < widgetArr.length; i++) {
-            let widgetItem = $('.' + widgetArr[i]['name'] + 'Widget');
+            var widgetItem = $('.' + widgetArr[i]['name'] + 'Widget');
             //1.原来有，现在没有
             if (widgetItem.length > 0 && widgetArr[i]['show'] == false) {
                 widgetItem.remove();
@@ -87,7 +87,7 @@ var widget = {
                 widget.load(widgetArr[i]['id'], $('#widgetList'), 'new');
                 //3.原来有，现在也有（或者即将要有）
             } else if (widgetItem.length > 0 && widgetArr[i]['show'] == true) {
-                let key = widgetArr[i]['name'] + 'Widget';
+                var key = widgetArr[i]['name'] + 'Widget';
                 if (typeof window[key] != 'undefined' && typeof window[key].show != 'undefined') {
                     window[key].show();
                 } else if (typeof window[key] == 'undefined') {
@@ -110,11 +110,11 @@ var widget = {
         });
     },
     height: function() {
-        let hasHeight = window.sessionStorage.getItem('pageMainHeight');
+        var hasHeight = window.sessionStorage.getItem('pageMainHeight');
         if (hasHeight == null) {
-            let win = $(window).height();
-            let header = $('#viewMain3 .page-header').height();
-            let main;
+            var win = $(window).height();
+            var header = $('#viewMain3 .page-header').height();
+            var main;
             if (device.platform === "iOS") {
                 main = win - header - iOSFixedTopPX();
             } else {
@@ -139,7 +139,7 @@ var widget = {
     },
     plugin: function(arr) {
         for (var i = 0; i < arr.length; i++) {
-            let status = false;
+            var status = false;
             for (var j = 0; j < pluginList.length; j++) {
                 if (arr[i] == pluginList[j]) {
                     status = true;
@@ -233,8 +233,8 @@ function checkWidgetPage(pageID, pageVisitedList, parmData) {
 
 //重设dropdownlist宽度
 function setDropdownlistWidth(num) {
-    let pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
-    let vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + num;
+    var pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
+    var vwWidth = (100 / document.documentElement.clientWidth) * pxWidth + num;
     return vwWidth;
 }
 
