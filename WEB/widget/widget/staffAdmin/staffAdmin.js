@@ -14,7 +14,7 @@ var staffAdminWidget = {
                 $('.staff-admin-more').html('').append(moreImg);
                 //3.update
                 $('.staffAdmin-update-time').text(updateTime());
-                let staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
+                var staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
                 $('.staffAdmin-img').html('').append(staffIcon);
 
             }, "html");
@@ -152,7 +152,7 @@ var staffAdminWidget = {
     },
     show: function() {
         var self = this;
-        let queryData = JSON.stringify({
+        var queryData = JSON.stringify({
             service_id: 'meetingroomService',
             start_date: Math.round(new Date().getTime() / 1000),
             end_date: new Date(new Date().yyyymmdd('/') + ' 18:00').getTime() / 1000
@@ -163,7 +163,7 @@ var staffAdminWidget = {
 
             if(data['result_code'] == '1') {
                 //判断是否有数据
-                let arr = data['content']['record_list'];
+                var arr = data['content']['record_list'];
                 if(arr.length == 0) {
                     //no data
                     $('.staffAdmin-main').hide();
@@ -171,10 +171,10 @@ var staffAdminWidget = {
                 } else {
                     $('.staffAdmin-none').hide();
                     $('.staffAdmin-main').show();
-                    let content = '';
+                    var content = '';
                     for(var i = 0; i < arr.length; i++) {
                         if(i < 3) {
-                            content += '<li>' + arr[i]['info_push_content'] + ' / ' + arr[i]['reserve_login_id'] + '</li>';
+                            content += '<li>' + arr[i]['info_push_content'].substr(6, arr[i]['info_push_content'].length - 6) + '</li>';
                         } else {
                             break;
                         }
@@ -194,7 +194,7 @@ var staffAdminWidget = {
         }();
     },
     plugin: function() {
-        let dependency = ['QForumPlugin', 'QStoragePlugin', 'EmpServicePlugin', 'YellowPagePlugin', 'StatusPlugin'];
+        var dependency = ['QForumPlugin', 'QStoragePlugin', 'EmpServicePlugin', 'YellowPagePlugin', 'StatusPlugin'];
         widget.plugin(dependency);
     }
 }

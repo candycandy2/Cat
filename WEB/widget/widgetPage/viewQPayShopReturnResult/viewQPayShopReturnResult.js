@@ -6,7 +6,7 @@ $("#viewQPayShopReturnResult").pagecontainer({
 
         //获取结果
         function getTradeResult() {
-            let trade_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnResult_parmData'));
+            var trade_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnResult_parmData'));
 
             if(trade_info['success'] == 'Y') {
                 $('.user-trade-fail').hide();

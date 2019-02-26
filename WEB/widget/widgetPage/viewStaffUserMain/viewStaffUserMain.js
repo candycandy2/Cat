@@ -230,7 +230,15 @@ $("#viewStaffUserMain").pagecontainer({
 
                 if(data['result_code'] == '1') {
 
-                    let arr = data['content']['record_list'];
+                    let tempArr = data['content']['record_list'];
+                    //剔除已取消的預約
+                    let arr = [];
+                    for(var i in tempArr) {
+                        if(tempArr[i]['info_data'] != null) {
+                            arr.push(tempArr[i]);
+                        }
+                    }
+
                     if(arr.length > 0) {
                         $('.today-room-none').hide();
 
@@ -239,10 +247,7 @@ $("#viewStaffUserMain").pagecontainer({
                             content += '<li' +
                                 (arr[i]['complete'] == 'N' ? '' : ' class="past-time"') +
                                 '><span>' +
-                                new Date(arr[i]['start_date'] * 1000).hhmm() +
-                                ' </span><span>' +
-                                arr[i]['reserve_login_id'] + ' ' +
-                                arr[i]['info_push_content'].split(' ')[2] +
+                                arr[i]['info_push_content'] +
                                 ' </span><span>' +
                                 (arr[i]['complete'] == 'N' ? '' : '(' + new Date(arr[i]['complete_at'] * 1000).hhmm() + '已送達)') +
                                 '</span></li>';
@@ -283,7 +288,7 @@ $("#viewStaffUserMain").pagecontainer({
                 tea: teaCount,
                 water: waterCount
             };
-            let typeContent = (teaType == 'needTea' ? '添加' : '添加茶水');
+            let typeContent = (teaType == 'needTea' ? '加' : '添加茶水');
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
             let pushContent = teaInfo['time'] +
@@ -300,9 +305,9 @@ $("#viewStaffUserMain").pagecontainer({
                 emp_no: loginData['emp_no'],
                 start_date: rightNow,
                 end_date: rightNow,
-                info_push_admin_title: '添加茶水',//非即時預約"茶水預約"
-                info_push_admin_content: pushContent,
-                info_push_emp_title: '添加茶水',//非即時預約"茶水預約"
+                info_push_admin_title: '同仁茶水申請通知',
+                info_push_admin_content: pushContent + ' / ' + loginData['loginid'],
+                info_push_emp_title: '茶水申請已發送',
                 info_push_emp_content: pushContent,
                 info_data: JSON.stringify(teaInfo),
                 push: '11'

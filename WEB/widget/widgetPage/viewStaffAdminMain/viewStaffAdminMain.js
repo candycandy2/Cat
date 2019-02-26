@@ -300,7 +300,15 @@ $("#viewStaffAdminMain").pagecontainer({
                 //console.log(data);
 
                 if(data['result_code'] == '1') {
-                    let todayArr = data['content']['record_list'];
+                    let tempArr = data['content']['record_list'];
+                    //剔除已取消的預約
+                    let todayArr = [];
+                    for(var i in tempArr) {
+                        if(tempArr[i]['info_data'] != null) {
+                            todayArr.push(tempArr[i]);
+                        }
+                    }
+
                     if(todayArr.length == 0) {
                         //本会议室今日暂无茶水预约
                         $('.today-no-data').show();
@@ -314,9 +322,7 @@ $("#viewStaffAdminMain").pagecontainer({
                             //先区分未完成和已完成部分
                             if(todayArr[i]['complete'] == 'N') {
                                 noCompleteContent += '<li class="today-list"><div class="today-item">' +
-                                    todayArr[i]['info_push_content'] +
-                                    ' / ' +
-                                    todayArr[i]['reserve_login_id'] +
+                                    todayArr[i]['info_push_content'].substr(6, todayArr[i]['info_push_content'].length - 6) +
                                     '</div><div class="today-handle"><div class="today-done-btn" data-id="' +
                                     todayArr[i]['reserve_id'] +
                                     '"></div><div class="today-tel-btn" data-name="' +
@@ -324,9 +330,7 @@ $("#viewStaffAdminMain").pagecontainer({
                                     '"></div></div></li>';
                             } else {
                                 completedContent += '<li class="complete-list"><div>' +
-                                    todayArr[i]['info_push_content'] +
-                                    ' / ' +
-                                    todayArr[i]['reserve_login_id'] +
+                                    todayArr[i]['info_push_content'].substr(6, todayArr[i]['info_push_content'].length - 6) +
                                     '</div><div></div></li>';
                             }
                         }
@@ -361,7 +365,15 @@ $("#viewStaffAdminMain").pagecontainer({
                 //console.log(data);
 
                 if(data['result_code'] == '1') {
-                    let tomorrowArr = data['content']['record_list'];
+                    let tempArr = data['content']['record_list'];
+                    //剔除已取消的預約
+                    let tomorrowArr = [];
+                    for(var i in tempArr) {
+                        if(tempArr[i]['info_data'] != null) {
+                            tomorrowArr.push(tempArr[i]);
+                        }
+                    }
+
                     if(tomorrowArr.length == 0) {
                         //本会议室明日暂无茶水预约
                         $('.tomorrow-no-data').show();
@@ -372,8 +384,6 @@ $("#viewStaffAdminMain").pagecontainer({
                         for(var i in tomorrowArr) {
                             content += '<li class="tomorrow-list"><div>' +
                                 tomorrowArr[i]['info_push_content'] +
-                                ' / ' +
-                                tomorrowArr[i]['reserve_login_id'] +
                                 '</div></li>';
                         }
 

@@ -1,7 +1,7 @@
 $("#viewQPayShopMain").pagecontainer({
     create: function (event, ui) {
 
-        let imgURL = '/widget/widgetPage/viewQPayShopMain/img/';
+        var imgURL = '/widget/widgetPage/viewQPayShopMain/img/';
 
         function getQPayInfoShop() {
             var self = this;
