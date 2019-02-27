@@ -641,7 +641,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             let checked = $(this).hasClass('checked-hour');//他人预约时段
             let active = $(this).hasClass('active-hour');//激活的时段
             let self = $(this).hasClass('self-hour');//自己的时段
-            reserve_id = $(this).data('id');
+            reserve_id = $(this).attr('data-id');
 
             //只能选择空白时段，且有且只能选择一个时段
             if (!rest && !checked) {
