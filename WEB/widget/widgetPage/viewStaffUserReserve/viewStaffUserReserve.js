@@ -6,7 +6,8 @@ $("#viewStaffUserReserve").pagecontainer({
             staffType = 'staff',
             reserve_id,
             reserve_info,
-            reserveArr = [];
+            reserveArr = [],
+            deleteReserveList = [];
 
         function getMyReserve() {
             var self = this;
@@ -25,15 +26,7 @@ $("#viewStaffUserReserve").pagecontainer({
                 console.log(data);
 
                 if(data['result_code'] == '1') {
-                    let tempArr = data['content']['service_list'][0]['record_list'];
-                    //剔除已取消的預約
-                    reserveArr = [];
-                    for(var i in tempArr) {
-                        if(tempArr[i]['info_data'] != null) {
-                            reserveArr.push(tempArr[i]);
-                        }
-                    }
-
+                    reserveArr = data['content']['service_list'][0]['record_list'];
                     //分组：当日和当日之后
                     if(reserveArr.length > 0) {
                         let nowDate = new Date().yyyymmdd('/');
@@ -55,7 +48,12 @@ $("#viewStaffUserReserve").pagecontainer({
                         //暂无数据
                         $("#noReserveData").fadeIn(100).delay(2000).fadeOut(100);
                     }
-                    
+
+                    //判断是否初始化删除预约列表
+                    let delete_data = window.sessionStorage.getItem('DeleteReserveInfoData');
+                    if(delete_data == null) {
+                        deleteReserveList = [];
+                    }
                 }
             };
 
@@ -77,7 +75,7 @@ $("#viewStaffUserReserve").pagecontainer({
                         '" data-time="' +
                         arr[i]['start_date'] +
                         '"><div>' +
-                        arr[i]['info_push_content'].substr(6, arr[i]['info_push_content'].length - 6) +
+                        arr[i]['info_push_content'].replace(' ', ';').split(';')[1] +
                         '</div><div' +
                         (afterHalfHour < arr[i]['start_date'] ? ' class="delete-my-reserve"' : '') +
                         '></div><div' +
@@ -139,10 +137,13 @@ $("#viewStaffUserReserve").pagecontainer({
                     $("#deleteReserveSuccess").fadeIn(100).delay(2000).fadeOut(100);
                     //remove DOM
                     $('.tea-reserve-list[data-id="' + id + '"]').remove();
-                    //removeItem sessionStorage
-                    let reserveObj = JSON.parse(getReserveByID(id)['info_data']);
-                    window.sessionStorage.removeItem(reserveObj['id'] + '_' + reserveObj['date']);
+                    //info data
+                    let infoData = getReserveByID(id)['info_data'];
+                    deleteReserveList.push(JSON.parse(infoData));
+                    window.sessionStorage.setItem('DeleteReserveInfoData', JSON.stringify(deleteReserveList));
                 }
+
+                loadingMask('hide');
             };
 
             this.failCallback = function(data) {};
@@ -164,12 +165,6 @@ $("#viewStaffUserReserve").pagecontainer({
         });
 
         $("#viewStaffUserReserve").on("pageshow", function(event, ui) {
-            // var msgContent = JSON.parse(window.sessionStorage.getItem('viewStaffUserReserve_parmData'));
-            // if(msgContent != null) {
-            //     $('.reserveTeaNow .header-title').text(msgContent['content']);
-            //     popupMsgInit('.reserveTeaNow');
-            //     window.sessionStorage.removeItem('viewStaffUserReserve_parmData');
-            // }
             getMyReserve();
         });
 
@@ -199,6 +194,7 @@ $("#viewStaffUserReserve").pagecontainer({
 
         //确认删除
         $('.confirmDeleteReserve').on('click', function() {
+            loadingMask('show');
             deleteMyReserve(reserve_id, reserve_info);
         });
 
@@ -209,9 +205,10 @@ $("#viewStaffUserReserve").pagecontainer({
             let startTime = $(this).parent().data('time');
             if(afterHalfHour < startTime) {
                 reserve_id = $(this).parent().data('id');
+                //info data
                 let infoData = getReserveByID(reserve_id)['info_data'];
+                window.sessionStorage.setItem('EditReserveInfoData', infoData);
                 //change page
-                window.sessionStorage.setItem('viewStaffUserAppointment_parmData', infoData);
                 $('.userStaffMenu li[data-view="viewStaffUserAppointment"]').trigger('tap');
             } else {
                 //popup
