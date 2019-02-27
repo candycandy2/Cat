@@ -66,6 +66,8 @@ $("#viewStaffAdminMain").pagecontainer({
                     for(var i in boardArr) {
                         if(boardArr[i].board_name == 'staffFAQ') {
                             boardObj['staffFAQ'] = boardArr[i];
+                            let feedbackBoard = boardArr[i]['board_id'];
+                            getpostList(feedbackBoard);
 
                         } else if(boardArr[i].board_name == 'staffAnnounce') {
                             boardObj['staffAnnounce'] = boardArr[i];
@@ -83,7 +85,61 @@ $("#viewStaffAdminMain").pagecontainer({
                 let staffBoardType = JSON.parse(window.localStorage.getItem('staffBoardType'));
                 if(staffBoardType == null || checkDataExpired(staffBoardType['lastUpdateTime'], 7, 'dd')) {
                     QForumPlugin.CustomAPI("POST", true, "getBoardList", successCallback, failCallback, queryData, "");
+                } else {
+                    let feedbackBoard = staffBoardType['staffFAQ']['board_id'];
+                    getpostList(feedbackBoard);
                 }
+            }();
+        }
+
+        //获取反馈问题未读数量
+        function getpostList(id) {
+            var queryData = "<LayoutHeader><emp_no>" +
+                loginData["emp_no"] +
+                "</emp_no><source>" +
+                staffKey +
+                appEnvironment +
+                "</source><board_id>" +
+                id +
+                "</board_id></LayoutHeader>";
+
+            var successCallback = function(data) {
+                //console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    //只需要统计未读信息的数量即可
+                    let unreadCount = 0;
+                    //readlist已读列表
+                    let readList = JSON.parse(window.localStorage.getItem('AdminFeedbackList')) || {};
+                    let readLength = Object.getOwnPropertyNames(readList).length;
+                    //postlist
+                    let postList = data['Content'];
+                    window.sessionStorage.setItem('AdminFeedBackArray', JSON.stringify(postList));
+
+                    if(readLength == 0) {
+                        unreadCount = postList.length;
+                    } else {
+                        for(var i in postList) {
+                            //1.确认已读未读状态
+                            if(typeof readList[postList[i]['post_id']] == 'undefined') {
+                                unreadCount++;
+                            }
+                        }
+                    }
+
+                    //如果数量大于0显示在菜单badge上
+                    if(unreadCount > 0) {
+                        $('#feedbackBadge').text(unreadCount).show();
+                    } else {
+                        $('#feedbackBadge').hide();
+                    }
+                }
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                QForumPlugin.CustomAPI("POST", true, "getPostList", successCallback, failCallback, queryData, "");
             }();
         }
 
@@ -300,15 +356,7 @@ $("#viewStaffAdminMain").pagecontainer({
                 //console.log(data);
 
                 if(data['result_code'] == '1') {
-                    let tempArr = data['content']['record_list'];
-                    //剔除已取消的預約
-                    let todayArr = [];
-                    for(var i in tempArr) {
-                        if(tempArr[i]['info_data'] != null) {
-                            todayArr.push(tempArr[i]);
-                        }
-                    }
-
+                    let todayArr = data['content']['record_list'];
                     if(todayArr.length == 0) {
                         //本会议室今日暂无茶水预约
                         $('.today-no-data').show();
@@ -322,7 +370,7 @@ $("#viewStaffAdminMain").pagecontainer({
                             //先区分未完成和已完成部分
                             if(todayArr[i]['complete'] == 'N') {
                                 noCompleteContent += '<li class="today-list"><div class="today-item">' +
-                                    todayArr[i]['info_push_content'].substr(6, todayArr[i]['info_push_content'].length - 6) +
+                                    todayArr[i]['info_push_content'].replace(' ', ';').split(';')[1] +
                                     '</div><div class="today-handle"><div class="today-done-btn" data-id="' +
                                     todayArr[i]['reserve_id'] +
                                     '"></div><div class="today-tel-btn" data-name="' +
@@ -330,7 +378,7 @@ $("#viewStaffAdminMain").pagecontainer({
                                     '"></div></div></li>';
                             } else {
                                 completedContent += '<li class="complete-list"><div>' +
-                                    todayArr[i]['info_push_content'].substr(6, todayArr[i]['info_push_content'].length - 6) +
+                                    todayArr[i]['info_push_content'].replace(' ', ';').split(';')[1] +
                                     '</div><div></div></li>';
                             }
                         }
@@ -365,15 +413,7 @@ $("#viewStaffAdminMain").pagecontainer({
                 //console.log(data);
 
                 if(data['result_code'] == '1') {
-                    let tempArr = data['content']['record_list'];
-                    //剔除已取消的預約
-                    let tomorrowArr = [];
-                    for(var i in tempArr) {
-                        if(tempArr[i]['info_data'] != null) {
-                            tomorrowArr.push(tempArr[i]);
-                        }
-                    }
-
+                    let tomorrowArr = data['content']['record_list'];
                     if(tomorrowArr.length == 0) {
                         //本会议室明日暂无茶水预约
                         $('.tomorrow-no-data').show();
@@ -383,7 +423,7 @@ $("#viewStaffAdminMain").pagecontainer({
                         let content = '';
                         for(var i in tomorrowArr) {
                             content += '<li class="tomorrow-list"><div>' +
-                                tomorrowArr[i]['info_push_content'] +
+                                tomorrowArr[i]['info_push_content'].replace(' ', ';').split(';')[1] +
                                 '</div></li>';
                         }
 

@@ -1073,7 +1073,7 @@
     border: none;
 }
 
-.staff-menu-list li span{
+.menu-badge{
     display: inline-block;
     width: 10vw;
     height: 5vw;

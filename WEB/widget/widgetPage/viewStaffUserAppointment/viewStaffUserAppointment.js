@@ -6,6 +6,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             waterCount = 0,
             activeCount = 0,
             conditionInit = false,
+            deleteInit = null,
             reserve_id,
             itemList = [],
             reserveList = [],
@@ -97,8 +98,10 @@ $("#viewStaffUserAppointment").pagecontainer({
         }
 
         //根据会议室和日期，获取某天所有预约
-        function getReserveByTarget(time) {
+        function getReserveByTarget(time, del) {
             time = time || null;
+            del = del || null;
+
             let target_row_id = $('.appointment-room-list .active-staff').data('id');
             let target_name = $('.appointment-room-list .active-staff').text();
             let target_date = $('.appointment-date-list .active-staff').data('item');
@@ -115,17 +118,14 @@ $("#viewStaffUserAppointment").pagecontainer({
                 console.log(data);
 
                 if (data['result_code'] == '1') {
-                    let tempArr = data['content']['record_list'];
-                    //剔除已取消的預約
-                    reserveList = [];
-                    for(var i in tempArr) {
-                        if(tempArr[i]['info_data'] != null) {
-                            reserveList.push(tempArr[i]);
-                        }
-                    }
+                    reserveList = data['content']['record_list'];
                     reserveIntoHours(reserveList, time);
                     //save to session
                     window.sessionStorage.setItem(target_key, JSON.stringify(reserveList));
+                }
+
+                if(del != null) {
+                    deleteInit = true;
                 }
             };
 
@@ -143,6 +143,7 @@ $("#viewStaffUserAppointment").pagecontainer({
 
         //更新各时段的预约情况
         function reserveIntoHours(arr, time) {
+            loadingMask('hide');
             if (arr.length > 0) {
                 for (var i in arr) {
                     //如果开始时间与结束时间不一致，表示是预约，反之表示是立刻加水
@@ -160,7 +161,6 @@ $("#viewStaffUserAppointment").pagecontainer({
             if (time != null) {
                 $('.appointment-hour li[data-hour="' + time + '"]').trigger('click');
             }
-            loadingMask('hide');
         }
 
         //检查某时段否是有预约，有预约就不能再预约，没有预约才能新增预约
@@ -239,8 +239,8 @@ $("#viewStaffUserAppointment").pagecontainer({
         //预约成功后，初始化茶水数量以及取消已选时段
         function initTeaNumberSuccess() {
             teaCount = 0,
-            waterCount = 0,
-            activeCount = 0;
+                waterCount = 0,
+                activeCount = 0;
             $('.appointment-hour .active-hour').removeClass('active-hour');
             $('.appointmentTeaBtn').removeClass('active-btn-green');
             $('.appointment-count .tea-addition').removeClass('cannot-addition');
@@ -254,7 +254,7 @@ $("#viewStaffUserAppointment").pagecontainer({
         //切换编辑时，只初始化茶水数量
         function onlyInitTeaNumber() {
             teaCount = 0,
-            waterCount = 0;
+                waterCount = 0;
             $('.appointmentTeaBtn').removeClass('active-btn-green');
             $('.appointment-count .tea-addition').removeClass('cannot-addition');
             $('.appointment-count .water-addition').removeClass('cannot-addition');
@@ -359,7 +359,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             //info_content
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
-            let pushContent = target_date.substr(5, 5) +
+            let pushContent = target_date.replace('/', ';').split(';')[1] +
                 ' ' +
                 teaInfo['time'] +
                 ' ' +
@@ -386,6 +386,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                 console.log(data);
 
                 if (data['result_code'] == '1') {
+                    $("#reserveTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);
                     //1.初始化UI
                     initTeaNumberSuccess();
                     //2.remove session
@@ -467,6 +468,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                 console.log(data);
 
                 if (data['result_code'] == '1') {
+                    $("#reserveTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);
                     //1.初始化UI
                     initTeaNumberSuccess();
                     //2.remove session
@@ -506,15 +508,40 @@ $("#viewStaffUserAppointment").pagecontainer({
         });
 
         $("#viewStaffUserAppointment").on("pageshow", function (event, ui) {
-            //如果变为修改预约，就不需要获取默认条件下的预约资料
-            let info_data = JSON.parse(window.sessionStorage.getItem('viewStaffUserAppointment_parmData'));
-            if (info_data != null) {
+            let flag = false;
+
+            //如果[我的预约]页面有删除预约，并且如果不是第一次进来需要更新被删除预约的记录
+            let delete_data = JSON.parse(window.sessionStorage.getItem('DeleteReserveInfoData'));
+            if (delete_data != null && conditionInit) {
+                let current_room = $('.appointment-room-list .active-staff').text();
+                let current_date = $('.appointment-date-list .active-staff').data('item');
+                for (var i in delete_data) {
+                    let target_room = delete_data[i]['id'];
+                    let target_date = delete_data[i]['date'];
+                    //1.先删除此条件下记录
+                    window.sessionStorage.removeItem(target_room + '_' + target_date);
+                    //2.判断是否与当前条件相同，相同才需要更新数据
+                    if (current_room == target_room && current_date == target_date) {
+                        deleteInit = false;
+                        flag = true;
+                        initHoursUI();
+                        getReserveByTarget(null, 'delete');
+                        break;
+                    }
+                }
+
+                window.sessionStorage.removeItem('DeleteReserveInfoData')
+            }
+
+            //编辑页面跳转过来，并需要判断是否是第一次进来
+            let edit_data = JSON.parse(window.sessionStorage.getItem('EditReserveInfoData'));
+            if (edit_data != null) {
 
                 //1.条件是否完成
                 let initInterval = setInterval(function (data) {
 
                     //直到第一次条件初始化完成
-                    if (conditionInit) {
+                    if (conditionInit & deleteInit !== false) {
                         clearInterval(initInterval);
 
                         //room
@@ -525,25 +552,27 @@ $("#viewStaffUserAppointment").pagecontainer({
                         let dateItem = data['date'];
                         $('.appointment-date-list li[data-item="' + dateItem + '"]').trigger('click');
 
-                        //data
+                        //edit data
                         onlyInitTeaNumber();
                         initHoursUI();
                         getReserveByTarget(data['time']);
                     }
+                }, 500, edit_data);
 
-                }, 500, info_data);
-
-                window.sessionStorage.removeItem('viewStaffUserAppointment_parmData');
+                window.sessionStorage.removeItem('EditReserveInfoData');
 
             } else {
                 let defaultInterval = setInterval(function () {
                     //初始化完成，获取默认条件下的预约情况
                     if (conditionInit) {
                         clearInterval(defaultInterval);
-                        getReserveByTarget();
+                        if (!flag) {
+                            getReserveByTarget();
+                        }
                     }
                 }, 500)
             }
+            
         });
 
         $("#viewStaffUserAppointment").on("pagehide", function (event, ui) {
@@ -556,13 +585,13 @@ $("#viewStaffUserAppointment").pagecontainer({
         $('.appointment-room-list ul').on('click', 'li', function () {
             let has = $(this).hasClass('active-staff');
             if (!has) {
-                loadingMask('show');
                 //1. add active class
                 $('.appointment-room-list li').removeClass('active-staff');
                 $(this).addClass('active-staff');
 
                 //2. 如果已选日期，则立即执行
                 if (itemList.length == 1) {
+                    loadingMask('show');
                     initHoursUI();
                     getReserveByTarget();
                 } else {
@@ -570,10 +599,11 @@ $("#viewStaffUserAppointment").pagecontainer({
                     itemList.push('room');
                     setTimeout(function () {
                         if (itemList.length == 1) {
+                            loadingMask('show');
                             initHoursUI();
                             getReserveByTarget();
                         }
-                    }, 2000);
+                    }, 1000);
                 }
             }
         });
@@ -582,13 +612,13 @@ $("#viewStaffUserAppointment").pagecontainer({
         $('.appointment-date-list ul').on('click', 'li', function () {
             let has = $(this).hasClass('active-staff');
             if (!has) {
-                loadingMask('show');
                 //1. add active class
                 $('.appointment-date-list li').removeClass('active-staff');
                 $(this).addClass('active-staff');
 
                 //2. 如果已选会议室，则立即执行
                 if (itemList.length == 1) {
+                    loadingMask('show');
                     initHoursUI();
                     getReserveByTarget();
                 } else {
@@ -596,10 +626,11 @@ $("#viewStaffUserAppointment").pagecontainer({
                     itemList.push('date');
                     setTimeout(function () {
                         if (itemList.length == 1) {
+                            loadingMask('show');
                             initHoursUI();
                             getReserveByTarget();
                         }
-                    }, 2000);
+                    }, 1000);
                 }
             }
         });
@@ -665,12 +696,11 @@ $("#viewStaffUserAppointment").pagecontainer({
             if (has) {
                 loadingMask('show');
                 //根据按钮状态，判断是新增还是修改
-                if(staff_status == 'new') {
+                if (staff_status == 'new') {
                     //检查该时段是否有预约
                     checkReserveByHour();
                 } else {
                     updateSelfReserve(reserve_id);
-                    loadingMask('hide');
                 }
             }
         });
