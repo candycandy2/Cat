@@ -33,9 +33,10 @@ class EmpServiceReserveRepository
         return $this->reserveRecord
                     ->join('target_id','reserve_record.target_id_row_id','=','target_id.row_id')
                     ->join('service_id','target_id.service_id_row_id','=','service_id.row_id')
-                    ->where('target_id.active', 'Y')
                     ->where('service_id', $serviceId)
+                    ->where('target_id.active', 'Y')
                     ->where('service_id.active', 'Y')
+                    ->where('reserve_record.active', 'Y')
                     ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
                     ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
                     ->select('target_id', 'target_id_row_id', 'reserve_record.row_id as reserve_id',
@@ -63,6 +64,8 @@ class EmpServiceReserveRepository
             ->join('service_id','target_id.service_id_row_id','=','service_id.row_id')
             ->where('target_id.row_id', $targetIdRowId)
             ->where('target_id.active', 'Y')
+            ->where('service_id.active', 'Y')
+            ->where('reserve_record.active', 'Y')
             ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
             ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
             ->select('reserve_record.row_id as reserve_id',
@@ -92,6 +95,8 @@ class EmpServiceReserveRepository
             ->where('service_id.service_id', $serviceId)
             ->where('reserve_record.emp_no', $empNo)
             ->where('target_id.active', 'Y')
+            ->where('service_id.active', 'Y')
+            ->where('reserve_record.active', 'Y')
             ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
             ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
             ->select('service_id','target_id', 'target_id_row_id', 'reserve_record.row_id as reserve_id',
