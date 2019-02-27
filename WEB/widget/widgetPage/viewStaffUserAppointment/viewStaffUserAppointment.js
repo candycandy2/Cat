@@ -239,8 +239,8 @@ $("#viewStaffUserAppointment").pagecontainer({
         //预约成功后，初始化茶水数量以及取消已选时段
         function initTeaNumberSuccess() {
             teaCount = 0,
-                waterCount = 0,
-                activeCount = 0;
+            waterCount = 0,
+            activeCount = 0;
             $('.appointment-hour .active-hour').removeClass('active-hour');
             $('.appointmentTeaBtn').removeClass('active-btn-green');
             $('.appointment-count .tea-addition').removeClass('cannot-addition');
@@ -254,7 +254,7 @@ $("#viewStaffUserAppointment").pagecontainer({
         //切换编辑时，只初始化茶水数量
         function onlyInitTeaNumber() {
             teaCount = 0,
-                waterCount = 0;
+            waterCount = 0;
             $('.appointmentTeaBtn').removeClass('active-btn-green');
             $('.appointment-count .tea-addition').removeClass('cannot-addition');
             $('.appointment-count .water-addition').removeClass('cannot-addition');
