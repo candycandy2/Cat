@@ -13,6 +13,7 @@ $("#viewStaffAdminMain").pagecontainer({
             status_row_id,
             adminRefresh = null,
             refreshInterval = null,
+            allowPush = null,
             headerHeight;
 
         //获取当前时间并精确到秒
@@ -129,8 +130,10 @@ $("#viewStaffAdminMain").pagecontainer({
 
                     //如果数量大于0显示在菜单badge上
                     if(unreadCount > 0) {
+                        $('.newFeedback').show();
                         $('#feedbackBadge').text(unreadCount).show();
                     } else {
+                        $('.newFeedback').hide();
                         $('#feedbackBadge').hide();
                     }
                 }
@@ -343,6 +346,91 @@ $("#viewStaffAdminMain").pagecontainer({
             }();
         }
 
+        //获取当前总机（登录人）是否在推播列表中
+        function getEmpServiceList() {
+            var self = this;
+            var queryData = JSON.stringify({
+                status_type: staffServiceType
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {
+                    //先找到茶水的service_id
+                    var serviceArr = data['content']['service_type_list'][0]['service_id_list'];
+                    var pushArr = [];
+                    for(var i in  serviceArr) {
+                        if(serviceArr[i]['service_id'] == staffServiceID) {
+                            pushArr = serviceArr[i]['push_list'];
+                            break;
+                        }
+                    }
+
+                    //再找个人
+                    var flag = false;
+                    for(var i in pushArr) {
+                        if(pushArr[i]['emp_no'] == loginData['emp_no']) {
+                            flag = true;
+                            break;
+                        }
+                    }
+
+                    //判断是否找到个人，如果没有找到，开关关闭；否则开关开启。
+                    //并且将结果记录到local端，每次进来首先看local端是否有数据
+                    if(flag) {
+                        allowPush = true;
+                        //1. append img
+                        //2. save local
+                        window.localStorage.setItem('OpenAdminPush', 'Y');
+                    } else {
+                        allowPush = false;
+                        //1. append img
+                        //2. save local
+                        window.localStorage.setItem('OpenAdminPush', 'N');
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                var openPush = window.localStorage.getItem('OpenAdminPush');
+                if(openPush == 'Y') {
+                    allowPush = true;
+                    //append img
+                } else if(openPush == 'N') {
+                    allowPush = false;
+                    //append img
+                } else {
+                    EmpServicePlugin.QPlayAPI("POST", "getEmpServiceList", self.successCallback, self.failCallback, queryData, '');
+                }
+            }();
+        }
+
+        //修改个人的推播设定
+        function setServicePush(type) {
+            var self = this;
+            var queryData = {
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no']
+            };
+            queryData[type] = staffServiceID;
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {}
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                EmpServicePlugin.QPlayAPI("POST", "setEmpServicePush", self.successCallback, self.failCallback, JSON.stringify(queryData), '');
+            }();
+        }
+
         //获取当日该总机服务下所有会议室的茶水预约
         function getTodayAllReserve() {
             var self = this;
@@ -477,10 +565,6 @@ $("#viewStaffAdminMain").pagecontainer({
                     //只取第一个电话号码
                     let tel = $.trim(data['Content'][0]['Ext_No']).split(';')[0];
                     window.location.href = "tel://" + tel;
-                    //Email测试
-                    // let mail = $.trim(data['Content'][0]['EMail']);
-                    // $('.currentTelephone').html('').append('<a href="mailto:' + mail + '?subject=會議室協調_12/26">' + mail + '</a>');
-                    // $('.currentTelephone a')[0].click();
                 } else {
                     $("#noTelephoneData").fadeIn(100).delay(2000).fadeOut(100);
                 }
@@ -530,6 +614,7 @@ $("#viewStaffAdminMain").pagecontainer({
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminMain .page-main').css('height', mainHeight);
             $('.admin-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
+            $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="new">');
             headerHeight = $('#viewStaffAdminMain .page-header').height();
             //初始化总机状态设定dropdownlist
             initAdminSetting();
@@ -644,13 +729,26 @@ $("#viewStaffAdminMain").pagecontainer({
             setStaffStatus(statusValue, description);
         });
 
-        //关闭推播，更新所有预约
+        //关闭推播信息，更新所有预约
         $('#cancelNewMessage').on('click', function() {
             //属于该页面的操作，只有在该页面点击关闭推播才会触发
             let pageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0]['id'];
             if(pageID == 'viewStaffAdminMain') {
                 getTodayAllReserve();
                 getTomorrowAllReserve();
+            }
+        });
+
+        //修改是否接受推播
+        $('.title-text-switch').on('click', function() {
+            var self = $('.title-text-switch img');
+            var type = self.attr('data-type');
+            if(type == 'new') {
+                self.attr('src', serverURL + imgURL + 'switch_close.png');
+                self.attr('data-type', 'delete');
+            } else {
+                self.attr('src', serverURL + imgURL + 'switch_open.png');
+                self.attr('data-type', 'new');
             }
         });
 

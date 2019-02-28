@@ -235,10 +235,13 @@ $("#viewStaffUserMain").pagecontainer({
 
                         let content = '';
                         for(var i in arr) {
+                            //删除index为1的日期和index为2的会议室
+                            let infoArr = arr[i]['info_push_content'].split(' ');
+                            let infoPush = infoArr[1] + ' ' + infoArr[3] + ' ' + infoArr[4] + ' ' + infoArr[5];
                             content += '<li' +
                                 (arr[i]['complete'] == 'N' ? '' : ' class="past-time"') +
                                 '><span>' +
-                                arr[i]['info_push_content'].replace(' ', ';').split(';')[1] +
+                                infoPush +
                                 ' </span><span>' +
                                 (arr[i]['complete'] == 'N' ? '' : '(' + new Date(arr[i]['complete_at'] * 1000).hhmm() + '已送達)') +
                                 '</span></li>';
