@@ -42,6 +42,7 @@ $("#viewStaffAdminFeedback").pagecontainer({
             }
 
             //隐藏badge
+            $('.newFeedback').hide();
             $('#feedbackBadge').hide();
         }
 

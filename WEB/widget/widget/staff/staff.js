@@ -199,7 +199,7 @@ var staffWidget = {
         }();
     },
     plugin: function() {
-        var dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin'];
+        var dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin', 'YellowPagePlugin'];
         widget.plugin(dependency);
     }
 }

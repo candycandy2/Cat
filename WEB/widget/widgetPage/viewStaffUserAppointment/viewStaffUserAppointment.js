@@ -336,6 +336,21 @@ $("#viewStaffUserAppointment").pagecontainer({
             }
         }
 
+        //根据reserve_id查找他人预约情况，并popup
+        function getOtherReserveByID(id) {
+            let reserveDetail;
+            for (var i in reserveList) {
+                if (id == reserveList[i]['reserve_id']) {
+                    reserveDetail = reserveList[i];
+                    break;
+                }
+            }
+
+            $('.otherReservePopup .header-text').text(reserveDetail['reserve_login_id']);
+            $('.otherReservePopup .main-paragraph').text(reserveDetail['info_push_content'].split(' / ')[0]);
+            popupMsgInit('.otherReservePopup');
+        }
+
         //新增预约
         function newReserveByHour() {
             var self = this;
@@ -495,6 +510,55 @@ $("#viewStaffUserAppointment").pagecontainer({
                 }
             }();
         }
+
+        //查找用户英文名和公司
+        function checkUserCompany(name) {
+            let queryData = '<LayoutHeader><Company>All Company</Company><Name_CH></Name_CH>' +
+                '<Name_EN>' + name + '</Name_EN><DeptCode></DeptCode><Ext_No></Ext_No></LayoutHeader>';
+
+            var successCallback = function(data) {
+                //console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    //再透过详细资料获得邮箱地址
+                    sendMailOther(data['Content'][0]['Company'], name);
+                }
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                YellowPagePlugin.CustomAPI("POST", false, "QueryEmployeeData", successCallback, failCallback, queryData, "");
+            }();
+        }
+
+        //给其他预约者发送邮件
+        function sendMailOther(company, name) {
+            var queryData = '<LayoutHeader><Company>' +
+                company +
+                '</Company>' +
+                '<Name_EN>' +
+                name +
+                '</Name_EN></LayoutHeader>';
+
+            var successCallback = function(data) {
+                //console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    //Email测试
+                    let mail = $.trim(data['Content'][0]['EMail']);
+                    $('.userMail').html('').append('<a href="mailto:' + mail + '?subject=茶水協調">' + mail + '</a>');
+                    $('.userMail a')[0].click();
+                }
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                YellowPagePlugin.CustomAPI("POST", false, "QueryEmployeeDataDetail", successCallback, failCallback, queryData, "");
+            }();
+        }
+
 
 
         /********************************** page event ***********************************/
@@ -656,6 +720,9 @@ $("#viewStaffUserAppointment").pagecontainer({
                     $('.active-hour').removeClass('active-hour');
                     $(this).addClass('active-hour');
                 }
+            } else if(checked) {
+                //点击他人預約需要提示mail
+                getOtherReserveByID(reserve_id);
             }
 
             //按钮是[新增]还是[修改]
@@ -703,6 +770,12 @@ $("#viewStaffUserAppointment").pagecontainer({
                     updateSelfReserve(reserve_id);
                 }
             }
+        });
+
+        //发送邮件
+        $('.sendMailOther').on('click', function() {
+            let user_name = $('.otherReservePopup .header-text').text();
+            checkUserCompany(user_name);
         });
 
 
