@@ -186,13 +186,13 @@
     font-size: 3.14vw;
 }
 
-.appointment-edit{
+.appointment-handle{
     width: 100vw;
     height: 10.4vw;
     padding-bottom: 2.14vw;
 }
 
-.appointment-edit>div{
+.appointment-handle>div{
     width: 35.5vw;
     height: 10.4vw;
     margin: 0 auto;
@@ -203,24 +203,28 @@
     font-size: 4.18vw;
 }
 
-.userMail{
+.appointment-delete{
     display: none;
+    color: #2A87BA;
+    font-size: 4.18vw;
+    text-align: center;
 }
 
-.appointment-delete{
-    text-align: center;
+.userMail{
     display: none;
 }
 
 .reservedPopup .ui-content,
 .reserveLatePopup .ui-content,
-.otherReservePopup .ui-content{
+.otherReservePopup .ui-content,
+.deleteReservePopup .ui-content{
     padding: 0;
 }
 
 .reservedPopup .ui-content .header,
 .reserveLatePopup .ui-content .header,
-.otherReservePopup .ui-content .header{
+.otherReservePopup .ui-content .header,
+.deleteReservePopup .ui-content .header{
     margin-top: 10vw;
 }
 

@@ -92,6 +92,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             activeCount = 0;
             //按钮不可用并初始化
             $('.appointmentTeaBtn').removeClass('active-btn-green').text(newStatus).attr('data-status', 'new');
+            $('.appointment-delete').hide();
             //去除reserve_id
             $('.appointment-hour li').removeAttr('data-id');
             itemList = [];
@@ -314,41 +315,40 @@ $("#viewStaffUserAppointment").pagecontainer({
             }
         }
 
-        //根据reserve_id查找该预约情况，并设置茶水数
-        function setTeaNumberByReserveID(id) {
-            //1. 查找对应预约信息
-            let reserveDetail = {};
+        //根据reserve_id查找预约详情，并进行不同操作
+        function handleByReserveID(id, item) {
+            //1.先查找预约
+            let detail;
             for (var i in reserveList) {
                 if (id == reserveList[i]['reserve_id']) {
-                    reserveDetail = JSON.parse(reserveList[i]['info_data']);
+                    detail = reserveList[i];
                     break;
                 }
             }
 
-            //2. 修改预约的茶水数量
-            let teaCount = reserveDetail['tea'];
-            for (var i = 0; i < teaCount; i++) {
-                $('.appointment-count .tea-addition').trigger('click');
-            }
-            let waterCount = reserveDetail['water'];
-            for (var i = 0; i < waterCount; i++) {
-                $('.appointment-count .water-addition').trigger('click');
-            }
-        }
-
-        //根据reserve_id查找他人预约情况，并popup
-        function getOtherReserveByID(id) {
-            let reserveDetail;
-            for (var i in reserveList) {
-                if (id == reserveList[i]['reserve_id']) {
-                    reserveDetail = reserveList[i];
-                    break;
+            //2.不同操作
+            if(item == 'set') {
+                //显示自己预约的茶杯数量
+                let teaCount = JSON.parse(detail['info_data'])['tea'];
+                for (var i = 0; i < teaCount; i++) {
+                    $('.appointment-count .tea-addition').trigger('click');
                 }
-            }
+                let waterCount = JSON.parse(detail['info_data'])['water'];
+                for (var i = 0; i < waterCount; i++) {
+                    $('.appointment-count .water-addition').trigger('click');
+                }
 
-            $('.otherReservePopup .header-text').text(reserveDetail['reserve_login_id']);
-            $('.otherReservePopup .main-paragraph').text(reserveDetail['info_push_content'].split(' / ')[0]);
-            popupMsgInit('.otherReservePopup');
+            } else if(item == 'delete') {
+                //删除自己的预约
+                $('.deleteReservePopup .header-title').text(detail['info_push_content'].split(' / ')[0]);
+                popupMsgInit('.deleteReservePopup');
+
+            } else if(item == 'other') {
+                //提示他人的预约
+                $('.otherReservePopup .header-text').text(detail['reserve_login_id']);
+                $('.otherReservePopup .main-paragraph').text(detail['info_push_content'].split(' / ')[0]);
+                popupMsgInit('.otherReservePopup');
+            }
         }
 
         //新增预约
@@ -483,7 +483,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                 console.log(data);
 
                 if (data['result_code'] == '1') {
-                    $("#reserveTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);
+                    $("#updateTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);
                     //1.初始化UI
                     initTeaNumberSuccess();
                     //2.remove session
@@ -511,6 +511,69 @@ $("#viewStaffUserAppointment").pagecontainer({
             }();
         }
 
+        //删除预约
+        function deleteMyReserve(id) {
+            var self = this;
+
+            let info = $('.deleteReservePopup .header-title').text();
+            let target_date = $('.appointment-date-list .active-staff').data('item');
+            let target_hour = $('.appointment-hour .active-hour').data('hour');
+            let start_date = new Date(target_date + ' ' + target_hour).getTime() / 1000;
+
+            //预约时间必须大于当前时间30分钟，所以先判断日期，再判断时间
+            let overtime = false;
+            let now_date = new Date().yyyymmdd('/');
+            if (now_date == target_date) {
+                let now_time = Math.floor(new Date().getTime() / 1000) + 30 * 60;
+                if (now_time > start_date) {
+                    overtime = true;
+                }
+            }
+
+            let queryData = JSON.stringify({
+                reserve_id: id,
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no'],
+                info_push_admin_title: '同仁已取消茶水预约',
+                info_push_admin_content: loginData['loginid'] + '已取消' + info + '之預約',
+                info_push_emp_title: '茶水預約已取消',
+                info_push_emp_content: '您已取消' + info + '之預約',
+                push: '11'
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {
+                    $("#deleteTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);
+                    //1.初始化UI
+                    initTeaNumberSuccess();
+                    //2.remove session
+                    let target_name = $('.appointment-room-list .active-staff').text();
+                    let target_date = $('.appointment-date-list .active-staff').data('item');
+                    let target_key = target_name + '_' + target_date;
+                    window.sessionStorage.removeItem(target_key);
+                    //3. 获取该会议室该日期最新的预约
+                    initHoursUI();
+                    getReserveByTarget();
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                //如果超时就不需要API，直接popup提示
+                if (overtime) {
+                    loadingMask('hide');
+                    //popup
+                    popupMsgInit('.reserveLatePopup');
+                } else {
+                    EmpServicePlugin.QPlayAPI("POST", "deleteReserve", self.successCallback, self.failCallback, queryData, '');
+                }
+            }();
+        }
+
         //查找用户英文名和公司
         function checkUserCompany(name) {
             let queryData = '<LayoutHeader><Company>All Company</Company><Name_CH></Name_CH>' +
@@ -522,6 +585,8 @@ $("#viewStaffUserAppointment").pagecontainer({
                 if(data['ResultCode'] == '1') {
                     //再透过详细资料获得邮箱地址
                     sendMailOther(data['Content'][0]['Company'], name);
+                } else {
+                    $("#noEmailData").fadeIn(100).delay(2000).fadeOut(100);
                 }
             };
 
@@ -549,6 +614,8 @@ $("#viewStaffUserAppointment").pagecontainer({
                     let mail = $.trim(data['Content'][0]['EMail']);
                     $('.userMail').html('').append('<a href="mailto:' + mail + '?subject=茶水協調">' + mail + '</a>');
                     $('.userMail a')[0].click();
+                } else {
+                    $("#noEmailData").fadeIn(100).delay(2000).fadeOut(100);
                 }
             };
 
@@ -722,18 +789,22 @@ $("#viewStaffUserAppointment").pagecontainer({
                 }
             } else if(checked) {
                 //点击他人預約需要提示mail
-                getOtherReserveByID(reserve_id);
+                handleByReserveID(reserve_id, 'other');
             }
 
             //按钮是[新增]还是[修改]
             if (!self) {
+                //更新按钮状态
                 $('.appointmentTeaBtn').text(newStatus).attr('data-status', 'new');
+                $('.appointment-delete').hide();
             } else {
                 //编辑时需要清空茶水数量
                 onlyInitTeaNumber();
                 //根据reserve_id查找该预约情况，并设置茶水数
-                setTeaNumberByReserveID(reserve_id);
+                handleByReserveID(reserve_id, 'set');
+                //更新按钮状态
                 $('.appointmentTeaBtn').text(updateStatus).attr('data-status', 'update');
+                $('.appointment-delete').show();
             }
 
             //按钮是否可用
@@ -770,6 +841,18 @@ $("#viewStaffUserAppointment").pagecontainer({
                     updateSelfReserve(reserve_id);
                 }
             }
+        });
+
+        //删除预约
+        $('.appointment-delete span').on('click', function() {
+            handleByReserveID(reserve_id, 'delete');
+        });
+
+        //确定删除预约
+        $('.deleteReserveBtn').on('click', function() {
+            $('.deleteReservePopup').popup('close');
+            loadingMask('show');
+            deleteMyReserve(reserve_id);
         });
 
         //发送邮件
