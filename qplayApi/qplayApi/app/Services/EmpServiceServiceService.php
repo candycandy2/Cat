@@ -81,7 +81,7 @@ class EmpServiceServiceService
 
                 $newServicePush = $this->servicePushRepository->addServicePush($pushUserData);
 
-                $serciceLog = EmpServiceLog::getLogData(self::TABLE, $newServiceRowId,
+                $serviceLog = EmpServiceLog::getLogData(self::TABLE, $newServiceRowId,
                                                      self::ACTION_ADD, $loginId,
                                                      $domain ,$empNo,
                                                      $data);
@@ -91,7 +91,7 @@ class EmpServiceServiceService
                                                      $domain, $empNo,
                                                      $pushUserData);
 
-                array_push($logData, $serciceLog, $pushLog); 
+                array_push($logData, $serviceLog, $pushLog); 
 
                 DB::commit();
 
@@ -127,13 +127,30 @@ class EmpServiceServiceService
         foreach ($serviceList as $service) {
 
             $updatedUser = EmpServiceLog::getLastUpdatedUser(self::TABLE,$service->row_id);
+            $servicePushList =  $this->servicePushRepository->getEmpServicePush($service->row_id);
+                
+
             if(!is_null($updatedUser)){
                 
-                $serviceTypeArr[$service->type][] = ["service_id" => $service->service_id,
-                                                      "owner_login_id" => $updatedUser->login_id,
-                                                      "owner_domain" => $updatedUser->domain,
-                                                      "owner_emp_no" => $updatedUser->emp_no];
+                $pushList = [];
+                
+                foreach($servicePushList as $pushReceiver){
+
+                    $pushList[] = ['login_id'=> $pushReceiver->login_id,
+                                 'domain'  => $pushReceiver->domain,
+                                 'emp_no'  => $pushReceiver->emp_no
+                                ];
+                
+                }
+                
+                $serviceTypeArr[$service->type][] = ["service_id"       => $service->service_id,
+                                                      "owner_login_id"  => $updatedUser->login_id,
+                                                      "owner_domain"    => $updatedUser->domain,
+                                                      "owner_emp_no"    => $updatedUser->emp_no,
+                                                      "push_list"       => $pushList
+                                                    ];
             }
+
         }
 
         foreach ($serviceTypeArr as $key => $value) {
@@ -206,5 +223,127 @@ class EmpServiceServiceService
                   ];
 
         return [$result,$logData];
+    }
+
+    /**
+     * check service_id and update user is correct or not
+     * @return Array
+     */
+    public function checkEmpServicePush($serviceIdRowId, $loginId, $domain, $empNo){
+        return $this->servicePushRepository->checkEmpServicePush($serviceIdRowId, $loginId, $domain, $empNo);
+    }
+
+    /**
+     * Add new service_id to user
+     * @param Array $newServiceIdList service id list to be added
+     * @param String $loginId user login_id
+     * @param String $domain user domain
+     * @param String $empNo user emp_no
+     * @return Array 
+     */
+    public function addEmpServicePush($newServiceIdList, $loginId, $domain, $empNo){
+
+        $logData = [];
+
+        foreach ($newServiceIdList as $serviceId) {
+                
+            //check service_id exist
+            $service = $this->serviceIDRepository->getServiceRowId($serviceId);
+            
+            if(is_null($service)){
+
+                $result = ["result_code" => ResultCode::_052001_empServiceExist, "message"
+                                 => CommonUtil::getMessageContentByCode(ResultCode::_052001_empServiceExist)
+                  ];
+
+                $logData = [];
+                return [$result,$logData];
+
+            }else{
+
+                $pushUserData = [
+                'service_id_row_id' =>  $service->row_id,
+                'login_id' => $loginId,
+                'domain' => $domain,
+                'emp_no' => $empNo
+                ];
+
+                $newServicePush = $this->servicePushRepository->addServicePush($pushUserData);
+
+                $pushLog = EmpServiceLog::getLogData(self::TABLE_SERVICE_PUSH, $newServicePush,
+                                                     self::ACTION_ADD, $loginId,
+                                                     $domain, $empNo,
+                                                     $pushUserData);
+
+                array_push($logData, $pushLog); 
+               
+            }
+        }
+
+        $result = [ "result_code" => ResultCode::_1_reponseSuccessful, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
+                  ];
+        return [$result,$logData];
+    }
+
+    /**
+     * Delete service push data with belong specific user
+     * @param String $loginId user login_id
+     * @param String $domain user domain
+     * @param String $empNo user emp_no
+     * @return Array
+     */
+    public function deleteEmpServicePush($deleteServiceIdList, $loginId, $domain, $empNo){
+
+        $logData = [];
+
+        foreach ($deleteServiceIdList as $serviceId) {
+            
+
+            //check service_id exist
+            $service = $this->serviceIDRepository->getServiceRowId($serviceId);
+            
+            if(is_null($service)){
+
+                $result = ["result_code" => ResultCode::_052001_empServiceExist, "message"
+                                 => CommonUtil::getMessageContentByCode(ResultCode::_052001_empServiceExist)
+                  ];
+
+                $logData = [];
+                return [$result, $logData];
+
+            }else{
+                
+                $servicePushRowId = $this->servicePushRepository->deleteServicePush($service->row_id, $loginId, $domain, $empNo);
+
+                if(is_null($servicePushRowId)){
+                    $result = ["result_code" => ResultCode::_052011_empServicePushNotExist, "message"
+                                 => CommonUtil::getMessageContentByCode(ResultCode::_052011_empServicePushNotExist)
+                  ];
+                    $logData = [];
+                    return [$result, $logData];
+                }
+
+                $deletePushUserData = [
+                'service_id' =>  $serviceId,
+                'login_id' => $loginId,
+                'domain' => $domain,
+                'emp_no' => $empNo
+                ];
+
+                $pushLog = EmpServiceLog::getLogData(self::TABLE_SERVICE_PUSH, $servicePushRowId,
+                                                     self::ACTION_DELETE, $loginId,
+                                                     $domain, $empNo,
+                                                     $deletePushUserData);
+
+                array_push($logData, $pushLog);
+            }
+            
+        }
+
+         $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
+                       "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
+                      ];
+            return [$result,$logData];
     }
 }

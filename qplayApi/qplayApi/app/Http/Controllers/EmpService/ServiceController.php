@@ -166,4 +166,70 @@ class ServiceController extends Controller
 
     }
 
+    /**
+     * Set user could recive the push of service
+     * @param Request $request
+     */
+    public function setEmpServicePush(Request $request){
+        //parameter verify
+        $validator = Validator::make($request->all(),
+            [
+            'login_id'   => 'required',
+            'domain'     => 'required',
+            'emp_no'     => 'required',
+            'new'        => 'sometimes|array',
+            'delete'     => 'sometimes|array'
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'sometimes' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'array' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        $loginId = $request->login_id;
+        $domain = $request->domain;
+        $empNo = $request->emp_no;
+
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        try {
+            
+            $DBconn = DB::connection($this->connection);
+            $DBconn->beginTransaction();
+            
+            if(isset($request->new) && count($request->new)> 0){
+                $newRes = $this->empService->addEmpServicePush($request->new, $loginId, $domain, $empNo);
+
+                if($newRes[0]['result_code'] == ResultCode::_1_reponseSuccessful){
+                    $this->empServiceLog->newDataLog($newRes[1]);
+                }else{
+                    return response()->json($newRes[0]);    
+                }
+                
+            }
+
+            if(isset($request->delete) && count($request->delete)> 0){
+                $delRes = $this->empService->deleteEmpServicePush($request->delete, $loginId, $domain, $empNo);
+
+                if($delRes[0]['result_code'] == ResultCode::_1_reponseSuccessful){
+                    $this->empServiceLog->newDataLog($delRes[1]);
+                }else{
+                    return response()->json($delRes[0]);    
+                }
+                
+            }
+            $DBconn->commit();
+            return response()->json(["result_code" => ResultCode::_1_reponseSuccessful, 
+                                       "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
+                                      ]);
+        } catch (\Exception $e) {
+            $DBconn->rollBack();
+            throw $e;
+        }
+    }
+
 }
