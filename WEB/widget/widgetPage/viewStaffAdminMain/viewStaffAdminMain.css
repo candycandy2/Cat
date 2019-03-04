@@ -329,3 +329,15 @@
     height: 8vw;
     padding: 0 2vw;
 }
+
+.openManagePower .ui-content{
+    padding: 0;
+}
+
+.openManagePower .ui-content .header{
+    margin-top: 10vw;
+}
+
+.openManagePower .ui-content .footer{
+    margin-top: 8vw;
+}
