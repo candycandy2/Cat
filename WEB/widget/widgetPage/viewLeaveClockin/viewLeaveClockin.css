@@ -56,7 +56,9 @@ input[type=radio]:checked + label {
     padding: 0 0 0 0;
 }
 
-#workDate, .apply-reason {
+#workDate, 
+.apply-reason, 
+.apply-machine-no {
     color: #0f0f0f;
 }
 
@@ -139,4 +141,37 @@ input[type=radio]:checked + label {
 .confirmClockin>.ui-content>.header,
 .errMsgByClockin>.ui-content>.header {
     margin-top: 12.5%;
+}
+
+.apply-clockin-time {
+    height: 12vw;
+    color: #0f0f0f;
+}
+
+.apply-clockin-time>div:nth-of-type(1){
+    height: 5vw;
+}
+
+.apply-clockin-time>div:nth-of-type(1)>div {
+    display: inline-block;
+    width: 46vw;
+    height: 5vw;
+    line-height: 5vw;
+}
+
+.apply-clockin-time>div:nth-of-type(2) {
+    height: 7vw;
+}
+
+.apply-clockin-time>div:nth-of-type(2)>div {
+    display: inline-block;
+    width: 46vw;
+    height: 7vw;
+    line-height: 7vw;
+}
+
+.apply-machine-no {
+    height: 10vw;
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
 }
