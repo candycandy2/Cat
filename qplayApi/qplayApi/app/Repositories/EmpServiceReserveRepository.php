@@ -19,6 +19,7 @@ class EmpServiceReserveRepository
     }
 
     public function newReserve(Array $data){
+        
        return $this->reserveRecord->insertGetId($data);
     }
 
@@ -67,7 +68,7 @@ class EmpServiceReserveRepository
             ->where('service_id.active', 'Y')
             ->where('reserve_record.active', 'Y')
             ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
-            ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
+            ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'<=', $endDate)
             ->select('reserve_record.row_id as reserve_id',
                      'reserve_record.login_id as reserve_login_id','reserve_record.domain as reserve_domain', 
                      'reserve_record.emp_no as reserve_emp_no',

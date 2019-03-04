@@ -86,4 +86,5 @@ abstract class ResultCode
     const _052008_empServiceReserveHasCompleted = "052008"; //預約已經完成
     const _052009_empServiceReserveEmpDataIncorrct = "052009"; //建立預約服務的員工資料不正確
     const _052010_empServiceReserveDateOverdueCannotCancel = "052010"; //預約服務即將在30分鐘內執行, 無法編輯
+    const _052011_empServicePushNotExist = "052011";//移除 Service 推播失敗, 此員工沒有新增此 Service 推播
 }
