@@ -137,13 +137,22 @@ $("#viewStaffUserReserve").pagecontainer({
                     $("#deleteReserveSuccess").fadeIn(100).delay(2000).fadeOut(100);
                     //remove DOM
                     $('.tea-reserve-list[data-id="' + id + '"]').remove();
+                    loadingMask('hide');
                     //info data
                     let infoData = getReserveByID(id)['info_data'];
                     deleteReserveList.push(JSON.parse(infoData));
                     window.sessionStorage.setItem('DeleteReserveInfoData', JSON.stringify(deleteReserveList));
+                } else if (data['result_code'] == '052008') {
+                    loadingMask('hide');
+                    //预约已完成，不能修改或删除
+                    popupMsgInit('.reserveTeaComplete');
+                } else if(data['result_code'] == '052010') {
+                    loadingMask('hide');
+                    //30分钟内的预约，无法修改或删除
+                    popupMsgInit('.reserveTeaLate');
+                } else {
+                    loadingMask('hide');
                 }
-
-                loadingMask('hide');
             };
 
             this.failCallback = function(data) {};

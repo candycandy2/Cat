@@ -494,6 +494,14 @@ $("#viewStaffUserAppointment").pagecontainer({
                     //3. 获取该会议室该日期最新的预约
                     initHoursUI();
                     getReserveByTarget();
+                } else if (data['result_code'] == '052008') {
+                    //预约已完成，不能修改或删除
+                    loadingMask('hide');
+                    popupMsgInit('.reserveCompletePopup');
+                } else if (data['result_code'] == '052010') {
+                    //30分钟内的预约，无法修改或删除
+                    loadingMask('hide');
+                    popupMsgInit('.reserveLatePopup');
                 }
             };
 
@@ -557,6 +565,14 @@ $("#viewStaffUserAppointment").pagecontainer({
                     //3. 获取该会议室该日期最新的预约
                     initHoursUI();
                     getReserveByTarget();
+                } else if (data['result_code'] == '052008') {
+                    //预约已完成，不能修改或删除
+                    loadingMask('hide');
+                    popupMsgInit('.reserveCompletePopup');
+                } else if (data['result_code'] == '052010') {
+                    //30分钟内的预约，无法修改或删除
+                    loadingMask('hide');
+                    popupMsgInit('.reserveLatePopup');
                 }
             };
 
