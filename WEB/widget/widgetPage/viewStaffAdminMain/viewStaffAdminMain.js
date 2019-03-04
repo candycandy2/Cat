@@ -350,7 +350,7 @@ $("#viewStaffAdminMain").pagecontainer({
         function getEmpServiceList() {
             var self = this;
             var queryData = JSON.stringify({
-                status_type: staffServiceType
+                service_type: staffServiceType
             });
 
             this.successCallback = function(data) {
@@ -381,13 +381,28 @@ $("#viewStaffAdminMain").pagecontainer({
                     if(flag) {
                         allowPush = true;
                         //1. append img
+                        $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="new">');
                         //2. save local
                         window.localStorage.setItem('OpenAdminPush', 'Y');
+                        //3. do something
+                        getStaffEmpService();
+                        getBoardType();
+                        if(adminRefresh == null) {
+                            adminRefresh = PullToRefresh.init({
+                                mainElement: '.admin-main-update',
+                                onRefresh: function() {
+                                    getTodayAllReserve();
+                                    getTomorrowAllReserve();
+                                }
+                            });
+                        }
                     } else {
                         allowPush = false;
                         //1. append img
+                        $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_close.png" data-type="delete">');
                         //2. save local
                         window.localStorage.setItem('OpenAdminPush', 'N');
+                        //3. nothing to do
                     }
                 }
             };
@@ -399,9 +414,24 @@ $("#viewStaffAdminMain").pagecontainer({
                 if(openPush == 'Y') {
                     allowPush = true;
                     //append img
+                    $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="new">');
+                    //do something
+                    getStaffEmpService();
+                    getBoardType();
+                    if(adminRefresh == null) {
+                        adminRefresh = PullToRefresh.init({
+                            mainElement: '.admin-main-update',
+                            onRefresh: function() {
+                                getTodayAllReserve();
+                                getTomorrowAllReserve();
+                            }
+                        });
+                    }
                 } else if(openPush == 'N') {
                     allowPush = false;
                     //append img
+                    $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_close.png" data-type="delete">');
+                    //nothing to do
                 } else {
                     EmpServicePlugin.QPlayAPI("POST", "getEmpServiceList", self.successCallback, self.failCallback, queryData, '');
                 }
@@ -416,12 +446,27 @@ $("#viewStaffAdminMain").pagecontainer({
                 domain: loginData['domain'],
                 emp_no: loginData['emp_no']
             };
-            queryData[type] = staffServiceID;
+            queryData[type] = [{staffServiceID}];
 
             this.successCallback = function(data) {
                 console.log(data);
 
-                if(data['result_code'] == '1') {}
+                if(data['result_code'] == '1') {
+                    if(type == 'delete') {
+                        openPush = false;
+                        window.localStorage.setItem('OpenAdminPush', 'N');
+                        //do something
+                        $('.main-today-ul').html('');
+                        $('.main-complete-ul').html('');
+                        $('.main-tomorrow-ul').html('');
+                    } else {
+                        openPush = true;
+                        window.localStorage.setItem('OpenAdminPush', 'Y');
+                        //do something
+                        getStaffEmpService();
+                        getBoardType();
+                    }
+                }
             };
 
             this.failCallback = function(data) {};
@@ -614,36 +659,37 @@ $("#viewStaffAdminMain").pagecontainer({
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminMain .page-main').css('height', mainHeight);
             $('.admin-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
-            $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="new">');
             headerHeight = $('#viewStaffAdminMain .page-header').height();
             //初始化总机状态设定dropdownlist
             initAdminSetting();
+            //获取推播权限
+            getEmpServiceList();
             //是否有总机状态
             getStaffStatus();
             //是否有茶水服务
-            getStaffEmpService();
+            //getStaffEmpService();
             //获取所有staff的board主题
-            getBoardType();
+            //getBoardType();
             //下拉更新
-            if(adminRefresh == null) {
-                adminRefresh = PullToRefresh.init({
-                    mainElement: '.admin-main-update',
-                    onRefresh: function() {
-                        getTodayAllReserve();
-                        getTomorrowAllReserve();
-                    }
-                });
-            }
+            // if(adminRefresh == null) {
+            //     adminRefresh = PullToRefresh.init({
+            //         mainElement: '.admin-main-update',
+            //         onRefresh: function() {
+            //             getTodayAllReserve();
+            //             getTomorrowAllReserve();
+            //         }
+            //     });
+            // }
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
             //每10秒更新一次所有预约
-            if(refreshInterval == null) {
-                refreshInterval = setInterval(function() {
+            refreshInterval = setInterval(function() {
+                if(allowPush == true) {
                     getTodayAllReserve();
                     getTomorrowAllReserve();
-                }, 10000);
-            }
+                }
+            }, 10000);
         });
 
         $("#viewStaffAdminMain").on("pagehide", function(event, ui) {
@@ -704,7 +750,12 @@ $("#viewStaffAdminMain").pagecontainer({
 
         //setting admin status
         $('#adminSettingBtn').on('click', function() {
-            $('#adminSettingPopup').trigger('click');
+            if(allowPush == false) {
+                popupMsgInit('.openManagePower');
+                return false;
+            } else if(allowPush == true) {
+                $('#adminSettingPopup').trigger('click');
+            }
         });
 
         //关闭popup后修改状态
@@ -739,6 +790,14 @@ $("#viewStaffAdminMain").pagecontainer({
             }
         });
 
+        //点击菜单需要判断是否有推播权限
+        $('.staff-admin-menu-btn').on('click', function() {
+            if(allowPush == false) {
+                popupMsgInit('.openManagePower');
+                return false;
+            }
+        });
+
         //修改是否接受推播
         $('.title-text-switch').on('click', function() {
             var self = $('.title-text-switch img');
@@ -746,9 +805,11 @@ $("#viewStaffAdminMain").pagecontainer({
             if(type == 'new') {
                 self.attr('src', serverURL + imgURL + 'switch_close.png');
                 self.attr('data-type', 'delete');
+                setServicePush('delete');
             } else {
                 self.attr('src', serverURL + imgURL + 'switch_open.png');
                 self.attr('data-type', 'new');
+                setServicePush('new');
             }
         });
 
