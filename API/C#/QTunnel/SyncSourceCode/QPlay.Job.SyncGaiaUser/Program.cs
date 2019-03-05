@@ -50,10 +50,48 @@ namespace QPlay.Job.SyncGaiaUser
                 log.Info("3");
                 var reader = cmd.ExecuteReader();
                 log.Info("4");
-                dt.BeginLoadData();
-                dt.Load(reader); // throws ConstraintException
-                dt.EndLoadData();
-                log.Info("5");
+                try
+                {
+                    dt.BeginLoadData();
+                    dt.Load(reader); // throws ConstraintException
+                    dt.EndLoadData();
+                    log.Info("5");
+                }
+                catch (System.Data.DataException e)
+                {
+
+                    System.Data.DataRow[] rowsInError;
+                    System.Text.StringBuilder sbError = new System.Text.StringBuilder();
+                    // Test if the table has errors. If not, skip it.
+                    if (dt.HasErrors)
+                    {
+                        // Get an array of all rows with errors.
+                        rowsInError = dt.GetErrors();
+                        // Print the error of each column in each row.
+                        for (int i = 0; i < rowsInError.Length; i++)
+                        {
+                            foreach (System.Data.DataColumn column in dt.Columns)
+                            {
+                                sbError.Append(column.ColumnName + " " + rowsInError[i].GetColumnError(column));
+                            }
+                            // Clear the row errors
+                            rowsInError[i].ClearErrors();
+                        }
+                    }
+                    string time = System.DateTime.Now.ToString();
+                    var fileName = "Error.log";
+                    string filePath = System.Web.HttpContext.Current.Server.MapPath(fileName);
+                    System.IO.FileStream fst = new System.IO.FileStream(filePath, System.IO.FileMode.Append);
+                    System.IO.StreamWriter swt = new System.IO.StreamWriter(fst, System.Text.Encoding.GetEncoding("utf-8"));
+                    swt.WriteLine("======================");
+                    swt.WriteLine(time);
+                    swt.WriteLine("----------------------");
+                    swt.WriteLine(sbError.ToString());
+                    swt.WriteLine("----------------------");
+                    swt.WriteLine(e.ToString());
+                    swt.Close();
+                    fst.Close();
+                }
             }
             else
             //For SQL Server
