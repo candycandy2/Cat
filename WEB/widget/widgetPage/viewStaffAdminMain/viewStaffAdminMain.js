@@ -452,8 +452,9 @@ $("#viewStaffAdminMain").pagecontainer({
                 domain: loginData['domain'],
                 emp_no: loginData['emp_no']
             };
-            queryData[type] = [];
-            queryData[type].push(staffServiceID);
+            queryData[type] = [{
+                service_id: staffServiceID
+            }];
 
             this.successCallback = function(data) {
                 console.log(data);
