@@ -4,7 +4,7 @@
     "definition": "",
     "context": "",
     "term_plural": "",
-    "reference": "",
+    "reference": "https://github.com/BenQdigiPages/EnterpriseAPPPlatform/pull/new/wendy2",
     "comment": ""
 },
 {
@@ -17,6 +17,14 @@
 },
 {
     "term": "portal_3",
+    "definition": "",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+},
+{
+    "term": "portal_4",
     "definition": "viewStaffUserMain",
     "context": "",
     "term_plural": "",
@@ -24,18 +32,11 @@
     "comment": "viewStaffUserMain"
 },
 {
-    "term": "portal_4",
+    "term": "portal_5",
     "definition": "viewMessageList",
     "context": "",
     "term_plural": "",
     "reference": "",
     "comment": "openIdeaPortal"
-},
-{
-    "term": "portal_5",
-    "definition": "",
-    "context": "",
-    "term_plural": "",
-    "reference": "",
-    "comment": ""
-}]
+}
+]
