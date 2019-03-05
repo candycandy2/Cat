@@ -29,73 +29,69 @@ namespace QPlay.Job.SyncGaiaUser
             string maxRows = System.Configuration.ConfigurationManager.AppSettings["MaxRows"];
             //if (maxRows.Trim().Length > 0) maxRows = " TOP " + maxRows + " ";
             string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
-            string sql = "SELECT " + maxRows + " * FROM " + view;
+            string sql = "SELECT " + maxRows + " * FROM " + view + " ORDER BY emp_no";
             log.Info("sql = (" + sql + ")#");
 
             //For mySQL
             string mysqlstring = System.Configuration.ConfigurationManager.AppSettings["MySQL"];
             log.Info("AppSettings[MySQL] = (" + mysqlstring + ")#");
             if (mysqlstring != null && mysqlstring.Length > 0)
-            {
+            {//For MySQL Server
 
-                MySqlConnection mysqlconnection;
-                //string connstring = string.Format("Server=10.82.246.95; database={0}; UID=eHRDB; password=kXGvVuVhV8HeDpDE", "qplay");
-                //log.Info("connstring = (" + connstring + ")#");
-                log.Info("0");
-                mysqlconnection = new MySqlConnection(mysqlstring);
-                log.Info("1");
-                mysqlconnection.Open();
-                log.Info("2");
-                var cmd = new MySqlCommand(sql, mysqlconnection);
-                log.Info("3");
-                var reader = cmd.ExecuteReader();
-                log.Info("4");
                 try
                 {
+                    MySqlConnection mysqlconnection;
+                    //string connstring = string.Format("Server=10.82.246.95; database={0}; UID=eHRDB; password=kXGvVuVhV8HeDpDE", "qplay");
+                    //log.Info("connstring = (" + connstring + ")#");
+                    log.Info("0");
+                    mysqlconnection = new MySqlConnection(mysqlstring);
+                    log.Info("1");
+                    mysqlconnection.Open();
+                    log.Info("2");
+                    var cmd = new MySqlCommand(sql, mysqlconnection);
+                    log.Info("3");
+                    var reader = cmd.ExecuteReader();
+                    log.Info("4");
                     dt.BeginLoadData();
-                    dt.Load(reader); // throws ConstraintException
+                    dt.Load(reader); // throws ConstraintException //???
                     dt.EndLoadData();
                     log.Info("5");
                 }
-                catch (System.Data.DataException e)
+                catch (Exception e)
                 {
-
+                    log.Info("5.1");
                     System.Data.DataRow[] rowsInError;
                     System.Text.StringBuilder sbError = new System.Text.StringBuilder();
                     // Test if the table has errors. If not, skip it.
                     if (dt.HasErrors)
                     {
+                        log.Info("5.2");
                         // Get an array of all rows with errors.
                         rowsInError = dt.GetErrors();
+                        log.Info("5.3");
                         // Print the error of each column in each row.
                         for (int i = 0; i < rowsInError.Length; i++)
                         {
+                            log.Info("5.4 : " + i);
                             foreach (System.Data.DataColumn column in dt.Columns)
                             {
+                                column.AllowDBNull = true;
+                                log.Info("5.5");
+                                log.Info(column.ColumnName + " " + rowsInError[i].GetColumnError(column));
+                                log.Info(rowsInError[i][column.ToString()]);
                                 sbError.Append(column.ColumnName + " " + rowsInError[i].GetColumnError(column));
                             }
                             // Clear the row errors
                             rowsInError[i].ClearErrors();
+                            log.Info("5.6");
                         }
                     }
-                    string time = System.DateTime.Now.ToString();
-                    var fileName = "Error.log";
-                    string filePath = System.Web.HttpContext.Current.Server.MapPath(fileName);
-                    System.IO.FileStream fst = new System.IO.FileStream(filePath, System.IO.FileMode.Append);
-                    System.IO.StreamWriter swt = new System.IO.StreamWriter(fst, System.Text.Encoding.GetEncoding("utf-8"));
-                    swt.WriteLine("======================");
-                    swt.WriteLine(time);
-                    swt.WriteLine("----------------------");
-                    swt.WriteLine(sbError.ToString());
-                    swt.WriteLine("----------------------");
-                    swt.WriteLine(e.ToString());
-                    swt.Close();
-                    fst.Close();
+                    log.Info(e.ToString());
+                    log.Info("5.7");
                 }
             }
             else
-            //For SQL Server
-            {
+            {//For SQL Server
                 //对数据库连接字符串解密
                 log.Info("Begin Connect Gaia DB");
                 DbSession dbGaia = new DbSession("dbGaia");
