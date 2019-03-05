@@ -2,9 +2,11 @@ var workingday = "",
     clockinday = "",
     clockintime = "";
 var workNameVal = "",
-    otherReason = "";
+    otherReason = "",
+    machineNoVal = "";
 var clockinWorkType = "",
-    clockinReasonType = "";
+    clockinReasonType = "",
+    clockinMachineNo = "";
 var doneDateTime = {};
 
 var workTypeData = {
@@ -51,6 +53,7 @@ function checkClockinBeforePreview() {
             $('#chooseWorkday').text() !== pleaseSelectStr &&
             $('#chooseClockinday').text() !== pleaseSelectStr &&
             $('#chooseClockintime').text() !== pleaseSelectStr &&
+            $("#machine-type-popup option").text() !== pleaseSelectStr &&
             $("#reason-type-popup option").text() !== pleaseSelectStr) {
             $('#previewClockinBtn').addClass('leavePreview-active-btn');
 
@@ -65,6 +68,7 @@ function checkClockinBeforePreview() {
             $('#chooseWorkday').text() !== pleaseSelectStr &&
             $('#chooseClockinday').text() !== pleaseSelectStr &&
             $('#chooseClockintime').text() !== pleaseSelectStr &&
+            $("#machine-type-popup option").text() !== pleaseSelectStr &&
             $("#reason-type-popup option").text() !== pleaseSelectStr) {
             $('#previewClockinBtn').addClass('leavePreview-active-btn');
 
@@ -200,6 +204,13 @@ $("#viewLeaveClockin").pagecontainer({
             clockinWorkType = $("#work-type-popup option").text();
             checkClockinBeforePreview();
         });*/
+
+        //选择后检查是否符合预览要求
+        $(document).on("popupafterclose", "#machine-type-popup-option", function() {
+            machineNoVal = $("#machine-type-popup option").val();
+            clockinMachineNo = $("#machine-type-popup option").text();
+            checkClockinBeforePreview();
+        });
 
         //选择后检查是否符合预览要求
         $(document).on("popupafterclose", "#reason-type-popup-option", function() {
@@ -360,6 +371,9 @@ $("#viewLeaveClockin").pagecontainer({
             $('#newWorkType input[id^=type]').removeAttr("checked");
             //getWorkingType();
             clockinWorkType = "";
+            //刷卡機號
+            getMachineNo();
+            clockinMachineNo = "";
             //未刷卡原因
             getReasonType();
             clockinReasonType = "";
@@ -390,6 +404,7 @@ $("#viewLeaveClockin").pagecontainer({
                 $("#previewWorkType").text(clockinWorkType);
                 $("#previewClockinDay").text(clockinday);
                 $("#previewClockinTime").text(clockintime);
+                $("#previewMachineNo").text(clockinMachineNo);
                 $("#previewReason").text(clockinReasonType);
                 if (clockinReasonType === "其他") {
                     $('#otherReasonArea').show();
@@ -444,10 +459,11 @@ $("#viewLeaveClockin").pagecontainer({
             }
             //filler: 本人或是秘書申請
             if (myEmpNo === originalEmpNo) {
-                modifyAttendanceFormData += '<filler>' + myEmpNo + '</filler></LayoutHeader>';
+                modifyAttendanceFormData += '<filler>' + myEmpNo + '</filler>';
             } else {
-                modifyAttendanceFormData += '<filler>' + originalEmpNo + '</filler></LayoutHeader>';
+                modifyAttendanceFormData += '<filler>' + originalEmpNo + '</filler>';
             }
+            modifyAttendanceFormData += '<cardno>' + machineNoVal + '</cardno></LayoutHeader>';
             //呼叫API
             SendModifyAttendanceFormData();
         });
