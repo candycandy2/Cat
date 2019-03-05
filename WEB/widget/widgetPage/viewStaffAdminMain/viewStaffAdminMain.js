@@ -381,25 +381,28 @@ $("#viewStaffAdminMain").pagecontainer({
                     if(flag) {
                         allowPush = true;
                         //1. append img
-                        $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="new">');
+                        $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="delete">');
                         //2. save local
                         window.localStorage.setItem('OpenAdminPush', 'Y');
                         //3. do something
                         getStaffEmpService();
                         getBoardType();
-                        if(adminRefresh == null) {
-                            adminRefresh = PullToRefresh.init({
-                                mainElement: '.admin-main-update',
-                                onRefresh: function() {
-                                    getTodayAllReserve();
-                                    getTomorrowAllReserve();
-                                }
-                            });
-                        }
+                        //4. 设置定时器和下拉更新
+                        refreshInterval = setInterval(function() {
+                            getTodayAllReserve();
+                            getTomorrowAllReserve();
+                        }, 10000);
+                        adminRefresh = PullToRefresh.init({
+                            mainElement: '.admin-main-update',
+                            onRefresh: function() {
+                                getTodayAllReserve();
+                                getTomorrowAllReserve();
+                            }
+                        });
                     } else {
                         allowPush = false;
                         //1. append img
-                        $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_close.png" data-type="delete">');
+                        $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_close.png" data-type="new">');
                         //2. save local
                         window.localStorage.setItem('OpenAdminPush', 'N');
                         //3. nothing to do
@@ -414,23 +417,26 @@ $("#viewStaffAdminMain").pagecontainer({
                 if(openPush == 'Y') {
                     allowPush = true;
                     //append img
-                    $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="new">');
+                    $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="delete">');
                     //do something
                     getStaffEmpService();
                     getBoardType();
-                    if(adminRefresh == null) {
-                        adminRefresh = PullToRefresh.init({
-                            mainElement: '.admin-main-update',
-                            onRefresh: function() {
-                                getTodayAllReserve();
-                                getTomorrowAllReserve();
-                            }
-                        });
-                    }
+                    //4. 设置定时器和下拉更新
+                    refreshInterval = setInterval(function() {
+                        getTodayAllReserve();
+                        getTomorrowAllReserve();
+                    }, 10000);
+                    adminRefresh = PullToRefresh.init({
+                        mainElement: '.admin-main-update',
+                        onRefresh: function() {
+                            getTodayAllReserve();
+                            getTomorrowAllReserve();
+                        }
+                    });
                 } else if(openPush == 'N') {
                     allowPush = false;
                     //append img
-                    $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_close.png" data-type="delete">');
+                    $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_close.png" data-type="new">');
                     //nothing to do
                 } else {
                     EmpServicePlugin.QPlayAPI("POST", "getEmpServiceList", self.successCallback, self.failCallback, queryData, '');
@@ -446,25 +452,56 @@ $("#viewStaffAdminMain").pagecontainer({
                 domain: loginData['domain'],
                 emp_no: loginData['emp_no']
             };
-            queryData[type] = [{staffServiceID}];
+            queryData[type] = [];
+            queryData[type].push(staffServiceID);
 
             this.successCallback = function(data) {
                 console.log(data);
 
                 if(data['result_code'] == '1') {
                     if(type == 'delete') {
-                        openPush = false;
+                        //img
+                        $('.title-text-switch img').attr('src', serverURL + imgURL + 'switch_close.png');
+                        $('.title-text-switch img').attr('data-type', 'new');
+                        //data
+                        allowPush = false;
                         window.localStorage.setItem('OpenAdminPush', 'N');
+                        //清除定时器下拉更新
+                        if(refreshInterval != null) {
+                            clearInterval(refreshInterval);
+                            refreshInterval = null;
+                        }
+                        if(adminRefresh != null) {
+                            adminRefresh.destroy();
+                            $('#viewStaffAdminMain .ptr--ptr').remove();
+                            adminRefresh = null;
+                        }
                         //do something
                         $('.main-today-ul').html('');
                         $('.main-complete-ul').html('');
                         $('.main-tomorrow-ul').html('');
                     } else {
-                        openPush = true;
+                        //img
+                        $('.title-text-switch img').attr('src', serverURL + imgURL + 'switch_open.png');
+                        $('.title-text-switch img').attr('data-type', 'delete');
+                        //data
+                        allowPush = true;
                         window.localStorage.setItem('OpenAdminPush', 'Y');
                         //do something
                         getStaffEmpService();
                         getBoardType();
+                        //设置定时器和下拉更新
+                        refreshInterval = setInterval(function() {
+                            getTodayAllReserve();
+                            getTomorrowAllReserve();
+                        }, 10000);
+                        adminRefresh = PullToRefresh.init({
+                            mainElement: '.admin-main-update',
+                            onRefresh: function() {
+                                getTodayAllReserve();
+                                getTomorrowAllReserve();
+                            }
+                        });
                     }
                 }
             };
@@ -651,8 +688,21 @@ $("#viewStaffAdminMain").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminMain").on("pagebeforeshow", function(event, ui) {
-            getTodayAllReserve();
-            getTomorrowAllReserve();
+            if(refreshInterval == null && allowPush == true) {
+                refreshInterval = setInterval(function() {
+                    getTodayAllReserve();
+                    getTomorrowAllReserve();
+                }, 10000);
+            }
+            if(adminRefresh == null && allowPush == true) {
+                adminRefresh = PullToRefresh.init({
+                    mainElement: '.admin-main-update',
+                    onRefresh: function() {
+                        getTodayAllReserve();
+                        getTomorrowAllReserve();
+                    }
+                });
+            }
         });
 
         $("#viewStaffAdminMain").one("pageshow", function(event, ui) {
@@ -666,30 +716,10 @@ $("#viewStaffAdminMain").pagecontainer({
             getEmpServiceList();
             //是否有总机状态
             getStaffStatus();
-            //是否有茶水服务
-            //getStaffEmpService();
-            //获取所有staff的board主题
-            //getBoardType();
-            //下拉更新
-            // if(adminRefresh == null) {
-            //     adminRefresh = PullToRefresh.init({
-            //         mainElement: '.admin-main-update',
-            //         onRefresh: function() {
-            //             getTodayAllReserve();
-            //             getTomorrowAllReserve();
-            //         }
-            //     });
-            // }
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
-            //每10秒更新一次所有预约
-            refreshInterval = setInterval(function() {
-                if(allowPush == true) {
-                    getTodayAllReserve();
-                    getTomorrowAllReserve();
-                }
-            }, 10000);
+
         });
 
         $("#viewStaffAdminMain").on("pagehide", function(event, ui) {
@@ -784,7 +814,7 @@ $("#viewStaffAdminMain").pagecontainer({
         $('#cancelNewMessage').on('click', function() {
             //属于该页面的操作，只有在该页面点击关闭推播才会触发
             let pageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0]['id'];
-            if(pageID == 'viewStaffAdminMain') {
+            if(pageID == 'viewStaffAdminMain' && allowPush == true) {
                 getTodayAllReserve();
                 getTomorrowAllReserve();
             }
@@ -800,17 +830,8 @@ $("#viewStaffAdminMain").pagecontainer({
 
         //修改是否接受推播
         $('.title-text-switch').on('click', function() {
-            var self = $('.title-text-switch img');
-            var type = self.attr('data-type');
-            if(type == 'new') {
-                self.attr('src', serverURL + imgURL + 'switch_close.png');
-                self.attr('data-type', 'delete');
-                setServicePush('delete');
-            } else {
-                self.attr('src', serverURL + imgURL + 'switch_open.png');
-                self.attr('data-type', 'new');
-                setServicePush('new');
-            }
+            var type = $(this).children('img').attr('data-type');
+            setServicePush(type);
         });
 
 
