@@ -186,7 +186,7 @@ class ServiceController extends Controller
                 'array' => ResultCode::_999001_requestParameterLostOrIncorrect
             ]
         );
-
+        
         $loginId = $request->login_id;
         $domain = $request->domain;
         $empNo = $request->emp_no;
@@ -194,6 +194,12 @@ class ServiceController extends Controller
         if ($validator->fails()) {
             return response()->json(['result_code'=>$validator->errors()->first(),
                                       'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        if(!isset($request->new) && !(isset($request->delete))){
+            return response()->json(["result_code" => ResultCode::_999001_requestParameterLostOrIncorrect, 
+                                       "message" => CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+                                      ]);
         }
 
         try {

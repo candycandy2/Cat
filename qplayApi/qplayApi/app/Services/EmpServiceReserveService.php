@@ -93,8 +93,8 @@ class EmpServiceReserveService
         //Push Mssage To Employee
         if(substr($push, 1, 1)){
 
-            $pushEmpTitle = $data['info_push_admin_title'];
-            $pushEmpContent = $data['info_push_admin_content'];
+            $pushEmpTitle = $data['info_push_emp_title'];
+            $pushEmpContent = $data['info_push_emp_content'];
             $empPushFrom = $managerDomain . "\\" . $managerLoginId;
             $empPushTo = [$domain . "\\" . $loginId];
 
@@ -322,8 +322,8 @@ class EmpServiceReserveService
         //Push Mssage To Employee
         if(substr($push, 1, 1)){
 
-            $pushEmpTitle = $data['info_push_admin_title'];
-            $pushEmpContent = $data['info_push_admin_content'];
+            $pushEmpTitle = $data['info_push_emp_title'];
+            $pushEmpContent = $data['info_push_emp_content'];
             $empPushFrom = $managerDomain . "\\" . $managerLoginId;
             $empPushTo = [$domain . "\\" . $loginId];
 
@@ -398,8 +398,8 @@ class EmpServiceReserveService
         //Push Mssage To Employee
         if(substr($push, 1, 1)){
 
-            $pushEmpTitle = $data['info_push_admin_title'];
-            $pushEmpContent = $data['info_push_admin_content'];
+            $pushEmpTitle = $data['info_push_emp_title'];
+            $pushEmpContent = $data['info_push_emp_content'];
             $empPushFrom = $managerDomain . "\\" . $managerLoginId;
             $empPushTo = [$domain . "\\" . $loginId];
 
