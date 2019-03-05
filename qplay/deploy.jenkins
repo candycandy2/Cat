@@ -1,3 +1,9 @@
+<strong>Mar-06-19 00:38:02</strong>
+- Reason : daily build, 760
+- Commit# : 
+57bb3493f - CleoWChan, 11 hours ago : [EmpService] Phase2 setEmpServicePush add validate of service_id
+8849d8893 - CleoWChan, 14 hours ago : [EmpService] Phase2 fix bug of service push
+
 <strong>Mar-05-19 00:36:12</strong>
 - Reason : daily build, 759
 - Commit# : 
