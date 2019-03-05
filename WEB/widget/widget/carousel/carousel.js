@@ -41,6 +41,17 @@ var carouselWidget = {
                                 }
                             });
                         }
+
+                        if(data[j].reference != "") {
+                            contentItem.on('click', '.' + name, function(obj) {
+                                var carouselLinkJSON = JSON.parse(window.localStorage.getItem('carouselLink'));
+                                var index = obj.currentTarget.parentElement.id;
+                                if(carouselLinkJSON !== null && carouselLinkJSON.content[index].reference !== "") {
+                                    //cordova.InAppBrowser.open(carouselLinkJSON.content[index].reference, '_system');
+                                    window.open(carouselLinkJSON.content[index].reference, '_system');
+                                }
+                            });
+                        }
                     }
 
 
