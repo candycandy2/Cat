@@ -5,16 +5,16 @@ $("#viewQPayShopReturnSearch").pagecontainer({
         function checkTradeByTarget() {
             var self = this;
 
-            let trade_id = $('#returnTradeCode').val();
-            let shop_id = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_id'];
-            let shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
-            let queryStr = '&trade_id=' + trade_id + '&shop_id=' + shop_id;
+            var trade_id = $('#returnTradeCode').val();
+            var shop_id = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_id'];
+            var shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
+            var queryStr = '&trade_id=' + trade_id + '&shop_id=' + shop_id;
 
             this.successCallback = function (data) {
                 console.log(data);
 
                 if (data['result_code'] == '1') {
-                    let obj = {
+                    var obj = {
                         shop_id: shop_id,
                         trade_shop: shop_name,
                         trade_id: data['content']['trade_id'],
@@ -44,7 +44,7 @@ $("#viewQPayShopReturnSearch").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewQPayShopReturnSearch").on("pagebeforeshow", function(event, ui) {
-            let isInit = window.sessionStorage.getItem('cancelTradeSuccess');
+            var isInit = window.sessionStorage.getItem('cancelTradeSuccess');
             if(isInit != null) {
                 $('#returnTradeCode').val('');
                 $('.returnToReason').removeClass('active-btn-green');
@@ -69,8 +69,8 @@ $("#viewQPayShopReturnSearch").pagecontainer({
         /********************************** dom event *************************************/
         //輸入交易碼後六位
         $('#returnTradeCode').on('input', function() {
-            let val = $(this).val();
-            let valLength = $(this).val().length;
+            var val = $(this).val();
+            var valLength = $(this).val().length;
             if(val != '' && valLength == 6) {
                 $('.returnToReason').addClass('active-btn-green');
             } else {
@@ -80,7 +80,7 @@ $("#viewQPayShopReturnSearch").pagecontainer({
 
         //下一步
         $('.returnToReason').on('click', function() {
-            let has = $(this).hasClass('active-btn-green');
+            var has = $(this).hasClass('active-btn-green');
             if(has) {
                 checkTradeByTarget();
             }

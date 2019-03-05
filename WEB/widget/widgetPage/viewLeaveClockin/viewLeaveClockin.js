@@ -29,6 +29,17 @@ var reasonTypeData = {
     }
 };
 
+var machineNoData = {
+    id: "machine-type-popup",
+    option: [],
+    title: "",
+    defaultText: langStr["str_069"],
+    changeDefaultText: true,
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
+};
+
 //檢查是否符合預覽送簽標準
 function checkClockinBeforePreview() {
     var otherReasonStatus = $("#otherReason").css('display');
@@ -99,6 +110,26 @@ function getReasonType() {
     tplJS.DropdownList("viewLeaveClockin", "clockinReason", "prepend", "typeB", reasonTypeData);
 }
 
+//生成刷卡機號
+function getMachineNo() {
+    var machineList = [{ id: "01", name: "內湖" },
+        { id: "05", name: "龜山" },
+        { id: "99", name: "竹南" },
+        { id: "11", name: "台中" }
+    ];
+    machineNoData["option"] = [];
+    $("#clockinMachineNo").empty();
+    $("#machine-type-popup-option-popup").remove();
+
+    for (var i in machineList) {
+        machineNoData["option"][i] = {};
+        machineNoData["option"][i]["value"] = machineList[i]["id"];
+        machineNoData["option"][i]["text"] = machineList[i]["name"];
+    }
+
+    tplJS.DropdownList("viewLeaveClockin", "clockinMachineNo", "prepend", "typeB", machineNoData);
+}
+
 $("#viewLeaveClockin").pagecontainer({
     create: function(event, ui) {
 
@@ -142,6 +173,7 @@ $("#viewLeaveClockin").pagecontainer({
         $("#viewLeaveClockin").one("pageshow", function(event, ui) {
             //getWorkingType();
             getReasonType();
+            getMachineNo();
             $("#chooseWorkday").text(pleaseSelectStr);
             $("#chooseClockinday").text(pleaseSelectStr);
             $("#chooseClockintime").text(pleaseSelectStr);

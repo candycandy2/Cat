@@ -7,9 +7,9 @@ $("#viewQPayShopReturnPassword").pagecontainer({
         //获取交易token
         function getTradeToken(pwd) {
             var self = this;
-            let trad_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnPassword_parmData'));
-            let trade_price = trad_info['trade_price'];
-            let shop_id = trad_info['shop_id'];
+            var trad_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnPassword_parmData'));
+            var trade_price = trad_info['trade_price'];
+            var shop_id = trad_info['shop_id'];
 
             var queryStr = '&emp_no=' + loginData['emp_no'] + '&price=' + trade_price + '&shop_id=' + shop_id + '&action=cancel';
 
@@ -38,12 +38,12 @@ $("#viewQPayShopReturnPassword").pagecontainer({
         function cancelTargetTrade() {
             var self = this;
 
-            let trade_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnPassword_parmData'));
-            let shop_id = trade_info['shop_id'];
-            let trade_pwd = pwdNum;
-            let trade_price = trade_info['trade_price'];
-            let trade_id = trade_info['trade_id'].substr(1, 6);//只取后6位数字
-            let reason = trade_info['reason'];
+            var trade_info = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnPassword_parmData'));
+            var shop_id = trade_info['shop_id'];
+            var trade_pwd = pwdNum;
+            var trade_price = trade_info['trade_price'];
+            var trade_id = trade_info['trade_id'].substr(1, 6);//只取后6位数字
+            var reason = trade_info['reason'];
 
             var queryStr = '&emp_no=' + loginData['emp_no'] + '&shop_id=' + shop_id + '&price=' + trade_price + '&trade_id=' + trade_id + '&reason=' + reason;
 

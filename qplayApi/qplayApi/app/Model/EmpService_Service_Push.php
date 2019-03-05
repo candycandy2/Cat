@@ -11,4 +11,5 @@ class EmpService_Service_Push extends Model
     protected $primaryKey = 'row_id';
 
     public $timestamps = false;
+    protected $guarded = [];
 }

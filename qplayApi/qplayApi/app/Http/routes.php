@@ -87,6 +87,7 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
             Route::post('/newEmpService', 'ServiceController@newEmpService');
             Route::post('/deleteEmpService', 'ServiceController@deleteEmpService');
             Route::post('/getEmpServiceList', 'ServiceController@getEmpServiceList');
+            Route::post('/setEmpServicePush', 'ServiceController@setEmpServicePush');
             Route::post('/setEmpServiceTarget', 'TargetController@setEmpServiceTarget');
             Route::post('/getEmpServiceTargetList', 'TargetController@getEmpServiceTargetList');
             Route::post('/newReserve', 'ReserveController@newReserve');
@@ -94,6 +95,9 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
             Route::post('/getTargetReserveData', 'ReserveController@getTargetReserveData');
             Route::post('/getMyReserve', 'ReserveController@getMyReserve');
             Route::post('/setReserveComplete', 'ReserveController@setReserveComplete');
+            Route::post('/editReserve', 'ReserveController@editReserve');
+            Route::post('/deleteReserve', 'ReserveController@deleteReserve');
+            
         });
     });
 

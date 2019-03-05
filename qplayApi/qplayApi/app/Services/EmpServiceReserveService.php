@@ -7,6 +7,8 @@ namespace App\Services;
 
 use App\Repositories\EmpServiceReserveRepository;
 use App\Repositories\EmpServiceDataLogRepository as EmpServiceLog;
+use App\Repositories\EmpServicePushRepository;
+use App\Repositories\EmpServiceServiceIDRepository;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
 use App\lib\PushUtil;
@@ -22,10 +24,16 @@ class EmpServiceReserveService
     const ACTION_DELETE = 'delete';
 
     protected $serviceReserveRepository;
+    protected $servicePushRepository;
+    protected $serviceIDRepository;
 
-    public function __construct(EmpServiceReserveRepository $serviceReserveRepository)
+    public function __construct(EmpServiceReserveRepository $serviceReserveRepository,
+                                EmpServicePushRepository $servicePushRepository,
+                                EmpServiceServiceIDRepository $serviceIDRepository)
     {
         $this->serviceReserveRepository = $serviceReserveRepository;
+        $this->servicePushRepository = $servicePushRepository;
+        $this->serviceIDRepository = $serviceIDRepository;
     }
 
     /**
@@ -43,10 +51,9 @@ class EmpServiceReserveService
         $loginId = $data['login_id'];
         $domain = $data['domain'];
         $empNO = $data['emp_no'];
-        $pushTitle = $data['info_push_title'];
-        $pushContent = $data['info_push_content'];
         $push = $data['push'];
         
+        $serviceIdRowId = $managerInfo['service_id_row_id'];
         $managerLoginId = $managerInfo['manager_login_id'];
         $managerDomain = $managerInfo['manager_domain'];
         $managerEmpNo = $managerInfo['manager_emp_no'];
@@ -60,44 +67,44 @@ class EmpServiceReserveService
         $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
                   ];
-
-        //Push reserve message
-        $title = $pushTitle;
-        $text  = $pushContent;
-        $extra = [];
-        $queryParam =  array(
-                        'lang' => $lang
-                        );
-
-        $pushList = [];
-        //add to push to manager
+        
+        // //Push Message To Admin
         if(substr($push, 0, 1)){
-            array_push($pushList,['from'=>$domain . "\\" . $loginId,
-                                'to'=>$managerDomain . "\\" . $managerLoginId]);
+            
+            $pushAdminTitle = $data['info_push_admin_title'];
+            $pushAdminContent = $data['info_push_admin_content'];
+            $adminPushFrom = $domain . "\\" . $loginId;
+            $adminPushTo = [];
+            $pushUser = $this->servicePushRepository->getEmpServicePush($serviceIdRowId);
+            foreach ($pushUser as $user) {
+                $adminPushTo[] = $user->domain . "\\" . $user->login_id;
+            }
 
-            //20190116 Darren - For special case, Only can run correctly in Staging / Production
-            if ($managerLoginId == "QTTReceptionist") {
-                $specialManagerID = ["Mendy.MH.Lai", "Vinnie.YJ.Lin", "Joanna.YS.Weng"];
-                $specialManagerDomain = ["BenQ", "BenQ", "BenQ"];
-
-                foreach ($specialManagerID as $index => $val) {
-                    array_push($pushList,['from'=>$domain . "\\" . $loginId,
-                                'to'=>$specialManagerDomain[$index] . "\\" . $specialManagerID[$index]]);
-                }
+            if(count($adminPushTo) > 0){
+                PushUtil::sendPushMessageWithContent($adminPushFrom,
+                                                 $adminPushTo,
+                                                 $pushAdminTitle,
+                                                 $pushAdminContent,
+                                                 [],
+                                                 array('lang' => $lang));    
             }
         }
-        //add to push to user
-        if(substr($push, 1, 1)){
-            array_push($pushList,['from'=>$managerDomain . "\\" . $managerLoginId,
-                                'to'=>$domain . "\\" . $loginId]);
-        }
 
-        foreach ($pushList as $item) {
-            $from = $item['from'];
-            $to = (array)$item['to'];
-            PushUtil::sendPushMessageWithContent($from, $to, $title, $text, $extra, $queryParam);
+        //Push Mssage To Employee
+        if(substr($push, 1, 1)){
+
+            $pushEmpTitle = $data['info_push_admin_title'];
+            $pushEmpContent = $data['info_push_admin_content'];
+            $empPushFrom = $managerDomain . "\\" . $managerLoginId;
+            $empPushTo = [$domain . "\\" . $loginId];
+
+            PushUtil::sendPushMessageWithContent($empPushFrom,
+                                                 $empPushTo,
+                                                 $pushEmpTitle,
+                                                 $pushEmpContent,
+                                                 [],
+                                                 array('lang' => $lang));
         }
-        
         return [$result,$logData];
     }
 
@@ -162,39 +169,16 @@ class EmpServiceReserveService
     public function getMyReserveByServiceType($serviceType, $empNo, $startDate, $endDate){
 
         $serviceList = [];
-        $recordList = [];
-        $tmpArray = [];
-
-        $result =  $this->serviceReserveRepository->getMyReserveByServiceType($serviceType, $empNo, $startDate, $endDate);
-
-        foreach ($result as $index => $service) {
-           
-             $tmpArray[$service->service_id][] = ['target_id'=>$service->target_id,
-                                                'target_id_row_id'=>$service->target_id_row_id,
-                                                'reserve_id'=>$service->reserve_id,
-                                                'info_push_title'=>$service->info_push_title,
-                                                'info_push_content'=>$service->info_push_content,
-                                                'info_data'=>$service->info_data,
-                                                'start_date'=>$service->start_date,
-                                                'end_date'=>$service->end_date,
-                                                'complete'=>$service->complete,
-                                                'complete_login_id'=>$service->complete_login_id,
-                                                'complete_at'=>strtotime($service->complete_at),
-                                                ];
-            if($service->complete == 'N'){
-                unset($tmpArray[$service->service_id][$index]['complete_login_id']);
-                unset($tmpArray[$service->service_id][$index]['complete_at']);
-            }
+        
+        $services = $this->serviceIDRepository->getServiceByServiceType($serviceType);
+       
+        foreach ($services as $service) {
+            $recordList = $this->getMyReserveRecord($service->service_id, $empNo, $startDate, $endDate);
+            $serviceList[] = ["service_id" => $service->service_id, "record_list" => $recordList];
         }
-
-        foreach ($tmpArray as $key => $record) {
-            $recordList = ["service_id" => $key, "record_list" => $record];
-            $serviceList [] = $recordList;
-        }
-
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
-                    "content" => $serviceList
+                    "content" =>  ['service_list' => $serviceList]
                 ];
 
     }
@@ -208,41 +192,44 @@ class EmpServiceReserveService
      * @return array
      */
     public function getMyReserveByServiceID($serviceId, $empNo, $startDate, $endDate){
-        
-        $serviceList = [];
-        $recordList = [];
-        $tmpArray = [];
 
-        $result =  $this->serviceReserveRepository->getMyReserveByServiceID($serviceId, $empNo, $startDate, $endDate);
-        foreach ($result as $index => $service) {
-           
-             $tmpArray[$service->service_id][] = ['target_id'=>$service->target_id,
-                                                'target_id_row_id'=>$service->target_id_row_id,
-                                                'reserve_id'=>$service->reserve_id,
-                                                'info_push_title'=>$service->info_push_title,
-                                                'info_push_content'=>$service->info_push_content,
-                                                'info_data'=>$service->info_data,
-                                                'start_date'=>$service->start_date,
-                                                'end_date'=>$service->end_date,
-                                                'complete'=>$service->complete,
-                                                'complete_login_id'=>$service->complete_login_id,
-                                                'complete_at'=>strtotime($service->complete_at),
-                                                ];
-            if($service->complete == 'N'){
-                unset($tmpArray[$service->service_id][$index]['complete_login_id']);
-                unset($tmpArray[$service->service_id][$index]['complete_at']);
-            }
-        }
+        $recordList = $this->getMyReserveRecord($serviceId, $empNo, $startDate, $endDate);
+        //var_dump($recordList);exit();
+        $serviceList = [["service_id" => $serviceId, "record_list" => $recordList]];
 
-        foreach ($tmpArray as $key => $record) {
-            $recordList = ["service_id" => $key, "record_list" => $record];
-            $serviceList [] = $recordList;
-        }
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
                     "content" => ['service_list' => $serviceList]
                 ];
         
+    }
+
+    private function getMyReserveRecord($serviceId, $empNo, $startDate, $endDate){
+
+        $recordList = [];
+        $result =  $this->serviceReserveRepository->getMyReserveByServiceID($serviceId, $empNo, $startDate, $endDate);
+
+        foreach ($result as $index => $reserve) {
+            $tmpRecord =['target_id'=>$reserve->target_id,
+                            'target_id_row_id'=>$reserve->target_id_row_id,
+                            'reserve_id'=>$reserve->reserve_id,
+                            'info_push_title'=>$reserve->info_push_emp_title,
+                            'info_push_content'=>$reserve->info_push_emp_content,
+                            'info_data'=>$reserve->info_data,
+                            'start_date'=>$reserve->start_date,
+                            'end_date'=>$reserve->end_date,
+                            'complete'=>$reserve->complete,
+                            'complete_login_id'=>$reserve->complete_login_id,
+                            'complete_at'=>strtotime($reserve->complete_at),
+                            ];
+            if($reserve->complete == 'N'){
+                unset($tmpRecord['complete_login_id']);
+                unset($tmpRecord['complete_at']);
+            }
+            $recordList[] = $tmpRecord;
+        }
+
+        return $recordList;
     }
 
     /**
@@ -279,4 +266,157 @@ class EmpServiceReserveService
 
        return [$result,$logData];
     }
+
+    /**
+     * Edit Reserve data
+     * @param int   $reserveRowId reserve_record.row_id
+     * @param Array $data  update data
+     * @param Array $managerInfo
+     * @param String $lang
+     * @return mixed
+     */
+    public function editReserve($reserveRowId, Array $data, $managerInfo, $lang){
+
+        $logData = [];
+        
+        $editRs = $this->serviceReserveRepository->editReserve($reserveRowId, $data);
+
+        $loginId = $data['login_id'];
+        $domain = $data['domain'];
+        $empNO = $data['emp_no'];
+        $push = $data['push'];
+        
+        $serviceIdRowId = $managerInfo['service_id_row_id'];
+        $managerLoginId = $managerInfo['manager_login_id'];
+        $managerDomain = $managerInfo['manager_domain'];
+        $managerEmpNo = $managerInfo['manager_emp_no'];
+
+
+        $logData = EmpServiceLog::getLogData(self::TABLE, $reserveRowId,
+                                             self::ACTION_UPDATE,
+                                             $loginId, $domain, $empNO,
+                                             $data);
+
+        //Push Message To Admin
+        if(substr($push, 0, 1)){
+            
+            $pushAdminTitle = $data['info_push_admin_title'];
+            $pushAdminContent = $data['info_push_admin_content'];
+            $adminPushFrom = $domain . "\\" . $loginId;
+            $adminPushTo = [];
+            $pushUser = $this->servicePushRepository->getEmpServicePush($serviceIdRowId);
+            foreach ($pushUser as $user) {
+                $adminPushTo[] = $user->domain . "\\" . $user->login_id;
+            }
+
+            if(count($adminPushTo) > 0){
+                PushUtil::sendPushMessageWithContent($adminPushFrom,
+                                                 $adminPushTo,
+                                                 $pushAdminTitle,
+                                                 $pushAdminContent,
+                                                 [],
+                                                 array('lang' => $lang));    
+            }
+        }
+
+        //Push Mssage To Employee
+        if(substr($push, 1, 1)){
+
+            $pushEmpTitle = $data['info_push_admin_title'];
+            $pushEmpContent = $data['info_push_admin_content'];
+            $empPushFrom = $managerDomain . "\\" . $managerLoginId;
+            $empPushTo = [$domain . "\\" . $loginId];
+
+            PushUtil::sendPushMessageWithContent($empPushFrom,
+                                                 $empPushTo,
+                                                 $pushEmpTitle,
+                                                 $pushEmpContent,
+                                                 [],
+                                                 array('lang' => $lang));
+        }
+
+        $result = [ "result_code" => ResultCode::_1_reponseSuccessful, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
+                  ];
+
+        return [$result,$logData];
+        
+    }
+
+    /**
+     * Delete Reserve data
+     * @param int   $reserveRowId reserve_record.row_id
+     * @param Array $data  update data
+     * @param Array $managerInfo
+     * @param String $lang
+     * @return mixed
+     */
+    public function deleteReserve($reserveRowId, Array $data, $managerInfo, $lang){
+
+        $logData = [];
+        
+        $editRs = $this->serviceReserveRepository->editReserve($reserveRowId, $data);
+
+        $loginId = $data['login_id'];
+        $domain = $data['domain'];
+        $empNO = $data['emp_no'];
+        $push = $data['push'];
+        
+        $serviceIdRowId = $managerInfo['service_id_row_id'];
+        $managerLoginId = $managerInfo['manager_login_id'];
+        $managerDomain = $managerInfo['manager_domain'];
+        $managerEmpNo = $managerInfo['manager_emp_no'];
+
+
+        $logData = EmpServiceLog::getLogData(self::TABLE, $reserveRowId,
+                                             self::ACTION_DELETE,
+                                             $loginId, $domain, $empNO,
+                                             $data);
+
+        //Push Message To Admin
+        if(substr($push, 0, 1)){
+            
+            $pushAdminTitle = $data['info_push_admin_title'];
+            $pushAdminContent = $data['info_push_admin_content'];
+            $adminPushFrom = $domain . "\\" . $loginId;
+            $adminPushTo = [];
+            $pushUser = $this->servicePushRepository->getEmpServicePush($serviceIdRowId);
+            foreach ($pushUser as $user) {
+                $adminPushTo[] = $user->domain . "\\" . $user->login_id;
+            }
+
+            if(count($adminPushTo) > 0){
+                PushUtil::sendPushMessageWithContent($adminPushFrom,
+                                                 $adminPushTo,
+                                                 $pushAdminTitle,
+                                                 $pushAdminContent,
+                                                 [],
+                                                 array('lang' => $lang));    
+            }
+        }
+
+        //Push Mssage To Employee
+        if(substr($push, 1, 1)){
+
+            $pushEmpTitle = $data['info_push_admin_title'];
+            $pushEmpContent = $data['info_push_admin_content'];
+            $empPushFrom = $managerDomain . "\\" . $managerLoginId;
+            $empPushTo = [$domain . "\\" . $loginId];
+
+            PushUtil::sendPushMessageWithContent($empPushFrom,
+                                                 $empPushTo,
+                                                 $pushEmpTitle,
+                                                 $pushEmpContent,
+                                                 [],
+                                                 array('lang' => $lang));
+        }
+
+        $result = [ "result_code" => ResultCode::_1_reponseSuccessful, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
+                  ];
+
+        return [$result,$logData];
+        
+    }
+
 }

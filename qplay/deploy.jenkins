@@ -1,3 +1,57 @@
+<strong>Mar-05-19 00:36:12</strong>
+- Reason : daily build, 759
+- Commit# : 
+ce8dd3091 - CleoWChan, 8 hours ago : [EmpService] add and modified EmpService Push API
+
+<strong>Mar-04-19 00:35:11</strong>
+- Reason : daily build, 758
+- Commit# : 
+
+
+<strong>Mar-03-19 00:34:33</strong>
+- Reason : daily build, 757
+- Commit# : 
+
+
+<strong>Mar-02-19 00:34:27</strong>
+- Reason : daily build, 756
+- Commit# : 
+
+
+<strong>Mar-01-19 00:34:55</strong>
+- Reason : daily build, 755
+- Commit# : 
+
+
+<strong>Feb-28-19 00:35:09</strong>
+- Reason : daily build, 754
+- Commit# : 
+923e998d5 - CleoWChan, 13 hours ago : [EmpService] Phase2 get only active reserve record
+
+<strong>Feb-27-19 00:36:32</strong>
+- Reason : daily build, 753
+- Commit# : 
+
+
+<strong>Feb-26-19 00:36:09</strong>
+- Reason : daily build, 752
+- Commit# : 
+0fa66406d - CleoWChan, 8 hours ago : [EmpService] update Reserve API
+a71b8aeb5 - CleoWChan, 8 hours ago : [EmpService] Phase2 Reserve API update
+
+<strong>Feb-25-19 09:39:54</strong>
+- Reason : daily build, 751
+- Commit# : 
+
+
+<strong>Feb-22-19 00:49:50</strong>
+- Reason : daily build, 750
+- Commit# : 
+e7be60aa3 - CleoWChan, 13 hours ago : [EmpService] Phase2-modified getTargetReserveData
+286e6c13f - Darren Ti, 14 hours ago : [QPlayDoc]EmpService API
+383581e50 - Darren Ti, 14 hours ago : [QPlayDoc]EmpService API
+ef5b5e523 - CleoWChan, 15 hours ago : [EmpService] Phase2-modify newEmpService API
+
 <strong>Feb-21-19 00:36:24</strong>
 - Reason : daily build, 749
 - Commit# : 

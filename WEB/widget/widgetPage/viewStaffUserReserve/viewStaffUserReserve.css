@@ -81,7 +81,8 @@
 .reserveTeaNow .ui-content,
 .reserveTeaAfter .ui-content,
 .reserveTeaDelete .ui-content,
-.reserveTeaLate .ui-content{
+.reserveTeaLate .ui-content,
+.reserveTeaComplete .ui-content{
     padding: 0;
 }
 
@@ -97,10 +98,12 @@
     margin-top: 8vw;
 }
 
-.reserveTeaLate .ui-content .header{
+.reserveTeaLate .ui-content .header,
+.reserveTeaComplete .ui-content .header{
     margin-top: 10vw;
 }
 
-.reserveTeaLate .ui-content .footer{
+.reserveTeaLate .ui-content .footer,
+.reserveTeaComplete .ui-content .footer{
     margin-top: 8vw;
 }

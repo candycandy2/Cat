@@ -8,13 +8,13 @@ var staffWidget = {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
-                var teaImg = $('<img>').attr('src', serverURL + '/widget/widget/staff/img/widget_tea.png');
-                $('.staff-icon').html('').append(teaImg);
-                // var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/staff/img/more_green.png');
-                // $('.staff-user-more').html('').append(moreImg);
+                //var teaImg = $('<img>').attr('src', serverURL + '/widget/widget/staff/img/widget_tea.png');
+                //$('.staff-icon').html('').append(teaImg);
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/staff/img/more_green.png');
+                $('.staff-user-more').html('').append(moreImg);
                 // //3.update
-                // $('.staff-update-time').text(updateTime());
-                let staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
+                $('.staff-update-time').text(updateTime());
+                var staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
                 $('.staff-img').html('').append(staffIcon);
 
             }, "html");
@@ -150,8 +150,56 @@ var staffWidget = {
 
         $('.staffWidget').staff();
     },
+    show: function() {
+        var self = this;
+
+        var queryData = JSON.stringify({
+            login_id: loginData['loginid'],
+            domain: loginData['domain'],
+            emp_no: loginData['emp_no'],
+            service_id: 'meetingroomService',
+            //service_type: 'staff',
+            start_date: Math.round(new Date().getTime() / 1000),
+            end_date: new Date(new Date().yyyymmdd('/') + ' 18:00').getTime() / 1000
+        });
+
+        this.successCallback = function(data) {
+            //console.log(data);
+
+            if(data['result_code'] == '1') {
+                //判断是否有数据
+                var arr = data['content']['service_list'][0]['record_list'];
+                if(arr.length == 0) {
+                    //no data
+                    $('.staff-main').hide();
+                    $('.staff-none').show();
+                } else {
+                    $('.staff-none').hide();
+                    $('.staff-main').show();
+                    var content = '';
+                    for(var i = 0; i < arr.length; i++) {
+                        if(i < 3) {
+                            content += '<li>' + arr[i]['info_push_content'].replace(' ', ';').split(';')[1] + '</li>';
+                        } else {
+                            break;
+                        }
+                    }
+                    $('.staff-main-ul').html('').append(content);
+                }
+            } else {
+                $('.staff-main').hide();
+                $('.staff-none').show();
+            }
+        };
+
+        this.failCallback = function(data) {};
+
+        var __construct = function() {
+            EmpServicePlugin.QPlayAPI("POST", "getMyReserve", self.successCallback, self.failCallback, queryData, '');
+        }();
+    },
     plugin: function() {
-        let dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin'];
+        var dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin', 'YellowPagePlugin'];
         widget.plugin(dependency);
     }
 }

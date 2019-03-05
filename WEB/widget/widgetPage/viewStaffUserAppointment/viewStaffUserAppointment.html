@@ -175,18 +175,95 @@
                     </div>
                 </div>
             </div>
-            <div class="appointment-edit">
+            <div class="appointment-handle">
                 <div class="appointmentTeaBtn" data-status="new">
                     <!--加茶水/修改预约(2种状态new和update)-->
                     <span class="langStr" data-id="wgt_172"></span>
                 </div>
             </div>
-            <div class="appointment-clear">
-                <span>X 清除</span>
+            <div class="appointment-delete">
+                <span>刪除預約</span>
+            </div>
+            <!--保存其他用户邮箱地址-->
+            <div class="userMail"></div>
+        </div>
+    </div>
+    <div class="popup-msg-style" id="noEmailData">
+        <span class="langStr" data-id="wgt_121"></span>
+    </div>
+    <div class="popup-msg-style" id="reserveTeaSuccess">預約成功</div>
+    <div class="popup-msg-style" id="updateTeaSuccess">修改成功</div>
+    <div class="popup-msg-style" id="deleteTeaSuccess">刪除成功</div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup otherReservePopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                </div>
+                <div class="font-style3 header-title">
+                    <span class="header-text"></span>
+                    <span>已預約</span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">確定</div>
+                    <div class="btn-cancel sendMailOther">傳送郵件</div>
+                </div>
             </div>
         </div>
     </div>
-    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup deleteReservePopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <!--您要刪除茶水預約-->
+                    <span>您要刪除茶水預約</span>
+                </div>
+                <div class="font-style3 header-title"></div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">取消</div>
+                    <div class="btn-cancel deleteReserveBtn">確定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup reserveCompletePopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <!--您要刪除茶水預約-->
+                    <span>預約已完成，您不能修改或刪除</span>
+                </div>
+                <div class="font-style3 header-title"></div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">OK</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup reserveLatePopup">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -195,7 +272,7 @@
                         <img src="img/urgent.png">
                     </span>
                     <!--您要刪除茶水預約-->
-                    <span>您只能預約大於半小時的服務</span>
+                    <span>您只能預約或刪除大於半小時的服務</span>
                 </div>
                 <div class="font-style3 header-title"></div>
             </div>

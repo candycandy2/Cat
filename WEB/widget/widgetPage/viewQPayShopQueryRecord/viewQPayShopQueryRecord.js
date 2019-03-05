@@ -1,9 +1,11 @@
 $("#viewQPayShopQueryRecord").pagecontainer({
     create: function (event, ui) {
 
+        var initRecordType = false;
+
         //初始化交易类型dropdownlist
         function initialRecordType() {
-            let typeData = {
+            var typeData = {
                 id: "shopQueryType",
                 option: [],
                 title: "",
@@ -14,9 +16,9 @@ $("#viewQPayShopQueryRecord").pagecontainer({
                 }
             }
 
-            let type_list = JSON.parse(window.sessionStorage.getItem('point_type_list'));
+            var type_list = JSON.parse(window.sessionStorage.getItem('point_type_list'));
             if(type_list !== null) {
-                for (let i in type_list) {
+                for (var i in type_list) {
                     typeData["option"][i] = {};
                     typeData["option"][i]["value"] = type_list[i].point_type_id;
                     typeData["option"][i]["text"] = type_list[i].point_type_name;
@@ -35,7 +37,7 @@ $("#viewQPayShopQueryRecord").pagecontainer({
             tplJS.DropdownList("viewQPayShopQueryRecord", "shopRecordType", "prepend", "typeB", typeData);
 
             //调整UI
-            let selectWidth = $('#shopQueryType').width();
+            var selectWidth = $('#shopQueryType').width();
             tplJS.reSizeDropdownList('shopQueryType', null, widthUnitConversion(selectWidth) - 5);
             $('#shopQueryType').css('padding', '0');
             $('#shopQueryType-option').find('.close').css({
@@ -44,13 +46,13 @@ $("#viewQPayShopQueryRecord").pagecontainer({
             });
 
             //预设值
-            let shopRecordQuery = JSON.parse(window.localStorage.getItem('shop_record_query'));
+            var shopRecordQuery = JSON.parse(window.localStorage.getItem('shop_record_query'));
             if(shopRecordQuery == null) {
                 //如果没有记录查询条件，默认选中第一个
                 $('#shopQueryType-option').find('li:eq(0)').trigger('click');
             } else {
-                let type_id = shopRecordQuery['point_type_id'];
-                let found = false;
+                var type_id = shopRecordQuery['point_type_id'];
+                var found = false;
                 $.each($('#shopQueryType-option li'), function(index, item) {
                     if(type_id == $(item).data('value')) {
                         $(item).trigger('click');
@@ -63,6 +65,8 @@ $("#viewQPayShopQueryRecord").pagecontainer({
                     $('#shopQueryType-option').find('li:eq(0)').trigger('click');
                 }
             }
+
+            initRecordType = true;
 
         }
 
@@ -108,13 +112,13 @@ $("#viewQPayShopQueryRecord").pagecontainer({
             });
 
             //预设值为当前年份
-            let shopRecordQuery = JSON.parse(window.localStorage.getItem('shop_record_query'));
+            var shopRecordQuery = JSON.parse(window.localStorage.getItem('shop_record_query'));
             if(shopRecordQuery == null) {
                 //如果没有记录查询条件，默认选中当前年份
                 $('#shopQueryYear-option').find('li:eq(1)').trigger('click');
             } else {
-                let year_val =  new Date(shopRecordQuery['start_date'] * 1000).getFullYear();
-                let found = false;
+                var year_val =  new Date(shopRecordQuery['start_date'] * 1000).getFullYear();
+                var found = false;
                 $.each($('#shopQueryYear-option li'), function(index, item) {
                     if(year_val == $(item).data('value')) {
                         $(item).trigger('click');
@@ -165,8 +169,8 @@ $("#viewQPayShopQueryRecord").pagecontainer({
                 //如果没有记录查询条件，默认选中当前月份
                 $('#shopQueryMonth-option').find('li:eq(' + currenMonth + ')').trigger('click');
             } else {
-                let month_val =  new Date(shopRecordQuery['start_date'] * 1000).getMonth() + 1;
-                let found = false;
+                var month_val =  new Date(shopRecordQuery['start_date'] * 1000).getMonth() + 1;
+                var found = false;
                 $.each($('#shopQueryMonth-option li'), function(index, item) {
                     if(month_val == $(item).data('value')) {
                         $(item).trigger('click');
@@ -179,6 +183,14 @@ $("#viewQPayShopQueryRecord").pagecontainer({
                     $('#shopQueryMonth-option').find('li:eq(' + currenMonth + ')').trigger('click');
                 }
             }
+
+            //3.判断消费券类型是否初始化成功，成功才能使用查询按钮
+            var btnStatusInterval = setInterval(function() {
+                if(initRecordType) {
+                    clearInterval(btnStatusInterval);
+                    $('.shop-query-search').addClass('button-active');
+                }
+            }, 500)
         }
 
         //根据年月返回该月最后一天
@@ -231,17 +243,17 @@ $("#viewQPayShopQueryRecord").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 //1.获取dropdownlist值
-                let trade_type = $('#shopQueryType').val();
-                let type_name = $('#shopQueryType option:selected').text();
-                let trade_year = $('#shopQueryYear').val();
-                let trade_month = $('#shopQueryMonth').val();
+                var trade_type = $('#shopQueryType').val();
+                var type_name = $('#shopQueryType option:selected').text();
+                var trade_year = $('#shopQueryYear').val();
+                var trade_month = $('#shopQueryMonth').val();
                 //2.根据年月获取该月最后一天
-                let last_day = getLastDayByMonth(trade_year, trade_month);
+                var last_day = getLastDayByMonth(trade_year, trade_month);
                 //3.日期转时间戳，且开始时间为该月第一天00:00:00，结束时间为该月最后一天23:59:59
-                let trade_start = new Date(trade_year + '/' + trade_month + '/1 00:00:00').getTime() / 1000;
-                let trade_end = new Date(trade_year + '/' + trade_month + '/' + last_day + ' 23:59:59').getTime() / 1000;
+                var trade_start = new Date(trade_year + '/' + trade_month + '/1 00:00:00').getTime() / 1000;
+                var trade_end = new Date(trade_year + '/' + trade_month + '/' + last_day + ' 23:59:59').getTime() / 1000;
                 //4.记录查询条件
-                let shop_query_data = {
+                var shop_query_data = {
                     'point_type_id': parseInt(trade_type),
                     'point_type_name': type_name,
                     'start_date': trade_start,

@@ -2,10 +2,10 @@
 var reserveWidget = {
 
     reserveAppList: [
-        { key: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
-        { key: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
-        { key: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
-        { key: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
+        //{ key: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
+        //{ key: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
+        //{ key: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
+        //{ key: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
     ],
     getAllReserve: function(_reserveAppList) {
 

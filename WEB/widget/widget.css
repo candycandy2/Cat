@@ -983,9 +983,19 @@
     text-align: center;
     font-size: 3.349vw;
     color: #666;
+    padding-bottom: 5vw;
 }
 
-.staff-none {
+.staff-main-ul li,
+.staffAdmin-main-ul li {
+    color: #253137;
+    font-size: 3.768vw;
+    text-indent: 6vw;
+    padding-bottom: 2.37vw;
+}
+
+.staff-none,
+.staffAdmin-none {
     display: block;
     text-align: center;
     text-indent: 0;
@@ -1063,7 +1073,7 @@
     border: none;
 }
 
-.staff-menu-list li span{
+.menu-badge{
     display: inline-block;
     width: 10vw;
     height: 5vw;

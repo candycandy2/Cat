@@ -10,11 +10,11 @@ var staffAdminWidget = {
                 //2.img
                 var teaImg = $('<img>').attr('src', serverURL + '/widget/widget/staffAdmin/img/widget_tea.png');
                 $('.staff-icon').html('').append(teaImg);
-                // var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/staffAdmin/img/more_green.png');
-                // $('.staff-admin-more').html('').append(moreImg);
-                // //3.update
-                // $('.staff-update-time').text(updateTime());
-                let staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/staffAdmin/img/more_green.png');
+                $('.staff-admin-more').html('').append(moreImg);
+                //3.update
+                $('.staffAdmin-update-time').text(updateTime());
+                var staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
                 $('.staffAdmin-img').html('').append(staffIcon);
 
             }, "html");
@@ -150,8 +150,51 @@ var staffAdminWidget = {
 
         $('.staffAdminWidget').staffAdmin();
     },
+    show: function() {
+        var self = this;
+        var queryData = JSON.stringify({
+            service_id: 'meetingroomService',
+            start_date: Math.round(new Date().getTime() / 1000),
+            end_date: new Date(new Date().yyyymmdd('/') + ' 18:00').getTime() / 1000
+        });
+
+        this.successCallback = function(data) {
+            //console.log(data);
+
+            if(data['result_code'] == '1') {
+                //判断是否有数据
+                var arr = data['content']['record_list'];
+                if(arr.length == 0) {
+                    //no data
+                    $('.staffAdmin-main').hide();
+                    $('.staffAdmin-none').show();
+                } else {
+                    $('.staffAdmin-none').hide();
+                    $('.staffAdmin-main').show();
+                    var content = '';
+                    for(var i = 0; i < arr.length; i++) {
+                        if(i < 3) {
+                            content += '<li>' + arr[i]['info_push_content'].replace(' ', ';').split(';')[1] + '</li>';
+                        } else {
+                            break;
+                        }
+                    }
+                    $('.staffAdmin-main-ul').html('').append(content);
+                }
+            } else {
+                $('.staffAdmin-main').hide();
+                $('.staffAdmin-none').show();
+            }
+        };
+
+        this.failCallback = function(data) {};
+
+        var __construct = function() {
+            EmpServicePlugin.QPlayAPI("POST", "getReserveRecord", self.successCallback, self.failCallback, queryData, '');
+        }();
+    },
     plugin: function() {
-        let dependency = ['QForumPlugin', 'QStoragePlugin', 'EmpServicePlugin', 'YellowPagePlugin', 'StatusPlugin'];
+        var dependency = ['QForumPlugin', 'QStoragePlugin', 'EmpServicePlugin', 'YellowPagePlugin', 'StatusPlugin'];
         widget.plugin(dependency);
     }
 }

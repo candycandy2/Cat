@@ -13,6 +13,7 @@ $("#viewStaffAdminMain").pagecontainer({
             status_row_id,
             adminRefresh = null,
             refreshInterval = null,
+            allowPush = null,
             headerHeight;
 
         //获取当前时间并精确到秒
@@ -66,6 +67,8 @@ $("#viewStaffAdminMain").pagecontainer({
                     for(var i in boardArr) {
                         if(boardArr[i].board_name == 'staffFAQ') {
                             boardObj['staffFAQ'] = boardArr[i];
+                            let feedbackBoard = boardArr[i]['board_id'];
+                            getpostList(feedbackBoard);
 
                         } else if(boardArr[i].board_name == 'staffAnnounce') {
                             boardObj['staffAnnounce'] = boardArr[i];
@@ -83,7 +86,63 @@ $("#viewStaffAdminMain").pagecontainer({
                 let staffBoardType = JSON.parse(window.localStorage.getItem('staffBoardType'));
                 if(staffBoardType == null || checkDataExpired(staffBoardType['lastUpdateTime'], 7, 'dd')) {
                     QForumPlugin.CustomAPI("POST", true, "getBoardList", successCallback, failCallback, queryData, "");
+                } else {
+                    let feedbackBoard = staffBoardType['staffFAQ']['board_id'];
+                    getpostList(feedbackBoard);
                 }
+            }();
+        }
+
+        //获取反馈问题未读数量
+        function getpostList(id) {
+            var queryData = "<LayoutHeader><emp_no>" +
+                loginData["emp_no"] +
+                "</emp_no><source>" +
+                staffKey +
+                appEnvironment +
+                "</source><board_id>" +
+                id +
+                "</board_id></LayoutHeader>";
+
+            var successCallback = function(data) {
+                //console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    //只需要统计未读信息的数量即可
+                    let unreadCount = 0;
+                    //readlist已读列表
+                    let readList = JSON.parse(window.localStorage.getItem('AdminFeedbackList')) || {};
+                    let readLength = Object.getOwnPropertyNames(readList).length;
+                    //postlist
+                    let postList = data['Content'];
+                    window.sessionStorage.setItem('AdminFeedBackArray', JSON.stringify(postList));
+
+                    if(readLength == 0) {
+                        unreadCount = postList.length;
+                    } else {
+                        for(var i in postList) {
+                            //1.确认已读未读状态
+                            if(typeof readList[postList[i]['post_id']] == 'undefined') {
+                                unreadCount++;
+                            }
+                        }
+                    }
+
+                    //如果数量大于0显示在菜单badge上
+                    if(unreadCount > 0) {
+                        $('.newFeedback').show();
+                        $('#feedbackBadge').text(unreadCount).show();
+                    } else {
+                        $('.newFeedback').hide();
+                        $('#feedbackBadge').hide();
+                    }
+                }
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                QForumPlugin.CustomAPI("POST", true, "getPostList", successCallback, failCallback, queryData, "");
             }();
         }
 
@@ -287,6 +346,136 @@ $("#viewStaffAdminMain").pagecontainer({
             }();
         }
 
+        //获取当前总机（登录人）是否在推播列表中
+        function getEmpServiceList() {
+            var self = this;
+            var queryData = JSON.stringify({
+                service_type: staffServiceType
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {
+                    //先找到茶水的service_id
+                    var serviceArr = data['content']['service_type_list'][0]['service_id_list'];
+                    var pushArr = [];
+                    for(var i in  serviceArr) {
+                        if(serviceArr[i]['service_id'] == staffServiceID) {
+                            pushArr = serviceArr[i]['push_list'];
+                            break;
+                        }
+                    }
+
+                    //再找个人
+                    var flag = false;
+                    for(var i in pushArr) {
+                        if(pushArr[i]['emp_no'] == loginData['emp_no']) {
+                            flag = true;
+                            break;
+                        }
+                    }
+
+                    //判断是否找到个人，如果没有找到，开关关闭；否则开关开启。
+                    //并且将结果记录到local端，每次进来首先看local端是否有数据
+                    if(flag) {
+                        allowPush = true;
+                        //1. append img
+                        $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="new">');
+                        //2. save local
+                        window.localStorage.setItem('OpenAdminPush', 'Y');
+                        //3. do something
+                        getStaffEmpService();
+                        getBoardType();
+                        if(adminRefresh == null) {
+                            adminRefresh = PullToRefresh.init({
+                                mainElement: '.admin-main-update',
+                                onRefresh: function() {
+                                    getTodayAllReserve();
+                                    getTomorrowAllReserve();
+                                }
+                            });
+                        }
+                    } else {
+                        allowPush = false;
+                        //1. append img
+                        $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_close.png" data-type="delete">');
+                        //2. save local
+                        window.localStorage.setItem('OpenAdminPush', 'N');
+                        //3. nothing to do
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                var openPush = window.localStorage.getItem('OpenAdminPush');
+                if(openPush == 'Y') {
+                    allowPush = true;
+                    //append img
+                    $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_open.png" data-type="new">');
+                    //do something
+                    getStaffEmpService();
+                    getBoardType();
+                    if(adminRefresh == null) {
+                        adminRefresh = PullToRefresh.init({
+                            mainElement: '.admin-main-update',
+                            onRefresh: function() {
+                                getTodayAllReserve();
+                                getTomorrowAllReserve();
+                            }
+                        });
+                    }
+                } else if(openPush == 'N') {
+                    allowPush = false;
+                    //append img
+                    $('.title-text-switch').append('<img src="' + serverURL + imgURL + 'switch_close.png" data-type="delete">');
+                    //nothing to do
+                } else {
+                    EmpServicePlugin.QPlayAPI("POST", "getEmpServiceList", self.successCallback, self.failCallback, queryData, '');
+                }
+            }();
+        }
+
+        //修改个人的推播设定
+        function setServicePush(type) {
+            var self = this;
+            var queryData = {
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no']
+            };
+            queryData[type] = [{staffServiceID}];
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {
+                    if(type == 'delete') {
+                        openPush = false;
+                        window.localStorage.setItem('OpenAdminPush', 'N');
+                        //do something
+                        $('.main-today-ul').html('');
+                        $('.main-complete-ul').html('');
+                        $('.main-tomorrow-ul').html('');
+                    } else {
+                        openPush = true;
+                        window.localStorage.setItem('OpenAdminPush', 'Y');
+                        //do something
+                        getStaffEmpService();
+                        getBoardType();
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                EmpServicePlugin.QPlayAPI("POST", "setEmpServicePush", self.successCallback, self.failCallback, JSON.stringify(queryData), '');
+            }();
+        }
+
         //获取当日该总机服务下所有会议室的茶水预约
         function getTodayAllReserve() {
             var self = this;
@@ -314,9 +503,7 @@ $("#viewStaffAdminMain").pagecontainer({
                             //先区分未完成和已完成部分
                             if(todayArr[i]['complete'] == 'N') {
                                 noCompleteContent += '<li class="today-list"><div class="today-item">' +
-                                    todayArr[i]['info_push_content'] +
-                                    ' / ' +
-                                    todayArr[i]['reserve_login_id'] +
+                                    todayArr[i]['info_push_content'].replace(' ', ';').split(';')[1] +
                                     '</div><div class="today-handle"><div class="today-done-btn" data-id="' +
                                     todayArr[i]['reserve_id'] +
                                     '"></div><div class="today-tel-btn" data-name="' +
@@ -324,9 +511,7 @@ $("#viewStaffAdminMain").pagecontainer({
                                     '"></div></div></li>';
                             } else {
                                 completedContent += '<li class="complete-list"><div>' +
-                                    todayArr[i]['info_push_content'] +
-                                    ' / ' +
-                                    todayArr[i]['reserve_login_id'] +
+                                    todayArr[i]['info_push_content'].replace(' ', ';').split(';')[1] +
                                     '</div><div></div></li>';
                             }
                         }
@@ -371,9 +556,7 @@ $("#viewStaffAdminMain").pagecontainer({
                         let content = '';
                         for(var i in tomorrowArr) {
                             content += '<li class="tomorrow-list"><div>' +
-                                tomorrowArr[i]['info_push_content'] +
-                                ' / ' +
-                                tomorrowArr[i]['reserve_login_id'] +
+                                tomorrowArr[i]['info_push_content'].replace(' ', ';').split(';')[1] +
                                 '</div></li>';
                         }
 
@@ -427,10 +610,6 @@ $("#viewStaffAdminMain").pagecontainer({
                     //只取第一个电话号码
                     let tel = $.trim(data['Content'][0]['Ext_No']).split(';')[0];
                     window.location.href = "tel://" + tel;
-                    //Email测试
-                    // let mail = $.trim(data['Content'][0]['EMail']);
-                    // $('.currentTelephone').html('').append('<a href="mailto:' + mail + '?subject=會議室協調_12/26">' + mail + '</a>');
-                    // $('.currentTelephone a')[0].click();
                 } else {
                     $("#noTelephoneData").fadeIn(100).delay(2000).fadeOut(100);
                 }
@@ -483,32 +662,34 @@ $("#viewStaffAdminMain").pagecontainer({
             headerHeight = $('#viewStaffAdminMain .page-header').height();
             //初始化总机状态设定dropdownlist
             initAdminSetting();
+            //获取推播权限
+            getEmpServiceList();
             //是否有总机状态
             getStaffStatus();
             //是否有茶水服务
-            getStaffEmpService();
+            //getStaffEmpService();
             //获取所有staff的board主题
-            getBoardType();
+            //getBoardType();
             //下拉更新
-            if(adminRefresh == null) {
-                adminRefresh = PullToRefresh.init({
-                    mainElement: '.admin-main-update',
-                    onRefresh: function() {
-                        getTodayAllReserve();
-                        getTomorrowAllReserve();
-                    }
-                });
-            }
+            // if(adminRefresh == null) {
+            //     adminRefresh = PullToRefresh.init({
+            //         mainElement: '.admin-main-update',
+            //         onRefresh: function() {
+            //             getTodayAllReserve();
+            //             getTomorrowAllReserve();
+            //         }
+            //     });
+            // }
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
             //每10秒更新一次所有预约
-            if(refreshInterval == null) {
-                refreshInterval = setInterval(function() {
+            refreshInterval = setInterval(function() {
+                if(allowPush == true) {
                     getTodayAllReserve();
                     getTomorrowAllReserve();
-                }, 10000);
-            }
+                }
+            }, 10000);
         });
 
         $("#viewStaffAdminMain").on("pagehide", function(event, ui) {
@@ -569,7 +750,12 @@ $("#viewStaffAdminMain").pagecontainer({
 
         //setting admin status
         $('#adminSettingBtn').on('click', function() {
-            $('#adminSettingPopup').trigger('click');
+            if(allowPush == false) {
+                popupMsgInit('.openManagePower');
+                return false;
+            } else if(allowPush == true) {
+                $('#adminSettingPopup').trigger('click');
+            }
         });
 
         //关闭popup后修改状态
@@ -594,13 +780,36 @@ $("#viewStaffAdminMain").pagecontainer({
             setStaffStatus(statusValue, description);
         });
 
-        //关闭推播，更新所有预约
+        //关闭推播信息，更新所有预约
         $('#cancelNewMessage').on('click', function() {
             //属于该页面的操作，只有在该页面点击关闭推播才会触发
             let pageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0]['id'];
             if(pageID == 'viewStaffAdminMain') {
                 getTodayAllReserve();
                 getTomorrowAllReserve();
+            }
+        });
+
+        //点击菜单需要判断是否有推播权限
+        $('.staff-admin-menu-btn').on('click', function() {
+            if(allowPush == false) {
+                popupMsgInit('.openManagePower');
+                return false;
+            }
+        });
+
+        //修改是否接受推播
+        $('.title-text-switch').on('click', function() {
+            var self = $('.title-text-switch img');
+            var type = self.attr('data-type');
+            if(type == 'new') {
+                self.attr('src', serverURL + imgURL + 'switch_close.png');
+                self.attr('data-type', 'delete');
+                setServicePush('delete');
+            } else {
+                self.attr('src', serverURL + imgURL + 'switch_open.png');
+                self.attr('data-type', 'new');
+                setServicePush('new');
             }
         });
 

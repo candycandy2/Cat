@@ -1,11 +1,11 @@
 $("#viewQPayShopReturnReason").pagecontainer({
     create: function(event, ui) {
 
-        let reasonList = [langStr['wgt_038'], langStr['wgt_158'], langStr['wgt_159'], langStr['wgt_160']];//分別爲請選擇、金額輸入錯誤、商品質量問題、其他
+        var reasonList = [langStr['wgt_038'], langStr['wgt_158'], langStr['wgt_159'], langStr['wgt_160']];//分別爲請選擇、金額輸入錯誤、商品質量問題、其他
 
         //初始化退款理由
         function initReasonSelect() {
-            let reasonData = {
+            var reasonData = {
                 id: "returnReason",
                 option: [],
                 title: "",
@@ -27,13 +27,13 @@ $("#viewQPayShopReturnReason").pagecontainer({
             //设置默认值0
             $('#returnReason option').attr('value', 0);
             //减少间距
-            let reasonWidth = setDropdownlistWidth(3);
+            var reasonWidth = setDropdownlistWidth(3);
             tplJS.reSizeDropdownList('returnReason', null, reasonWidth);
         }
 
         //获取交易信息
         function getTradeDetail() {
-            let tradeInfo = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnReason_parmData'));
+            var tradeInfo = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnReason_parmData'));
             $('.return-reason-shop').text(tradeInfo['trade_shop']);
             $('.return-reason-id').text(tradeInfo['trade_id']);
             $('.return-reason-price').text(tradeInfo['trade_price']);
@@ -68,7 +68,7 @@ $("#viewQPayShopReturnReason").pagecontainer({
         /********************************** dom event *************************************/
         //切换退货理由
         $('#qpayReturnReason').on('change', 'select', function() {
-            let typeVal = $(this).val();
+            var typeVal = $(this).val();
             if(typeVal == 0) {
                 $('.returnToPassword').removeClass('active-btn-green');
                 $('.return-reason-textarea').hide();
@@ -80,13 +80,13 @@ $("#viewQPayShopReturnReason").pagecontainer({
                 $('.returnToPassword').addClass('active-btn-green');
                 $('.return-reason-textarea').hide();
             }
-            let reasonWidth = setDropdownlistWidth(3);
+            var reasonWidth = setDropdownlistWidth(3);
             tplJS.reSizeDropdownList('returnReason', null, reasonWidth);
         });
 
         //其他理由
         $('.return-reason-textarea textarea').on('input', function() {
-            let otherVal = $.trim($(this).val());
+            var otherVal = $.trim($(this).val());
             if(otherVal != '') {
                 $('.returnToPassword').addClass('active-btn-green');
             } else {
@@ -96,10 +96,10 @@ $("#viewQPayShopReturnReason").pagecontainer({
 
         //下一步
         $('.returnToPassword').on('click', function() {
-            let has = $(this).hasClass('active-btn-green');
+            var has = $(this).hasClass('active-btn-green');
             if(has) {
                 //只有退款原因是本页输入的，其他内容与前一页一致
-                let tradeInfo = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnReason_parmData'));
+                var tradeInfo = JSON.parse(window.sessionStorage.getItem('viewQPayShopReturnReason_parmData'));
                 //如果不为其他类型，直接获取select val，如果为其他，获取textarea val
                 tradeInfo['reason'] = ($('#qpayReturnReason select').val() == 3 ? $.trim($('.return-reason-textarea textarea').val()) : $('#qpayReturnReason option:selected').text());
                 checkWidgetPage('viewQPayShopReturnPassword', pageVisitedList, tradeInfo);

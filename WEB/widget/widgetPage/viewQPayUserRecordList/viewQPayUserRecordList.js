@@ -8,11 +8,11 @@ $("#viewQPayUserRecordList").pagecontainer({
         function getStoreRecord() {
             var self = this;
             //开始时间为当年的第一天
-            let start_time = new Date(new Date().getFullYear().toString() + '/1/1 00:00:00').getTime() / 1000;
+            var start_time = new Date(new Date().getFullYear().toString() + '/1/1 00:00:00').getTime() / 1000;
             //结束时间为当天此时此刻
-            let end_time = Math.round(new Date().getTime() / 1000);
+            var end_time = Math.round(new Date().getTime() / 1000);
             //查询条件
-            let queryStr = "&start_date=" + start_time.toString() + "&end_date=" + end_time.toString();
+            var queryStr = "&start_date=" + start_time.toString() + "&end_date=" + end_time.toString();
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -51,11 +51,11 @@ $("#viewQPayUserRecordList").pagecontainer({
         function getTradeRecord() {
             var self = this;
             //开始时间为当年的第一天
-            let start_time = new Date(new Date().getFullYear().toString() + '/1/1 00:00:00').getTime() / 1000;
+            var start_time = new Date(new Date().getFullYear().toString() + '/1/1 00:00:00').getTime() / 1000;
             //结束时间为当天此时此刻
-            let end_time = Math.round(new Date().getTime() / 1000);
+            var end_time = Math.round(new Date().getTime() / 1000);
             //查询条件
-            let queryStr = "&start_date=" + start_time.toString() + "&end_date=" + end_time.toString();
+            var queryStr = "&start_date=" + start_time.toString() + "&end_date=" + end_time.toString();
 
             this.successCallback = function (data) {
                 console.log(data);

@@ -311,14 +311,14 @@
 
 .today-room-list{
     width: 100vw;
-    height: 28vw;
+    height: 29vw;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
 
 .today-room-list li{
     padding-bottom: 3.5vw;
-    text-indent: 5.6vw;
+    text-indent: 5vw;
     color: #253137;
     font-size: 3.768vw;
 }

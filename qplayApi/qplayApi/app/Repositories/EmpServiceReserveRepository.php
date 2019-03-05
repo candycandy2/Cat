@@ -19,6 +19,7 @@ class EmpServiceReserveRepository
     }
 
     public function newReserve(Array $data){
+        
        return $this->reserveRecord->insertGetId($data);
     }
 
@@ -33,15 +34,16 @@ class EmpServiceReserveRepository
         return $this->reserveRecord
                     ->join('target_id','reserve_record.target_id_row_id','=','target_id.row_id')
                     ->join('service_id','target_id.service_id_row_id','=','service_id.row_id')
-                    ->where('target_id.active', 'Y')
                     ->where('service_id', $serviceId)
+                    ->where('target_id.active', 'Y')
                     ->where('service_id.active', 'Y')
+                    ->where('reserve_record.active', 'Y')
                     ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
                     ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
                     ->select('target_id', 'target_id_row_id', 'reserve_record.row_id as reserve_id',
                              'reserve_record.login_id as reserve_login_id','reserve_record.domain as reserve_domain', 
                              'reserve_record.emp_no as reserve_emp_no',
-                             'info_push_title', 'info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
+                             'info_push_admin_title as info_push_title', 'info_push_admin_content as info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
                               DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
                               'complete_login_id','complete_at')
                     ->orderby('complete','asc')
@@ -63,12 +65,14 @@ class EmpServiceReserveRepository
             ->join('service_id','target_id.service_id_row_id','=','service_id.row_id')
             ->where('target_id.row_id', $targetIdRowId)
             ->where('target_id.active', 'Y')
+            ->where('service_id.active', 'Y')
+            ->where('reserve_record.active', 'Y')
             ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
-            ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
+            ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'<=', $endDate)
             ->select('reserve_record.row_id as reserve_id',
                      'reserve_record.login_id as reserve_login_id','reserve_record.domain as reserve_domain', 
                      'reserve_record.emp_no as reserve_emp_no',
-                     'info_push_title', 'info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
+                     'info_push_admin_title as info_push_title', 'info_push_admin_content as info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
                       DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
                       'complete_login_id','complete_at')
             ->orderby('complete','asc')
@@ -92,39 +96,14 @@ class EmpServiceReserveRepository
             ->where('service_id.service_id', $serviceId)
             ->where('reserve_record.emp_no', $empNo)
             ->where('target_id.active', 'Y')
+            ->where('service_id.active', 'Y')
+            ->where('reserve_record.active', 'Y')
             ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
             ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
             ->select('service_id','target_id', 'target_id_row_id', 'reserve_record.row_id as reserve_id',
                      'reserve_record.login_id as reserve_login_id','reserve_record.domain as reserve_domain', 
                      'reserve_record.emp_no as reserve_emp_no',
-                     'info_push_title', 'info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
-                      DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
-                      'complete_login_id','complete_at')
-            ->orderby('start_date','asc')
-            ->get();
-    }
-
-    /**
-     * get my reserve by service type
-     * @param  string $serviceType service_id.type
-     * @param  string $empNo       emp_no
-     * @param  timestamp $startDate   start date
-     * @param  timestamp $endDate     end date
-     * @return mixed
-     */
-    public function getMyReserveByServiceType($serviceType, $empNo, $startDate, $endDate){
-        return $this->reserveRecord
-            ->join('target_id','reserve_record.target_id_row_id','=','target_id.row_id')
-            ->join('service_id','target_id.service_id_row_id','=','service_id.row_id')
-            ->where('service_id.type', $serviceType)
-            ->where('reserve_record.emp_no', $empNo)
-            ->where('target_id.active', 'Y')
-            ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
-            ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
-            ->select('service_id', 'target_id', 'target_id_row_id', 'reserve_record.row_id as reserve_id',
-                     'reserve_record.login_id as reserve_login_id','reserve_record.domain as reserve_domain', 
-                     'reserve_record.emp_no as reserve_emp_no',
-                     'info_push_title', 'info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
+                     'info_push_emp_title', 'info_push_emp_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
                       DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
                       'complete_login_id','complete_at')
             ->orderby('start_date','asc')
@@ -150,5 +129,21 @@ class EmpServiceReserveRepository
         return $this->reserveRecord
                     ->where('row_id', $reserveRowId)
                     ->update($data);
+    }
+    
+    /**
+     * public reserve
+     * @param  Array  $data update data
+     * @return mixed
+     */
+    public function editReserve($reserveRowId, Array $data){
+
+        $reserve = $this->reserveRecord::find($reserveRowId);
+        if(is_null($reserve)){
+            return null;
+        }else{
+            return $reserve->update($data);    
+        }
+
     }
 }

@@ -229,20 +229,19 @@ $("#viewStaffUserMain").pagecontainer({
                 //console.log(data);
 
                 if(data['result_code'] == '1') {
-
                     let arr = data['content']['record_list'];
                     if(arr.length > 0) {
                         $('.today-room-none').hide();
 
                         let content = '';
                         for(var i in arr) {
+                            //删除index为1的日期和index为2的会议室
+                            let infoArr = arr[i]['info_push_content'].split(' ');
+                            let infoPush = infoArr[1] + ' ' + infoArr[3] + ' ' + infoArr[4] + ' ' + infoArr[5];
                             content += '<li' +
                                 (arr[i]['complete'] == 'N' ? '' : ' class="past-time"') +
                                 '><span>' +
-                                new Date(arr[i]['start_date'] * 1000).hhmm() +
-                                ' </span><span>' +
-                                arr[i]['reserve_login_id'] + ' ' +
-                                arr[i]['info_push_content'].split(' ')[2] +
+                                infoPush +
                                 ' </span><span>' +
                                 (arr[i]['complete'] == 'N' ? '' : '(' + new Date(arr[i]['complete_at'] * 1000).hhmm() + '已送達)') +
                                 '</span></li>';
@@ -283,10 +282,12 @@ $("#viewStaffUserMain").pagecontainer({
                 tea: teaCount,
                 water: waterCount
             };
-            let typeContent = (teaType == 'needTea' ? '添加' : '添加茶水');
+            let typeContent = (teaType == 'needTea' ? '加' : '添加茶水');
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
-            let pushContent = teaInfo['time'] +
+            let pushContent = new Date().mmdd('/') +
+                ' ' +
+                teaInfo['time'] +
                 ' ' +
                 teaInfo['id'] +
                 ' ' +
@@ -300,8 +301,10 @@ $("#viewStaffUserMain").pagecontainer({
                 emp_no: loginData['emp_no'],
                 start_date: rightNow,
                 end_date: rightNow,
-                info_push_title: '茶水添加',//非即時預約"茶水預約"
-                info_push_content: pushContent,
+                info_push_admin_title: '同仁茶水申請通知',
+                info_push_admin_content: pushContent + ' / ' + loginData['loginid'],
+                info_push_emp_title: '茶水申請已發送',
+                info_push_emp_content: pushContent,
                 info_data: JSON.stringify(teaInfo),
                 push: '11'
             });
@@ -310,12 +313,14 @@ $("#viewStaffUserMain").pagecontainer({
                 //console.log(data);
 
                 if(data['result_code'] == '1') {
+                    $("#applyTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);
                     //預約成功後初始化
                     initCountData();
                     //刷新数据
                     $('.refreshTargetRoom').trigger('tap');
                 }
-                
+
+                loadingMask('hide');
             };
 
             this.failCallback = function(data) {};
@@ -464,7 +469,6 @@ $("#viewStaffUserMain").pagecontainer({
             setTimeout(function(){
                 $('.refreshTargetRoom').removeClass('refresh-rotate');
             }, 800);
-            
         });
 
         //单选茶还是水
@@ -512,6 +516,7 @@ $("#viewStaffUserMain").pagecontainer({
 
         //确定送出茶水预约
         $('#viewStaffUserMain').on('click', '.userAddTeaBtn, .userWaitBtn', function() {
+            loadingMask('show');
             //API
             quickNewReserve();
         });

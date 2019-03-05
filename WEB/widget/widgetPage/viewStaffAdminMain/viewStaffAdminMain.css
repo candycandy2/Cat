@@ -17,6 +17,17 @@
     height: 100%;
 }
 
+.newFeedback{
+    display: none;
+    width: 2.4vw;
+    height: 2.4vw;
+    border-radius: 50%;
+    background: #49BA82;
+    position: absolute;
+    top: 7vw;
+    left: 4vw;
+}
+
 .main-title-img{
     width: 17.2vw;
     position: relative;
@@ -111,9 +122,27 @@
 
 .title-text-row2>div:nth-of-type(2){
     width: 40%;
-    text-align: right;
     color: #253137;
     font-size: 4.81vw;
+}
+
+.title-text-img>div{
+    float: left;
+    height: 100%;
+}
+
+.title-text-img>div:nth-of-type(1){
+    width: 70%;
+    text-align: center;
+}
+
+.title-text-img>div:nth-of-type(2){
+    width: 30%;
+}
+
+.title-text-switch img{
+    width: 100%;
+    vertical-align: middle;
 }
 
 .admin-main-navbar{
@@ -299,4 +328,16 @@
     width: 93%;
     height: 8vw;
     padding: 0 2vw;
+}
+
+.openManagePower .ui-content{
+    padding: 0;
+}
+
+.openManagePower .ui-content .header{
+    margin-top: 10vw;
+}
+
+.openManagePower .ui-content .footer{
+    margin-top: 8vw;
 }
