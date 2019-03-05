@@ -201,7 +201,7 @@ $("#viewOvertimeSubmit").pagecontainer({
                 $("#actualApplyTitle").hide();
                 $("#actualOTInterval").hide();
                 $("#actualOTHours").hide();
-                $(".overtime-paid").hide();
+                $(".overtime-paid").show();
                 $("#previewActualOTBtn").hide();
                 //清空時數登入
                 $("#emptyOvertimeForm").click();
@@ -227,8 +227,8 @@ $("#viewOvertimeSubmit").pagecontainer({
                 //加班日期賦值
                 $("#chooseOTday").text(overtimeDetailObj["targetdate"]);
                 overtimeday = overtimeDetailObj["targetdate"];
-                getOTPaidType();
             }
+            getOTPaidType();
         }
 
         /********************************** page event *************************************/
