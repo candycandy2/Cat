@@ -248,7 +248,7 @@ class EmpServiceServiceService
         foreach ($newServiceIdList as $serviceId) {
                 
             //check service_id exist
-            $service = $this->serviceIDRepository->getServiceRowId($serviceId);
+            $service = $this->serviceIDRepository->getServiceRowId($serviceId['service_id']);
             
             if(is_null($service)){
 
@@ -301,7 +301,7 @@ class EmpServiceServiceService
             
 
             //check service_id exist
-            $service = $this->serviceIDRepository->getServiceRowId($serviceId);
+            $service = $this->serviceIDRepository->getServiceRowId($serviceId['service_id']);
             
             if(is_null($service)){
 
@@ -325,7 +325,7 @@ class EmpServiceServiceService
                 }
 
                 $deletePushUserData = [
-                'service_id' =>  $serviceId,
+                'service_id' =>  $serviceId['service_id'],
                 'login_id' => $loginId,
                 'domain' => $domain,
                 'emp_no' => $empNo
