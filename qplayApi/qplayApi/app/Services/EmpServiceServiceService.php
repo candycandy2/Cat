@@ -248,6 +248,15 @@ class EmpServiceServiceService
         foreach ($newServiceIdList as $serviceId) {
                 
             //check service_id exist
+            if(!isset($serviceId['service_id'])){
+                $result = ["result_code" => ResultCode::_999001_requestParameterLostOrIncorrect, "message"
+                                 => CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+                  ];
+
+                $logData = [];
+                return [$result,$logData];
+            }
+
             $service = $this->serviceIDRepository->getServiceRowId($serviceId['service_id']);
             
             if(is_null($service)){
@@ -301,6 +310,15 @@ class EmpServiceServiceService
             
 
             //check service_id exist
+            if(!isset($serviceId['service_id'])){
+                $result = ["result_code" => ResultCode::_999001_requestParameterLostOrIncorrect, "message"
+                                 => CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
+                  ];
+
+                $logData = [];
+                return [$result,$logData];
+            }
+            
             $service = $this->serviceIDRepository->getServiceRowId($serviceId['service_id']);
             
             if(is_null($service)){
