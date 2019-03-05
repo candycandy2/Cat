@@ -643,7 +643,6 @@ $("#viewStaffUserAppointment").pagecontainer({
         }
 
 
-
         /********************************** page event ***********************************/
         $("#viewStaffUserAppointment").on("pagebeforeshow", function (event, ui) {
 
@@ -677,7 +676,7 @@ $("#viewStaffUserAppointment").pagecontainer({
                     }
                 }
 
-                window.sessionStorage.removeItem('DeleteReserveInfoData')
+                window.sessionStorage.removeItem('DeleteReserveInfoData');
             }
 
             //编辑页面跳转过来，并需要判断是否是第一次进来
