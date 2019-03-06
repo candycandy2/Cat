@@ -30,7 +30,7 @@ var staffWidget = {
                 $.mobile.pageContainer.append(data);
 
                 //ios top
-                if(device.platform === "iOS") {
+                if (device.platform === "iOS") {
                     $('.userStaffMenu').css('top', iOSFixedTopPX().toString() + 'px');
                 }
 
@@ -39,22 +39,22 @@ var staffWidget = {
             //调出菜单(如果需要在其他頁面使用，必須添加樣式staff-menu-btn)
             $(document).on('click', '.staff-menu-btn', function() {
                 $('.userStaffMenu').show();
-                $('.userStaffMenu .staff-menu-main').animate({left: '40vw'}, 300);
+                $('.userStaffMenu .staff-menu-main').animate({ left: '40vw' }, 300);
             });
 
             //右滑隐藏菜单
             $(document).on('swiperight', '.userStaffMenu', function() {
-                $('.userStaffMenu .staff-menu-main').animate({left: '100vw'}, 300, function(){
+                $('.userStaffMenu .staff-menu-main').animate({ left: '100vw' }, 300, function() {
                     $('.userStaffMenu').hide();
                 });
             });
 
             //点击非菜单区域隐藏菜单
             $(document).on('tap', '.userStaffMenu', function(e) {
-                if(e.target != this) {
+                if (e.target != this) {
                     return;
                 } else {
-                    $('.userStaffMenu .staff-menu-main').animate({left: '100vw'}, 300, function(){
+                    $('.userStaffMenu .staff-menu-main').animate({ left: '100vw' }, 300, function() {
                         $('.userStaffMenu').hide();
                     });
                 }
@@ -65,7 +65,7 @@ var staffWidget = {
                 //1. get active page & target page
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
                 var targetPage = $(this).data('view');
-                if(activePage != targetPage) {
+                if (activePage != targetPage) {
                     //2. remove class
                     $('.userStaffMenu .staff-menu-list').find('.active-menu').removeClass('active-menu');
                     //3. add class
@@ -73,12 +73,12 @@ var staffWidget = {
                 }
 
                 //4. close panel
-                $('.userStaffMenu .staff-menu-main').animate({left: '100vw'}, 300, function(){
+                $('.userStaffMenu .staff-menu-main').animate({ left: '100vw' }, 300, function() {
                     $('.userStaffMenu').hide();
                 });
 
                 //5. change page
-                if(activePage != targetPage) {
+                if (activePage != targetPage) {
                     checkWidgetPage(targetPage, pageVisitedList);
                 }
             });
@@ -101,8 +101,8 @@ var staffWidget = {
         function staffBackKey() {
             //1. close panel
             var panelShow = $('.userStaffMenu').css('display') == 'block' ? true : false;
-            if(panelShow) {
-                $('.userStaffMenu .staff-menu-main').animate({left: '100vw'}, 300, function(){
+            if (panelShow) {
+                $('.userStaffMenu .staff-menu-main').animate({ left: '100vw' }, 300, function() {
                     $('.userStaffMenu').hide();
                 });
             }
@@ -110,17 +110,17 @@ var staffWidget = {
             //2. change menu class
             var curPage = pageVisitedList[pageVisitedList.length - 1];
             $.each($('.userStaffMenu .staff-menu-list li'), function(index, item) {
-                if(curPage == $(item).data('view')) {
+                if (curPage == $(item).data('view')) {
                     $('.userStaffMenu .staff-menu-list').find('.active-menu').removeClass('active-menu');
                     $('.userStaffMenu .staff-menu-list li[data-view="' + curPage + '"]').addClass('active-menu');
                 }
             })
         }
 
-        $.fn.staff = function (options) {
+        $.fn.staff = function(options) {
             options = options || {};
 
-            return this.each(function () {
+            return this.each(function() {
                 var state = $.data(this, 'staff');
                 if (state) {
                     $.extend(state.options, options);
@@ -166,10 +166,10 @@ var staffWidget = {
         this.successCallback = function(data) {
             //console.log(data);
 
-            if(data['result_code'] == '1') {
+            if (data['result_code'] == '1') {
                 //判断是否有数据
                 var arr = data['content']['service_list'][0]['record_list'];
-                if(arr.length == 0) {
+                if (arr.length == 0) {
                     //no data
                     $('.staff-main').hide();
                     $('.staff-none').show();
@@ -177,8 +177,8 @@ var staffWidget = {
                     $('.staff-none').hide();
                     $('.staff-main').show();
                     var content = '';
-                    for(var i = 0; i < arr.length; i++) {
-                        if(i < 3) {
+                    for (var i = 0; i < arr.length; i++) {
+                        if (i < 3) {
                             content += '<li>' + arr[i]['info_push_content'].replace(' ', ';').split(';')[1] + '</li>';
                         } else {
                             break;
@@ -195,7 +195,7 @@ var staffWidget = {
         this.failCallback = function(data) {};
 
         var __construct = function() {
-            EmpServicePlugin.QPlayAPI("POST", "getMyReserve", self.successCallback, self.failCallback, queryData, '');
+            //EmpServicePlugin.QPlayAPI("POST", "getMyReserve", self.successCallback, self.failCallback, queryData, '');
         }();
     },
     plugin: function() {

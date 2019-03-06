@@ -5,7 +5,7 @@ var qpayWidget = {
         status = status || null;
 
         function createContent() {
-            $.get(serverURL + "/widget/widget/qpay/qpay.html", function (data) {
+            $.get(serverURL + "/widget/widget/qpay/qpay.html", function(data) {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
@@ -17,7 +17,7 @@ var qpayWidget = {
                 var dueDate = getDueDay();
                 $('.qpay-due-date').text(dueDate);
 
-                if(status != null) {
+                if (status != null) {
                     qpayWidget.show();
                 }
 
@@ -72,16 +72,16 @@ var qpayWidget = {
     },
 
     show: function() {
-        if(loginData['company'] == 'shop') {
+        if (loginData['company'] == 'shop') {
             $('.qpay-none').show();
             $('.qpay-more-hidden').show();
             $('.qpay-main').hide();
         } else {
             var self = this;
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
 
-                if(data['result_code'] == '1') {
+                if (data['result_code'] == '1') {
                     var point_now = data['content'].point_now;
                     $('.qpay-money').text(point_now);
                 } else {
@@ -93,16 +93,16 @@ var qpayWidget = {
                 $('.qpay-main').show();
             };
 
-            this.failCallback = function () { };
+            this.failCallback = function() {};
 
-            var __construct = function () {
-                QPlayAPIEx("GET", "getQPayInfoEmp", self.successCallback, self.failCallback, null, null, "low", 30000, true);   
+            var __construct = function() {
+                QPlayAPIEx("GET", "getQPayInfoEmp", self.successCallback, self.failCallback, null, null, "low", 30000, true);
             }();
         }
-        
+
     },
 
     refresh: function() {
-        
+
     }
 }
