@@ -85,14 +85,14 @@ var widget = {
                 widgetItem.remove();
                 //2.原来没有，现在有
             } else if (widgetItem.length == 0 && widgetArr[i]['show'] == true) {
-                widget.load(widgetArr[i]['id'], $('#widgetList'), 'new');
+                widget.load(widgetArr[i]['id'], $('#widgetList'));
                 //3.原来有，现在也有（或者即将要有）
             } else if (widgetItem.length > 0 && widgetArr[i]['show'] == true) {
                 var key = widgetArr[i]['name'] + 'Widget';
                 if (typeof window[key] != 'undefined' && typeof window[key].show != 'undefined') {
                     window[key].show();
                 } else if (typeof window[key] == 'undefined') {
-                    widget.load(widgetArr[i]['id'], $('#widgetList'), 'new');
+                    widget.load(widgetArr[i]['id'], $('#widgetList'));
                 }
             }
             //4.原来没有，现在也没有，nothing to do

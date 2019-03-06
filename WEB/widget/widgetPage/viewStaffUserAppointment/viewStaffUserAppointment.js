@@ -412,6 +412,8 @@ $("#viewStaffUserAppointment").pagecontainer({
                     //3. 获取该会议室该日期最新的预约
                     initHoursUI();
                     getReserveByTarget();
+                    //staff.js
+                    staffWidget.getReserve();
                 }
             };
 
@@ -494,6 +496,8 @@ $("#viewStaffUserAppointment").pagecontainer({
                     //3. 获取该会议室该日期最新的预约
                     initHoursUI();
                     getReserveByTarget();
+                    //staff.js
+                    staffWidget.getReserve();
                 } else if (data['result_code'] == '052008') {
                     //预约已完成，不能修改或删除
                     loadingMask('hide');
@@ -565,6 +569,8 @@ $("#viewStaffUserAppointment").pagecontainer({
                     //3. 获取该会议室该日期最新的预约
                     initHoursUI();
                     getReserveByTarget();
+                    //staff.js
+                    staffWidget.getReserve();
                 } else if (data['result_code'] == '052008') {
                     //预约已完成，不能修改或删除
                     loadingMask('hide');

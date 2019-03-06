@@ -12,10 +12,10 @@ var staffWidget = {
                 //$('.staff-icon').html('').append(teaImg);
                 var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/staff/img/more_green.png');
                 $('.staff-user-more').html('').append(moreImg);
-                // //3.update
-                $('.staff-update-time').text(updateTime());
                 var staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
                 $('.staff-img').html('').append(staffIcon);
+
+                staffWidget.show();
 
             }, "html");
 
@@ -91,13 +91,6 @@ var staffWidget = {
 
         }
 
-        function updateTime() {
-            var now = new Date();
-            var date = now.yyyymmdd('/');
-            var time = now.hhmm();
-            return date + ' ' + time;
-        }
-
         function staffBackKey() {
             //1. close panel
             var panelShow = $('.userStaffMenu').css('display') == 'block' ? true : false;
@@ -151,55 +144,76 @@ var staffWidget = {
         $('.staffWidget').staff();
     },
     show: function() {
+        //get localStorage
+        var my_reserve = JSON.parse(window.localStorage.getItem('MyStaffReserve'));
+        if(my_reserve != null) {
+            //update date
+            var date = my_reserve['lastUpdateTime'];
+            $('.staff-update-time').text(date);
+
+            //list
+            var arr = my_reserve['content'];
+            if (arr.length == 0) {
+                //no data
+                $('.staff-main').hide();
+                $('.staff-none').show();
+            } else {
+                $('.staff-none').hide();
+                $('.staff-main').show();
+                var content = '';
+                for (var i = 0; i < arr.length; i++) {
+                    content += '<li>' + arr[i]['info_push_content'] + '</li>';
+                }
+                $('.staff-main-ul').html('').append(content);
+            }
+        } else {
+            //update date
+            var now = new Date();
+            var date = now.yyyymmdd('/');
+            var time = now.hhmm();
+            $('.staff-update-time').text(date + ' ' + time);
+        }
+        
+    },
+    plugin: function() {
+        var dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin', 'YellowPagePlugin'];
+        widget.plugin(dependency);
+    },
+    getReserve: function() {
         var self = this;
+
+        var now = new Date();
+        var date = now.yyyymmdd('/');
+        var time = now.hhmm();
 
         var queryData = JSON.stringify({
             login_id: loginData['loginid'],
             domain: loginData['domain'],
             emp_no: loginData['emp_no'],
             service_id: 'meetingroomService',
-            //service_type: 'staff',
             start_date: Math.round(new Date().getTime() / 1000),
-            end_date: new Date(new Date().yyyymmdd('/') + ' 18:00').getTime() / 1000
+            end_date: new Date(new Date().yyyymmdd('/') + ' 00:00').getTime() / 1000 + 14 * 24 * 60 * 60
         });
 
         this.successCallback = function(data) {
             //console.log(data);
 
             if (data['result_code'] == '1') {
-                //判断是否有数据
-                var arr = data['content']['service_list'][0]['record_list'];
-                if (arr.length == 0) {
-                    //no data
-                    $('.staff-main').hide();
-                    $('.staff-none').show();
-                } else {
-                    $('.staff-none').hide();
-                    $('.staff-main').show();
-                    var content = '';
-                    for (var i = 0; i < arr.length; i++) {
-                        if (i < 3) {
-                            content += '<li>' + arr[i]['info_push_content'].replace(' ', ';').split(';')[1] + '</li>';
-                        } else {
-                            break;
-                        }
-                    }
-                    $('.staff-main-ul').html('').append(content);
+                //update localStorage
+                var tempArr = data['content']['service_list'][0]['record_list'];
+                var arr = tempArr.length < 4 ? tempArr : tempArr.slice(0, 3);
+                var obj = {
+                    lastUpdateTime: date + ' ' + time,
+                    content: arr
                 }
-            } else {
-                $('.staff-main').hide();
-                $('.staff-none').show();
+                window.localStorage.setItem('MyStaffReserve', JSON.stringify(obj));
             }
         };
 
         this.failCallback = function(data) {};
 
         var __construct = function() {
-            //EmpServicePlugin.QPlayAPI("POST", "getMyReserve", self.successCallback, self.failCallback, queryData, '');
+            EmpServicePlugin.QPlayAPI("POST", "getMyReserve", self.successCallback, self.failCallback, queryData, '');
         }();
-    },
-    plugin: function() {
-        var dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin', 'YellowPagePlugin'];
-        widget.plugin(dependency);
     }
 }

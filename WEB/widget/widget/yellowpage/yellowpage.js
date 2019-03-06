@@ -4,8 +4,7 @@ var yellowpageWidget = {
     yellowPageKey: 'appyellowpage',
     yellowPageSecretKey: 'c103dd9568f8493187e02d4680e1bf2f',
 
-    init: function(contentItem, status) {
-        status = status || null;
+    init: function(contentItem) {
 
         var _key = this.yellowPageKey;
 
@@ -19,9 +18,7 @@ var yellowpageWidget = {
                 var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/yellowpage/img/more_green.png');
                 $('.phone-book-more').html('').append(moreImg);
 
-                if (status != null) {
-                    yellowpageWidget.show();
-                }
+                yellowpageWidget.show();
 
             }, "html");
 
