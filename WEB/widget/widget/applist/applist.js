@@ -1,8 +1,7 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var applistWidget = {
 
-    init: function(contentItem, status) {
-        status = status || null;
+    init: function(contentItem) {
         var favoriteApp = null;
 
         function createContent() {
@@ -10,9 +9,7 @@ var applistWidget = {
                 contentItem.html('').append(data);
                 getFavoriteApp();
 
-                if(status != null) {
-                    applistWidget.show();
-                }
+                applistWidget.show();
             }, 'html');
 
             //最爱列表打开APP
