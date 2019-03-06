@@ -616,13 +616,7 @@ html body .ui-group-theme-a a:visited {
 .startdayFirst>.ui-content,
 .confirmSend>.ui-content,
 .agentNotData>.ui-content,
-.deptFirst>.ui-content,
-.overitmeDateFirst>.ui-content,
-.starttimeFirst>.ui-content,
-.endTimeError>.ui-content,
-.leftDaysByOT>.ui-content,
-.confirmOvertime>.ui-content,
-.confirmActualOvertime>.ui-content {
+.deptFirst>.ui-content {
     padding: 0 !important;
 }
 
@@ -637,13 +631,7 @@ html body .ui-group-theme-a a:visited {
 .basedayFirst>.ui-content>.header,
 .startdayFirst>.ui-content>.header,
 .confirmSend>.ui-content>.header,
-.deptFirst>.ui-content>.header,
-.overitmeDateFirst>.ui-content>.header,
-.starttimeFirst>.ui-content>.header,
-.endTimeError>.ui-content>.header,
-.leftDaysByOT>.ui-content>.header,
-.confirmOvertime>.ui-content>.header,
-.confirmActualOvertime>.ui-content>.header {
+.deptFirst>.ui-content>.header {
     margin-top: 12.5%;
 }
 
