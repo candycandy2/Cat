@@ -146,7 +146,7 @@ var staffWidget = {
     show: function() {
         //get localStorage
         var my_reserve = JSON.parse(window.localStorage.getItem('MyStaffReserve'));
-        if(my_reserve != null) {
+        if (my_reserve != null) {
             //update date
             var date = my_reserve['lastUpdateTime'];
             $('.staff-update-time').text(date);
@@ -173,7 +173,7 @@ var staffWidget = {
             var time = now.hhmm();
             $('.staff-update-time').text(date + ' ' + time);
         }
-        
+
     },
     plugin: function() {
         var dependency = ['QForumPlugin', 'EmpServicePlugin', 'StatusPlugin', 'YellowPagePlugin'];
