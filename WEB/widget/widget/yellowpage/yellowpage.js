@@ -19,7 +19,7 @@ var yellowpageWidget = {
                 var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/yellowpage/img/more_green.png');
                 $('.phone-book-more').html('').append(moreImg);
 
-                if(status != null) {
+                if (status != null) {
                     yellowpageWidget.show();
                 }
 
