@@ -15,7 +15,6 @@
 #actualApplyTitle,
 #actualOTInterval,
 #actualOTHours,
-#applyOTPaid,
 #previewActualOTBtn,
 #confirmActualOTBtn {
     display: none;
@@ -26,8 +25,24 @@
     color: #0f0f0f;
 }
 
-.overtime-reason>div:nth-of-type(2) {
+.apply-overtime-count {
+    height: 23vw;
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.overtime-reason>div:nth-of-type(2),
+.apply-overtime-count>div:nth-of-type(2) {
     margin-top: 2.14vw;
+}
+
+.total-hours-textarea {
+    resize: none;
+    width: 86vw;
+    height: 7.17vw;
+    border: 0;
+    overflow-y: auto;
+    -webkit-appearance: none;
 }
 
 #paid-type-popup {
@@ -77,4 +92,24 @@
     color: #1678E5;
     font-size: 5.02vw;
     text-align: center;
+}
+
+.overitmeDateFirst>.ui-content,
+.starttimeFirst>.ui-content,
+.endTimeError>.ui-content,
+.leftDaysByOT>.ui-content,
+.confirmOvertime>.ui-content,
+.confirmActualOvertime>.ui-content,
+.hoursTypeError>.ui-content {
+    padding: 0 !important;
+}
+
+.overitmeDateFirst>.ui-content>.header,
+.starttimeFirst>.ui-content>.header,
+.endTimeError>.ui-content>.header,
+.leftDaysByOT>.ui-content>.header,
+.confirmOvertime>.ui-content>.header,
+.confirmActualOvertime>.ui-content>.header,
+.hoursTypeError>.ui-content>.header {
+    margin-top: 12.5%;
 }
