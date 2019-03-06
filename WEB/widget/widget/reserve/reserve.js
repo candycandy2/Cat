@@ -57,8 +57,7 @@ var reserveWidget = {
             }
         }, 1000);
     },
-    init: function(contentItem, status) {
-        status = status || null;
+    init: function(contentItem) {
 
         function createContent(contentItem) {
 
@@ -71,9 +70,7 @@ var reserveWidget = {
                 //2.获取用户头像
                 checkPhotoUpload($('.reserve-default-photo img'));
 
-                if(status != null) {
-                    reserveWidget.show();
-                }
+                reserveWidget.show();
 
             }, "html");
 

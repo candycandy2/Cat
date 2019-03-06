@@ -142,6 +142,8 @@ $("#viewStaffUserReserve").pagecontainer({
                     let infoData = getReserveByID(id)['info_data'];
                     deleteReserveList.push(JSON.parse(infoData));
                     window.sessionStorage.setItem('DeleteReserveInfoData', JSON.stringify(deleteReserveList));
+                    //staff.js
+                    staffWidget.getReserve();
                 } else if (data['result_code'] == '052008') {
                     loadingMask('hide');
                     //预约已完成，不能修改或删除
@@ -175,6 +177,8 @@ $("#viewStaffUserReserve").pagecontainer({
 
         $("#viewStaffUserReserve").on("pageshow", function(event, ui) {
             getMyReserve();
+            //staff.js
+            staffWidget.getReserve();
         });
 
         $("#viewStaffUserReserve").on("pagehide", function(event, ui) {

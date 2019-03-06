@@ -17,6 +17,8 @@ var staffAdminWidget = {
                 var staffIcon = $('<img src="' + serverURL + '/widget/widget/staff/img/widget_staff.png">');
                 $('.staffAdmin-img').html('').append(staffIcon);
 
+                staffAdminWidget.show();
+
             }, "html");
 
             //点击更多，跳转到快速叫茶
@@ -190,7 +192,7 @@ var staffAdminWidget = {
         this.failCallback = function(data) {};
 
         var __construct = function() {
-            EmpServicePlugin.QPlayAPI("POST", "getReserveRecord", self.successCallback, self.failCallback, queryData, '');
+            QPlayAPI("POST", "getReserveRecord", self.successCallback, self.failCallback, queryData, '');
         }();
     },
     plugin: function() {
