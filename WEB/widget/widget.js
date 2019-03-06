@@ -61,11 +61,12 @@ var widget = {
                 .done(function(script, textStatus) {
 
                     if (typeof window[widgetItem] != 'undefined') {
-                        window[widgetItem].init(contentItem, status);
-                        //是否需要plugin
+                        //need plugin
                         if (typeof window[widgetItem].plugin != 'undefined') {
                             window[widgetItem].plugin();
                         }
+                        //widget init
+                        window[widgetItem].init(contentItem, status);
                     }
 
                 });
@@ -172,22 +173,23 @@ function checkWidgetPage(pageID, pageVisitedList, parmData) {
 
         addDownloadHit(pageID);
 
+        //1. get html
         $.get(url + '.html', function(data) {
-            //1. css
+            //2. create css
             var link = document.createElement('link');
             link.rel = 'stylesheet';
             link.type = 'text/css';
             link.href = url + '.css';
             document.head.appendChild(link);
 
-            //2. html
+            //3. append html
             $.mobile.pageContainer.append(data);
             $('#' + pageID).page().enhanceWithin();
 
-            //3. language string
+            //4. set language string
             setViewLanguage(pageID);
 
-            //4. water mark
+            //5. water mark
             //According to the data [waterMarkPageList] which set in index.js
             if (!(typeof waterMarkPageList === 'undefined')) {
                 if (waterMarkPageList.indexOf(pageID) !== -1) {
@@ -195,21 +197,15 @@ function checkWidgetPage(pageID, pageVisitedList, parmData) {
                 }
             }
 
-            //5. js
-            setTimeout(function() {
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = url + '.js';
-                document.head.appendChild(script);
-
-                //6. change page
+            //6. get javascript
+            $.getScript(url + '.js').done(function() {
+                //7. change page
                 $.mobile.changePage('#' + pageID);
                 if (window.ga !== undefined) {
                     window.ga.trackView(pageID);
                 }
-
-            }, 200);
-            pageVisitedList.push(pageID);
+                pageVisitedList.push(pageID);
+            });
 
         }, 'html');
 
