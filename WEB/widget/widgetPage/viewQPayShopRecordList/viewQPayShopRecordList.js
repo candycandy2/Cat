@@ -25,7 +25,7 @@ $("#viewQPayShopRecordList").pagecontainer({
             $('.shop-point-type').text(type_name);
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     //total money

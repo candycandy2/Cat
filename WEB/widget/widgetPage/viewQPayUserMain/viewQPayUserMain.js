@@ -7,7 +7,7 @@ $("#viewQPayUserMain").pagecontainer({
             var self = this;
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     //1. 消费券余额

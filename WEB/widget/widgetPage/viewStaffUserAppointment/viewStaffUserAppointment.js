@@ -116,7 +116,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             });
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     reserveList = data['content']['record_list'];
@@ -191,7 +191,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             });
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     //length等于0表示没有预约
@@ -398,7 +398,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             });
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     $("#reserveTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);
@@ -482,7 +482,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             });
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     $("#updateTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);
@@ -555,7 +555,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     $("#deleteTeaSuccess").fadeIn(100).delay(2000).fadeOut(100);

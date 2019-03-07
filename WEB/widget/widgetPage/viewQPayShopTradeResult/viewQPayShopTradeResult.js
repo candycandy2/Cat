@@ -17,7 +17,7 @@ $("#viewQPayShopTradeResult").pagecontainer({
             var queryStr = '&emp_no=' + current_emp + '&shop_id=' + shop_id + '&price=' + trade_price;
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 var tradeDate = new Date(data['content'].trade_time * 1000).toLocaleDateString('zh');
                 var tradeTime = new Date(data['content'].trade_time * 1000).toTimeString().substr(0, 5);

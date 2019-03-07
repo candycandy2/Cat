@@ -53,7 +53,7 @@ $("#viewQPayShopChangePassword").pagecontainer({
             var self = this;
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     //popup:交易密码更改成功

@@ -58,7 +58,7 @@ $("#viewQPayUserRecordList").pagecontainer({
             var queryStr = "&start_date=" + start_time.toString() + "&end_date=" + end_time.toString();
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     var record_list = data['content']['trade_record'];

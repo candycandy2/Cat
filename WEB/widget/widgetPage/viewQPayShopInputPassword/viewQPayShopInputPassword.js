@@ -19,7 +19,7 @@ $("#viewQPayShopInputPassword").pagecontainer({
             var queryStr = '&emp_no=' + current_emp + '&price=' + trade_price + '&shop_id=' + shop_id + '&action=new';
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     trade_token = data['content'].trade_token;

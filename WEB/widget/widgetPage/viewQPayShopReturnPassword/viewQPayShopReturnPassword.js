@@ -14,7 +14,7 @@ $("#viewQPayShopReturnPassword").pagecontainer({
             var queryStr = '&emp_no=' + loginData['emp_no'] + '&price=' + trade_price + '&shop_id=' + shop_id + '&action=cancel';
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     trade_token = data['content'].trade_token;
@@ -48,7 +48,7 @@ $("#viewQPayShopReturnPassword").pagecontainer({
             var queryStr = '&emp_no=' + loginData['emp_no'] + '&shop_id=' + shop_id + '&price=' + trade_price + '&trade_id=' + trade_id + '&reason=' + reason;
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 //交易成功或失败
                 if (data['result_code'] == '1') {

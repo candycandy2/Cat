@@ -159,7 +159,7 @@ $("#viewStaffAdminManage").pagecontainer({
             }];
 
             this.successCallback = function(data) {
-                console.log(code + statusKey + data['message']);
+                //console.log(code + statusKey + data['message']);
             };
 
             this.failCallback = function(data) {};
