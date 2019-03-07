@@ -1,3 +1,11 @@
+<strong>Mar-08-19 00:36:24</strong>
+- Reason : daily build, 762
+- Commit# : 
+22e48e110 - Darren Ti, 9 hours ago : [QPlay]Recover for loadStringTable()
+e3d0d8c6a - Darren Ti, 10 hours ago : [QPlay]Test for loadStringTable()
+e6f3bc2c9 - Darren Ti, 10 hours ago : [QPlay]Test for loadStringTable()
+d1d0bbd5b - Darren Ti, 13 hours ago : [QPlay]Fix Bug for loadStringTable()
+
 <strong>Mar-07-19 00:36:20</strong>
 - Reason : daily build, 761
 - Commit# : 
