@@ -105,7 +105,7 @@ $("#viewStaffUserMain").pagecontainer({
                     //popup
                     let statusValue = statusData['status'];
                     if(statusValue == 1) {
-                        $('.user-status-text').text('總機服務中');
+                        $('.user-status-text').text(langStr['wgt_213']);
                         $('.user-main-status').removeClass('active-status-false').addClass('active-status-true');
                         $('.service-offline').hide();
                         $('.service-online').show();
@@ -114,7 +114,7 @@ $("#viewStaffUserMain").pagecontainer({
                             popupMsgInit('.confirmAddTeaPopup');
                         }
                     } else if(statusValue == 2) {
-                        $('.user-status-text').text('總機忙碌中');
+                        $('.user-status-text').text(langStr['wgt_214']);
                         $('.user-main-status').removeClass('active-status-true').addClass('active-status-false');
                         $('.service-offline').hide();
                         $('.service-online').show();
@@ -123,7 +123,7 @@ $("#viewStaffUserMain").pagecontainer({
                             popupMsgInit('.adminBusyPopup');
                         }
                     } else if(statusValue == 0) {
-                        $('.user-status-text').text('總機暫停服務');
+                        $('.user-status-text').text(langStr['wgt_195']);
                         $('.user-main-status').removeClass('active-status-true').removeClass('active-status-false');
                         $('.service-online').hide();
                         $('.service-offline').show();
@@ -507,7 +507,7 @@ $("#viewStaffUserMain").pagecontainer({
                 //获取总机状态
                 getStaffStatus('new');
             } else if(!needStatus) {
-                $('.user-status-text').text('總機暫停服務');
+                $('.user-status-text').text(angStr['wgt_195']);
                 $('.user-main-status').removeClass('active-status-true').removeClass('active-status-false');
                 $('.service-online').hide();
                 $('.service-offline').show();

@@ -30,7 +30,9 @@
                 </div>
                 <div class="user-main-text">
                     <div class="user-text-row1">
-                        <div class="user-status-text">總機暫停服務</div>
+                        <div class="user-status-text">
+                            <span class="langStr" data-id="wgt_195"></span>
+                        </div>
                         <div class="user-today-date"></div>
                     </div>
                     <div class="user-text-row2">
@@ -42,24 +44,28 @@
             <!--服務中-->
             <div class="service-online" style="display:none;">
                 <div class="add-tea-room">
-                    <div>您的會議地點</div>
+                    <div>
+                        <span class="langStr" data-id="wgt_148"></span>
+                    </div>
                     <div>
                         <div>BQT/QTT</div>
                         <div id="userChooseMeetingRoom"></div>
                     </div>
                 </div>
                 <div class="add-tea-radio">
-                    <div>需要茶水嗎?</div>
+                    <div>
+                        <span class="langStr" data-id="wgt_196"></span>
+                    </div>
                     <div>
                         <input type="radio" name="teaType" value="needTea" id="needTea" checked>
-                        <label for="needTea">需要杯子</label>
+                        <label for="needTea"><span class="langStr" data-id="wgt_197"></span></label>
                         <input type="radio" name="teaType" value="needWater" id="needWater">
-                        <label for="needWater">已有杯子，只需補充茶水</label>
+                        <label for="needWater"><span class="langStr" data-id="wgt_198"></span></label>
                     </div>
                 </div>
                 <div class="add-tea-count">
                     <div>
-                        <div>茶(杯)</div>
+                        <div><span class="langStr" data-id="wgt_179"></span></div>
                         <div>
                             <div class="count-select" data-type="tea">
                                 <div class="tea-subtraction"></div>
@@ -69,7 +75,7 @@
                         </div>
                     </div>
                     <div>
-                        <div>水(杯)</div>
+                        <div><span class="langStr" data-id="wgt_180"></span></div>
                         <div>
                             <div class="count-select" data-type="water">
                                 <div class="water-subtraction"></div>
@@ -80,19 +86,25 @@
                     </div>
                 </div>
                 <div class="add-tea-btn">
-                    <div class="addTeaBtn">加茶水</div>
+                    <div class="addTeaBtn">
+                        <span class="langStr" data-id="wgt_172"></span>
+                    </div>
                 </div>
-                <div class="add-tea-notice">*爲維護品質，請大家結束會議後，記得將杯子送至回收台喔！</div>
+                <div class="add-tea-notice">
+                    <span class="langStr" data-id="wgt_199"></span>
+                </div>
                 <div class="add-tea-today">
                     <div class="today-room-title">
-                        <span>在</span><span class="followRoomChange"></span><span>預約茶水的同仁</span>
+                        <span class="langStr" data-id="wgt_200"></span><span class="followRoomChange"></span><span class="langStr" data-id="wgt_201"></span>
                         <span class="refreshTargetRoom"></span>
                     </div>
                     <div class="today-room-time">
-                        <span>更新時間</span>&nbsp;
+                        <span class="langStr" data-id="wgt_119"></span>&nbsp;
                         <span class="user-main-update-time"></span>
                     </div>
-                    <div class="today-room-none">本會議室今日暫無茶水預約</div>
+                    <div class="today-room-none">
+                        <span class="langStr" data-id="wgt_202"></span>
+                    </div>
                     <div class="today-room-list">
                         <ul>
                             <!-- <li>
@@ -112,16 +124,23 @@
             <!--暫停服務-->
             <div class="service-offline">
                 <div>
-                    <div>很抱歉!目前總機暫停服務<br>請您自行去茶水區取用</div>
+                    <div>
+                        <span class="langStr" data-id="wgt_203"></span><br>
+                        <span class="langStr" data-id="wgt_204"></span>
+                    </div>
                     <div class="update-service">
-                        <div>重新整理</div>
+                        <div>
+                            <span class="langStr" data-id="wgt_205"></span>
+                        </div>
                         <div></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="popup-msg-style" id="applyTeaSuccess">申請成功</div>
+    <div class="popup-msg-style" id="applyTeaSuccess">
+        <span class="langStr" data-id="wgt_206"></span>
+    </div>
     <!--popup-->
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmAddTeaPopup">
         <div data-role="main" class="ui-content">
@@ -130,7 +149,7 @@
                     <span class='header-icon hidden'>
                         <img src="img/urgent.png">
                     </span>
-                    <span class="header-text">您確定要</span>
+                    <span class="langStr header-text" data-id="wgt_207"></span>
                 </div>
                 <div class="font-style3 header-title"></div>
             </div>
@@ -139,8 +158,12 @@
             </div>
             <div class="footer">
                 <div class="btn-two font-style1 btnArea">
-                    <div class="btn-cancel">取消</div>
-                    <div class="btn-cancel userAddTeaBtn">確定</div>
+                    <div class="btn-cancel">
+                        <span class="langStr" data-id="wgt_136"></span>
+                    </div>
+                    <div class="btn-cancel userAddTeaBtn">
+                        <span class="langStr" data-id="wgt_050"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -152,17 +175,23 @@
                     <span class='header-icon hidden'>
                         <img src="img/urgent.png">
                     </span>
-                    <span class="header-text">目前總機在忙碌中</span>
+                    <span class="langStr header-text" data-id="wgt_208"></span>
                 </div>
-                <div class="font-style3 header-title">請您稍等10分鐘</div>
+                <div class="font-style3 header-title">
+                    <span class="langStr" data-id="wgt_209"></span>
+                </div>
             </div>
             <div class="main">
                 <p class="main-paragraph font-style3 font-color3"></p>
             </div>
             <div class="footer">
                 <div class="btn-two font-style1 btnArea">
-                    <div class="btn-cancel">自行取用</div>
-                    <div class="btn-cancel userWaitBtn">願意等待</div>
+                    <div class="btn-cancel">
+                        <span class="langStr" data-id="wgt_210"></span>
+                    </div>
+                    <div class="btn-cancel userWaitBtn">
+                        <span class="langStr" data-id="wgt_211"></span>
+                    </div>
                 </div>
             </div>
         </div>
