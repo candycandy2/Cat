@@ -83,7 +83,7 @@ function addComponentView() {
             tplJS.Popup(null, null, "append", disconnectNetworkData);
 
             //replace popup
-            $.mobile.pageContainer.append('<div class="popup-msg-style" id="networkFail">' + langStr['com_007'].substr(0, 4) + '</div>');
+            $.mobile.pageContainer.append('<div class="popup-msg-style" id="networkFail">連線失敗</div>');
 
             var removeToQPlayData = {
                 id: "removeToQPlay",
