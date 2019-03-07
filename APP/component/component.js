@@ -78,6 +78,9 @@ var app = {
         window.sessionStorage.clear();
         app.receivedEvent('deviceready');
 
+        loadStringTable();
+
+window.deviceReadyCallBack = function() {
         //Ignore the font-size setting in Mobile Device
         if (window.MobileAccessibility) {
             window.MobileAccessibility.usePreferredTextZoom(false);
@@ -154,15 +157,13 @@ var app = {
         if (device.platform === "iOS") {
             $.mobile.hashListeningEnabled = false;
         }
-
+};
         //Log -
         //get now year + month
-        var now = new Date();
-        logFileName = now.yyyymm("");
+        //var now = new Date();
+        //logFileName = now.yyyymm("");
         //console.log(cordova.file);
         //LogFile.checkOldFile();
-
-        loadStringTable();
     },
     onGetRegistradionID: function(data) {
         if (data.length !== 0) {
