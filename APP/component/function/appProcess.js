@@ -98,6 +98,7 @@ function addComponentView() {
             });
 
             overridejQueryFunction();
+            window.deviceReadyCallBack();
 
         }, "html");
     }
