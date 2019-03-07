@@ -284,6 +284,14 @@ $("#viewOvertimeSubmit").pagecontainer({
                 $("#overtimeHours").val(othours);
                 otreason = overtimeDetailObj["reason"];
                 $("#overtimeReason").val(otreason);
+                otpaidtype = ($.trim(overtimeDetailObj["type"]) == "補休") ? '1' : '2';;
+                paidTypeText = overtimeDetailObj["type"];
+                $.each($("#paid-type-popup-option-list li"), function(i, item) {
+                    if ($(item).text() == paidTypeText) {
+                        $(item).trigger("click");
+                        return false;
+                    }
+                });
                 //檢查是否可以預覽送簽
                 checkOvertimeBeforePreview();
                 viewEditOTApplyShow = false;

@@ -895,6 +895,7 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#signTowithdrawReason").attr("placeholder", langStr["str_090"]);
                 $("#otherReason").attr("placeholder", langStr["str_090"]);
                 $("#overtimeReason").attr("placeholder", langStr["str_090"]);
+                $("#overtimeHours").attr("placeholder", langStr["str_233"]);
 
                 signedStr = langStr["str_133"]; //"已簽核";
                 withdrawedStr = langStr["str_136"]; //"已撤回";

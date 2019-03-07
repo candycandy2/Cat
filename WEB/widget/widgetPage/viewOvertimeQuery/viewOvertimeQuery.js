@@ -10,18 +10,6 @@ var overtimeListArr = [];
 var overtimeDetailObj = {};
 var withdrawOTReason;
 
-//加班單頁初始化
-function overtimeQueryInit() {
-    $("#backOTDetailList").hide();
-    $("#backSignOTList").hide();
-    $(".leave-query-detail-sign").hide();
-    $(".leave-query-withdraw").hide();
-    $(".actualot-query-detail-sign").hide();
-    $("#viewOvertimeQuery .leaveMenu").show();
-    $(".leave-query-main").show();
-    //$("#viewOvertimeQuery .ui-title").find("span").text(leaveQueryStr);
-}
-
 $("#viewOvertimeQuery").pagecontainer({
     create: function(event, ui) {
 
@@ -196,7 +184,6 @@ $("#viewOvertimeQuery").pagecontainer({
                         $('.overtimeErrorMsg').find('.header-text').html($(errorMsg).html());
                         popupMsgInit('.overtimeErrorMsg');
                     }
-
                 }
             };
 
@@ -257,6 +244,18 @@ $("#viewOvertimeQuery").pagecontainer({
             }
         }
 
+        //加班單頁初始化
+        function overtimeQueryInit() {
+            $("#backOTDetailList").hide();
+            $("#backSignOTList").hide();
+            $(".leave-query-detail-sign").hide();
+            $(".leave-query-withdraw").hide();
+            $(".actualot-query-detail-sign").hide();
+            $("#viewOvertimeQuery .leaveMenu").show();
+            $(".leave-query-main").show();
+            //$("#viewOvertimeQuery .ui-title").find("span").text(leaveQueryStr);
+        }
+
         //根据formid从假单列表当中获取该假单部分信息
         function getOvertimeDetailByID(id) {
             for (var i in overtimeListArr) {
@@ -277,6 +276,7 @@ $("#viewOvertimeQuery").pagecontainer({
             $("#overtimeInterval").text(overtimeDetailObj["expectInterval"]);
             $("#overtimeApplyHours").text(overtimeDetailObj["hours"]);
             $("#overtimeApplyReason").text(overtimeDetailObj["reason"]);
+            $("#overtimePaid").text(overtimeDetailObj["type"]);
             //撤回頁面的“請假單號”
             $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);
             $(".actualot-query-detail-sign").hide();
@@ -297,7 +297,7 @@ $("#viewOvertimeQuery").pagecontainer({
             $("#otApplyReason").text(overtimeDetailObj["reason"]);
             $("#actualOTPeriod").text(actualOTInterval);
             $("#actualTotalHours").text(overtimeDetailObj["actualTotalhours"]);
-            $("#overtimePaid").text(overtimeDetailObj["type"]);
+            $("#actualOvertimePaid").text(overtimeDetailObj["type"]);
             //撤回頁面的“請假單號”
             $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);
             $(".actualot-query-detail-sign").show();
@@ -510,7 +510,6 @@ $("#viewOvertimeQuery").pagecontainer({
                 '</formid></LayoutHeader>';
             //API
             DeleteOvertimeApplyForm();
-
         });
 
         $(document).on('click', '#viewOvertimeQuery .leaveMenu', function() {
