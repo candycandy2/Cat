@@ -82,6 +82,9 @@ function addComponentView() {
 
             tplJS.Popup(null, null, "append", disconnectNetworkData);
 
+            //replace popup
+            $.mobile.pageContainer.append('<div class="popup-msg-style" id="networkFail">' + langStr['com_007'].substr(0, 4) + '</div>');
+
             var removeToQPlayData = {
                 id: "removeToQPlay",
                 content: $("template#tplRemoveToQPlay").html()
@@ -209,9 +212,10 @@ function openNetworkDisconnectWindow(status) {
         closeDisconnectNetworkInit = true;
     }
 
-    $('#disconnectNetwork').popup();
-    $('#disconnectNetwork').show();
-    $('#disconnectNetwork').popup('open');
+    // $('#disconnectNetwork').popup();
+    // $('#disconnectNetwork').show();
+    // $('#disconnectNetwork').popup('open');
+    $("#networkFail").fadeIn(100).delay(2000).fadeOut(100);
 }
 
 function errorHandler(data, requestAction) {
