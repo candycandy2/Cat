@@ -62,7 +62,8 @@ var app = {
     // Application Constructor
     initialize: function() {
 
-        loadStringTable();
+        //20190307 Darren - Fix Bug for BenQ-Android@7.0
+        //loadStringTable();
 
         //For release
         this.bindEvents();
@@ -160,6 +161,8 @@ var app = {
         logFileName = now.yyyymm("");
         //console.log(cordova.file);
         //LogFile.checkOldFile();
+
+        loadStringTable();
     },
     onGetRegistradionID: function(data) {
         if (data.length !== 0) {
