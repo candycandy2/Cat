@@ -354,7 +354,7 @@ $("#viewStaffAdminMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     //先找到茶水的service_id
@@ -457,7 +457,7 @@ $("#viewStaffAdminMain").pagecontainer({
             }];
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     if(type == 'delete') {

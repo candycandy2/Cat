@@ -23,7 +23,7 @@ $("#viewStaffUserReserve").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     reserveArr = data['content']['service_list'][0]['record_list'];
@@ -131,7 +131,7 @@ $("#viewStaffUserReserve").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     $("#deleteReserveSuccess").fadeIn(100).delay(2000).fadeOut(100);

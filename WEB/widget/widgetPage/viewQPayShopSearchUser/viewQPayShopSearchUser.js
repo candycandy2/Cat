@@ -73,7 +73,7 @@ $("#viewQPayShopSearchUser").pagecontainer({
             var queryStr = '&emp_no=' + emp;
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == '1') {
                     //1.记录当前登录用户的工号
