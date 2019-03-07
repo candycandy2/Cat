@@ -457,7 +457,7 @@ $("#viewStaffUserAppointment").pagecontainer({
             //info_content
             let teaContent = (teaCount == 0 ? '' : '茶' + teaCount + '杯');
             let waterContent = (waterCount == 0 ? '' : '水' + waterCount + '杯');
-            let pushContent = target_date.substr(5, 5) +
+            let pushContent = target_date.replace('/', ';').split(';')[1] +
                 ' ' +
                 teaInfo['time'] +
                 ' ' +
