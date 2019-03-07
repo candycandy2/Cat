@@ -78,8 +78,6 @@ var app = {
         window.sessionStorage.clear();
         app.receivedEvent('deviceready');
 
-        loadStringTable();
-
 window.deviceReadyCallBack = function() {
         //Ignore the font-size setting in Mobile Device
         if (window.MobileAccessibility) {
@@ -232,6 +230,8 @@ function loadStringTable() {
 
 /********************************** jQuery Mobile Event *************************************/
 $(document).one("pagebeforecreate", function() {
+
+    loadStringTable();
 
     $(':mobile-pagecontainer').html("");
 
