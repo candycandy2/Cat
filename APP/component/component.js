@@ -62,8 +62,7 @@ var app = {
     // Application Constructor
     initialize: function() {
 
-        //20190307 Darren - Fix Bug for BenQ-Android@7.0
-        //loadStringTable();
+        loadStringTable();
 
         //For release
         this.bindEvents();
@@ -78,7 +77,6 @@ var app = {
         window.sessionStorage.clear();
         app.receivedEvent('deviceready');
 
-window.deviceReadyCallBack = function() {
         //Ignore the font-size setting in Mobile Device
         if (window.MobileAccessibility) {
             window.MobileAccessibility.usePreferredTextZoom(false);
@@ -155,7 +153,7 @@ window.deviceReadyCallBack = function() {
         if (device.platform === "iOS") {
             $.mobile.hashListeningEnabled = false;
         }
-};
+
         //Log -
         //get now year + month
         //var now = new Date();
@@ -230,8 +228,6 @@ function loadStringTable() {
 
 /********************************** jQuery Mobile Event *************************************/
 $(document).one("pagebeforecreate", function() {
-
-    loadStringTable();
 
     $(':mobile-pagecontainer').html("");
 
