@@ -86,7 +86,11 @@ $("#viewQPayUserMain").pagecontainer({
         });
 
         //更新剩余消费券
-        $('#userQPayRefresh').on('click', function() {
+        $('.refresh-user-main').on('click', function() {
+            $('.refresh-user-main img').addClass('refresh-icon-rotate');
+            setTimeout(function(){
+                $('.refresh-user-main img').removeClass('refresh-icon-rotate');
+            }, 800);
             loadingMask('show');
             //API
             getQPayInfoEmp();

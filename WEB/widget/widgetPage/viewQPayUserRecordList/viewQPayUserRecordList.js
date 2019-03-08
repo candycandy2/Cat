@@ -169,7 +169,11 @@ $("#viewQPayUserRecordList").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        $('#userRefresh').on('click', function () {
+        $('.refresh-user-record').on('click', function () {
+            $('.refresh-user-record img').addClass('refresh-icon-rotate');
+            setTimeout(function(){
+                $('.refresh-user-record img').removeClass('refresh-icon-rotate');
+            }, 800);
             loadingMask("show");
             $('.user-record-ul').html('');
             storeListFinish = false;

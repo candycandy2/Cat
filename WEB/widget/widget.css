@@ -64,6 +64,11 @@
     background-repeat: no-repeat;
 }
 
+.refresh-icon-rotate {
+    transform: rotate(360deg);
+    transition: all 0.75s;
+}
+
 /******************** carousel ********************/
 .carousel-widget {
     width: 100vw !important;
