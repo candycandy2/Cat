@@ -75,6 +75,9 @@ $("#viewQPayUserChangePassword").pagecontainer({
                     $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_217']);
                     $('.userChangePwdError .header-title .header-text').text(langStr['wgt_218']);
                     $('.userChangePwdError').popup('open');
+                } else {
+                    //toast
+                    $("#changePwdFail").text(data['result_code']).fadeIn(100).delay(2000).fadeOut(100);
                 }
             };
 
