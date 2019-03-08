@@ -201,8 +201,8 @@ $("#viewStaffUserAppointment").pagecontainer({
                     } else {
                         let noReserve = true;
                         for (var i in reserveArr) {
-                            //如果开始时间与结束时间不相等，表示有预约
-                            if (reserveArr[i]['start_date'] != reserveArr[i]['end_date'] && reserveArr[i]['info_data'] != null) {
+                            //如果开始时间与结束时间不相等，并且开始时间必须一致，表示有预约
+                            if (reserveArr[i]['start_date'] != reserveArr[i]['end_date'] && reserveArr[i]['start_date'] == target_time) {
                                 noReserve = false;
                                 break;
                             }
