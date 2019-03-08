@@ -114,7 +114,7 @@ $("#viewQPayShopRecordList").pagecontainer({
             getTradeRecordForShop();
             //進入該頁面，每3秒refresh金額
             refreshInterval = setInterval(function() {
-                $('#recordRefresh').trigger('click');
+                $('.refresh-shop-record').trigger('click');
             }, 3000);
         });
 
@@ -127,7 +127,8 @@ $("#viewQPayShopRecordList").pagecontainer({
 
         /********************************** dom event *************************************/
         //更新消费券交易记录
-        $('#recordRefresh').on('click', function () {
+        $('.refresh-shop-record').on('click', function () {
+            $('.refresh-shop-record img').addClass('refresh-icon-rotate');
             //1.获取当前年月
             var now = new Date();
             var curYear = now.getFullYear();
@@ -141,6 +142,9 @@ $("#viewQPayShopRecordList").pagecontainer({
                 //loadingMask("show");
                 getTradeRecordForShop();
             }
+            setTimeout(function(){
+                $('.refresh-shop-record img').removeClass('refresh-icon-rotate');
+            }, 800);
         });
 
 

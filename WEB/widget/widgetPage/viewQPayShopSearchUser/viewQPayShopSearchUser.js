@@ -134,7 +134,7 @@ $("#viewQPayShopSearchUser").pagecontainer({
         $("#viewQPayShopSearchUser").on("pageshow", function (event, ui) {
             //進入該頁面，每3秒refresh金額
             refreshInterval = setInterval(function() {
-                $('#qplayRefresh').trigger('click');
+                $('.refresh-today-record').trigger('click');
             }, 3000);
         });
 
@@ -176,11 +176,15 @@ $("#viewQPayShopSearchUser").pagecontainer({
         });
 
         //刷新列表
-        $('#qplayRefresh').on('click', function () {
+        $('.refresh-today-record').on('click', function () {
+            $('.refresh-today-record img').addClass('refresh-icon-rotate');
             //loadingMask('show');
             var activeTab = $('.type-active').data('type');
             //API:获取当天所有类别的交易记录
             getCurrentTradeRecord(activeTab);
+            setTimeout(function(){
+                $('.refresh-today-record img').removeClass('refresh-icon-rotate');
+            }, 800);
         });
 
         //输入工号
