@@ -45,7 +45,6 @@ $("#viewQPayShopTradeResult").pagecontainer({
                     $('.trade-fail-reason').text(data['message']);
                 }
 
-                //loadingMask("hide");
                 $('.shop-trade-loading').hide();
                 $('.shop-trade-main').show();
             };
@@ -71,11 +70,6 @@ $("#viewQPayShopTradeResult").pagecontainer({
         });
 
         $("#viewQPayShopTradeResult").one("pageshow", function (event, ui) {
-            var trade_info = JSON.parse(window.sessionStorage.getItem('trade_info'));
-            if(trade_info !== null) {
-                //API
-                makeNewTrade(trade_info);
-            }
             //back page
             window.sessionStorage.setItem('viewQPayShopTradeResult_backTo', backToPage);
         });
