@@ -69,6 +69,12 @@ $("#viewQPayUserChangePassword").pagecontainer({
                     $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_078']);
                     $('.userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
                     $('.userChangePwdError').popup('open');
+
+                } else if(data['result_code'] == '000901') {
+                    //员工信息错误（该员工从未领取过消费券）
+                    $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_217']);
+                    $('.userChangePwdError .header-title .header-text').text(langStr['wgt_218']);
+                    $('.userChangePwdError').popup('open');
                 }
             };
 
