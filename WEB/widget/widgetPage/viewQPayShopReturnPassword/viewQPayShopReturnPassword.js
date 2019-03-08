@@ -64,8 +64,9 @@ $("#viewQPayShopReturnPassword").pagecontainer({
                     trade_info['message'] = data['message'];
                     trade_info['success'] = 'N';
                 }
-
+                
                 checkWidgetPage('viewQPayShopReturnResult', pageVisitedList, trade_info);
+                loadingMask('hide');
 
                 //不管成功或失败，都清除交易查询的交易码
                 window.sessionStorage.setItem('cancelTradeSuccess', 'Y');
@@ -153,6 +154,7 @@ $("#viewQPayShopReturnPassword").pagecontainer({
         $('.shop-trade-pwd-next').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
+                loadingMask('show');
                 cancelTargetTrade();
             }
         });
