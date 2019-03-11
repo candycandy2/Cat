@@ -897,7 +897,7 @@
   },
   {
     "term": "wgt_113",
-    "definition": "總機",
+    "definition": "Receptionist",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -905,7 +905,7 @@
   },
   {
     "term": "wgt_114",
-    "definition": "服務中",
+    "definition": "Open",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -913,7 +913,7 @@
   },
   {
     "term": "wgt_115",
-    "definition": "忙碌中",
+    "definition": "Busy",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -921,7 +921,7 @@
   },
   {
     "term": "wgt_116",
-    "definition": "暫停服務",
+    "definition": "On break",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -929,7 +929,7 @@
   },
   {
     "term": "wgt_117",
-    "definition": "本日",
+    "definition": "Today",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -937,7 +937,7 @@
   },
   {
     "term": "wgt_118",
-    "definition": "明日",
+    "definition": "Tomorrow",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -945,7 +945,7 @@
   },
   {
     "term": "wgt_119",
-    "definition": "更新時間",
+    "definition": "Update time",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -953,7 +953,7 @@
   },
   {
     "term": "wgt_120",
-    "definition": "暫無茶水預約",
+    "definition": "No tea reservation service now",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -961,7 +961,7 @@
   },
   {
     "term": "wgt_121",
-    "definition": "暫無資料",
+    "definition": "No data",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -969,7 +969,7 @@
   },
   {
     "term": "wgt_122",
-    "definition": "總機公告(限15字)",
+    "definition": "Receptionist announcement(Up to 15 words)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -993,7 +993,7 @@
   },
   {
     "term": "wgt_125",
-    "definition": "總機服務公告",
+    "definition": "Receptionist service announcement",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1001,7 +1001,7 @@
   },
   {
     "term": "wgt_126",
-    "definition": "置頂公告",
+    "definition": "On top announcement",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1009,7 +1009,7 @@
   },
   {
     "term": "wgt_127",
-    "definition": "茶水服務時段",
+    "definition": "Tea reservation service hours",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1017,7 +1017,7 @@
   },
   {
     "term": "wgt_128",
-    "definition": "公告/消息",
+    "definition": "Announcement/News",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1025,7 +1025,7 @@
   },
   {
     "term": "wgt_129",
-    "definition": "新增服務公告",
+    "definition": "Add service announcement",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1033,7 +1033,7 @@
   },
   {
     "term": "wgt_130",
-    "definition": "主旨",
+    "definition": "Subject",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1041,7 +1041,7 @@
   },
   {
     "term": "wgt_131",
-    "definition": "公告內文",
+    "definition": "Content",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1049,7 +1049,7 @@
   },
   {
     "term": "wgt_132",
-    "definition": "上傳圖檔",
+    "definition": "Upload picture",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1057,7 +1057,7 @@
   },
   {
     "term": "wgt_133",
-    "definition": "選擇檔案",
+    "definition": "Select file",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1065,7 +1065,7 @@
   },
   {
     "term": "wgt_134",
-    "definition": "預覽",
+    "definition": "Preview",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1073,7 +1073,7 @@
   },
   {
     "term": "wgt_135",
-    "definition": "確定要放棄編輯?",
+    "definition": "Abort editing?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1081,7 +1081,7 @@
   },
   {
     "term": "wgt_136",
-    "definition": "取消",
+    "definition": "Cancel",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1089,7 +1089,7 @@
   },
   {
     "term": "wgt_137",
-    "definition": "送出",
+    "definition": "Send",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1097,7 +1097,7 @@
   },
   {
     "term": "wgt_138",
-    "definition": "編輯",
+    "definition": "Edit",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1105,7 +1105,7 @@
   },
   {
     "term": "wgt_139",
-    "definition": "刪除",
+    "definition": "Delete",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1113,7 +1113,7 @@
   },
   {
     "term": "wgt_140",
-    "definition": "確定刪除?",
+    "definition": "Delete?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1121,7 +1121,7 @@
   },
   {
     "term": "wgt_141",
-    "definition": "編輯公告",
+    "definition": "Edit announcement",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1129,7 +1129,7 @@
   },
   {
     "term": "wgt_142",
-    "definition": "修改預覽",
+    "definition": "Modify preview",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1137,7 +1137,7 @@
   },
   {
     "term": "wgt_143",
-    "definition": "無權修改",
+    "definition": "No modify permission",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1145,7 +1145,7 @@
   },
   {
     "term": "wgt_144",
-    "definition": "無權刪除",
+    "definition": "No delete permission",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1369,7 +1369,7 @@
   },
   {
     "term": "wgt_172",
-    "definition": "加茶水",
+    "definition": "Add tea",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1377,7 +1377,7 @@
   },
   {
     "term": "wgt_173",
-    "definition": "修改預約",
+    "definition": "Modify reservation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1385,7 +1385,7 @@
   },
   {
     "term": "wgt_174",
-    "definition": "啓用",
+    "definition": "Start",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1393,7 +1393,7 @@
   },
   {
     "term": "wgt_175",
-    "definition": "請先開啓管理權限，謝謝:)",
+    "definition": "Please open management privilege first, thanks:)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1401,7 +1401,7 @@
   },
   {
     "term": "wgt_176",
-    "definition": "茶水預約",
+    "definition": "Tea reservation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1409,7 +1409,7 @@
   },
   {
     "term": "wgt_177",
-    "definition": "選擇會議室",
+    "definition": "Select meeting room",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1417,7 +1417,7 @@
   },
   {
     "term": "wgt_178",
-    "definition": "選擇時間/服務",
+    "definition": "Select time/service",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1425,7 +1425,7 @@
   },
   {
     "term": "wgt_179",
-    "definition": "茶(杯)",
+    "definition": "Tea(cup)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1433,7 +1433,7 @@
   },
   {
     "term": "wgt_180",
-    "definition": "水(杯)",
+    "definition": "Water(cup)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1441,7 +1441,7 @@
   },
   {
     "term": "wgt_181",
-    "definition": "刪除預約",
+    "definition": "Delete reservation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1449,7 +1449,7 @@
   },
   {
     "term": "wgt_182",
-    "definition": "預約成功",
+    "definition": "Reservation done",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1457,7 +1457,7 @@
   },
   {
     "term": "wgt_183",
-    "definition": "修改成功",
+    "definition": "Modification done",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1465,7 +1465,7 @@
   },
   {
     "term": "wgt_184",
-    "definition": "刪除成功",
+    "definition": "Deletion done",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1473,7 +1473,7 @@
   },
   {
     "term": "wgt_185",
-    "definition": "已預約",
+    "definition": "Reserved",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1481,7 +1481,7 @@
   },
   {
     "term": "wgt_186",
-    "definition": "傳送郵件",
+    "definition": "Send mail",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1489,7 +1489,7 @@
   },
   {
     "term": "wgt_186",
-    "definition": "您要刪除茶水預約",
+    "definition": "You are deleting tea reservation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1497,7 +1497,7 @@
   },
   {
     "term": "wgt_187",
-    "definition": "預約已完成，您不能修改或刪除",
+    "definition": "Reservation done, you cannot modify or delete",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1505,7 +1505,7 @@
   },
   {
     "term": "wgt_188",
-    "definition": "您只能預約或刪除大於半小時的服務",
+    "definition": "You can only reserve or delete service after a half hour",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1513,7 +1513,7 @@
   },
   {
     "term": "wgt_189",
-    "definition": "此時段已有人預約，請您重新選擇",
+    "definition": "This time slot is reserved, please select another one",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1521,7 +1521,7 @@
   },
   {
     "term": "wgt_190",
-    "definition": "選擇設備狀況",
+    "definition": "Select equipment status",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1529,7 +1529,7 @@
   },
   {
     "term": "wgt_191",
-    "definition": "設備反應(限60字)",
+    "definition": "Response about equipment(Up to 60 words)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1537,7 +1537,7 @@
   },
   {
     "term": "wgt_192",
-    "definition": "確認",
+    "definition": "OK",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1545,7 +1545,7 @@
   },
   {
     "term": "wgt_193",
-    "definition": "謝謝您的反應，",
+    "definition": "Thanks for your response，",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1553,7 +1553,7 @@
   },
   {
     "term": "wgt_194",
-    "definition": "已通知相關單位處理:)",
+    "definition": "Has informed department concerned:)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1561,7 +1561,7 @@
   },
   {
     "term": "wgt_195",
-    "definition": "總機暫停服務",
+    "definition": "Receptionist service is suspensive",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1569,7 +1569,7 @@
   },
   {
     "term": "wgt_196",
-    "definition": "需要茶水嗎?",
+    "definition": "Need tea?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1577,7 +1577,7 @@
   },
   {
     "term": "wgt_197",
-    "definition": "需要杯子",
+    "definition": "Need cup",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1585,7 +1585,7 @@
   },
   {
     "term": "wgt_198",
-    "definition": "已有杯子，只需補充茶水",
+    "definition": "Have cup already, only need tea",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1593,7 +1593,7 @@
   },
   {
     "term": "wgt_199",
-    "definition": "*爲維護品質，請大家結束會議後，記得將杯子送至回收台喔！",
+    "definition": "*For keeping high quality, please send back cup after meeting！",
     "context": "",
     "term_plural": "",
     "reference": "",
