@@ -6,11 +6,15 @@ var closeDisconnectNetworkInit = false, // let closeDisconnectNetwork click even
 
 
 function getLanguageString() {
-    var i;
+    var selfLang = false,
+        widgetLang = false,
+        commonLang = false,
+        i;
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
         for (i = 0; i < data.length; i++) {
             langStr[data[i].term] = data[i].definition.trim();
         }
+        selfLang = true;
     });
 
     //review by allen
@@ -19,18 +23,25 @@ function getLanguageString() {
             for (i = 0; i < data.length; i++) {
                 langStr[data[i].term] = data[i].definition.trim();
             }
+            widgetLang = true;
         });
+    } else {
+        widgetLang = true;
     }
 
     $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
-        $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
-            for (i = 0; i < data.length; i++) {
-                langStr[data[i].term] = data[i].definition.trim();
-            }
-        });
-
-        addComponentView();
+        for (i = 0; i < data.length; i++) {
+            langStr[data[i].term] = data[i].definition.trim();
+        }
+        commonLang = true;
     });
+
+    var langInterval = setInterval(function() {
+        if(selfLang && widgetLang && commonLang) {
+            clearInterval(langInterval);
+            addComponentView();
+        }
+    }, 500);
 }
 
 function addComponentView() {
