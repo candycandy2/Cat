@@ -1601,7 +1601,7 @@
   },
   {
     "term": "wgt_200",
-    "definition": "In [",
+    "definition": "In \"",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1609,7 +1609,7 @@
   },
   {
     "term": "wgt_201",
-    "definition": "] the colleagues who have tea reservation",
+    "definition": "\" the colleagues who have tea reservation",
     "context": "",
     "term_plural": "",
     "reference": "",
