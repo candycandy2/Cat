@@ -69,6 +69,11 @@
     transition: all 0.75s;
 }
 
+.ui-header .ui-title,
+.ui-footer .ui-title {
+    margin: 0 15% !important;
+}
+
 /******************** carousel ********************/
 .carousel-widget {
     width: 100vw !important;
