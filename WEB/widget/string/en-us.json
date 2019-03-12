@@ -1161,7 +1161,7 @@
   },
   {
     "term": "wgt_146",
-    "definition": "會議室預覽",
+    "definition": "Meeting room preview",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1177,7 +1177,7 @@
   },
   {
     "term": "wgt_148",
-    "definition": "您的會議地點",
+    "definition": "Your meeting room",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1561,7 +1561,7 @@
   },
   {
     "term": "wgt_195",
-    "definition": "Receptionist service is suspensive",
+    "definition": "The receptionists are taking break",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1585,7 +1585,7 @@
   },
   {
     "term": "wgt_198",
-    "definition": "Have cup already, only need tea",
+    "definition": "Only need tea",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1601,7 +1601,7 @@
   },
   {
     "term": "wgt_200",
-    "definition": "在",
+    "definition": "In",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1609,7 +1609,7 @@
   },
   {
     "term": "wgt_201",
-    "definition": "預約茶水的同仁",
+    "definition": "the colleagues who have tea reservation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1617,7 +1617,7 @@
   },
   {
     "term": "wgt_202",
-    "definition": "本會議室今日暫無茶水預約",
+    "definition": "No tea reservation today",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1625,7 +1625,7 @@
   },
   {
     "term": "wgt_203",
-    "definition": "很抱歉!目前總機暫停服務",
+    "definition": "Sorry! The receptionists are taking break",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1633,7 +1633,7 @@
   },
   {
     "term": "wgt_204",
-    "definition": "請您自行去茶水區取用",
+    "definition": "Please take tea by yourself",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1641,7 +1641,7 @@
   },
   {
     "term": "wgt_205",
-    "definition": "重新整理",
+    "definition": "Rearrange",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1649,7 +1649,7 @@
   },
   {
     "term": "wgt_206",
-    "definition": "申請成功",
+    "definition": "Apply successfully",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1657,7 +1657,7 @@
   },
   {
     "term": "wgt_207",
-    "definition": "您確定要",
+    "definition": "You want to",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1665,7 +1665,7 @@
   },
   {
     "term": "wgt_208",
-    "definition": "目前總機在忙碌中",
+    "definition": "The receptionists are busy now",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1673,7 +1673,7 @@
   },
   {
     "term": "wgt_209",
-    "definition": "請您稍等10分鐘",
+    "definition": "Please wait for 10 minutes",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1681,7 +1681,7 @@
   },
   {
     "term": "wgt_210",
-    "definition": "自行取用",
+    "definition": "By yourself",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1689,7 +1689,7 @@
   },
   {
     "term": "wgt_211",
-    "definition": "願意等待",
+    "definition": "Willing to wait",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1697,7 +1697,7 @@
   },
   {
     "term": "wgt_212",
-    "definition": "願意等待",
+    "definition": "Willing to wait",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1705,7 +1705,7 @@
   },
   {
     "term": "wgt_213",
-    "definition": "總機服務中",
+    "definition": "The receptionists are in service",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1713,7 +1713,7 @@
   },
   {
     "term": "wgt_214",
-    "definition": "總機忙碌中",
+    "definition": "The receptionists are busy",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1721,7 +1721,7 @@
   },
   {
     "term": "wgt_215",
-    "definition": "本日：",
+    "definition": "Today：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1729,7 +1729,7 @@
   },
   {
     "term": "wgt_216",
-    "definition": "本日後14日：",
+    "definition": "The day after 14 days：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1753,7 +1753,7 @@
   },
   {
     "term": "wgt_219",
-    "definition": "傳送郵件",
+    "definition": "Send mail",
     "context": "",
     "term_plural": "",
     "reference": "",
