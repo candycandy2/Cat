@@ -214,7 +214,7 @@ class QPayTradeService
                     }
                 }
 
-                if ($allPointData[$startProcessAtPointsNumber]->stored_now > $price) {
+                if ($allPointData[$startProcessAtPointsNumber]->stored_now >= $price) {
                     //Not a Multiple Point Trade
                     $multiplePay = "N";
                     $multipleRowID = 0;
