@@ -709,7 +709,7 @@ $("#viewStaffAdminMain").pagecontainer({
         $("#viewStaffAdminMain").one("pageshow", function(event, ui) {
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminMain .page-main').css('height', mainHeight);
-            $('.admin-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
+            $('.admin-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'short', day: 'numeric', weekday:'short'}));
             headerHeight = $('#viewStaffAdminMain .page-header').height();
             //初始化总机状态设定dropdownlist
             initAdminSetting();

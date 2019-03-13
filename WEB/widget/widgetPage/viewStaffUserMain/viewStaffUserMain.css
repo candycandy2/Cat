@@ -56,17 +56,23 @@
 }
 
 .user-text-row1>div:nth-of-type(1){
-    width: 40%;
+    width: 50%;
     line-height: 1.2;
     color: #253137;
     font-size: 3.768vw;
 }
 
 .user-text-row1>div:nth-of-type(2){
-    width: 60%;
+    width: 50%;
     text-align: right;
-    color: #8fa3ad;
-    font-size: 3.55vw;
+    font-size: 3.97vw;
+    color: #3399CC;
+}
+
+.user-other-date{
+    background: url(img/calendar.png) no-repeat;
+    background-size: 4vw;
+    background-position-y: 0.5vw;
 }
 
 .user-text-row2{
@@ -80,17 +86,19 @@
 }
 
 .user-text-row2>div:nth-of-type(1){
-    width: 55%;
+    width: 65%;
     color: #253137;
     font-size: 3.768vw;
     line-height: 1.7;
 }
 
 .user-text-row2>div:nth-of-type(2){
-    width: 45%;
+    width: 35%;
     text-align: right;
     color: #253137;
-    font-size: 4.81vw;
+    font-size: 4.18vw;
+    /* color: #253137;
+    font-size: 4.81vw; */
 }
 
 .active-status-true {
