@@ -1481,14 +1481,6 @@
   },
   {
     "term": "wgt_186",
-    "definition": "傳送郵件",
-    "context": "",
-    "term_plural": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "wgt_186",
     "definition": "您要刪除茶水預約",
     "context": "",
     "term_plural": "",
@@ -1746,6 +1738,14 @@
   {
     "term": "wgt_218",
     "definition": "無交易密碼可修改",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_219",
+    "definition": "傳送郵件",
     "context": "",
     "term_plural": "",
     "reference": "",
