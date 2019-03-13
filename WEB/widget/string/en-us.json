@@ -1481,14 +1481,6 @@
   },
   {
     "term": "wgt_186",
-    "definition": "Send mail",
-    "context": "",
-    "term_plural": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "wgt_186",
     "definition": "You are deleting tea reservation",
     "context": "",
     "term_plural": "",
@@ -1561,7 +1553,7 @@
   },
   {
     "term": "wgt_195",
-    "definition": "The receptionists are taking break",
+    "definition": "Offline",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1705,7 +1697,7 @@
   },
   {
     "term": "wgt_213",
-    "definition": "In service",
+    "definition": "Online",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1754,6 +1746,14 @@
   {
     "term": "wgt_219",
     "definition": "Send mail",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_220",
+    "definition": "預約其他日期時段",
     "context": "",
     "term_plural": "",
     "reference": "",

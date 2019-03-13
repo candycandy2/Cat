@@ -26,6 +26,23 @@
     margin-top: 2.5vw;
 }
 
+.widget-footer{
+    width: 100%;
+    height: 6.44vw;
+    margin: 2vw 0 4vw;
+}
+
+.widget-footer>div{
+    width: 18.8vw;
+    height: 6.44vw;
+    margin: auto;
+    background: #4BB5AB;
+    color: #fff;
+    font-size: 3.14vw;
+    text-align: center;
+    line-height: 6.44vw;
+}
+
 .widget-more {
     width: 100%;
     height: 10.5vw;

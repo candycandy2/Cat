@@ -403,8 +403,7 @@ $("#viewStaffUserMain").pagecontainer({
         $("#viewStaffUserMain").one("pageshow", function(event, ui) {
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffUserMain .page-main').css('height', mainHeight);
-            $('.user-today-name').text(loginData['loginid']);
-            $('.user-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'long', day: 'numeric', weekday:'long'}));
+            $('.user-today-date').text(new Date().toLocaleDateString(browserLanguage, {month: 'short', day: 'numeric', weekday:'short'}));
 
             //iphone x下增加高度
             if(checkiPhoneX()){
@@ -446,6 +445,12 @@ $("#viewStaffUserMain").pagecontainer({
             setTimeout(function(){
                 $('.update-service div:eq(1)').removeClass('refresh-rotate');
             }, 800);
+        });
+
+        //跳转到预约页面
+        $('.user-other-date').on('tap', function() {
+            //change page
+            $('.userStaffMenu li[data-view="viewStaffUserAppointment"]').trigger('tap');
         });
 
         //切换会议室
