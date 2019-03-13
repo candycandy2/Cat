@@ -12,7 +12,7 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewPersonalLeaveCalendar"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var pageVisitedList = ["viewPersonalLeave"];
@@ -66,6 +66,7 @@ window.initialSuccess = function() {
         .then(checkLeaveWidgetPage('viewOvertimeSubmit/viewOvertimeSubmit'))
         .then(checkLeaveWidgetPage('viewBackLeaveQuery/viewBackLeaveQuery'))
         .then(checkLeaveWidgetPage('viewLeaveClockin/viewLeaveClockin'))
+        .then(checkLeaveWidgetPage('viewPersonalLeaveCalendar/viewPersonalLeaveCalendar'))
         .then(GetUserAuthority());
     /*checkLeaveWidgetPage('viewLeaveMain/viewLeaveMain')
         .then(checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery'));
