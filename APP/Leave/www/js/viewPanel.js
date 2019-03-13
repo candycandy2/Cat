@@ -84,7 +84,8 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewPersonalLeaveCalendar").on("click", function() {
-        changePageByPanel("viewPersonalLeaveCalendar");
+        //changePageByPanel("viewPersonalLeaveCalendar");
+        checkWidgetPage('viewPersonalLeaveCalendar', visitedPageList);
     });
 
     $("#mypanel #mypanelviewLeaveAgent").on("click", function() {
