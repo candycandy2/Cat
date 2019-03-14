@@ -556,5 +556,7 @@ return [
     'QPAY_TRADE_AMOUNT' => '交易金額',
     'QPAY_MONTH' =>'月',
     'QPAY_COUNT' =>'筆',
-    'QPAY_DATE' =>'日'
+    'QPAY_DATE' =>'日',
+    'QPAY_SEND_MSG_TITLE' => '[消費卷發放通知]',
+    'QPAY_SEND_MSG_CONTENT' => '消費券%0元已入帳，使用期限到%1, 請至QPlay消費券查看'
 ];

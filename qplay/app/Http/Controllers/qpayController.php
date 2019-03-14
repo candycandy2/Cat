@@ -76,6 +76,15 @@ class qpayController extends Controller
     }
 
     /**
+     * QPay Store Point - send message
+     * @return result
+     */
+    public function sendMessage()
+    {
+        return $this->qpayPointService->sendMessage();
+    }
+
+    /**
      * QPay Store Record - View
      * @return view
      */

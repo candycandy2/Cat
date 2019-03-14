@@ -229,6 +229,7 @@ Route::group(['prefix' => 'QPayStoreMaintain'], function () {
     Route::any('QPayStorePoint', ['middleware' => 'auth','uses'=>'qpayController@QPayStorePoint']);
     Route::any('uploadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@uploadPointExcel']);
     Route::any('newPointStore', ['middleware' => 'auth','uses'=>'qpayController@newPointStore']);
+    Route::any('sendMessage', ['middleware' => 'auth','uses'=>'qpayController@sendMessage']);
     Route::any('QPayStoreRecord', ['middleware' => 'auth','uses'=>'qpayController@QPayStoreRecord']);
     Route::any('getQPayStoreRecordList', ['middleware' => 'auth','uses'=>'qpayController@getQPayStoreRecordList']);
     Route::any('downloadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@downloadPointExcel']);

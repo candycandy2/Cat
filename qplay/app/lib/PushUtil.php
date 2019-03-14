@@ -516,4 +516,49 @@ class PushUtil
         }
         return $result;
     }
+
+    /**
+     * 發送推播訊息
+     * @param  String $from       發訊人
+     * @param  Array  $to         收訊人
+     * @param  String $title      訊息標題
+     * @param  String $text       訊息內容
+     * @param  Array  $queryParam
+     * @return json               訊息推播結果
+     */
+    public static function sendPushMessageWithContent($from, Array $to, $title, $text, $extra, Array $queryParam=[])
+    {
+        $apiFunction = 'sendPushMessageWithContent';
+        $signatureTime = time();
+        $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
+
+        $queryParam['app_key'] = $appKey;
+        $queryParam['need_push'] = 'Y';
+        $queryParam['qplay_message_list'] = 'Y';
+        $url = Config::get('app.qplay_api_server').$apiFunction.'?'.http_build_query($queryParam);
+
+        $header = array('Content-Type: application/json',
+                    'App-Key: '.$appKey,
+                    'Signature-Time: '.$signatureTime,
+                    'Signature: '.CommonUtil::getCustomSignature($signatureTime)
+        );
+
+        $data = array(
+            'template_id' =>'0',
+            'message_title' => base64_encode($title),
+            'message_type' => 'event',
+            'message_text' => base64_encode($text),
+            'message_html' => '',
+            'message_url' => '',
+            'message_source' => 'qplay',
+            'source_user_id' => $from,
+            'destination_user_id' => $to,
+            'destination_role_id' => array(),
+            'extra' => $extra
+        );
+
+        $data = json_encode($data);
+        $result = CommonUtil::callAPI('POST', $url, $header, $data);
+        return $result;
+    }
 }

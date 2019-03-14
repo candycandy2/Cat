@@ -755,4 +755,84 @@ SQL;
 
         return $userList[0];
     }
+
+    /**
+     * 過濾掉環境變數，取得原始app專案名稱
+     * @param  String $appKey 加上環境變數後的appKey
+     * @return String         ex : appqplaydev，處理後會回傳qplqy
+     */
+    public static function getProjectName($appKey)
+    {
+        $projectName = preg_replace("/^app/", '', $appKey);
+
+        if (Config::get('app.env') != 'production') {
+            $projectName = preg_replace("/".Config::get('app.env')."$/", '', trim($projectName));
+        }
+
+        return trim($projectName);
+    }
+
+    /**
+     * 取得與QPlay Custom Api 溝通的Signature
+     * Base64( HMAC-SHA256( SignatureTime , AppSecretKey ) )
+     * @param  timestamp $signatureTime 時間戳記
+     * @return String    加密後的字串
+     */
+    public static function getCustomSignature($signatureTime)
+    {
+        $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, Config::get('app.App_Secret_key'), true));
+        return $ServerSignature;
+    }
+
+    /**
+     * 呼叫API
+     * @param  String      $method 呼叫方式(POST|GET)
+     * @param  String      $url    API網址
+     * @param  Array|array $header request header
+     * @param  boolean     $data   傳遞的參數
+     * @return mixed               API result
+     */
+    public static function callAPI($method, $url, Array $header = array(), $data = false)
+    {
+        $curl = curl_init();
+        $url =  preg_replace('/\s+/', '%20', $url);
+        $api_max_exe_time = 5000;
+        $result = null;
+
+        switch ($method)
+        {
+            case "POST":
+                curl_setopt($curl, CURLOPT_POST, 1);
+
+                if ($data)
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                break;
+            case "PUT":
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                break;
+            default:
+                if ($data)
+                    $url = sprintf("%s?%s", $url, http_build_query($data));
+        }
+
+        //Optional Authentication:
+        //設定header
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
+
+        if (!$result = curl_exec($curl))
+        {
+            $errno = curl_errno($curl);
+            $result = json_encode(['error'=>$errno, 'message'=>curl_strerror($errno)]);
+            curl_close($curl);
+            return $result;
+        }
+
+        curl_close($curl);
+        return $result;
+    }
 }
