@@ -62,10 +62,13 @@ var app = {
     // Application Constructor
     initialize: function() {
 
-        loadStringTable();
+        //检查服务器状态，如果服务器不在工作，显示404；否则正常显示
+        checkServerStatus();
 
+        //remove to checkServerStatus by allen
+        //loadStringTable();
         //For release
-        this.bindEvents();
+        //this.bindEvents();
     },
     // Bind Event Listeners
     bindEvents: function() {
@@ -201,6 +204,36 @@ var app = {
 };
 
 app.initialize();
+
+//检查服务器状态
+function checkServerStatus() {
+    var timeStamp = Math.floor(new Date().getTime() / 1000);
+    $.getJSON(serverURL + "/widget/serverStatus.json?v=" + timeStamp, function(data) {
+        if(data['status'] == 'Ready') {
+            //服务器正常
+            loadStringTable();
+            app.bindEvents();
+        } else {
+            loadNotFoundPage();
+        }
+    }).fail(function(err) {
+        loadNotFoundPage();
+    });
+}
+
+//加载404页面
+function loadNotFoundPage() {
+    $.get("https://qplaytest.benq.com/widget/404.html", function(data) {
+        $.mobile.pageContainer.append(data);
+        $('#viewNotFound').page().enhanceWithin();
+        $.mobile.changePage('#viewNotFound');
+
+        //reload app
+        $('#reloadAPP').on('click', function() {
+            location.reload();
+        });
+    }, 'html');
+}
 
 function loadStringTable() {
     //Browser default language, according to the mobile device language setting
