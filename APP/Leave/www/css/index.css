@@ -67,73 +67,12 @@
     padding: 5px 0 5px;
 }
 
-
 /******************************************* personal leave *****************************************/
 
-.infoList {
-    margin-top: 5VW;
-    background-color: white;
-}
-
-.infoContainer {
-    padding: 4.3VW 0VW 3.71VW 6.71VW;
-    border-bottom-width: 0.1px;
-    border-bottom-style: solid;
-    border-bottom-color: #d6d6d6;
-}
-
-.infoTitle {
-    overflow: auto;
-}
-
-.listDown {
-    height: 3.542VW;
-    margin-top: -2.6VH;
-    margin-right: 6.71VW;
-    float: right;
-}
-
-.infoContent {
-    display: none;
-}
-
-.title {
-    font-size: 4.4VW;
-}
-
-#viewPersonalLeaveCalendar .infoContent ul,
 #viewHolidayCalendar .infoList ul {
     list-style-type: none;
     display: inline;
     -webkit-padding-start: 0px;
-}
-
-.infoContent ul>li {
-    overflow: auto;
-    margin-top: 4.66VW;
-}
-
-.infoContent ul>li>div>span {
-    color: #666666;
-}
-
-.infoContent ul>li>div:nth-of-type(1) {
-    width: 80%;
-}
-
-.infoContent ul>li>div:nth-of-type(2) {
-    float: right;
-    margin-top: -3VH;
-    margin-right: 6.71VW;
-}
-
-#infoContent-3 {
-    margin-top: 3.71VW;
-    margin-right: 5.6VW;
-}
-
-#infoContent-3 span {
-    font-size: smaller;
 }
 
 .dropdown-icon {
