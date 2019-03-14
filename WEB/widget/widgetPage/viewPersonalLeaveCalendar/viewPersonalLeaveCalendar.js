@@ -67,6 +67,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
         }
 
         $(document).ready(function() {
+            var imgURL = "/widget/widgetPage/viewPersonalLeaveCalendar/img/";
             prslvsCalendar = new Calendar({
                 renderTo: "#viewPersonalLeaveCalendar #myCalendar",
                 id: "viewPersonalLeave-calendar",
@@ -89,8 +90,8 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                     QueryCalendarData();
                 },
                 nav_icon: {
-                    prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
-                    next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
+                    prev: '<img src="' + serverURL + imgURL + 'pre.png" id="left-navigation" class="nav_icon">',
+                    next: '<img src="' + serverURL + imgURL + 'next.png" id="right-navigation" class="nav_icon">'
                 }
             });
         });
