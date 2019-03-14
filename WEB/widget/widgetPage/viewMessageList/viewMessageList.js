@@ -622,6 +622,7 @@ $("#viewMessageList").pagecontainer({
         $('.msg-readed span').on('click', function() {
             var has = $(this).parent().hasClass('enabled-font');
             if (has) {
+                loadingMask('show');
                 $.each($('.' + messageType + '-content .msg-check-btn'), function(index, item) {
                     var src = $(item).attr('data-src');
                     var readed = $(item).parent().next().hasClass('read-font-normal');
@@ -630,7 +631,8 @@ $("#viewMessageList").pagecontainer({
                         messageRowId = $(item).parents('li').attr('data-rowid');
                         updateListReadDelete(messageType, 'read', messageRowId);
                     }
-                })
+                });
+                loadingMask('hide');
             }
         });
 
