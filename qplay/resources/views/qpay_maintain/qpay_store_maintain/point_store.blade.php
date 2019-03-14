@@ -485,10 +485,11 @@ $(function() {
         $(".loading-mask").show();
     });
 
-    //Chech Stored Record
+    //Redirect to Stored Record
     $("#storedRecord").on("click", function(){
         location.href = 'QPayStoreRecord';
     });
+
     //Store Point
     function storePoint() {
 
@@ -503,11 +504,27 @@ $(function() {
                     $("#preViewPage #previewToolbar").hide();
                     $("#preViewPage .finish-review").show();
                 }
+
                 $(".loading-mask").hide();
+                sendMessage();
             },
             error: function (e) {
                 $(".loading-mask").hide();
             }
+        });
+
+    }
+
+    //Send Message
+    function sendMessage() {
+
+        $.ajax({
+            url: "sendMessage",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json",
+            success: function (r) {},
+            error: function (e) {}
         });
 
     }

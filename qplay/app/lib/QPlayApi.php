@@ -11,7 +11,7 @@ class QPlayApi
         $method = 'POST';
         $signatureTime = time();
         //$data = json_encode($data);
-        $url = Config::get('app.qplay_api_server').$action;
+        $url = Config::get('app.qplay_api_server_internal').$action;
         return self::callAPI($method, $url, $headers, $data);
     }
 

@@ -9,6 +9,7 @@ use App\Repositories\QPayPointTypeRepository;
 use App\Repositories\QPayPointStoreRepository;
 use App\Repositories\QPayMemberRepository;
 use App\lib\ResultCode;
+use App\lib\PushUtil;
 use Auth;
 use Session;
 use Excel;
@@ -24,6 +25,7 @@ class QPayPointService
     protected $pointStoreID = 0;
     protected $pointStoreSuccess = false;
     protected $excelDataInfo = [];
+    protected $userSendData = [];
     protected $allEmpDataArray = [];
     protected $errorEmpNoArray = [];
     protected $negativePointEmpNoArray = [];
@@ -118,7 +120,7 @@ class QPayPointService
 
                 //Find All emp_no which exist in `qp_user`
                 $result = DB::table('qp_user')
-                        -> select('row_id', 'emp_no')
+                        -> select('row_id', 'login_id', 'emp_no', 'user_domain')
                         -> whereIn('emp_no', $excelEmpNoArray)
                         -> where('resign', '=', 'N')
                         -> get();
@@ -135,7 +137,13 @@ class QPayPointService
                     $userEmpNoArray[] = strval(trim($data["emp_no"]));
                     $userRowIDArray[] = strval(trim($data["row_id"]));
                     $userRowIDEmpNoArray[strval(trim($data["row_id"]))] = strval(trim($data["emp_no"]));
+
+                    $this->userSendData[strval(trim($data["login_id"]))] = [
+                        "user_domain" => strval(trim($data["user_domain"]))
+                    ];
                 }
+
+                Session::set("userSendData", $this->userSendData);
 
                 //Check if any emp_no not exist in `qp_user`
                 $this->errorEmpNoArray = array_diff($excelEmpNoArray, $userEmpNoArray);
@@ -294,7 +302,7 @@ class QPayPointService
         Session::forget("excelFileOriginalName");
         Session::forget("excelFileSavedName");
         Session::forget("pointTypeID");
-        Session::forget("excelDataInfo");
+        //Session::forget("excelDataInfo");
 
         if ($this->pointStoreSuccess) {
             $result["result_code"] = ResultCode::_1_reponseSuccessful;
@@ -392,7 +400,39 @@ class QPayPointService
      * Get all QPay point list
      * @return mixed
      */
-    public function getAllQPayPointTypeList(){
+    public function getAllQPayPointTypeList()
+    {
         return $this->qpayPointTypeRepository->getAllQPayPointTypeList();
+    }
+
+    /**
+     * Send Push Notification / Email
+     * @return none
+     */
+    public function sendMessage()
+    {
+        set_time_limit(0);
+
+        $from = "QGROUP\\MyQisda";
+        $extra = [];
+        $queryParam =  array(
+            'lang' => "zh-tw"
+        );
+        $limitDate = date("Y")."/12/31";
+
+        $title = trans("messages.QPAY_SEND_MSG_TITLE");
+        $text = str_replace("%0", Session::get("excelDataInfo")["point"], trans("messages.QPAY_SEND_MSG_CONTENT"));
+        $text = str_replace("%1", $limitDate, $text);
+
+        foreach (Session::get("userSendData") as $loginID => $data) {
+            $to = array(
+                $data["user_domain"] . "\\" . $loginID
+            );
+
+            PushUtil::sendPushMessageWithContent($from, $to, $title, $text, $extra, $queryParam);
+        }
+
+        Session::forget("excelDataInfo");
+        Session::forget("userSendData");
     }
 }

@@ -168,6 +168,7 @@ return [
 
     'App_id' => env('APP_ID'),
     'Secret_key' => env('SECRET_KEY'),
+    'App_Secret_key'=>env('APP_SECRET_KEY'),
     'time_to_live' => env('TIME_TO_LIVE'),
     'apns_flag' => env('APNS_FLAG'),
 
@@ -202,8 +203,9 @@ return [
     | Here you may configure the QPlay api server settings for your application.
     |
     */
-   
+
     'qplay_api_server' => env('QPLAY_API_SERVER'),
+    'qplay_api_server_internal' => env('QPLAY_API_SERVER_INTERNAL'),
 
     /*
     |--------------------------------------------------------------------------
