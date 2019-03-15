@@ -170,10 +170,9 @@ $("#viewQPayUserRecordList").pagecontainer({
 
         /********************************** dom event *************************************/
         $('.refresh-user-record').on('click', function () {
-            $('.refresh-user-record img').addClass('refresh-icon-rotate');
-            setTimeout(function(){
-                $('.refresh-user-record img').removeClass('refresh-icon-rotate');
-            }, 800);
+            $('.refresh-user-record img').addClass('refresh-icon-rotate').delay(1000).queue(function(){
+                $(this).removeClass('refresh-icon-rotate').dequeue();
+            });
             loadingMask("show");
             $('.user-record-ul').html('');
             storeListFinish = false;

@@ -83,7 +83,7 @@ $("#viewStaffUserMain").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
-                
+
                 if(data['result_code'] == '1') {
                     //茶水信息
                     let roomText = $('#userChooseRoom option:selected').text();
@@ -434,17 +434,15 @@ $("#viewStaffUserMain").pagecontainer({
         //更新总机状态
         $('.update-service').on('tap', function() {
             //添加旋转动画
-            $('.update-service div:eq(1)').addClass('refresh-rotate');
+            $('.update-service div:eq(1)').addClass('refresh-rotate').delay(1000).queue(function(){
+                $(this).removeClass('refresh-rotate').dequeue();
+            });
             //判断是否在服务时段
             var needStatus = checkAdminWorkTime();
             if(needStatus) {
                 //获取总机状态
                 getStaffStatus();
             }
-            //取消旋转动画
-            setTimeout(function(){
-                $('.update-service div:eq(1)').removeClass('refresh-rotate');
-            }, 800);
         });
 
         //跳转到预约页面
@@ -467,13 +465,11 @@ $("#viewStaffUserMain").pagecontainer({
         //刷新當前room的預約
         $('.refreshTargetRoom').on('tap', function() {
             //添加旋转动画
-            $('.refreshTargetRoom').addClass('refresh-rotate');
+            $('.refreshTargetRoom').addClass('refresh-rotate').delay(1000).queue(function(){
+                $(this).removeClass('refresh-rotate').dequeue();
+            });
             //再次点击已选的会议室，主动触发select onchange事件getReserveByTarget()
             $('#userChooseRoom-option-list li.tpl-dropdown-list-selected').trigger('click');
-            //取消旋转动画
-            setTimeout(function(){
-                $('.refreshTargetRoom').removeClass('refresh-rotate');
-            }, 800);
         });
 
         //单选茶还是水

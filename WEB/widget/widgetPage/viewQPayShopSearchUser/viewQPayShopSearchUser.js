@@ -177,14 +177,13 @@ $("#viewQPayShopSearchUser").pagecontainer({
 
         //刷新列表
         $('.refresh-today-record').on('click', function () {
-            $('.refresh-today-record img').addClass('refresh-icon-rotate');
+            $('.refresh-today-record img').addClass('refresh-icon-rotate').delay(1000).queue(function(){
+                $(this).removeClass('refresh-icon-rotate').dequeue();
+            });
             //loadingMask('show');
             var activeTab = $('.type-active').data('type');
             //API:获取当天所有类别的交易记录
             getCurrentTradeRecord(activeTab);
-            setTimeout(function(){
-                $('.refresh-today-record img').removeClass('refresh-icon-rotate');
-            }, 800);
         });
 
         //输入工号
