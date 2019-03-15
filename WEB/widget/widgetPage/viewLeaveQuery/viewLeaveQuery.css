@@ -271,4 +271,5 @@
     align-self:center; 
     width: 3.5vw;
     height: 3.5vw;
+    display: inline-block;
 }
