@@ -408,6 +408,11 @@ $("#viewMessageList").pagecontainer({
             $('.idea-loading-img').attr('src', serverURL + imgURL + 'loading.gif');
             //check can not use portal
             checkPortalByFunctionList();
+            //check last visit message type
+            var msgType = window.localStorage.getItem('messageType');
+            if(msgType != null && msgType != 'news') {
+                $('.select-type div[data-item="' + msgType + '"]').trigger('click');
+            }
             //content
             createMessageByType();
         });
@@ -422,7 +427,8 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").on("pagehide", function(event, ui) {
-
+            //save last visit message type
+            window.localStorage.setItem('messageType', messageType);
         });
 
 
