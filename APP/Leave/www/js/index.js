@@ -12,7 +12,7 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery"];
+var pageList = ["viewPersonalLeave"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var pageVisitedList = ["viewPersonalLeave"];
@@ -62,11 +62,13 @@ window.initialSuccess = function() {
         '</EmpNo></LayoutHeader>';
 
     //Execute checkLeaveWidgetPage func to render Leave WidgetPage before Calling GetUserAuthority API
+    loadScript(serverURL + "/widget/widgetPage/viewLeavePanel/viewLeavePanel.js");
     checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery')
         .then(checkLeaveWidgetPage('viewOvertimeSubmit/viewOvertimeSubmit'))
         .then(checkLeaveWidgetPage('viewBackLeaveQuery/viewBackLeaveQuery'))
         .then(checkLeaveWidgetPage('viewLeaveClockin/viewLeaveClockin'))
         .then(checkLeaveWidgetPage('viewPersonalLeaveCalendar/viewPersonalLeaveCalendar'))
+        .then(checkLeaveWidgetPage('viewLeaveQuery/viewLeaveQuery'))
         .then(GetUserAuthority());
     /*checkLeaveWidgetPage('viewLeaveMain/viewLeaveMain')
         .then(checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery'));
@@ -82,6 +84,13 @@ window.initialSuccess = function() {
     document.removeEventListener("backbutton", onBackKeyDown, false);
     //监听本页自己的backkey logic
     document.addEventListener("backbutton", onBackKeyDownSpecial, false);
+}
+
+function loadScript(url) {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = url;
+    document.body.appendChild(script);
 }
 
 function checkLeaveWidgetPage(leaveWidgetUrl) {
