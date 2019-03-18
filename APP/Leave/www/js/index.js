@@ -8,14 +8,14 @@ var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recal
     backLeaveFormLeaveDetailQueryData;
 var queryEmployeeOvertimeApplyFormQueryData, overtimeApplyFormDetailQueryData, recallOvertimeApplyFormQueryData;
 var sendApplyOvertimeQueryData, updateOvertimeQueryData, countOvertimeHoursByEndQueryData;
-var lastPageID = "viewPersonalLeave";
+var lastPageID = "viewLeaveMain";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPersonalLeave"];
+var pageList = [];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
-var visitedPageList = ["viewPersonalLeave"];
-var pageVisitedList = ["viewPersonalLeave"];
+var visitedPageList = [];
+var pageVisitedList = [];
 var htmlContent = "";
 var signedStr; //"已簽核";
 var withdrawedStr; //"已撤回";
@@ -63,7 +63,8 @@ window.initialSuccess = function() {
 
     //Execute checkLeaveWidgetPage func to render Leave WidgetPage before Calling GetUserAuthority API
     loadScript(serverURL + "/widget/widgetPage/viewLeavePanel/viewLeavePanel.js");
-    checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery')
+    checkLeaveWidgetPage('viewLeaveMain/viewLeaveMain')
+        .then(checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery'))
         .then(checkLeaveWidgetPage('viewOvertimeSubmit/viewOvertimeSubmit'))
         .then(checkLeaveWidgetPage('viewBackLeaveQuery/viewBackLeaveQuery'))
         .then(checkLeaveWidgetPage('viewLeaveClockin/viewLeaveClockin'))

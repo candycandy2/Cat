@@ -1,7 +1,7 @@
 var panel = htmlContent +
     '<div data-role="panel" id="mypanel" data-display="overlay">' +
     '<div class="ios-fix-overlap-div"></div>' +
-    '<div class="panel-content" id="mypanelviewPersonalLeave">'
+    '<div class="panel-content" id="mypanelviewLeaveMain">'
     //+       '<span class="panel-text">請假申請</span>'
     +
     '<span class="panel-text">' + langStr["str_002"] + '</span>' +
@@ -57,20 +57,22 @@ var panel = htmlContent +
 $(document).one("pagebeforeshow", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
-    $("#mypanel #mypanelviewPersonalLeave").css("background", "#503f81");
-    $("#mypanel #mypanelviewPersonalLeave").css("color", "#fff");
+    $("#mypanel #mypanelviewLeaveMain").css("background", "#503f81");
+    $("#mypanel #mypanelviewLeaveMain").css("color", "#fff");
 
     if (device.platform === "iOS") {
-        $("#mypanelviewPersonalLeave").css("margin-top", "20px");
+        $("#mypanelviewLeaveMain").css("margin-top", "20px");
         $(".page-mask").css("top", "20px");
     }
 
-    $("#mypanel #mypanelviewPersonalLeave").on("click", function() {
-        changePageByPanel("viewPersonalLeave");
+    $("#mypanel #mypanelviewLeaveMain").on("click", function() {
+        //changePageByPanel("viewPersonalLeave");
+        checkWidgetPage('viewLeaveMain', visitedPageList);
     });
 
     $("#mypanel #mypanelviewLeaveQuery").on("click", function() {
-        changePageByPanel("viewLeaveQuery");
+        //changePageByPanel("viewLeaveQuery");
+        checkWidgetPage('viewLeaveQuery', visitedPageList);
     });
 
     $("#mypanel #mypanelviewBackLeaveQuery").on("click", function() {
