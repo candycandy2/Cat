@@ -605,12 +605,12 @@ $(function() {
                 } else if (recordData[i]["trade_type"] == "trade") {
                     displayName = recordData[i]["shop_name"];
 
+                    if (recordData[i]["trade_success"] == "N") {
+                        continue;
+                    }
+
                     //Check if is [cancel trade]
                     if (recordData[i]["cancel_trade"] == "Y") {
-                        if (recordData[i]["trade_success"] == "N") {
-                            continue;
-                        }
-
                         pointSymbol = "+";
                         displayNote = "退款:" + recordData[i]["cancel_reason"];
 
