@@ -41,7 +41,7 @@ function getLanguageString() {
             clearInterval(langInterval);
             addComponentView();
         }
-    }, 500);
+    }, 100);
 }
 
 function addComponentView() {
