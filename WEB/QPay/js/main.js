@@ -4,10 +4,8 @@ $(function() {
     //------------------------Initital------------------------
     var URLArr = window.location.origin.split(".");
     var DomainArr = URLArr[0].split("//");
-    //window.appKey = "app" + DomainArr[1];
-    //window.serverURL = "https://" + DomainArr[1] + ".benq.com";
-    window.appKey = "appqplaydev";
-    window.serverURL = "https://qplaydev.benq.com";
+    window.appKey = "app" + DomainArr[1];
+    window.serverURL = "https://" + DomainArr[1] + ".benq.com";
     window.appApiPath = "qplayApi";
     window.loginData = {};
     window.timeOutForAction = 1 * 60;
