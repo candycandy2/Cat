@@ -419,6 +419,7 @@ $("#viewLeaveQuery").pagecontainer({
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {
             $("#withdrawApplyDate").text(applyDay);
             $("#revokeApplyDate").text(applyDay);
+            changeLeavePanelBKColor();
             loadingMask("hide");
         });
 
