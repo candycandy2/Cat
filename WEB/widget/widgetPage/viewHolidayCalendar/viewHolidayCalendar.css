@@ -1,4 +1,11 @@
 /********************************* viewHolidayCalendar *******************************/
+
+#viewHolidayCalendar .infoList ul {
+    list-style-type: none;
+    display: inline;
+    -webkit-padding-start: 0px;
+}
+
 #viewHolidayCalendar .infoList ul>li {
     margin-left: 6.71Vw;
     margin-top: 3.71VW;
@@ -16,3 +23,4 @@
     width: 2.415VW;
     margin-right: 1.5VW;
 }
+
