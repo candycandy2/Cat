@@ -345,6 +345,16 @@ class SyncUserService
 
                 }
 
+                //if is AD , user ehr emp_name ad login_id 
+                if ($EHRData["ad_flag"] === 'Y'){
+                    $loginIdInfo = explode('\\', $EHRData["emp_name"]); //BENQ\clwo.w.chan or cleo.w.chan
+                    if(isset($loginIdInfo[1])){
+                        $updateData["login_id"] = $loginIdInfo[1];
+                    }else{
+                        $updateData["login_id"] = $loginIdInfo[0];
+                    }
+                }
+
                 $this->userSyncRepository->updateUserFromEHR($empNO, $updateData);
             }
         }
