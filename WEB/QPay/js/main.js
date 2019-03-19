@@ -86,7 +86,7 @@ $(function() {
         $.ajax({
             type: "GET",
             headers: headers,
-            url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + "&" + queryStr,
+            url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + queryStr,
             dataType: "json",
             cache: false,
             timeout: 30000,
@@ -557,7 +557,7 @@ $(function() {
                 "token-valid": window.loginData["tokenValid"]
             };
 
-            var queryStr = "start_date=" + startTimestamp + "&end_date=" + endTimestamp;
+            var queryStr = "&start_date=" + startTimestamp + "&end_date=" + endTimestamp;
 
             var successCallback = function(data) {
                 var resultCode = data["result_code"];
