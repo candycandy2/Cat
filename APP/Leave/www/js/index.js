@@ -50,6 +50,7 @@ var defaultSettingDone = false;
 var reload = false;
 var hasAgentPanel, hasClockinOTPanel = false;
 var activePageListID;
+var checkLeaveWidgetNum = 0;
 
 window.initialSuccess = function() {
     originalEmpNo = localStorage["emp_no"];
@@ -69,8 +70,8 @@ window.initialSuccess = function() {
         .then(checkLeaveWidgetPage('viewBackLeaveQuery/viewBackLeaveQuery'))
         .then(checkLeaveWidgetPage('viewLeaveClockin/viewLeaveClockin'))
         .then(checkLeaveWidgetPage('viewPersonalLeaveCalendar/viewPersonalLeaveCalendar'))
-        .then(checkLeaveWidgetPage('viewLeaveQuery/viewLeaveQuery'))
-        .then(GetUserAuthority());
+        .then(checkLeaveWidgetPage('viewLeaveQuery/viewLeaveQuery'));
+        //.then(GetUserAuthority());
     /*checkLeaveWidgetPage('viewLeaveMain/viewLeaveMain')
         .then(checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery'));
         //.then(GetUserAuthority());
@@ -117,9 +118,17 @@ function checkLeaveWidgetPage(leaveWidgetUrl) {
                 script.src = url + leaveWidgetUrl + '.js';
                 document.head.appendChild(script);
                 resolve(1);
-            }, 200);
+                //checkLeaveWidgetPage的七個頁面都加載完成,才能執行GetUserAuthority()
+                checkLeaveWidgetNum++;
+                if (checkLeaveWidgetNum == 7) {
+                    GetUserAuthority();
+                    checkLeaveWidgetNum = 0;
+                }
 
+            }, 200);
+           
         }, 'html');
+
     });
 }
 
