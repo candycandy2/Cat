@@ -80,7 +80,7 @@ html body .ui-group-theme-a .ui-bar-inherit {
 }
 #viewRecord .link-content .link {
     color: #666;
-    font-weight: unset;
+    /* font-weight: unset; */
     text-decoration: none;
     cursor: pointer;
 }
