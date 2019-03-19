@@ -4,8 +4,10 @@ $(function() {
     //------------------------Initital------------------------
     var URLArr = window.location.origin.split(".");
     var DomainArr = URLArr[0].split("//");
-    window.appKey = "app" + DomainArr[1];
-    window.serverURL = "https://" + DomainArr[1] + ".benq.com";
+    //window.appKey = "app" + DomainArr[1];
+    //window.serverURL = "https://" + DomainArr[1] + ".benq.com";
+    window.appKey = "appqplaydev";
+    window.serverURL = "https://qplaydev.benq.com";
     window.appApiPath = "qplayApi";
     window.loginData = {};
     window.timeOutForAction = 1 * 60;
@@ -86,7 +88,7 @@ $(function() {
         $.ajax({
             type: "GET",
             headers: headers,
-            url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + "&" + queryStr,
+            url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + queryStr,
             dataType: "json",
             cache: false,
             timeout: 30000,
@@ -557,7 +559,7 @@ $(function() {
                 "token-valid": window.loginData["tokenValid"]
             };
 
-            var queryStr = "start_date=" + startTimestamp + "&end_date=" + endTimestamp;
+            var queryStr = "&start_date=" + startTimestamp + "&end_date=" + endTimestamp;
 
             var successCallback = function(data) {
                 var resultCode = data["result_code"];
