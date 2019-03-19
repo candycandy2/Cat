@@ -2,6 +2,10 @@
 $(function() {
 
     //------------------------Initital------------------------
+    //origin相容性
+    if (!window.location.origin) {
+        window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+    }
     var URLArr = window.location.origin.split(".");
     var DomainArr = URLArr[0].split("//");
     window.appKey = "app" + DomainArr[1];
@@ -12,12 +16,9 @@ $(function() {
     window.checkTimeOut = 1;
     window.pageNow = 1;
 
-    window.browserLanguage = navigator.language.toLowerCase();
-    var languageShortName = browserLanguage.substr(0, 2);
-
-    if (languageShortName === "en") {
-        browserLanguage = "en-us";
-    }
+    //navigator.language相容性
+    window.browserLanguage = (navigator.language || navigator.systemLanguage).toLowerCase();
+    browserLanguage = (browserLanguage.substr(0, 2) == 'en' ? 'en-us' : browserLanguage);
 
     //Date Picker
     $(".date-picker").datepicker({
@@ -586,7 +587,7 @@ $(function() {
             var recordHTML = $("template#tplRecordMobile").html();
         } else {
             $("#viewRecord .record-content .record-table.desktop tbody > tr").remove();
-            var recordHTML = $("template#tplRecordDesktop").html();
+            var recordHTML = $("table#tplRecordDesktop>tbody").html();
         }
 
         if (recordData.length == 0) {
