@@ -796,7 +796,7 @@ SQL;
     {
         $curl = curl_init();
         $url =  preg_replace('/\s+/', '%20', $url);
-        $api_max_exe_time = 5000;
+        $api_max_exe_time = 10000;
         $result = null;
 
         switch ($method)

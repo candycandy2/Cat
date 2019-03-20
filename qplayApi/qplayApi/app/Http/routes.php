@@ -77,6 +77,8 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
         Route::get('/changeTradePwdForWeb', 'WebController@changeTradePwdForWeb');
         Route::get('/logoutQPayWeb', 'WebController@logoutQPayWeb');
         Route::get('/tradeRecordQPayWeb', 'WebController@tradeRecordQPayWeb');
+        //for QPlay Backend
+        Route::get('/cancelTradeBackend', 'TradeController@cancelTrade');
     });
 
     //EmpService

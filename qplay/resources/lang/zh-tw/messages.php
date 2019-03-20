@@ -83,6 +83,7 @@ return [
     'TITLE_QPAY_MAINTAIN' => '消費券管理-用戶管理',
     'TITLE_QPAY_USER_EMPLOYEE' =>'員工資料',
     'TITLE_QPAY_REIMBURSE_FINANCE' =>'財務請款',
+    'TITLE_QPAY_REIMBURSE_CANCELTRADE' =>'取消交易',
     
     'ENABLE' => '啟用',
     'DISABLE' => '停用',
@@ -558,5 +559,19 @@ return [
     'QPAY_COUNT' =>'筆',
     'QPAY_DATE' =>'日',
     'QPAY_SEND_MSG_TITLE' => '[消費卷發放通知]',
-    'QPAY_SEND_MSG_CONTENT' => '消費券%0元已入帳，使用期限到%1, 請至QPlay消費券查看'
+    'QPAY_SEND_MSG_CONTENT' => '消費券%0元已入帳，使用期限到%1, 請至QPlay消費券查看',
+    'QPAY_CANCEL_REASON' => '退款理由',
+    'QPAY_CANCEL_REASON_OPTION_1' => '金額輸入錯誤',
+    'QPAY_CANCEL_REASON_OPTION_2' => '商品質量有問題',
+    'QPAY_CANCEL_REASON_OPTION_3' => '其他',
+    'QPAY_CANCEL_ERROR_1' => '交易碼需填入 6 位數字',
+    'QPAY_CANCEL_ERROR_2' => '退款理由:其他，請填入文字',
+    'QPAY_CANCEL_ERROR_3' => '此為交易失敗之交易碼，無法進行退款',
+    'QPAY_CANCEL_ERROR_4' => '您輸入的交易碼已申請退款成功',
+    'QPAY_CANCEL_ERROR_5' => '此為退款成功之交易碼，您消費之物品已退款成功，請至交易紀錄查詢',
+    'QPAY_CANCEL_ERROR_6' => '店家未啟動交易，請聯絡相關人員',
+    'QPAY_CANCEL_ERROR_7' => '此筆交易非於本店家消費，請消費者重新確認店家',
+    'QPAY_CANCEL_ERROR_8' => '交易金額不正確',
+    'QPAY_CANCEL_TRADE' => '取消交易',
+    'QPAY_CANCEL_TRADE_CONFIRM' => '確認取消此筆交易?'
 ];

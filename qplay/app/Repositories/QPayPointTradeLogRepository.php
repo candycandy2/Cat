@@ -160,4 +160,28 @@ class QPayPointTradeLogRepository
         return $result;
 
     }
+
+    /**
+     * Get QPay Trade Data
+     * @return mixed
+     */
+    public function getTradeData($tradeID)
+    {
+        return $this->qpayTradeLog
+                -> Join("qpay_member", "qpay_member.row_id", "=", "qpay_trade_log.member_row_id")
+                -> Join("qp_user", "qp_user.row_id", "=", "qpay_member.user_row_id")
+                -> select(DB::raw("CONCAT('T', LPAD(qpay_trade_log.row_id, 6, 0)) AS trade_id"),
+                          "qpay_trade_log.member_row_id",
+                          "qpay_trade_log.shop_row_id",
+                          "qpay_trade_log.success",
+                          "qpay_trade_log.trade_point AS trade_price",
+                          "qpay_trade_log.created_at",
+                          "qpay_trade_log.cancel",
+                          "qpay_trade_log.cancel_pay",
+                          "qp_user.login_id",
+                          "qp_user.emp_no")
+                -> where("qpay_trade_log.row_id", "=", intval($tradeID))
+                -> orderBy("qpay_trade_log.row_id", "ASC")
+                -> get();
+    }
 }
