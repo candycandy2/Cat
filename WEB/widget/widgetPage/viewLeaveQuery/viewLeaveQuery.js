@@ -654,7 +654,8 @@ $("#viewLeaveQuery").pagecontainer({
 
             /**************** 3.跳转 ***************/
             $("#backDetailList").click();
-            changePageByPanel("viewPersonalLeave");
+            //changePageByPanel("viewPersonalLeave");
+            checkWidgetPage('viewLeaveMain', visitedPageList);
 
             /**************** 4.计算请假数 ***************/
             setTimeout(function() {
