@@ -8,6 +8,7 @@ use App\lib\ResultCode;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class toolController extends Controller
 {
@@ -87,6 +88,8 @@ class toolController extends Controller
                    $registerList[] = $register->row_id;
                    $userIdList[] = $register->user_row_id;
                 }
+                
+                //delete register data
                 \DB::table("qp_register")
                 -> whereIn('uuid', $uuidList)
                 -> delete();
@@ -96,6 +99,21 @@ class toolController extends Controller
                 \DB::table("qp_session")
                 -> whereIn('uuid', $uuidList)
                 -> delete();
+
+                //remove user jpush tags
+                foreach ($uuidList as $uuid) {
+                    $delDeviceInfo =  PushUtil::getDeviceInfoWithJPushWebAPI($uuid);
+                    if($delDeviceInfo["result"]) {
+                        $tags = $delDeviceInfo['info']['body']['tags'];
+                        foreach ($tags as $tag) {
+                            $removeResult = PushUtil::RemoveTagsWithJPushWebAPI($uuid, $tag);
+                            if(!$removeResult["result"]) {
+                                Log::error('['.$uuid.'] remove tag error'.':'.$tag.' - '.$removeResult["info"]);
+                            }
+                        }
+                    }
+                }
+
                 \DB::commit();
                 return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,]);
              }catch(\Exception $e){

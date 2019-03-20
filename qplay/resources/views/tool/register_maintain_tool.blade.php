@@ -11,9 +11,10 @@ $menu_name = "REGISTER_MAINTAIN_TOOL";
         </button>
     </div>
 </div>
+
 <form id="clearDeviceForm">
     <table id="gridDeviceList" class="bootstrapTable" data-toggle="table" data-toolbar="#toolbar"
-           data-url="tool/getRegisterList" data-height="398" data-pagination="true"
+           data-url="tool/getRegisterList" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="true"  data-sortable="true"
            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -21,11 +22,13 @@ $menu_name = "REGISTER_MAINTAIN_TOOL";
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="login_id" data-sortable="true" data-visible="true">Ori User</th>
+            <th data-field="login_id" data-sortable="true" data-visible="true">Login id</th>
             <th data-field="device_type" data-sortable="true" data-visible="true">Device Type</th>
             <th data-field="uuid" data-sortable="true" data-visible="true">Device uuid</th>
             <th data-field="emp_name" data-sortable="true" data-visible="true">Emp Name</th>
             <th data-field="register_date" data-sortable="true" data-visible="true">Register Date</th>
+            <th data-field="status" data-sortable="true" data-visible="true">Status</th>
+            <th data-field="resign" data-sortable="true" data-visible="true">Resign</th>
         </tr>
         </thead>
     </table>
