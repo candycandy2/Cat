@@ -646,4 +646,30 @@ class qpayController extends Controller
         $result =  $this->qpayTradeService->downloadReimburseFinanceExcel($shopId, $startDate, $endDate, $timeOffset, $pointType);
 
     }
+
+    /**
+     * QPay Reimburse Cancel Trade - view
+     */
+    public function QPayReimburseCancelTrade()
+    {
+        return view("qpay_maintain/qpay_reimburse_maintain/reimburse_cancel_trade");
+    }
+
+    /**
+     * QPay - check Trade ID
+     * @param  Request $request
+     */
+    public function checkTradeID(Request $request)
+    {
+        return $this->qpayTradeService->checkTradeID($request);
+    }
+
+    /**
+     * QPay - Cancel Teade
+     * @param  Request $request
+     */
+    public function cancelTrade(Request $request)
+    {
+        return $this->qpayTradeService->cancelTrade($request);
+    }
 }

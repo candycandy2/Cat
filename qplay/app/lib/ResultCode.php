@@ -49,5 +49,8 @@ abstract class ResultCode
     const _000922_qpayShopAlreadyExist = "000922"; //消費券店家帳號重複
     const _000923_qpayNegativePoint = "000923"; //消費券點數總額為負值
     const _000924_qpayPointOver1000 = "000924"; //員工的消費券點數總額大於1000
+    const _000925_tradeIDIsFailTradeCannotCancel = "000925"; //此為交易失敗之交易碼，無法進行退款
+    const _000926_tradeIDHadCanceled = "000926"; //您輸入的交易碼已申請退款成功
+    const _000927_tradeIDCannotCancel = "000927"; //此為退款成功之交易碼，您消費之物品已退款成功，請至交易紀錄查詢
     //TODO 以下为各系统扩展
 }

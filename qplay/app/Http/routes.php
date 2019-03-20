@@ -245,6 +245,9 @@ Route::group(['prefix' => 'QPayReimburseMaintain'], function () {
     Route::any('getQPayReimburseFinanceList', ['middleware' => 'auth','uses'=>'qpayController@getQPayReimburseFinanceList']);
     Route::any('getQPayTradeTotal', ['middleware' => 'auth','uses'=>'qpayController@getQPayTradeTotal']);
     Route::any('downloadReimburseFinanceExcel', ['middleware' => 'auth','uses'=>'qpayController@downloadReimburseFinanceExcel']);
+    Route::any('QPayReimburseCancelTrade', ['middleware' => 'auth','uses'=>'qpayController@QPayReimburseCancelTrade']);
+    Route::any('checkTradeID', ['middleware' => 'auth','uses'=>'qpayController@checkTradeID']);
+    Route::any('cancelTrade', ['middleware' => 'auth','uses'=>'qpayController@cancelTrade']);
 });
 
 //QPay User Maintain

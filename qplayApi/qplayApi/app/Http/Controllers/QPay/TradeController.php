@@ -203,6 +203,7 @@ class TradeController extends Controller
     {
         $request->merge(['trade_token' => $request->header('trade-token')]);
         $request->merge(['trade_pwd' => $request->header('trade-pwd')]);
+        $request->merge(['backend' => $request->header('backend')]);
 
         //parameter verify
         $validator = Validator::make($request->all(), [
@@ -228,9 +229,21 @@ class TradeController extends Controller
                 'message' => CommonUtil::getMessageContentByCode($validator->errors()->first())
             ], 200);
         } else {
+            //For QPlay Backend
+            if (isset($request->backend) && $request->backend == "Y") {
+                $request->uuid = "";
+            } else {
+                $request->backend = "N";
+            }
+
             $result = $this->qpayTradeService->cancelTrade($request->uuid, $request->header("trade-pwd"), $request->header("trade-token"),
-                            $request->emp_no, $request->price, $request->shop_id, $request->trade_id, $request->reason, $request->lang);
-            $result["token_valid"] = $request->token_valid_date;
+                            $request->emp_no, $request->price, $request->shop_id, $request->trade_id, $request->reason, $request->lang, 
+                            $request->backend);
+
+            //For APP
+            if ($request->backend == "N") {
+                $result["token_valid"] = $request->token_valid_date;
+            }
 
             return response()->json($result);
         }

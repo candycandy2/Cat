@@ -655,52 +655,73 @@ class QPayTradeService
 
     /**
     * Cancel Trade
+    * According to $backend <= decide the API Request is for QPlay Backend
     * @return trade result
     */
-    public function cancelTrade($uuid, $tradePWD, $tradeToken, $empNO, $price, $shopID, $tradeID, $reason, $lang)
+    public function cancelTrade($uuid, $tradePWD, $tradeToken, $empNO, $price, $shopID, $tradeID, $reason, $lang, $backend)
     {
         $newTradeID = "";
         $checkSuccess = true;
         $resultCode = "";
         $tradeSuccess = "";
 
-        $userShop = CommonUtil::getUserInfoJustByUserEmpNo($empNO);
-        $qpayShopData = $this->qpayShopRepository->getShopInfoByUserId($userShop->row_id);
+        if ($backend == "N") {
+            $userShop = CommonUtil::getUserInfoJustByUserEmpNo($empNO);
+            $qpayShopData = $this->qpayShopRepository->getShopInfoByUserId($userShop->row_id);
+        } else if ($backend == "Y") {
+            $backendAdmin = CommonUtil::getUserInfoJustByUserEmpNo($empNO);
+        }
+
         $tradeData = $this->qpayTradeLogRepository->getTradeID($tradeID);
 
         //Step 1. Check Trade Token
-        $tradeTokenData = $this->qpayTradeTokenRepository->getTradeToken($uuid);
+        if ($backend == "N") {
+            //For APP
+            $tradeTokenData = $this->qpayTradeTokenRepository->getTradeToken($uuid);
 
-        if (count($tradeTokenData) == 0) {
-            $checkSuccess = false;
-            $resultCode = ResultCode::_000927_tradeTokenIncorrect;
-        }
+            if (count($tradeTokenData) == 0) {
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000927_tradeTokenIncorrect;
+            }
 
-        if ($checkSuccess && $tradeToken != $tradeTokenData[0]->trade_token) {
-            $checkSuccess = false;
-            $resultCode = ResultCode::_000927_tradeTokenIncorrect;
-        }
+            if ($checkSuccess && $tradeToken != $tradeTokenData[0]->trade_token) {
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000927_tradeTokenIncorrect;
+            }
 
-        if ($checkSuccess && intval($tradeTokenData[0]->trade_token_valid) <= time()) {
-            //Trade Token Invalid
-            $checkSuccess = false;
-            $resultCode = ResultCode::_000928_tradeTokenInvalid;
-        } else {
-            //Trade Token Valid
-        }
+            if ($checkSuccess && intval($tradeTokenData[0]->trade_token_valid) <= time()) {
+                //Trade Token Invalid
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000928_tradeTokenInvalid;
+            } else {
+                //Trade Token Valid
+            }
 
-        if ($checkSuccess) {
-            $this->qpayTradeTokenRepository->deleteTradeToken($uuid, $tradeToken);
+            if ($checkSuccess) {
+                $this->qpayTradeTokenRepository->deleteTradeToken($uuid, $tradeToken);
+            }
+        } else if ($backend == "Y") {
+            //For QPlay Backend
+            $backendAdminToken = base64_encode(md5($backendAdmin->company . $backendAdmin->user_domain . $backendAdmin->emp_no . 
+                $backendAdmin->login_id . $backendAdmin->department));
+
+            if ($backendAdminToken != $tradeToken) {
+                $checkSuccess = false;
+                $resultCode = ResultCode::_000927_tradeTokenIncorrect;
+            }
         }
 
         //Step 2. Check Trade Password
-        if ($checkSuccess) {
-            if (password_verify($tradePWD, $qpayShopData["trade_password"])) {
-                //Trade Password Valid
-            } else {
-                //Trade Password Invalid
-                $checkSuccess = false;
-                $resultCode = ResultCode::_000929_tradePasswordIncorrect;
+        //(Backend ignore this Step)
+        if ($backend == "N") {
+            if ($checkSuccess) {
+                if (password_verify($tradePWD, $qpayShopData["trade_password"])) {
+                    //Trade Password Valid
+                } else {
+                    //Trade Password Invalid
+                    $checkSuccess = false;
+                    $resultCode = ResultCode::_000929_tradePasswordIncorrect;
+                }
             }
         }
 
@@ -723,13 +744,17 @@ class QPayTradeService
             $resultCode = ResultCode::_000940_tradeIDNotMatchStore;
         }
 
-        if ($checkSuccess) {
-            $nowDate = date("Y/m/d", time() + 8*3600);
-            $tradeDate = date("Y/m/d", $tradeData[0]->trade_time + 8*3600);
+        //Check if this Trade ID is overdue 1 day
+        //(Backend ignore this Step)
+        if ($backend == "N") {
+            if ($checkSuccess) {
+                $nowDate = date("Y/m/d", time() + 8*3600);
+                $tradeDate = date("Y/m/d", $tradeData[0]->trade_time + 8*3600);
 
-            if ($nowDate != $tradeDate) {
-                $checkSuccess = false;
-                $resultCode = ResultCode::_000941_tradeIDCandelDateOverdue;
+                if ($nowDate != $tradeDate) {
+                    $checkSuccess = false;
+                    $resultCode = ResultCode::_000941_tradeIDCandelDateOverdue;
+                }
             }
         }
 

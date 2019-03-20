@@ -8,10 +8,13 @@ namespace App\Services;
 use App\Repositories\QPayPointTradeLogRepository;
 use App\Repositories\QPayShopRepository;
 use App\Repositories\QPayPointTypeRepository;
-
+use App\lib\ResultCode;
+use App\lib\CommonUtil;
+use Auth;
 use Excel;
 use App;
 use Session;
+use Config;
 
 class QPayTradeService
 {
@@ -197,5 +200,84 @@ class QPayTradeService
             });
 
         })->download('xls');
+    }
+
+    /**
+     * QPay check Trade ID
+     * @return mixed
+     */
+    public function checkTradeID($request)
+    {
+        if (Auth::user() == null || Auth::user()->login_id == null || Auth::user()->login_id == "") {
+            return null;
+        }
+
+        $input = $request->all();
+        $result = [];
+
+        $tradeData = $this->qpayPointTradeLogRepository->getTradeData($input["tradeID"]);
+        $shopInfo = $this->qpayShopRepository->getShopInfoByShopId($tradeData[0]->shop_row_id);
+
+        if ($tradeData[0]->success == "N") {
+            $result["result_code"] = ResultCode::_000925_tradeIDIsFailTradeCannotCancel;
+        } else if ($tradeData[0]->cancel == "Y") {
+            $result["result_code"] = ResultCode::_000926_tradeIDHadCanceled;
+        } else if ($tradeData[0]->cancel_pay == "Y") {
+            $result["result_code"] = ResultCode::_000927_tradeIDCannotCancel;
+        } else {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        }
+
+        $result["trade_id"] = $tradeData[0]->trade_id;
+        $result["trade_time"] = $tradeData[0]->created_at;
+        $result["trade_price"] = $tradeData[0]->trade_price;
+        $result["login_id"] = $tradeData[0]->login_id;
+        $result["emp_no"] = $tradeData[0]->emp_no;
+        $result["shop_name"] = $shopInfo->shop_name;
+        $result["shop_row_id"] = $tradeData[0]->shop_row_id;
+        $result["admin_login_id"] = Auth::user()->login_id;
+
+        return json_encode($result);
+    }
+
+    /**
+     * QPay Cancel Trade
+     * @return mixed
+     */
+    public function cancelTrade($request)
+    {
+        if (Auth::user() == null || Auth::user()->login_id == null || Auth::user()->login_id == "") {
+            return null;
+        }
+        $input = $request->all();
+
+        $apiFunction = 'cancelTradeBackend';
+        $signatureTime = time();
+        $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
+
+        $queryParam['emp_no'] = Auth::user()->emp_no;
+        $queryParam['shop_id'] = $input["shopID"];
+        $queryParam['price'] = $input["tradePrice"];
+        $queryParam['trade_id'] = $input["tradeID"];
+        $queryParam['reason'] = $input["cancelReason"];
+        $queryParam['lang'] = "zh-tw";
+        $url = Config::get('app.qplay_api_server') . $apiFunction . '?' . http_build_query($queryParam);
+
+        $tradeToken = base64_encode(md5(Auth::user()->company . Auth::user()->user_domain . Auth::user()->emp_no . Auth::user()->login_id . 
+        Auth::user()->department));
+
+        $header = array (
+            'Content-Type: application/json',
+            'App-Key: ' . $appKey,
+            'Signature-Time: ' . $signatureTime,
+            'Signature: ' . CommonUtil::getCustomSignature($signatureTime),
+            'trade-token: ' . $tradeToken,
+            'trade-pwd: 0000',
+            'backend: Y'
+        );
+
+        $result = CommonUtil::callAPI('GET', $url, $header);
+
+        return $result;
     }
 }
