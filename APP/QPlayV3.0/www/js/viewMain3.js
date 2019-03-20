@@ -138,6 +138,7 @@ $("#viewMain3").pagecontainer({
 
         //跳转到设定
         $('#setting').on('click', function() {
+            $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
             checkWidgetPage('viewAppSetting', pageVisitedList);
         });
 
