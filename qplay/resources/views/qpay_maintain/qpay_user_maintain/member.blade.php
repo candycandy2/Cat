@@ -64,7 +64,7 @@
                     <th data-field="point_type" data-sortable="false" data-searchable="false" data-formatter="pointTypeFormatter">{{trans('messages.QPAY_POINT_TYPE')}}</th>
                     <th data-field="department" data-sortable="true" data-searchable="false" >{{trans('messages.QPAY_MEMBER_DEPARTMENT_CODE')}}</th>
                     <th data-field="trade_password" data-sortable="false" data-width="5px" data-searchable="false" data-formatter="passwordFormatter">{{trans('messages.QPAY_TRADE_PWD_DEFAULT')}}</th>
-                    <th data-field="" data-searchable="false" data-width="5px" data-formatter="resetOriginFormatter">{{trans('messages.RESET_TO_ORIGIN')}}</th>
+                    <th data-field="" data-searchable="false" data-width="5px" data-formatter="resetOriginFormatter">{{trans('messages.RESET_TRADE_PWD_TO_ORIGIN')}}</th>
                     <th data-field="user_id" data-searchable="false" data-visible="false"></th>
                 </tr>
                 </thead>
@@ -85,7 +85,7 @@
         function resetOriginFormatter(value, row, index){
 
             if(value!=""){
-                return '<div class="reset-ori-block" id="resetOriBlock_' + row.user_id + '" style="text-align: center;"><button type="button" data-index="' + index + '"data-userid="' + row.user_id + '" class="btn btn-light reset-ori" title="{{trans('messages.RESET_TO_ORIGIN')}}">Reset Origin</button></div>';
+                return '<div class="reset-ori-block" id="resetOriBlock_' + row.user_id + '" style="text-align: center;"><button type="button" data-index="' + index + '"data-userid="' + row.user_id + '" class="btn btn-light reset-ori" title="{{trans('messages.RESET_TRADE_PWD_TO_ORIGIN')}}">Reset Origin</button></div>';
             }
         }
 
