@@ -112,28 +112,6 @@ div.scrollmenu a {
     color: #999999 !important;
 }
 
-#searchBar,
-#searchAgent,
-#searchDeptAgent {
-    width: 75VW;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #d6d6d6;
-    border-radius: 4px;
-    background-color: #ffffff;
-    background-image: url("../img/search.png");
-    background-repeat: no-repeat;
-    background-size: 3.945VW;
-    background-position-x: 2.71VW;
-    background-position-y: 1.6275VW;
-    height: 8VW;
-    margin-top: 5.07VW;
-    text-indent: 8VW;
-    font-size: 4vw;
-    padding: 0;
-    padding-top: 0.8vw;
-}
-
 #agent-popup-option-popup .header.typeB,
 #leave-agent-popup-option-popup .header.typeB,
 #dept-agent-popup-option-popup .header.typeB {
