@@ -236,7 +236,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 }
 
 #initialQPlay .logo-initial {
-    width: 22%;
+    width: 60%;
 }
 
 #initialQPlay .brand-initial-content {
