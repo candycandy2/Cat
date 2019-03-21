@@ -225,6 +225,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 /*Initial APP page*/
 #viewInitial {
     height: 100%;
+    background-color: #87cec0;
 }
 
 #viewInitial .main-initial {
