@@ -216,26 +216,31 @@ class QPayTradeService
         $result = [];
 
         $tradeData = $this->qpayPointTradeLogRepository->getTradeData($input["tradeID"]);
-        $shopInfo = $this->qpayShopRepository->getShopInfoByShopId($tradeData[0]->shop_row_id);
 
-        if ($tradeData[0]->success == "N") {
-            $result["result_code"] = ResultCode::_000925_tradeIDIsFailTradeCannotCancel;
-        } else if ($tradeData[0]->cancel == "Y") {
-            $result["result_code"] = ResultCode::_000926_tradeIDHadCanceled;
-        } else if ($tradeData[0]->cancel_pay == "Y") {
-            $result["result_code"] = ResultCode::_000927_tradeIDCannotCancel;
+        if (count($tradeData) == 0) {
+            $result["result_code"] = ResultCode::_000928_dataNotExist;
         } else {
-            $result["result_code"] = ResultCode::_1_reponseSuccessful;
-        }
+            $shopInfo = $this->qpayShopRepository->getShopInfoByShopId($tradeData[0]->shop_row_id);
 
-        $result["trade_id"] = $tradeData[0]->trade_id;
-        $result["trade_time"] = $tradeData[0]->created_at;
-        $result["trade_price"] = $tradeData[0]->trade_price;
-        $result["login_id"] = $tradeData[0]->login_id;
-        $result["emp_no"] = $tradeData[0]->emp_no;
-        $result["shop_name"] = $shopInfo->shop_name;
-        $result["shop_row_id"] = $tradeData[0]->shop_row_id;
-        $result["admin_login_id"] = Auth::user()->login_id;
+            if ($tradeData[0]->success == "N") {
+                $result["result_code"] = ResultCode::_000925_tradeIDIsFailTradeCannotCancel;
+            } else if ($tradeData[0]->cancel == "Y") {
+                $result["result_code"] = ResultCode::_000926_tradeIDHadCanceled;
+            } else if ($tradeData[0]->cancel_pay == "Y") {
+                $result["result_code"] = ResultCode::_000927_tradeIDCannotCancel;
+            } else {
+                $result["result_code"] = ResultCode::_1_reponseSuccessful;
+            }
+
+            $result["trade_id"] = $tradeData[0]->trade_id;
+            $result["trade_time"] = $tradeData[0]->created_at;
+            $result["trade_price"] = $tradeData[0]->trade_price;
+            $result["login_id"] = $tradeData[0]->login_id;
+            $result["emp_no"] = $tradeData[0]->emp_no;
+            $result["shop_name"] = $shopInfo->shop_name;
+            $result["shop_row_id"] = $tradeData[0]->shop_row_id;
+            $result["admin_login_id"] = Auth::user()->login_id;
+        }
 
         return json_encode($result);
     }
