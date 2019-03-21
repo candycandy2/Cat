@@ -884,8 +884,7 @@
     min-height: 41vw;
 }
 
-.qpay-main,
-.qpay-more-hidden {
+.qpay-none {
     display: none;
 }
 
