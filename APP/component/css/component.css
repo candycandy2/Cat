@@ -96,7 +96,7 @@ body, input, select, textarea, button, .ui-btn {
 }
 
 .ui-page .ui-header {
-    border-color: #492f7f;
+    border-color: #87cec0;
 }
 
 .ui-title {
@@ -525,7 +525,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 /* APP Header */
 .header-style {
     overflow: hidden;
-    background-color: #492f7f;
+    background-color: #87cec0;
     color: #ffffff;
     border-style: none;
     text-align: center;
