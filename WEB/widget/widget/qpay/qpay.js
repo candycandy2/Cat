@@ -70,8 +70,8 @@ var qpayWidget = {
 
     show: function() {
         if (loginData['company'] == 'shop') {
-            $('.qpay-none').show();
             $('.qpay-main').hide();
+            $('.qpay-none').show();
         } else {
             var self = this;
 
