@@ -930,9 +930,9 @@ $("#viewLeaveMain").pagecontainer({
 
             //代理請假Panel
             if (hasAgentPanel) {
-                $("#mypanelviewAgentLeave").show();
+                $("#mypanelviewLeaveAgent").show();
             } else {
-                $("#mypanelviewAgentLeave").hide();
+                $("#mypanelviewLeaveAgent").hide();
             }
             if (hasClockinOTPanel) {
                 $("#mypanelviewLeaveClockin").show();
