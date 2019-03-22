@@ -6,6 +6,7 @@ $("#viewQPayUserInputPassword").pagecontainer({
             shop_name,
             trade_price,
             trade_token,
+            MAXseconds = 25,
             countdownInterval = null;
 
         //获取交易token
@@ -48,29 +49,28 @@ $("#viewQPayUserInputPassword").pagecontainer({
             $('.user-password-next').removeClass('button-active');
 
             countdownInterval = null;
-            $('.countdownSec').text('25');
+            $('.countdownSec').text(MAXseconds);
             $('.user-password-countdown').hide();
         }
 
         //获取token后进行25秒倒计，必须在倒计时结束前进行下一步，否则token失效
         function setCountdownAfterGetToken() {
-            var end = 24;
-            var start = 0;
-            $('.countdownSec').text('25');
+            var startDate = Date.now();
+            $('.countdownSec').text(MAXseconds);
             $('.user-password-countdown').show();
 
             countdownInterval = setInterval(function() {
-                var now = end - start;
-                now = (now < 10 ? '0' + now.toString() : now.toString());
-                $('.countdownSec').text(now);
+                var diff = Date.now() - startDate;
+                var seconds = Math.floor(diff / 1000);
+                var secondStr = MAXseconds - seconds;
+                secondStr = (secondStr < 10 ? '0' + secondStr.toString() : secondStr.toString());
+                $('.countdownSec').text(secondStr);
 
-                if(end == start) {
+                //如果倒计时结束，仍然没有进行下一步，视为放弃交易，需要初始化并重新输入密码
+                if(seconds > MAXseconds) {
                     clearInterval(countdownInterval);
                     countdownInterval = null;
-                    //如果倒计时结束，仍然没有进行下一步，视为放弃交易，需要初始化并重新输入密码
                     initialPage();
-                } else {
-                    start++;
                 }
 
             }, 1000);
@@ -135,12 +135,12 @@ $("#viewQPayUserInputPassword").pagecontainer({
             $('.user-password-next').removeClass('button-active');
             //密码可以继续输入
             $('.num-keyboard[data-value]').addClass('enter-pwd');
-            //倒计时结束
+            //倒计时立即结束
             if(countdownInterval != null) {
                 clearInterval(countdownInterval);
                 countdownInterval = null;
                 $('.user-password-countdown').hide();
-                $('.countdownSec').text('25');
+                $('.countdownSec').text(MAXseconds);
             }
         });
 
