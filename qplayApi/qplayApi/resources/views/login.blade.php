@@ -351,6 +351,14 @@
                     "border-bottom": "1px solid #666666"
                 });
             });
+
+            //Button [Enter] trigger Login
+            $("#tbxName, #tbxPassword").on("keyup", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    tryLogin();
+                }
+            });
         });
 
         function InitUI(){
