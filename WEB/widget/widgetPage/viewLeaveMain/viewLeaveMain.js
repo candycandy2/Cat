@@ -412,7 +412,7 @@ $("#viewLeaveMain").pagecontainer({
                     var activePage = $.mobile.activePage[0].id;
                     if (activePage !== "viewLeaveMain" || reload) {
                         $("#mypanel" + activePage).removeAttr("style");
-                        $("#mypanel #mypanelviewLeaveMain").css("background", "#503f81");
+                        $("#mypanel #mypanelviewLeaveMain").css("background", "#87cec0");
                         $("#mypanel #mypanelviewLeaveMain").css("color", "#fff");
                         //$.mobile.changePage("#viewPersonalLeave");
                         checkWidgetPage('viewLeaveMain', visitedPageList);
