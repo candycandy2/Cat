@@ -300,6 +300,10 @@ class QPayTradeService
                             break;
                         }
 
+                        if ($multiplePay == "N") {
+                            $multiplePoint = 0;
+                        }
+
                         $latestPointTradeLogID = $this->qpayTradeLogRepository->newTradeRecord(
                             $pointData["member_row_id"],
                             $pointData["row_id"],
