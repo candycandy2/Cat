@@ -96,7 +96,7 @@ body, input, select, textarea, button, .ui-btn {
 }
 
 .ui-page .ui-header {
-    border-color: #492f7f;
+    border-color: #87cec0;
 }
 
 .ui-title {
@@ -157,6 +157,23 @@ textarea.ui-body-inherit {
 }
 
 /* variable, function, style for All APP */
+.popup-msg-style {
+    width: 28VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 6.2VW 1VW 6.2VW 1VW;
+    position: fixed;
+    top: 70vw;
+    left: 36vw;
+    background-color: #666;
+    border-radius: 1.5px;
+    color: #F0F0F0 !important;
+    font-size: 3.6VW;
+    text-align: center;
+    z-index: 2;
+    display: none;
+}
 
 /* disable ‘hold to copy’ on all elements */
 body *:not(input):not(textarea){ -webkit-user-select: none;}
@@ -208,6 +225,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 /*Initial APP page*/
 #viewInitial {
     height: 100%;
+    background-color: #87cec0;
 }
 
 #viewInitial .main-initial {
@@ -219,7 +237,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 }
 
 #initialQPlay .logo-initial {
-    width: 22%;
+    width: 60%;
 }
 
 #initialQPlay .brand-initial-content {
@@ -508,7 +526,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 /* APP Header */
 .header-style {
     overflow: hidden;
-    background-color: #492f7f;
+    background-color: #87cec0;
     color: #ffffff;
     border-style: none;
     text-align: center;

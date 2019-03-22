@@ -268,7 +268,7 @@ class QPayTradeService
                             $multiplePay = "N";
                             continue;
                         } else {
-                            $multiplePay = "Y";
+                            //$multiplePay = "Y";
                         }
 
                         if ($pointData["stored_now"] >= 0) {
@@ -282,6 +282,8 @@ class QPayTradeService
                                 $newStoredUsed = $pointData["stored_used"] + $pointData["stored_now"];
                                 $multiplePoint = $pointData["stored_now"];
                                 $tradePriceLeft = $tradePriceLeft - $pointData["stored_now"];
+
+                                $multiplePay = "Y";
                             }
                         } else {
                             $startProcessAtPointsNumber++;
@@ -296,6 +298,10 @@ class QPayTradeService
                             DB::rollBack();
                             throw $e;
                             break;
+                        }
+
+                        if ($multiplePay == "N") {
+                            $multiplePoint = 0;
                         }
 
                         $latestPointTradeLogID = $this->qpayTradeLogRepository->newTradeRecord(

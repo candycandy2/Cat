@@ -62,7 +62,8 @@ $("#viewAppSetting").pagecontainer({
                         $('.main-updateAppVersion').css('top', (screen.height - $('.main-updateAppVersion').height()) / 4);
 
                     loadingMask("hide");
-                    app.initialize();
+                    //app.initialize();
+                    location.reload();
                 }
             };
 

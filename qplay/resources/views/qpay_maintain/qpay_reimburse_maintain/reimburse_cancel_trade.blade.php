@@ -23,6 +23,9 @@
 #tradeError {
     color: red;
 }
+#tradeIDText {
+    width: 175px;
+}
 .loading-mask {
     position: absolute;
     top: 0;
@@ -57,7 +60,7 @@
                 <div class="form-group">
                     <label for="tradeID">{{trans('messages.QPAY_TRADE_ID')}}</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" name="" id="tradeIDText" maxlength="6">
+                        <input class="form-control" type="text" name="" id="tradeIDText" maxlength="6" placeholder="{{trans('messages.QPAY_INPUT_TRADE_ID')}}">
                     </div>
                 </div>
             </div>
@@ -249,31 +252,45 @@ $(function () {
                 processData: false,
                 success: function (r) {
                     var response = JSON.parse(r);
+                    var error = true;
 
-                    tradePrice = response.trade_price;
-                    shopID = response.shop_row_id;
-                    adminLoginID = response.admin_login_id;
+                    if (response.result_code == "000928") {
+                        $("#tradeError").html("{{trans('messages.DATA_NOT_EXIST')}}");
+                    } else {
+                        tradePrice = response.trade_price;
+                        shopID = response.shop_row_id;
+                        adminLoginID = response.admin_login_id;
 
-                    $("#empNo").html(response.emp_no);
-                    $("#loginId").html(response.login_id);
-                    $("#tradeID").html(response.trade_id);
-                    $("#tradePrice").html(response.trade_price);
-                    $("#tradeTime").html(timeZoneConvert(response.trade_time.date).substring(0,16));
-                    $("#tradeShop").html(response.shop_name);
+                        $("#empNo").html(response.emp_no);
+                        $("#loginId").html(response.login_id);
+                        $("#tradeID").html(response.trade_id);
+                        $("#tradePrice").html(response.trade_price);
+                        $("#tradeTime").html(timeZoneConvert(response.trade_time.date).substring(0,16));
+                        $("#tradeShop").html(response.shop_name);
 
-                    if (response.result_code == 1) {
+                        if (response.result_code == 1) {
+                            error = false;
+                            $("#nextBtn").hide();
+                            $("#backBtn").show();
+                            $("#cancelTradeBtn").show();
+                            $("#tradeError").html("");
+                        } else if (response.result_code == "000925") {
+                            $("#tradeError").html("{{trans('messages.QPAY_CANCEL_ERROR_3')}}");
+                        } else if (response.result_code == "000926") {
+                            $("#tradeError").html("{{trans('messages.QPAY_CANCEL_ERROR_4')}}");
+                        } else if (response.result_code == "000927") {
+                            $("#tradeError").html("{{trans('messages.QPAY_CANCEL_ERROR_5')}}");
+                        }
+                    }
+
+                    if (error) {
                         $("#nextBtn").hide();
                         $("#backBtn").show();
-                        $("#cancelTradeBtn").show();
-                    } else if (response.result_code == "000925") {
-                        $("#tradeError").html("{{trans('messages.QPAY_CANCEL_ERROR_3')}}");
-                    } else if (response.result_code == "000926") {
-                        $("#tradeError").html("{{trans('messages.QPAY_CANCEL_ERROR_4')}}");
-                    } else if (response.result_code == "000927") {
-                        $("#tradeError").html("{{trans('messages.QPAY_CANCEL_ERROR_5')}}");
+                        $("#cancelTradeBtn").hide();
                     }
 
                     $("#step2").show();
+                    $(".form-control").prop("disabled", true);
                 },
                 error: function (e) {}
             });
@@ -291,6 +308,7 @@ $(function () {
         $("#nextBtn").show();
         $("#backBtn").hide();
         $("#cancelTradeBtn").hide();
+        $(".form-control").prop("disabled", false);
     });
 
     $("#cancelTradeBtn").on("click", function() {
@@ -349,6 +367,10 @@ $(function () {
                 } else if (response.result_code == "000945") {
                     $("#dialogMsg .modal-content .modal-body").html("{{trans('messages.QPAY_CANCEL_ERROR_3')}}");
                 }
+
+                $("#nextBtn").hide();
+                $("#backBtn").show();
+                $("#cancelTradeBtn").hide();
 
                 $(".loading-mask").hide();
                 $('#dialogMsg').modal('show');

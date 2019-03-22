@@ -329,7 +329,7 @@ $(document).one("pagebeforecreate", function() {
         } else if (device.platform === "iOS") {
             if (checkiPhoneX()) {
                 $('.page-header').addClass('ios-fix-overlap-iX');
-                $('.ios-fix-overlap-div').css('background-color', '#492f7f');
+                $('.ios-fix-overlap-div').css('background-color', '#87cec0');
                 $('.ios-fix-overlap-div').css('height', '30px');
                 StatusBar.styleLightContent();
             } else {
@@ -907,7 +907,7 @@ function setWhiteList() {
         if (device.platform === "iOS") {
             if (checkiPhoneX()) {
                 $('.page-header').addClass('ios-fix-overlap-iX');
-                $('.ios-fix-overlap-div').css('background-color', '#492f7f');
+                $('.ios-fix-overlap-div').css('background-color', '#87cec0');
                 $('.ios-fix-overlap-div').css('height', '30px');
                 StatusBar.styleLightContent();
             } else {

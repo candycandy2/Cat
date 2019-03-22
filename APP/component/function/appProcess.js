@@ -55,6 +55,7 @@ function addComponentView() {
             //Set viewInitial become the index page
             $("#viewInitial").page().enhanceWithin();
             $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
+            doHideInitialPage = true;
 
             //set initial page's layout when landscape
             $('#initialOther').css('top', (screen.height - $('#initialOther').height()) / 2);
@@ -298,23 +299,29 @@ function checkPopupShown() {
 
 //Hide APP initial page
 function hideInitialPage() {
-    $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+    var hideInterval = setInterval(function() {
+        if(doHideInitialPage) {
+            clearInterval(hideInterval);
 
-    if (window.ga !== undefined) {
-        if (loginData["versionName"].indexOf("Staging") !== -1) {
-            window.ga.startTrackerWithId('UA-126559228-1', 'auto');
-            window.ga.setAnonymizeIp(true);
-        } else if (loginData["versionName"].indexOf("Development") !== -1) {
-            window.ga.startTrackerWithId('UA-126404580-1', 'auto');
-            window.ga.setAnonymizeIp(true);
-        } else {
-            window.ga.startTrackerWithId('UA-126570525-1', 'auto');
-            window.ga.setAnonymizeIp(true);
+            $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+
+            if (window.ga !== undefined) {
+                if (loginData["versionName"].indexOf("Staging") !== -1) {
+                    window.ga.startTrackerWithId('UA-126559228-1', 'auto');
+                    window.ga.setAnonymizeIp(true);
+                } else if (loginData["versionName"].indexOf("Development") !== -1) {
+                    window.ga.startTrackerWithId('UA-126404580-1', 'auto');
+                    window.ga.setAnonymizeIp(true);
+                } else {
+                    window.ga.startTrackerWithId('UA-126570525-1', 'auto');
+                    window.ga.setAnonymizeIp(true);
+                }
+            }
+
+            initialSuccess();
+            waterMark();
         }
-    }
-
-    initialSuccess();
-    waterMark();
+    }, 100);
 }
 
 //Use Scheme to Open APP

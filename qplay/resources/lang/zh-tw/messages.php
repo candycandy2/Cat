@@ -45,6 +45,7 @@ return [
     'CLOSE' => '關閉',
     'CONFIRM' => '確認',
     'EXPORT' => '匯出',
+    'DATA_NOT_EXIST' => '查無資料',
 
     'MENU' => '選單',
     'LOGOUT' => '登出',
@@ -573,5 +574,6 @@ return [
     'QPAY_CANCEL_ERROR_7' => '此筆交易非於本店家消費，請消費者重新確認店家',
     'QPAY_CANCEL_ERROR_8' => '交易金額不正確',
     'QPAY_CANCEL_TRADE' => '取消交易',
-    'QPAY_CANCEL_TRADE_CONFIRM' => '確認取消此筆交易?'
+    'QPAY_CANCEL_TRADE_CONFIRM' => '確認取消此筆交易?',
+    'QPAY_INPUT_TRADE_ID' => '請輸入交易碼共6碼數字'
 ];

@@ -72,7 +72,7 @@ class QPayMemberService
             return null;
         }
 
-        $this->qpayMemberRepository->resetTradPassword($qpayMember->row_id, $userInfo->password_original);
+        $this->qpayMemberRepository->resetTradPassword($qpayMember->row_id, $userInfo->trade_pwd_original);
 
         return ResultCode::_1_reponseSuccessful;
     }

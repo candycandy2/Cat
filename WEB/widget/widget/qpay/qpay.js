@@ -70,9 +70,8 @@ var qpayWidget = {
 
     show: function() {
         if (loginData['company'] == 'shop') {
-            $('.qpay-none').show();
-            $('.qpay-more-hidden').show();
             $('.qpay-main').hide();
+            $('.qpay-none').show();
         } else {
             var self = this;
 
@@ -85,9 +84,6 @@ var qpayWidget = {
                     $('.qpay-money').text('0');
                 }
 
-                $('.qpay-none').hide();
-                $('.qpay-more-hidden').hide();
-                $('.qpay-main').show();
             };
 
             this.failCallback = function() {};
