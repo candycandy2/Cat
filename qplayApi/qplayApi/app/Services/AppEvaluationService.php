@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Repositories\AppEvaluationRepository;
+use Mail;
 
 class AppEvaluationService
 {
@@ -24,5 +25,29 @@ class AppEvaluationService
      */
     public function upsertAppEvaluation($appId, $deviceType, $versionCode, $score, $comment, $userId){
         return $evaulationId = $this->appEvaluationRepository->upsertAppEvaluation($appId, $deviceType, $versionCode, $score, $comment, $userId);
+    }
+
+    /**
+    * Send Evaluation Mail to QPlay Team
+    * @param Array $data       mail data
+    */
+    public function sendEvaluationToQPlay($data){
+        
+        $userMail = $data['email'];
+        $userName = $data['emp_name'];
+
+        Mail::send('emails.user_evaluation', $data, function($message) use($userMail, $userName)
+                {   
+                    $from = env('MAIL_USER_MAIL_ADDRESS');
+                    if(!is_null($userMail) && $userMail != ""){
+                        $from = $userMail;    
+                    }
+                    $to = explode(',',env('MAIL_TO'));
+                    $subject = '【QPlay 使用者評論通知】 用戶 '.$userName.' 發表了評論';
+                    $message->from($from);
+                    $message->to($to)->subject($subject); 
+                });
+
+        return true;
     }
 }
