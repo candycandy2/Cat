@@ -572,7 +572,7 @@ function changeLeavePanelBKColor() {
     $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f"); 
     //此頁添加菜單樣式  
     var nowPage = visitedPageList[visitedPageList.length - 1];  
-    $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81"); 
+    $("#mypanel" + " #mypanel" + nowPage).css("background", "#87cec0"); 
     $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
 }
 

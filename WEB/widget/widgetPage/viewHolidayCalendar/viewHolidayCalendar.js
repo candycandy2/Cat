@@ -35,6 +35,7 @@ $("#viewHolidayCalendar").pagecontainer({
 
         $("#viewHolidayCalendar").one("pageshow", function(event, ui) {
             initialHolidayCalendar();
+            changeLeavePanelBKColor();
             loadingMask("hide");
         });
 
