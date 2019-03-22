@@ -316,8 +316,8 @@ $("#viewLeaveAgent").pagecontainer({
                         currentIndex++;
                     }
                 }, 200);
-                $("#mypanelviewAgentLeave").removeAttr("style");
-                $("#mypanelviewAgentLeave").hide();
+                $("#mypanelviewLeaveAgent").removeAttr("style");
+                $("#mypanelviewLeaveAgent").hide();
             }
         });
 

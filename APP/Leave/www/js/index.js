@@ -70,7 +70,8 @@ window.initialSuccess = function() {
         .then(checkLeaveWidgetPage('viewBackLeaveQuery/viewBackLeaveQuery'))
         .then(checkLeaveWidgetPage('viewLeaveClockin/viewLeaveClockin'))
         .then(checkLeaveWidgetPage('viewPersonalLeaveCalendar/viewPersonalLeaveCalendar'))
-        .then(checkLeaveWidgetPage('viewLeaveQuery/viewLeaveQuery'));
+        .then(checkLeaveWidgetPage('viewLeaveQuery/viewLeaveQuery'))
+        .then(checkLeaveWidgetPage('viewLeaveAgent/viewLeaveAgent'));
         //.then(GetUserAuthority());
     /*checkLeaveWidgetPage('viewLeaveMain/viewLeaveMain')
         .then(checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery'));
