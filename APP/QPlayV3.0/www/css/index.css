@@ -14,9 +14,8 @@ ul {
     color: #FFF !important;
 }
 
-.ui-page .ui-header {
-    background-color: #492f7f;
-    color: #fff;
+/*.ui-page*/ .ui-header {
+    color: #87cec0;
     font-size: 2.9vh;
 }
 
