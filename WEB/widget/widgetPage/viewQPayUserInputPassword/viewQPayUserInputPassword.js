@@ -49,14 +49,14 @@ $("#viewQPayUserInputPassword").pagecontainer({
             $('.user-password-next').removeClass('button-active');
 
             countdownInterval = null;
-            $('.countdownSec').text(MAXseconds);
+            $('.userCountdownSec').text(MAXseconds);
             $('.user-password-countdown').hide();
         }
 
         //获取token后进行25秒倒计，必须在倒计时结束前进行下一步，否则token失效
         function setCountdownAfterGetToken() {
             var startDate = Date.now();
-            $('.countdownSec').text(MAXseconds);
+            $('.userCountdownSec').text(MAXseconds);
             $('.user-password-countdown').show();
 
             countdownInterval = setInterval(function() {
@@ -64,7 +64,7 @@ $("#viewQPayUserInputPassword").pagecontainer({
                 var seconds = Math.floor(diff / 1000);
                 var secondStr = MAXseconds - seconds;
                 secondStr = (secondStr < 10 ? '0' + secondStr.toString() : secondStr.toString());
-                $('.countdownSec').text(secondStr);
+                $('.userCountdownSec').text(secondStr);
 
                 //如果倒计时结束，仍然没有进行下一步，视为放弃交易，需要初始化并重新输入密码
                 if(seconds > MAXseconds) {
@@ -140,7 +140,7 @@ $("#viewQPayUserInputPassword").pagecontainer({
                 clearInterval(countdownInterval);
                 countdownInterval = null;
                 $('.user-password-countdown').hide();
-                $('.countdownSec').text(MAXseconds);
+                $('.userCountdownSec').text(MAXseconds);
             }
         });
 
