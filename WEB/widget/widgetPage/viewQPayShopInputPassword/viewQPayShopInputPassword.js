@@ -6,7 +6,9 @@ $("#viewQPayShopInputPassword").pagecontainer({
             shop_name,
             trade_price,
             trade_token,
-            current_emp;
+            current_emp,
+            MAXseconds = 25,
+            countdownInterval = null;
 
         //获取交易token
         function getTradeToken(pwd) {
@@ -24,6 +26,8 @@ $("#viewQPayShopInputPassword").pagecontainer({
                 if (data['result_code'] == '1') {
                     trade_token = data['content'].trade_token;
                     $('.shop-password-next').addClass('button-active');
+                    //倒计时开始
+                    setCountdownAfterGetToken();
 
                 } else if(data['result_code'] == '000929') {
                     //密码错误，popup msg
@@ -45,6 +49,33 @@ $("#viewQPayShopInputPassword").pagecontainer({
             $('.pwd-box').removeClass('pwd-active');
             $('.pwd-box:eq(0)').addClass('pwd-active');
             $('.shop-password-next').removeClass('button-active');
+
+            countdownInterval = null;
+            $('.shopCountdownSec').text(MAXseconds);
+            $('.shop-password-countdown').hide();
+        }
+
+        //获取token后进行25秒倒计，必须在倒计时结束前进行下一步，否则token失效
+        function setCountdownAfterGetToken() {
+            var startDate = Date.now();
+            $('.shopCountdownSec').text(MAXseconds);
+            $('.shop-password-countdown').show();
+
+            countdownInterval = setInterval(function() {
+                var diff = Date.now() - startDate;
+                var seconds = Math.floor(diff / 1000);
+                var secondStr = MAXseconds - seconds;
+                secondStr = (secondStr < 10 ? '0' + secondStr.toString() : secondStr.toString());
+                $('.shopCountdownSec').text(secondStr);
+
+                //如果倒计时结束，仍然没有进行下一步，视为放弃交易，需要初始化并重新输入密码
+                if(seconds > MAXseconds) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                    initialPage();
+                }
+
+            }, 1000);
         }
 
 
@@ -107,6 +138,13 @@ $("#viewQPayShopInputPassword").pagecontainer({
             $('.shop-password-next').removeClass('button-active');
             //密码可以继续输入
             $('.num-keyboard[data-value]').addClass('enter-pwd');
+            //倒计时立即结束
+            if(countdownInterval != null) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+                $('.shop-password-countdown').hide();
+                $('.shopCountdownSec').text(MAXseconds);
+            }
         });
 
         //下一步
