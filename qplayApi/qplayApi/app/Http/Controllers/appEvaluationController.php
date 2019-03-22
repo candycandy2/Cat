@@ -80,8 +80,10 @@ class appEvaluationController extends Controller
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect),
                 'content'=>'']);
         }
+        
         //1.get app information from url app_key
         $appInfo = $this->projectService->getAppInfoByAppKey($appKey);
+        
         //2.get version information which is published
         $publicVersionInfo = $this->appVersionService->getPublishedVersion($appInfo->app_id, $deviceType);
         if (is_null($publicVersionInfo)) {
@@ -89,8 +91,9 @@ class appEvaluationController extends Controller
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000922_canNotEvaluateUnpublishedApp),
                 'content'=>'']);
         }
+        
         //3.insert app evaulation
-        $this->appEvaluationService
+        $evaluationRowId = $this->appEvaluationService
              ->upsertAppEvaluation(
                 $appInfo->app_id,
                 $deviceType,
@@ -99,6 +102,26 @@ class appEvaluationController extends Controller
                 $comment,
                 $userInfo->row_id
              );
+             
+        //4.send mail to qplay team
+        $data = [
+                    "user_row_id"   => $userInfo->row_id,
+                    "user_domain"   => $userInfo->user_domain,
+                    "login_id"      => $userInfo->login_id,
+                    "emp_name"      => $userInfo->emp_name,
+                    "emp_no"        => $userInfo->emp_no,
+                    "email"         => $userInfo->email,
+                    "ext_no"        => $userInfo->ext_no,
+                    "company"       => $userInfo->company,
+                    "department"    => $userInfo->department,
+                    "device_type"   => $deviceType,
+                    "version_code"  => $publicVersionInfo->version_code,
+                    "score"         => $score,
+                    "app_key"       => $appKey,
+                    "comment"       => $comment,
+                    "comment_time"  => date('Y-m-d H:i:s', time() + 8 * 3600)
+                ];
+        $this->appEvaluationService->sendEvaluationToQPlay($data);
 
         return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
             'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
