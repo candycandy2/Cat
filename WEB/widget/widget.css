@@ -37,6 +37,7 @@
     height: 6.44vw;
     margin: auto;
     background: #4BB5AB;
+    border-radius: 2px;
     color: #fff;
     font-size: 3.14vw;
     text-align: center;
@@ -1143,4 +1144,27 @@
 .cards-main-img > * {
     display: inline-block;
     margin-right: 4vw;
+}
+
+/*********************** osis ***********************/
+.osis-widget{
+    width: 100vw;
+    min-height: 35vw;
+}
+
+.osis-main{
+    width: 100%;
+    height: 22.5vw;
+    display: flex;
+}
+
+.osis-main > div{
+    width: 19.3vw;
+    height: 19.3vw;
+    margin: 0 auto;
+}
+
+.osis-widget-img > img{
+    width: 100%;
+    height: 100%;
 }
