@@ -185,6 +185,7 @@ $("#viewQStoreMain").pagecontainer({
                                 $("#qstoreInfoPopup .phone-img").attr("src", phoneImgUrl);
                                 $("#qstoreInfoPopup .qstore-list-detail").html(title);
                                 $("#qstoreInfoPopup .address-detail").html(this.Address);
+                                $("#qstoreInfoPopup .address-detail").attr('data-content', this.Position);
 
                                 var phoneUrl = "tel:" + this.Phone;
                                 $("#qstoreInfoPopup .phone-type").attr("href", phoneUrl);
@@ -209,12 +210,15 @@ $("#viewQStoreMain").pagecontainer({
         };
 
         //Test open default map 
-        /*function defaultMapPopup() {
+        function defaultMapPopup() {
+            var positionData = $("#qstoreInfoPopup .address-detail").attr('data-content');
+            var longlat = positionData.substr(1,positionData.length-2).split(",");
+            var long = longlat[0];
+            var lat = longlat[1];
             if (device.platform === "iOS") {
-                window.open("maps://maps.google.com/maps?daddr=25.037906,121.549781&amp;ll=");
+                window.open("maps://maps.google.com/maps?daddr=" + long + "," + lat + "&amp;ll=");
             } else {
-                //window.open("https://maps.google.com/maps?daddr=25.037906,121.549781&amp;ll=");
-                cordova.InAppBrowser.open("https://maps.google.com/maps?daddr=25.037906,121.549781&amp;ll=", "_system", "location=no");
+                cordova.InAppBrowser.open("https://maps.google.com/maps?daddr=" + long + "," + lat + "&amp;ll=", "_system", "location=no");
             }
         }
 
@@ -223,7 +227,7 @@ $("#viewQStoreMain").pagecontainer({
                 defaultMapPopup();
             }
         }, "#qstoreInfoPopup .address-info");
-        */
+        
 
         $(document).on({
             click: function(event) {
