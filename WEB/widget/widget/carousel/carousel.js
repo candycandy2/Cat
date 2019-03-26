@@ -40,8 +40,7 @@ var carouselWidget = {
                                     checkWidgetPage(carouselLinkJSON.content[index].definition, pageVisitedList);
                                 }
                             });
-                        }
-                        else if (data[j].reference != "") {
+                        } else if (data[j].reference != "") {
                             contentItem.on('click', '.' + name, function(obj) {
                                 var carouselLinkJSON = JSON.parse(window.localStorage.getItem('carouselLink'));
                                 var index = obj.currentTarget.parentElement.id;
@@ -97,6 +96,7 @@ var carouselWidget = {
 
         $.fn.carousel = function(options) {
             options = options || {};
+            addDownloadHit('viewMain3');
 
             return this.each(function() {
                 var state = $.data(this, 'carousel');
@@ -109,7 +109,6 @@ var carouselWidget = {
                 }
 
                 createContent(contentItem);
-
             })
         };
 
