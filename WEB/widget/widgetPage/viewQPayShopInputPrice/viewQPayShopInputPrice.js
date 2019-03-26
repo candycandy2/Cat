@@ -37,7 +37,7 @@ $("#viewQPayShopInputPrice").pagecontainer({
         $("#viewQPayShopInputPrice").one("pageshow", function (event, ui) {
             var shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
             $('.shop-input-shop').text(shop_name);
-            getCurrentLoginEmp();
+            //getCurrentLoginEmp();
         });
 
         $("#viewQPayShopInputPrice").on("pageshow", function (event, ui) {
@@ -65,9 +65,7 @@ $("#viewQPayShopInputPrice").pagecontainer({
         });
 
         //输入金额
-        $('.num-keyboard[data-value]').on('tap', function (event) {
-            event.preventDefault();
-
+        $('.num-keyboard[data-value]').on('touchstart', function () {
             var num = $(this).data('value');
             //判断第一次输入是否为0
             if (num !== 0 || payNum !== '') {
@@ -85,13 +83,11 @@ $("#viewQPayShopInputPrice").pagecontainer({
         });
 
         //回删输入金额
-        $('.shop-input-clear-one').on('tap', function (event) {
-            event.preventDefault();
-
+        $('.shop-input-clear-one').on('touchstart', function () {
             if (payNum.length > 1) {
                 payNum = payNum.substring(0, payNum.length - 1);
                 $('.shop-input-number').text(payNum);
-                
+
             } else {
                 //初始化
                 initialPage();
@@ -99,7 +95,7 @@ $("#viewQPayShopInputPrice").pagecontainer({
         });
 
         //清空所输金额
-        $('.shop-input-clear-all').on('tap', function () {
+        $('.shop-input-clear-all').on('touchstart', function () {
             //初始化
             initialPage();
         });

@@ -92,7 +92,7 @@ $("#viewQPayUserInputPassword").pagecontainer({
 
         /********************************** dom event *************************************/
         //模拟键盘
-        $('.num-keyboard').on('touchstart', function () {
+        $('.pwd-keyboard').on('touchstart', function () {
             $(this).addClass('keydown-active');
 
         }).on('touchend', function () {
@@ -101,9 +101,7 @@ $("#viewQPayUserInputPassword").pagecontainer({
         });
 
         //输入交易密码
-        $('.enter-pwd').on('tap', function (event) {
-            event.preventDefault();
-
+        $('.enter-pwd').on('touchstart', function () {
             var num = $(this).attr('data-value');
             if (pwdNum.length < 4) {
                 pwdNum += num;
@@ -114,16 +112,14 @@ $("#viewQPayUserInputPassword").pagecontainer({
 
             if (pwdNum.length == 4) {
                 //如果已输入4位数密码，就不能再输入
-                $('.num-keyboard[data-value]').removeClass('enter-pwd');
+                $('.pwd-keyboard[data-value]').removeClass('enter-pwd');
                 //API:获取token并验证密码
                 getTradeToken(pwdNum);
             }
         });
 
         //回删输入密码
-        $('.user-password-clear-one').on('tap', function (event) {
-            event.preventDefault();
-
+        $('.user-password-clear-one').on('touchstart', function () {
             if (pwdNum.length > 0) {
                 pwdNum = pwdNum.substring(0, pwdNum.length - 1);
                 $('.pwd-box:eq(' + (pwdNum.length + 1).toString() + ')').removeClass('pwd-active');
@@ -134,7 +130,7 @@ $("#viewQPayUserInputPassword").pagecontainer({
             //'下一步'按钮不可用
             $('.user-password-next').removeClass('button-active');
             //密码可以继续输入
-            $('.num-keyboard[data-value]').addClass('enter-pwd');
+            $('.pwd-keyboard[data-value]').addClass('enter-pwd');
             //倒计时立即结束
             if(countdownInterval != null) {
                 clearInterval(countdownInterval);
