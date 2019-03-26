@@ -121,7 +121,7 @@ function checkLeaveWidgetPage(leaveWidgetUrl) {
                 resolve(1);
                 //checkLeaveWidgetPage的七個頁面都加載完成,才能執行GetUserAuthority()
                 checkLeaveWidgetNum++;
-                if (checkLeaveWidgetNum == 7) {
+                if (checkLeaveWidgetNum == 8) {
                     GetUserAuthority();
                     checkLeaveWidgetNum = 0;
                 }

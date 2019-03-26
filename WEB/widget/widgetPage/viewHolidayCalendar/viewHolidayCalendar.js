@@ -35,20 +35,12 @@ $("#viewHolidayCalendar").pagecontainer({
 
         $("#viewHolidayCalendar").one("pageshow", function(event, ui) {
             initialHolidayCalendar();
-            changeLeavePanelBKColor();
             loadingMask("hide");
         });
 
         $("#viewHolidayCalendar").on("pageshow", function(event, ui) {
             loadingMask("hide");
-            //去除上一页菜单样式
-            var prevPage = visitedPageList[visitedPageList.length - 2];
-            $("#mypanel" + " #mypanel" + prevPage).css("background", "#f6f6f6");
-            $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f");
-            //此页添加菜单样式
-            var nowPage = visitedPageList[visitedPageList.length - 1];
-            $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81");
-            $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
+            changeLeavePanelBKColor();
         });
 
         /********************************** dom event *************************************/
