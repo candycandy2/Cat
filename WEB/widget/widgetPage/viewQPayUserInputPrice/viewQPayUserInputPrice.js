@@ -33,7 +33,7 @@ $("#viewQPayUserInputPrice").pagecontainer({
         $("#viewQPayUserInputPrice").one("pageshow", function (event, ui) {
             $('.user-pay-name').text(loginData['loginid']);
             $('.user-pay-no').text(loginData['emp_no']);
-            setShopAndPoint();
+            //setShopAndPoint();
         });
 
         $("#viewQPayUserInputPrice").on("pageshow", function (event, ui) {
@@ -56,9 +56,7 @@ $("#viewQPayUserInputPrice").pagecontainer({
         });
 
         //输入金额
-        $('.num-keyboard[data-value]').on('tap', function (event) {
-            event.preventDefault();
-
+        $('.num-keyboard[data-value]').on('touchstart', function () {
             var num = $(this).data('value');
             //判断第一次输入是否为0
             if (num !== 0 || payNum !== '') {
@@ -76,9 +74,7 @@ $("#viewQPayUserInputPrice").pagecontainer({
         });
 
         //回删输入金额
-        $('.user-pay-clear-one').on('tap', function (event) {
-            event.preventDefault();
-
+        $('.user-pay-clear-one').on('touchstart', function () {
             if (payNum.length > 1) {
                 payNum = payNum.substring(0, payNum.length - 1);
                 $('.user-pay-number').text(payNum);
@@ -89,7 +85,7 @@ $("#viewQPayUserInputPrice").pagecontainer({
         });
 
         //清空所输金额
-        $('.user-pay-clear-all').on('tap', function () {
+        $('.user-pay-clear-all').on('touchstart', function () {
             //初始化
             initialAmountPage();
         });
