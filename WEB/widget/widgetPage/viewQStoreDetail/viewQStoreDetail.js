@@ -29,6 +29,8 @@ $("#viewQStoreDetail").pagecontainer({
             var month = ((endDate.getMonth() + 1 < 10) ? '0' + (endDate.getMonth() + 1) : endDate.getMonth() + 1);
             var date = ((endDate.getDate() < 10) ? '0' + endDate.getDate() : endDate.getDate());
             var qstoreEndDate = endDate.getFullYear() + '/' + month + '/' + date;
+            var qstorePosition = qstoreDetailData[0].Position;
+
             if (qstoreEndDate.substring(0, 4) === "9999") {
                 qstoreEndDate = "無限期"
             }
@@ -72,7 +74,7 @@ $("#viewQStoreDetail").pagecontainer({
                 qstoreName +
                 '</div></div><div><div>' +
                 qstoreDistance +
-                '</div></div></div><div class="address-info font-style10"><div><img src="'+ serverURL + imgURL +'pin.png" class="pin-img"></div><div>' +
+                '</div></div></div><div class="address-info font-style10" data-content="'+ qstorePosition +'"><div><img src="'+ serverURL + imgURL +'pin.png" class="pin-img"></div><div>' +
                 qstoreAddress +
                 '</div></div><div class="phone-info font-style10"><div><img src="'+ serverURL + imgURL +'phone.png" class="phone-img"></div><a class="phone-type" rel="external"  href="tel:"' +
                 qstorePhone.replace('-', '') +
@@ -84,7 +86,6 @@ $("#viewQStoreDetail").pagecontainer({
                 qstoreEndDate +
                 '</div>'
 
-
             $(".qstore-detail-info").empty().append(qStoreDetailInfo);
         });
 
@@ -92,10 +93,25 @@ $("#viewQStoreDetail").pagecontainer({
 
         });
 
+        function detailMapOpen() {
+            var positionData = $("#viewQStoreDetail .address-info").attr('data-content');
+            var longlat = positionData.substr(1,positionData.length-2).split(",");
+            var long = longlat[0];
+            var lat = longlat[1];
+            if (device.platform === "iOS") {
+                window.open("maps://maps.google.com/maps?daddr=" + long + "," + lat + "&amp;ll=");
+            } else {
+                cordova.InAppBrowser.open("https://maps.google.com/maps?daddr=" + long + "," + lat + "&amp;ll=", "_system", "location=no");
+            }
+        }
 
         /********************************** dom event *************************************/
 
-
+        $(document).on({
+            click: function(event) {
+                detailMapOpen();
+            }
+        }, "#viewQStoreDetail .address-info");
 
     }
 });
