@@ -84,6 +84,26 @@ $("#viewMain3").pagecontainer({
             }
         });
 
+        //获取自己设计的widget
+        function getSelfWidget() {
+            var selfWidget = ["ball", "movie"];//模拟API获得所有自己开发widget
+
+            var url = serverURL + "/webeditor/userdata/" + loginData["loginid"].toLowerCase() + "/widget/";
+
+            for(var i in selfWidget) {
+                (function(i) {
+                    var item = selfWidget[i];
+                    $.getScript(url + item + "/" + item + ".js")
+                    .done(function(script, textStatus) {
+                        window[item].init($("#selfWidget"));
+                    })
+                    .fail(function(jqxhr, settings, exception) {
+
+                    });
+                })(i);
+            }
+        }
+
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
@@ -98,6 +118,8 @@ $("#viewMain3").pagecontainer({
         $("#viewMain3").one("pageshow", function(event, ui) {
             //main height and offsetTop
             offsetTop = $('#viewMain3 .page-header').height();
+            //test
+            getSelfWidget();
         });
 
         $("#viewMain3").on("pageshow", function(event, ui) {
