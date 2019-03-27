@@ -46,13 +46,17 @@ body
 {
     width: 100%;
     max-width: 560px;
-    height: 40px;
+    /*height: 40px;*/
     vertical-align: middle;
     border-bottom: 1px solid black;
 }
-td.control_icon_cell
-{
-    width: 50px;
+td.control_icon_cell {
+    width: 13vw;
+    padding-top: 5vw;
+    padding-bottom: 3vw;
+}
+td.control_cell {
+    padding-top: 2vw;
 }
 
 td.control_cell table
@@ -60,15 +64,11 @@ td.control_cell table
     width: 100%;
     text-align: left;
 }
-
-td.control_cell .ui-input-text
-{
-    margin-left: -5px;
+td.control_cell .ui-input-text {
+    /*margin-left: -5px;*/
 }
-
-td.control_cell .ui-select
-{
-    margin-left: -10px;
+td.control_cell .ui-select {
+    /*margin-left: -10px;*/
 }
 
 .control_icon
@@ -106,12 +106,15 @@ td.control_cell .ui-select
     font-size: 13px;
     padding: 10px;
 }
-.login_control
-{
-    color: #000000;
+.login_control {
+    color: #263238;
     text-align: left;
     font-family: Gill Sans MT, Microsoft YaHei;
     font-weight: normal;
+    font-size: 3.768vw;
+}
+.login_control_none {
+    color: #999999;
 }
 
 #main_table .ui-btn
@@ -128,14 +131,13 @@ td.control_cell .ui-select
 {
     border:none transparent;
 }
-
+/*over write jQueryUI CSS*/
 .ui-page-theme-a .ui-btn:focus, html .ui-bar-a .ui-btn:focus, html .ui-body-a .ui-btn:focus, 
 html body .ui-group-theme-a .ui-btn:focus, html head+body .ui-btn.ui-btn-a:focus, .ui-page-theme-a .ui-focus, 
 html .ui-bar-a .ui-focus, html .ui-body-a .ui-focus, html body .ui-group-theme-a .ui-focus, 
 html head+body .ui-btn-a.ui-focus, html head+body .ui-body-a.ui-focus {
     box-shadow: none;
 }
-
 .ui-page-theme-a .ui-btn.ui-btn-active, html .ui-bar-a .ui-btn.ui-btn-active, 
 html .ui-body-a .ui-btn.ui-btn-active, html body .ui-group-theme-a .ui-btn.ui-btn-active, 
 html head+body .ui-btn.ui-btn-a.ui-btn-active, .ui-page-theme-a .ui-checkbox-on:after, 
@@ -148,4 +150,18 @@ html .ui-body-a .ui-slider-track .ui-btn-active, html body .ui-group-theme-a .ui
 html body div.ui-slider-track.ui-body-a .ui-btn-active {
     text-shadow: none;
 }
-
+.ui-btn.ui-icon-dropdown {
+    padding: 0;
+}
+.ui-input-text input, .ui-input-search input, textarea.ui-input-text {
+    padding: 0;
+}
+.ui-mini {
+    margin: 0;
+}
+.ui-input-text, .ui-input-search {
+    margin: 0;
+}
+.ui-input-text input, .ui-input-search input {
+    min-height: 0;
+}

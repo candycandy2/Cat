@@ -1,0 +1,75 @@
+
+body {
+    background-color: #FCFCFC;
+    margin: 0;
+}
+.main-content {
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+}
+.logo-content {
+    text-align: center;
+}
+.icon-content {
+    display: -webkit-flex;
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+}
+.icon-content div {
+    text-align: center;
+}
+.icon {
+    width: 36.07vw;
+    height: 36.07vw;
+}
+
+@media screen and (orientation: portrait) {
+    .logo {
+        height: 11.25vw;
+    }
+    .logo-content {
+        padding-top: 32vw;
+    }
+    .icon {
+        width: 36.07vw;
+        height: 36.07vw;
+    }
+    .icon-ios {
+        margin-bottom: 10vw;
+    }
+    .icon-content {
+        flex-flow: column;
+        justify-content: flex-end;
+    }
+    .line {
+        border-bottom: 1px solid #999999;
+        width: 32.3vw;
+        margin: 5vw auto;
+    }
+}
+@media screen and (orientation: landscape) {
+    .logo {
+        width: 48.72vh;
+    }
+    .logo-content {
+        padding-top: 17.52vh;
+    }
+    .icon {
+        width: 25.07vw;
+        height: 25.07vw;
+    }
+    .icon-content {
+        flex-flow: row;
+        justify-content: center;
+        align-items: flex-end;
+        padding-bottom: 14.18vh;
+    }
+    .line {
+        border-left: 1px solid #999999;
+        height: 32.3vh;
+        margin: 0 11.28vh 7.13vh;
+    }
+}

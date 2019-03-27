@@ -19,38 +19,34 @@
         a:visited{
             color:#2A8ABD;!important;
         }
-        td.control_icon_cell{
-            width: 4.2vw;!important;
-        }
         .ui-icon-dropdown {
-            background:url({{asset('/css/images/dropdown_n_2.png')}}) no-repeat 0 0;
+            background:url({{asset('/css/images/218_btn_dropdown.png')}}) no-repeat 0 0;
             background-position: 98% 50%;
-            background-size: 4vw 2.4vw ;
+            background-size: 4.186vw 4.186vw;
         }
         .ui-content {
             padding: 0;
         }
         .control_icon {
-            max-height: 6.8vw !important;       
-            max-width: 6.8vw !important;
-            margin-right: 3vw;
+            max-height: 7vw !important;
+            max-width: 7vw !important;
             margin-left: 3vw;
             display: inherit;
         }
         #main_table input {
-            font-size:4.2vw;
+            font-size: 3.768vw;
         }
         #button_cell {
             width: 100%
         }
         #main_table {
-            margin: 15vh 0 3.6vw 0;
+            margin: 19.11vh 0 3.6vw 0;
             border-collapse: collapse;
             width: 100%;
         }
         #main_table tr
         {
-            border-bottom: 1px solid #e6e6e6;
+            border-bottom: 1px solid #D6D6D6;
         }
         #button_cell {
             padding-top: 3vw;
@@ -64,95 +60,131 @@
             color: #0f0f0f;
         }
         .login_control{
-            font:3.8vw "Arial";
+            font: 3.768vw "Arial";
         }
-        ::-webkit-input-placeholder {
-            font:3.8vw "Arial";
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
             color: #999999;
+            font-size: 3.768vw "Arial";
             text-overflow: ellipsis;
+            opacity: 1; /* Firefox */
         }
-        :-moz-placeholder {
-            font:1em "Arial";
-            color: #999999;!important;
-            text-overflow: ellipsis;
-        }
-        ::-moz-placeholder {
-            font:1em "Arial";
-            color: #999999;!important;
-            text-overflow: ellipsis;
-        }
-        :-ms-input-placeholder {
-            font:1em "Arial";
-            color: #999999;!important;
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #999999;
+            font-size: 3.768vw "Arial";
             text-overflow: ellipsis;
         }
 
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #999999;
+            font-size: 3.768vw "Arial";
+            text-overflow: ellipsis;
+        }
+        .linkITS{
+            margin-left: .3em;
+            font:3.2vw "Arial";
+            color: #666666;
+        }
+        #info_cell{
+            color: #0f0f0f;
+            font: 3.2vw 'Arial';
+            width: 80%;
+            margin: 3vh auto auto auto;
+            text-align: center;
+            padding-top: 0;
+        }
+        #env_info {
+            color: red;
+            font-size: 6.8vw;
+            position: absolute;
+            z-index: 2;
+            margin-left: auto;
+            margin-right: auto;
+            left: 0;
+            right: 0;
+        }
+        @media screen and (orientation: portrait) {
+            img.logo {
+                height: 9.67vw;
+            }
+            img.logo_register {
+                height: 19.65vw;
+            }
+        }
+        @media screen and (orientation: landscape) {
+            img.logo {
+                height: 9.67vw;
+            }
+            img.logo_register {
+                height: 19.65vw;
+            }
+        }
+        #pageLogin {
+            background-color: #fcfcfc;
+            font-family: 'Arial';
+        }
+        #pageLogin .ui-content {
+            text-align: center;
+            margin: 12.87vh 3.71vw 0 3.71vw;
+        }
+        .btn-login {
+            position: absolute;
+            background-color: #009587;
+            color: #FFFFFF;
+            font-size: 4.18vw;
+            left: 0;
+            width: 100vw;
+            height: 11.36vw;
+            margin-top: 12.8vh;
+        }
+        .btn-text {
+            margin-top: 3.59vw;
+        }
+        .forget-text-content {
+            position: absolute;
+            color: #666666;
+            font-size: 3.14vw;
+            left: 0;
+            width: 100vw;
+        }
         #dlgMessage {
             border-radius: .8em;
             border: 0;
             box-shadow: 0 0 0 rgba(0,0,0,0);
             -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
-            font-size: 3.8vw;!important;
+            font-size: 3.8vw; !important;
         }
-
         #dlgMessage .ui-header {
             background-color: #fff;
-            padding:15px;
+            padding: 15px;
         }
-
         #dlgMessage .ui-content {
             background-color: #fff;
-            padding:15px;
+            padding: 15px;
             color: #492e80;
-            text-shadow:0 0;
+            text-shadow: 0 0;
+            margin: 0;
         }
-        #info_cell_forget {
-            font:3.2vw "Arial";
-            color: #666666;
+        #pageRegister {
+            font-family: 'Arial';
         }
-        .linkITS{
-            margin-left: .3em;
-            font:3.2vw "Arial";
-            color: #666666; 
+        #pageRegister .ui-content {
+            text-align: center;
+            margin: 39vw 3.71vw 0 3.71vw;
         }
-        #info_cell{
-         color: #0f0f0f;
-         font: 3.2vw 'Arial';
-         width: 80%;
-         margin: 3vh auto auto auto;
-         text-alig: center;
-         padding-top: 0;   
+        #info_cell_verify {
+            color: #263238;
+            font: 4.18vw 'Arial';
+            margin: 0;
+            margin-top: 8.57vw;
         }
-        #env_info {
-            color: red;
-            font-size:6.8vw;
-            position:absolute;
-            z-index: 2;
-            margin-left: auto;
-            margin-right: auto;
-            left:0;
-            right:0;
-        }
-        @media screen and (orientation: portrait) {
-          img.logo{
-            height:20vh;
-          }
-          img.logo_register{
-            height:13vh;
-          }
-        }
-        @media screen and (orientation: landscape) {
-          img.logo{
-            height:36vw;
-          }
-          img.logo_register{
-            height:24vw;
-          }
+        .forget-text {
+            display: inline-block;
         }
     </style>
-    <div data-role="page" id="pageLogin" style="font-family: 'Arial';">
-        <div role="main" class="ui-content" style="text-align: center;margin: 10vh 3.71vw 0 3.71vw;">
-            <img src="{{asset('/css/images/login_logo.png')}}" class="logo"/>
+    <div data-role="page" id="pageLogin">
+        <div role="main" class="ui-content">
+            <img src="{{asset('/css/images/128_logo.png')}}" class="logo"/>
             @if (Config::get('app.env')!='production')
                 <div id="env_info">● {{Config::get('app.env')}} ●</div>
             @endif
@@ -197,14 +229,14 @@
                 </tr>
                 <tr id="tbxNameData">
                     <td class="control_icon_cell">
-                        <img src="{{asset('/css/images/username.png')}}" class="control_icon" />
+                        <img src="{{asset('/css/images/126_icon_login_account.png')}}" class="control_icon" />
                     </td>
                     <td class="control_cell">
                         <table>
                             <tr>
                                 <td>
                                     <input class="login_control" type="text" data-clear-btn="false" name="tbxName" data-mini="true"
-                                           id="tbxName" value="" placeholder="" style="padding-top:.7em "/>
+                                           id="tbxName" value="" placeholder="" />
                                 </td>
                             </tr>
                         </table>
@@ -212,33 +244,28 @@
                 </tr>
                 <tr id="tbxPasswordData">
                     <td class="control_icon_cell">
-                        <img src="{{asset('/css/images/password.png')}}" class="control_icon" />
+                        <img src="{{asset('/css/images/127_icon_login_password.png')}}" class="control_icon" />
                     </td>
                     <td class="control_cell">
                         <table>
                             <tr>
                                 <td>
                                     <input class="login_control" type="password" data-clear-btn="false" name="tbxPassword" data-mini="true"
-                                           id="tbxPassword" value="" placeholder="" style="padding-top:.7em " />
+                                           id="tbxPassword" value="" placeholder="" />
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
             </table>
-            <div style="margin-top: 6vh;">
-                <div id="button_cell">
-                    <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
-                            onclick="tryLogin()">登入</button>
-                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
-                            onclick="oriLogin()">登入</button>
-                </div>
-                <div id="info_cell">
-                    <span id="info_cell_forget" >忘記密碼請聯絡 </span>
-                    <!--<a class="linkITS adaccount" href="mailto:QPlay@BenQ.com">ITS</a>-->
-                    <span class="linkITS adaccount"> ITS </span>
-                    <span class="linkITS qaccount"> Cindy#3346/Jeffrey#7624 </span>
-                </div>
+            <div class="forget-text-content">
+                *<div class="forget-text" id="info_cell_forget">忘記密碼請聯絡 </div>ITS*
+            </div>
+            <div class="btn-login" id="btnLogin" onclick="tryLogin()">
+                <div class="btn-text">登入</div>
+            </div>
+            <div class="btn-login" id="btnOriLogin" onclick="oriLogin()" style="display:none;">
+                <div class="btn-text">登入</div>
             </div>
         </div>
 
@@ -252,24 +279,15 @@
             </div>
         </div>
     </div>
-    <div data-role="page" id="pageRegister" style="font-family: 'Arial';">
-        <div role="main" class="ui-content" style="text-align: center;margin: 27vh 3.71vw 0 3.71vw;">
-            <img src="{{asset('/css/images/verified_img.png')}}" class="logo_register"/>
-            <h3 id="info_cell_verify" style="color: #0f0f0f;font:6.6vw 'Arial';margin-top:3vh;">帳號與設備驗證成功</h3> 
-            <table id="main_table" style="height: 10vh">
-               
-            </table>
-            <div style="margin-top: 6vh;">
-                <div id="button_cell">
-                    <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
-                            onclick="start()">好，我知道了</button>
-                </div>
-                <div id="info_cell">
-                    <span id="info_cell_logout" >若要註銷設備，請聯絡 </span>
-                    <!--<a class="linkITS adaccount" href="mailto:QPlay@BenQ.com">ITS</a>-->
-                    <span class="linkITS adaccount"> ITS </span>
-                    <span class="linkITS qaccount"> Cindy#3346/Jeffrey#7624 </span>
-                </div>
+    <div data-role="page" id="pageRegister">
+        <div role="main" class="ui-content">
+            <img src="{{asset('/css/images/157_icon_success.png')}}" class="logo_register"/>
+            <h3 id="info_cell_verify">帳號與設備驗證成功</h3>
+            <div class="forget-text-content">
+                *<div class="forget-text" id="info_cell_logout">若要註銷設備，請聯絡 </div>ITS*
+            </div>
+            <div class="btn-login" id="btnOK" onclick="start()">
+                <div class="btn-text">好，我知道了</div>
             </div>
         </div>
     </div>
@@ -288,7 +306,6 @@
                 $("#main_table div").removeClass("ui-shadow").removeClass("ui-shadow-inset");
                 $(".login_control").parent().css("background-color", "transparent");
 
-                $("#ddlCompany-button").css("padding-left","3vw");
                 var showOriLogin = getQueryString("show_origin_login");
                 if(showOriLogin && showOriLogin == "Y") {
                     $("#btnOriLogin").show();
@@ -300,9 +317,19 @@
 
                 if (selectedValue.length == 0) {
                     $("#ddlLoginTypeData").hide();
+                    loginBtnUI();
                     setTextForLoginType("none");
+
+                    setTimeout(function() {
+                        $("#ddlCompany-button > span").addClass("login_control_none");
+                    }, 500);
                 } else {
                     $("#ddlLoginTypeData").show();
+                    loginBtnUI();
+
+                    setTimeout(function() {
+                        $("#ddlCompany-button > span").removeClass("login_control_none");
+                    }, 500);
 
                     if (selectedValue === "shop") {
                         $("#ddlLoginType").attr("disabled", true);
@@ -336,7 +363,7 @@
             //Handle bottom line
             $(".login_control").on("blur", function() {
                 $("#main_table tr").css({
-                    "border-bottom": "1px solid #e6e6e6"
+                    "border-bottom": "1px solid #D6D6D6"
                 });
             });
 
@@ -344,11 +371,11 @@
                 var ID = $(this).attr("id");
 
                 $("#main_table tr").css({
-                    "border-bottom": "1px solid #e6e6e6"
+                    "border-bottom": "1px solid #D6D6D6"
                 });
 
                 $("#" + ID + "Data").css({
-                    "border-bottom": "1px solid #666666"
+                    "border-bottom": "1px solid #009587"
                 });
             });
 
@@ -358,6 +385,11 @@
                     event.preventDefault();
                     tryLogin();
                 }
+            });
+
+            //Page Event
+            $("#pageRegister").one("pagebeforeshow", function(event, ui) {
+                pageRegisterUI();
             });
         });
 
@@ -370,16 +402,16 @@
             $("#ddlCompany-button > span").text(login_lang_list["COMPANY"]);
             //$("#tbxName").attr("placeholder",login_lang_list["NAME"]);
             //$("#tbxPassword").attr("placeholder",login_lang_list["PASSWORD"]);
-            $("#btnLogin").text(login_lang_list["LOGIN"]);
-            $("#btnOriLogin").text(login_lang_list["LOGIN"]);
-            $("#btnOK").text(login_lang_list["OK_IKNOW"]);
+            $("#btnLogin div").text(login_lang_list["LOGIN"]);
+            $("#btnOriLogin div").text(login_lang_list["LOGIN"]);
+            $("#btnOK div").text(login_lang_list["OK_IKNOW"]);
             $("#info_cell_forget").text(login_lang_list["FORGET_PWD"]);
             $("#messageContainer").text(login_lang_list["ERROR"]);
             $("#info_cell_verify").text(login_lang_list["VERIFY_SUCCESS"]);
             $("#info_cell_logout").text(login_lang_list["LOGOUT"]);
 
-            if(window.localStorage){
-                if(window.localStorage.getItem("company") !== null){  
+            if (window.localStorage) {
+                if (window.localStorage.getItem("company") !== null) {
                     var $selectCompany =  $("#ddlCompany option[value='" + window.localStorage.getItem("company") + "']");
                     $selectCompany.attr('selected', true);
 
@@ -408,15 +440,28 @@
 
                     //set placeholder of Name & Password according to login_type
                     setTextForLoginType(logintTypeVal);
+
+                    setTimeout(function() {
+                        $("#ddlCompany-button > span").removeClass("login_control_none");
+                    }, 500);
                 } else {
                     $("#ddlLoginTypeData").hide();
                     setTextForLoginType("none");
+
+                    setTimeout(function() {
+                        $("#ddlCompany-button > span").addClass("login_control_none");
+                    }, 500);
                 }
-                if(window.localStorage.getItem("userName") !== null){
+
+                if (window.localStorage.getItem("userName") !== null) {
                     $("#tbxName").val(window.localStorage.getItem("userName"));
                 }
             } else {
                 $("#ddlLoginTypeData").hide();
+
+                setTimeout(function() {
+                    $("#ddlCompany-button > span").addClass("login_control_none");
+                }, 500);
             }
 
             //set login_type option text
@@ -424,6 +469,8 @@
             $("#ddlLoginType option:eq(1)").text(login_lang_list["LOGIN_TYPE_OPTION_1"]);
             $("#ddlLoginType option:eq(2)").text(login_lang_list["LOGIN_TYPE_OPTION_2"]);
             $("#ddlCompany option[value='shop']").text(login_lang_list["VENDOR"]);
+
+            loginBtnUI();
         }
 
         var getLanguage = function(){
@@ -722,29 +769,78 @@
             var placeholderName;
             var placeholderPwd;
 
-            $(".adaccount, .qaccount, #info_cell_forget, #info_cell_logout").hide();
+            $(".adaccount, .qaccount, #info_cell_forget, #info_cell_logout, .forget-text-content").hide();
 
             if (loginType === "none") {
                 placeholderName = "";
                 placeholderPwd = "";
 
                 $("#tbxName").val("");
+                setTimeout(function() {
+                    $("#ddlLoginType-button > span").addClass("login_control_none");
+                }, 500);
             } else if (loginType === "AD") {
                 placeholderName = login_lang_list["NAME"];
                 placeholderPwd = login_lang_list["PASSWORD"];
 
-                $(".adaccount, #info_cell_forget, #info_cell_logout").show();
+                $(".adaccount, #info_cell_forget, #info_cell_logout, .forget-text-content").show();
+                setTimeout(function() {
+                    $("#ddlLoginType-button > span").removeClass("login_control_none");
+                }, 500);
             } else if (loginType === "QAccount") {
                 placeholderName = login_lang_list["QACCOUNT_NAME"];
                 placeholderPwd = login_lang_list["QACCOUNT_PASSWORD"];
 
-                $(".qaccount, #info_cell_forget, #info_cell_logout").show();
+                $(".qaccount, #info_cell_forget, #info_cell_logout, .forget-text-content").show();
+                setTimeout(function() {
+                    $("#ddlLoginType-button > span").removeClass("login_control_none");
+                }, 500);
             }
 
             $("#tbxName").attr("placeholder", placeholderName);
             $("#tbxPassword").attr("placeholder", placeholderPwd);
+
+            loginBtnUI();
         }
 
+        function loginBtnUI() {
+            var iconMarginTop = parseInt(document.documentElement.clientHeight * 12.87 / 100, 10);
+            var iconHeight = parseInt(document.documentElement.clientWidth * 9.67 / 100, 10);
+            var tableHeight = $("#main_table").height()
+            var tableTop = parseInt($("#main_table").position().top, 10);
+            var tableMarginTop = parseInt(document.documentElement.clientHeight * 19.11 / 100, 10);
+            var tableMarginBottom = parseInt(document.documentElement.clientWidth * 3.6 / 100, 10);
+            var textInfoMarginBottom = parseInt(document.documentElement.clientWidth * 5.39 / 100, 10);
+            var textInfoHeight = parseInt(document.documentElement.clientWidth * 3.14 / 100, 10);
+            var btnHeight = $("#btnLogin").height();
+
+            var textContentMarginTop = document.documentElement.clientHeight - iconMarginTop - iconHeight - tableMarginTop - tableHeight -
+                tableMarginBottom - textInfoMarginBottom*1.6 - textInfoHeight - btnHeight;
+            var btnMarginTop = document.documentElement.clientHeight - tableHeight - tableTop - tableMarginTop - tableMarginBottom - btnHeight;
+
+            $("#pageLogin .forget-text-content").css("margin-top", textContentMarginTop + "px");
+            $(".btn-login").css("margin-top", btnMarginTop + "px");
+        }
+
+        function pageRegisterUI() {
+            var iconMarginTop = parseInt(document.documentElement.clientWidth * 39 / 100, 10);
+            var iconHeight = parseInt(document.documentElement.clientWidth * 19.65 / 100, 10);
+            var textVerifyMarginTop = parseInt(document.documentElement.clientWidth * 8.57 / 100, 10);
+            var textVerifyHeight = parseInt(document.documentElement.clientWidth * 4.18 / 100, 10);
+            var btnHeight = parseInt(document.documentElement.clientWidth * 11.36 / 100, 10);
+            var textInfoMarginBottom = parseInt(document.documentElement.clientWidth * 5.39 / 100, 10);
+            var textInfoHeight = parseInt(document.documentElement.clientWidth * 3.14 / 100, 10);
+            var btnTextMarginTop = parseInt(document.documentElement.clientWidth * 3.59 / 100, 10);
+
+            var textContentMarginTop = document.documentElement.clientHeight - iconMarginTop - iconHeight - textVerifyMarginTop - textVerifyHeight
+                - textInfoMarginBottom*2 - btnHeight - textInfoHeight;
+            var btnMarginTop = document.documentElement.clientHeight - iconMarginTop - iconHeight - textVerifyMarginTop - textVerifyHeight - btnHeight
+                - btnTextMarginTop;
+
+            $("#pageRegister .forget-text-content").css("margin-top", textContentMarginTop + "px");
+            $("#pageRegister .forget-text-content, #info_cell_logout").show();
+            $("#pageRegister #btnOK").css("margin-top", btnMarginTop + "px");
+        }
 
     </script>
 @endsection
