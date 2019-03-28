@@ -83,7 +83,7 @@ for sourceFrom in ${!arr[@]}; do
     fi
     sleep 3
 done
-echo ${STATUS}
+
 if [ "${STATUS}" = true ]; then
     echo 'Call syncUserJob ... '
     curl -X GET $curlGetAddress
