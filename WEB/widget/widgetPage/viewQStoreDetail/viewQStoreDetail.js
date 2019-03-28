@@ -5,6 +5,17 @@ $("#viewQStoreDetail").pagecontainer({
 
         /********************************** function *************************************/
 
+        function detailMapOpen() {
+            var positionData = $("#viewQStoreDetail .address-info").attr('data-content');
+            var longlat = positionData.substr(1,positionData.length-2).split(",");
+            var long = longlat[0];
+            var lat = longlat[1];
+            if (device.platform === "iOS") {
+                window.open("maps://maps.google.com/maps?daddr=" + long + "," + lat + "&amp;ll=");
+            } else {
+                cordova.InAppBrowser.open("https://maps.google.com/maps?daddr=" + long + "," + lat + "&amp;ll=", "_system", "location=no");
+            }
+        }
 
         /********************************** page event ***********************************/
 
@@ -92,18 +103,6 @@ $("#viewQStoreDetail").pagecontainer({
         $("#viewQStoreDetail").on("pagehide", function(event, ui) {
 
         });
-
-        function detailMapOpen() {
-            var positionData = $("#viewQStoreDetail .address-info").attr('data-content');
-            var longlat = positionData.substr(1,positionData.length-2).split(",");
-            var long = longlat[0];
-            var lat = longlat[1];
-            if (device.platform === "iOS") {
-                window.open("maps://maps.google.com/maps?daddr=" + long + "," + lat + "&amp;ll=");
-            } else {
-                cordova.InAppBrowser.open("https://maps.google.com/maps?daddr=" + long + "," + lat + "&amp;ll=", "_system", "location=no");
-            }
-        }
 
         /********************************** dom event *************************************/
 
