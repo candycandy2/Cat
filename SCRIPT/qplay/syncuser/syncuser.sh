@@ -13,8 +13,9 @@
 #   2018/07/23 Cleo.W.Chan Fix Bug
 #              if download file all fail,delete storage/app/syncuser folder
 #   2019/01/17 Cleo.W.Chan Modify API Link
-#              no longer need first parameter
-# assign dev/staging/production server address
+#              no longer need first parameter assign dev/staging/production server address
+# 	2019/03/28 Cleo.W.Chan Fix Bug
+#			   if any one of source download faild, do not sync qplay user
 case $1 in
 	"staging")
         ServerADD=sa.benq.com
@@ -51,6 +52,9 @@ arr+=(
 ["ehr"]=$Protocol'://'$ServerADD'/QTunnel/SynceHR/'
 )
 
+STATUS=true
+FAILED_SOURCE=""
+
 for sourceFrom in ${!arr[@]}; do
     URL="${arr[${sourceFrom}]}$DATE.xls.gpg"
     TIMES=0
@@ -74,14 +78,22 @@ for sourceFrom in ${!arr[@]}; do
         fi
     done
     if [ "${TIMES}" == "${RETRY}" ]; then
-        php ./lib/error_handle.php ${sourceFrom} $DATE log/syncuser-`date +%Y-%-m-%d`.txt ${env}
-        if [ -z "$(ls -A /path/to/dir)" ]; then
-            #syncuser folder is empty, delete folder
-            rm -d /var/www/html/qplayApi/storage/app/syncuser
-        fi
+		STATUS=false
+		FAILED_SOURCE=${FAILED_SOURCE}','${sourceFrom}
     fi
     sleep 3
 done
-    echo 'call syncUserJob ... '
+echo ${STATUS}
+if [ "${STATUS}" = true ]; then
+    echo 'Call syncUserJob ... '
     curl -X GET $curlGetAddress
+else
+	#send error mail
+	FAILED_SOURCE=${FAILED_SOURCE:1}
+	php ./lib/error_handle.php ${FAILED_SOURCE} $DATE log/syncuser-`date +%Y-%-m-%d`.txt ${env}
+	
+	#delete syncuser source folder
+    rm -d /var/www/html/qplayApi/storage/app/syncuser
+	echo 'Sync User Failed : Download source file error !'
+fi
 exit 0
