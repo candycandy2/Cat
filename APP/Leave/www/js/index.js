@@ -295,7 +295,7 @@ function changePageByPanel(pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;
         $.mobile.changePage("#" + pageId);
-        $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
+        $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#4CB6AC");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
         //切换菜单才添加，back返回时不添加
         if (pageId !== visitedPageList[visitedPageList.length - 1]) {
@@ -572,7 +572,7 @@ function changeLeavePanelBKColor() {
     $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f"); 
     //此頁添加菜單樣式  
     var nowPage = visitedPageList[visitedPageList.length - 1];  
-    $("#mypanel" + " #mypanel" + nowPage).css("background", "#87cec0"); 
+    $("#mypanel" + " #mypanel" + nowPage).css("background", "#4CB6AC"); 
     $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
 }
 

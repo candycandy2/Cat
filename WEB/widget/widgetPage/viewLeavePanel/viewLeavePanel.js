@@ -57,7 +57,7 @@ var panel = htmlContent +
 $(document).one("pagebeforeshow", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
-    $("#mypanel #mypanelviewLeaveMain").css("background", "#87cec0");
+    $("#mypanel #mypanelviewLeaveMain").css("background", "#4CB6AC");
     $("#mypanel #mypanelviewLeaveMain").css("color", "#fff");
 
     if (device.platform === "iOS") {
@@ -80,7 +80,7 @@ $(document).one("pagebeforeshow", function() {
         checkWidgetPage('viewBackLeaveQuery', visitedPageList);
     });
 
-    $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {
+    $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {ar
         //changePageByPanel("viewHolidayCalendar");
         checkWidgetPage('viewHolidayCalendar', visitedPageList);
     });
