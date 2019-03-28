@@ -255,13 +255,15 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 }
 
 #initialOther .logo-initial {
-    width: 18vw;
+    width: 60%;
     height: auto;
 }
 
 #initialAppName {
-    font-size: 6.5vh;
+    height: 65vw;
+    font-size: 10vw;
     margin-top: 3vw;
+    color: #fff;
 }
 
 #initialOther .app-logo-initial {
@@ -277,6 +279,10 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 
 #initialOther .brand-initial {
     height: 10vh;
+}
+
+#initialAppLoginTimeout {
+    color: #fff;
 }
 
 /*APP Get QPsuh / Maintain */
@@ -550,7 +556,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 }
 
 #APPLoginLink {
-    color: #38c !important;
+    color: #fff !important;
     text-decoration: underline !important;
 }
 
