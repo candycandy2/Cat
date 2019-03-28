@@ -91,7 +91,7 @@ class QPayTradeLogRepository
                               DB::raw("UNIX_TIMESTAMP(qpay_trade_log.created_at) AS trade_time"),
                               "qpay_trade_log.cancel",
                               "qpay_trade_log.cancel_pay AS cancel_trade",
-                              "qpay_trade_log.cancel_row_id AS cancel_trade_id",
+                              DB::raw("CONCAT('T', LPAD(qpay_trade_log.cancel_row_id, 6, 0)) AS cancel_trade_id"),
                               "qpay_trade_log.cancel_reason",
                               "qp_user.emp_name AS shop_name")
                     -> where("qpay_member.user_row_id", "=", $userRowID)
@@ -125,7 +125,7 @@ class QPayTradeLogRepository
                               DB::raw("UNIX_TIMESTAMP(qpay_trade_log.created_at) AS trade_time"),
                               "qpay_trade_log.cancel",
                               "qpay_trade_log.cancel_pay AS cancel_trade",
-                              "qpay_trade_log.cancel_row_id AS cancel_trade_id",
+                              DB::raw("CONCAT('T', LPAD(qpay_trade_log.cancel_row_id, 6, 0)) AS cancel_trade_id"),
                               "qpay_trade_log.cancel_reason")
                     -> where("qpay_shop.user_row_id", "=", $userRowID);
 
