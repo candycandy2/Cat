@@ -139,6 +139,7 @@
         }
         .btn-text {
             margin-top: 3.59vw;
+            text-shadow: none;
         }
         .forget-text-content {
             position: absolute;
@@ -177,6 +178,7 @@
             font: 4.18vw 'Arial';
             margin: 0;
             margin-top: 8.57vw;
+            line-height: 1;
         }
         .forget-text {
             display: inline-block;
@@ -389,7 +391,9 @@
 
             //Page Event
             $("#pageRegister").one("pagebeforeshow", function(event, ui) {
-                pageRegisterUI();
+                setTimeout(function() {
+                    pageRegisterUI();
+                }, 250);
             });
         });
 
@@ -804,14 +808,14 @@
         }
 
         function loginBtnUI() {
-            var iconMarginTop = parseInt(document.documentElement.clientHeight * 12.87 / 100, 10);
-            var iconHeight = parseInt(document.documentElement.clientWidth * 9.67 / 100, 10);
-            var tableHeight = $("#main_table").height()
-            var tableTop = parseInt($("#main_table").position().top, 10);
-            var tableMarginTop = parseInt(document.documentElement.clientHeight * 19.11 / 100, 10);
-            var tableMarginBottom = parseInt(document.documentElement.clientWidth * 3.6 / 100, 10);
-            var textInfoMarginBottom = parseInt(document.documentElement.clientWidth * 5.39 / 100, 10);
-            var textInfoHeight = parseInt(document.documentElement.clientWidth * 3.14 / 100, 10);
+            var iconMarginTop = document.documentElement.clientHeight * 12.87 / 100;
+            var iconHeight = document.documentElement.clientWidth * 9.67 / 100;
+            var tableHeight = $("#main_table").height();
+            var tableTop = $("#main_table").position().top;
+            var tableMarginTop = document.documentElement.clientHeight * 19.11 / 100;
+            var tableMarginBottom = document.documentElement.clientWidth * 3.6 / 100;
+            var textInfoMarginBottom = document.documentElement.clientWidth * 5.39 / 100;
+            var textInfoHeight = document.documentElement.clientWidth * 3.14 / 100;
             var btnHeight = $("#btnLogin").height();
 
             var textContentMarginTop = document.documentElement.clientHeight - iconMarginTop - iconHeight - tableMarginTop - tableHeight -
@@ -819,23 +823,22 @@
             var btnMarginTop = document.documentElement.clientHeight - tableHeight - tableTop - tableMarginTop - tableMarginBottom - btnHeight;
 
             $("#pageLogin .forget-text-content").css("margin-top", textContentMarginTop + "px");
-            $(".btn-login").css("margin-top", btnMarginTop + "px");
+            $("#pageLogin .btn-login").css("margin-top", btnMarginTop + "px");
         }
 
         function pageRegisterUI() {
-            var iconMarginTop = parseInt(document.documentElement.clientWidth * 39 / 100, 10);
-            var iconHeight = parseInt(document.documentElement.clientWidth * 19.65 / 100, 10);
-            var textVerifyMarginTop = parseInt(document.documentElement.clientWidth * 8.57 / 100, 10);
-            var textVerifyHeight = parseInt(document.documentElement.clientWidth * 4.18 / 100, 10);
-            var btnHeight = parseInt(document.documentElement.clientWidth * 11.36 / 100, 10);
-            var textInfoMarginBottom = parseInt(document.documentElement.clientWidth * 5.39 / 100, 10);
-            var textInfoHeight = parseInt(document.documentElement.clientWidth * 3.14 / 100, 10);
-            var btnTextMarginTop = parseInt(document.documentElement.clientWidth * 3.59 / 100, 10);
+            var iconMarginTop = document.documentElement.clientWidth * 39 / 100;
+            var iconHeight = document.documentElement.clientWidth * 19.65 / 100;
+            var textVerifyMarginTop = document.documentElement.clientWidth * 8.57 / 100;
+            var textVerifyHeight = document.documentElement.clientWidth * 4.18 / 100;
+            var btnHeight = document.documentElement.clientWidth * 11.36 / 100;
+            var textInfoMarginBottom = document.documentElement.clientWidth * 5.39 / 100;
+            var textInfoHeight = document.documentElement.clientWidth * 3.14 / 100;
+            var btnTextMarginTop = document.documentElement.clientWidth * 3.59 / 100;
 
             var textContentMarginTop = document.documentElement.clientHeight - iconMarginTop - iconHeight - textVerifyMarginTop - textVerifyHeight
                 - textInfoMarginBottom*2 - btnHeight - textInfoHeight;
-            var btnMarginTop = document.documentElement.clientHeight - iconMarginTop - iconHeight - textVerifyMarginTop - textVerifyHeight - btnHeight
-                - btnTextMarginTop;
+            var btnMarginTop = textContentMarginTop + textInfoHeight + textInfoMarginBottom + btnTextMarginTop + 2;
 
             $("#pageRegister .forget-text-content").css("margin-top", textContentMarginTop + "px");
             $("#pageRegister .forget-text-content, #info_cell_logout").show();
