@@ -1,3 +1,12 @@
+<strong>Mar-29-19 00:39:15</strong>
+- Reason : daily build, 786
+- Commit# : 
+b99f0956b - CleoWChan, 8 hours ago : [SyncUser] remove no use echo
+39253b5d5 - Darren Ti, 8 hours ago : [QPlay]UpdateUI-LoginPage
+f852fa50d - CleoWChan, 8 hours ago : [SyncUser] if one of source file download faild,don't sync qplay user
+d8ff4cfe3 - Darren Ti, 9 hours ago : [QPlayAPI]For getTradeRecordEmp/getTradeRecordShop
+9ce47de69 - Darren Ti, 16 hours ago : [QPlay]UpdateUI-InstallPage
+
 <strong>Mar-28-19 00:36:05</strong>
 - Reason : daily build, 785
 - Commit# : 
