@@ -16,7 +16,7 @@ body {
     display: -webkit-flex;
     display: flex;
     justify-content: flex-end;
-    height: 100%;
+    height: 75%;
 }
 .icon-content div {
     text-align: center;
