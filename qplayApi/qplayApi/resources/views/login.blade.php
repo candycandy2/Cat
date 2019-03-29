@@ -135,7 +135,8 @@
             left: 0;
             width: 100vw;
             height: 11.36vw;
-            margin-top: 12.8vh;
+            /*margin-top: 12.8vh;*/
+            bottom: 0;
         }
         .btn-text {
             margin-top: 3.59vw;
@@ -147,6 +148,7 @@
             font-size: 3.14vw;
             left: 0;
             width: 100vw;
+            bottom: 16.75vw;
         }
         #dlgMessage {
             border-radius: .8em;
@@ -299,6 +301,10 @@
         var appKey = "<?php echo CommonUtil::getContextAppKey()?>";
         var appSecretKey = "<?php echo Config::get("app.App_Secret_key")?>";
         var lang = "en-us";
+        var screenHeight = document.documentElement.clientHeight;
+        var device = navigator.userAgent;
+        var isAndroid = device.indexOf('Android') > -1 || device.indexOf('Adr') > -1;
+
         $(function () {
             lang = getLanguage();
             var url = "{{asset('js/lang')}}" + "/login-" + lang + ".js";
@@ -319,7 +325,7 @@
 
                 if (selectedValue.length == 0) {
                     $("#ddlLoginTypeData").hide();
-                    loginBtnUI();
+                    //loginBtnUI();
                     setTextForLoginType("none");
 
                     setTimeout(function() {
@@ -327,7 +333,7 @@
                     }, 500);
                 } else {
                     $("#ddlLoginTypeData").show();
-                    loginBtnUI();
+                    //loginBtnUI();
 
                     setTimeout(function() {
                         $("#ddlCompany-button > span").removeClass("login_control_none");
@@ -389,10 +395,42 @@
                 }
             });
 
+            //Keyboard trigger event
+            $("#tbxName, #tbxPassword").on("focus", function(event) {
+                clearInterval(window.checkKeyboard);
+
+                setTimeout(function() {
+                    //$(".forget-text-content, .btn-login").css("position", "static");
+                    keyboardOnUI();
+                }, 250);
+
+                window.checkKeyboard = setInterval(function(){
+                    if (document.documentElement.clientHeight != screenHeight) {
+                        //$(".forget-text-content, .btn-login").css("position", "static");
+                        keyboardOnUI();
+                    } else {
+                        //$(".forget-text-content, .btn-login").css("position", "absolute");
+                        keyboardOffUI();
+                        clearInterval(window.checkKeyboard);
+
+                        if (isAndroid) {
+                            $("#tbxName, #tbxPassword").blur();
+                        }
+                    }
+                }, 350);
+            });
+
+            $("#tbxName, #tbxPassword").on("blur", function(event) {
+                setTimeout(function() {
+                    //$(".forget-text-content, .btn-login").css("position", "absolute");
+                    keyboardOffUI();
+                }, 250);
+            });
+
             //Page Event
             $("#pageRegister").one("pagebeforeshow", function(event, ui) {
                 setTimeout(function() {
-                    pageRegisterUI();
+                    //pageRegisterUI();
                 }, 250);
             });
         });
@@ -474,7 +512,7 @@
             $("#ddlLoginType option:eq(2)").text(login_lang_list["LOGIN_TYPE_OPTION_2"]);
             $("#ddlCompany option[value='shop']").text(login_lang_list["VENDOR"]);
 
-            loginBtnUI();
+            //loginBtnUI();
         }
 
         var getLanguage = function(){
@@ -804,7 +842,7 @@
             $("#tbxName").attr("placeholder", placeholderName);
             $("#tbxPassword").attr("placeholder", placeholderPwd);
 
-            loginBtnUI();
+            //loginBtnUI();
         }
 
         function loginBtnUI() {
@@ -843,6 +881,22 @@
             $("#pageRegister .forget-text-content").css("margin-top", textContentMarginTop + "px");
             $("#pageRegister .forget-text-content, #info_cell_logout").show();
             $("#pageRegister #btnOK").css("margin-top", btnMarginTop + "px");
+        }
+
+        function keyboardOnUI() {
+            $(".forget-text-content, .btn-login").css({
+                "position": "static",
+                "width" : "93vw"
+            });
+            $(".btn-text").css("padding-top", "3.59vw");
+        }
+
+        function keyboardOffUI() {
+            $(".forget-text-content, .btn-login").css({
+                "position": "absolute",
+                "width" : "100vw"
+            });
+            $(".btn-text").css("padding-top", "0");
         }
 
     </script>
