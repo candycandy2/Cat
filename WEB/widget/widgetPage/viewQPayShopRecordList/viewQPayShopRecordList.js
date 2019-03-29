@@ -50,10 +50,12 @@ $("#viewQPayShopRecordList").pagecontainer({
                                 (record_list[i].cancel_trade == 'Y' ? '-' : '') +
                                 record_list[i].trade_point + 
                                 '</div></div><div><div>' +
-                                (record_list[i].cancel_trade == 'Y' ? record_list[i].cancel_reason : '') +
+                                (record_list[i].cancel_trade == 'Y' ? 'No.' + record_list[i].cancel_trade_id + ' 退款' : '') +
                                 '</div><div>' +
                                 tradeDate + ' ' + tradeTime +
-                                '</div></div></li>';
+                                '</div></div>' +
+                                (record_list[i].cancel_trade == 'Y' ? '<div>' + record_list[i].cancel_reason + '</div>' : '') +
+                                '</li>';
                         }
 
                     }
