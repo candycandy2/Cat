@@ -80,7 +80,7 @@ $(document).one("pagebeforeshow", function() {
         checkWidgetPage('viewBackLeaveQuery', visitedPageList);
     });
 
-    $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {ar
+    $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {
         //changePageByPanel("viewHolidayCalendar");
         checkWidgetPage('viewHolidayCalendar', visitedPageList);
     });
