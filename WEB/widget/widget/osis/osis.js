@@ -1,6 +1,8 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var osisWidget = {
 
+    secretKey: 'swexuc453refebraXecujeruBraqAc4e',
+
     init: function (contentItem) {
 
         function createContent(contentItem) {
@@ -14,9 +16,17 @@ var osisWidget = {
                 var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/osis/img/widget_osis_img.png');
                 $('.osis-widget-img').html('').append(moreImg);
 
-                osisWidget.show();
-
             }, "html");
+
+            //跳转到OSIS页面
+            contentItem.on('click', '.osis-widget-img, .osis-btn', function() {
+                var emp_no = loginData['emp_no'];
+                var signatureTime = getSignature('getTime').toString();
+                //base64后有特殊符号，需要进行编码
+                var signature = encodeURIComponent(getSignatureByKey('key', signatureTime + emp_no, osisWidget.secretKey));
+                var url = 'http://58.210.86.182/OSISMobile/Home/Login?emp_no=' + emp_no + '&signatureTime=' + signatureTime + '&signature=' + signature;
+                cordova.InAppBrowser.open(url, '_blank', 'location=no');
+            });
 
         }
 
@@ -47,10 +57,6 @@ var osisWidget = {
         $.fn.osis.defaults = {};
 
         $('.osisWidget').osis();
-    },
-
-    show: function() {
-        
     }
 
 };
