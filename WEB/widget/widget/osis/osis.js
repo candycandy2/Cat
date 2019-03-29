@@ -25,7 +25,7 @@ var osisWidget = {
                 //base64后有特殊符号，需要进行编码
                 var signature = encodeURIComponent(getSignatureByKey('key', signatureTime + emp_no, osisWidget.secretKey));
                 var url = 'http://58.210.86.182/OSISMobile/Home/Login?emp_no=' + emp_no + '&signatureTime=' + signatureTime + '&signature=' + signature;
-                cordova.InAppBrowser.open(url, '_blank', 'location=no');
+                cordova.InAppBrowser.open(url, '_blank', 'location=no,toolbar=no');
             });
 
         }
