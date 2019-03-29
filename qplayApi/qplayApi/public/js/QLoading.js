@@ -14,8 +14,7 @@ var HideLoading;
 
         if (!$LoadingFlash) {
             $LoadingFlash = $("<div style='display: none;' align='center' class='QLoading_Flash_CSS'>" +
-                "<input type='button' class='QLoading_Loading_CSS' title='Loading' /><br />" +
-                "Loading..." +
+                "<img src='css/images/loading_new.gif' width='80' height='80'>" +
             "</div>");
             $(document.body).append($LoadingFlash);
         }
@@ -24,7 +23,7 @@ var HideLoading;
     ShowLoading = function() {
         initializationQLoadingObject();
 
-        $LoadingCover.height($(document).height() - 10);
+        $LoadingCover.height($(document).height());
         $LoadingCover.show();
 
         showLoadingStatus = 0;
