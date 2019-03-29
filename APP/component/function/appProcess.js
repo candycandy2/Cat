@@ -389,7 +389,7 @@ function loadingMask(action, name) {
         var scrollHeight = $(window).scrollTop();
 
         if ($(".loader").length === 0) {
-            $('<div class="loader" style="top:' + scrollHeight + 'px;"><img src="img/component/ajax-loader.gif"><div style="color:#FFF;">&nbsp;</div></div>').appendTo("body");
+            $('<div class="loader" style="top:' + scrollHeight + 'px;"><img src="img/component/ajax-loader.gif" width="80"><div style="color:#FFF;">&nbsp;</div></div>').appendTo("body");
         } else {
             $(".loader").show();
             $(".loader").css("top", scrollHeight + "px");

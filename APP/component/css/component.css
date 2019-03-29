@@ -185,7 +185,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     z-index: 1090;
     height: 100%;
     width: 100%;
-    background: rgba(35,31,32,0.3);
+    /* background: rgba(35,31,32,0.3); */
     text-align: center;
     padding-top: 0;
 }
