@@ -326,7 +326,7 @@ class QPayTradeService
 
                         if ($multiplePay == "Y" && $multipleRowID == 0) {
                             $multipleRowID = $latestPointTradeLogID;
-                        } if ($multiplePay == "N") {
+                        } else if ($multiplePay == "N") {
                             $multipleRowID = $latestPointTradeLogID;
                         }
 
