@@ -229,6 +229,77 @@ function checkWidgetPage(pageID, pageVisitedList, parmData) {
 }
 
 
+//覆盖App.min.js中checkWidgetPage，可用于上架到staging和production
+function changeSelfPage(pageID, pageVisitedList, parmData) {
+    //新增参数：用于不同页面间传值
+    parmData = parmData || null;
+    if (parmData != null && typeof parmData == 'object') {
+        window.sessionStorage.setItem(pageID + "_parmData", JSON.stringify(parmData));
+    }
+
+    var url = serverURL + '/webeditor/userdata/' + loginData["loginid"].toLowerCase() + '/widgetPage/' + pageID + '/' + pageID;
+    var pageLength = $('#' + pageID).length;
+
+    //0表示没有该元素，直接从local添加，既第一次添加
+    //1表示有该元素，直接跳转，不用添加
+    if (pageLength == 0) {
+
+        addDownloadHit(pageID);
+
+        //1. get html
+        $.get(url + '.html', function(data) {
+            //2. create css
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url + '.css';
+            document.head.appendChild(link);
+
+            //3. append html
+            $.mobile.pageContainer.append(data);
+            $('#' + pageID).page().enhanceWithin();
+
+            //4. set language string
+            setViewLanguage(pageID);
+
+            //5. water mark
+            //According to the data [waterMarkPageList] which set in index.js
+            if (!(typeof waterMarkPageList === 'undefined')) {
+                if (waterMarkPageList.indexOf(pageID) !== -1) {
+                    $('#' + pageID).css('background-color', 'transparent');
+                }
+            }
+
+            //6. get javascript
+            $.getScript(url + '.js').done(function() {
+                //7. change page
+                $.mobile.changePage('#' + pageID);
+                if (window.ga !== undefined) {
+                    window.ga.trackView(pageID);
+                }
+                pageVisitedList.push(pageID);
+            });
+
+        }, 'html');
+
+    } else {
+
+        //如果即将跳转的页面正好是当前页面（既visited最后一页），触发pageshow即可
+        if (pageID == pageVisitedList[pageVisitedList.length - 1]) {
+            $('#' + pageID).trigger('pageshow');
+
+        } else {
+            $.mobile.changePage('#' + pageID);
+            if (window.ga !== undefined) {
+                window.ga.trackView(pageID);
+            }
+            pageVisitedList.push(pageID);
+        }
+
+    }
+}
+
+
 //重设dropdownlist宽度
 function setDropdownlistWidth(num) {
     var pxWidth = $("span[data-id='tmp_option_width']").outerWidth();
