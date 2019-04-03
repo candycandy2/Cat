@@ -7,15 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Editor</title>
     <!--CodeMirror-->
-    <link rel="stylesheet" href="lib/codemirror.css" />
+    <link rel="stylesheet" href="css/codemirror.css" />
     <link rel="stylesheet" href="theme/rubyblue.css" />
     <link rel="stylesheet" href="addon/fold/foldgutter.css" />
     <link rel="stylesheet" href="addon/lint/lint.css" />
     <!--treeview-->
-    <link rel="stylesheet" href="lib/jquery.treeview.css" />
-    <link rel="stylesheet" href="lib/screen.css" />
+    <link rel="stylesheet" href="css/jquery.treeview.css" />
+    <link rel="stylesheet" href="css/screen.css" />
     <!--self-->
-    <link rel="stylesheet" href="editor.css" />
+    <link rel="stylesheet" href="css/editor.css" />
 
 
     <script src="lib/jquery.min.js"></script>
@@ -57,6 +57,7 @@
                     <li id="createBtn"><button>new</button></li>
                     <li><button>open</button></li>
                     <li><button>save</button></li>
+                    <li><button>upload</button></li>
                     <li id="runBtn"><button>run</button></li>
                 </ul>
             </div>
@@ -190,7 +191,20 @@
                 var array_matches_html_tag = patternHtmlTag.exec(src);
                 if (array_matches_html_tag) {
                     src = src.replace('<html>', '<html ' + array_matches_html_tag[1] + '>');
+                } else {
+                    src = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>文档标题</title>' +
+                        '<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">' +
+                        '<link rel="stylesheet" type="text/css" href="css/APP.min.css">' +
+                        '<link rel="stylesheet" type="text/css" href="css/index.css">' +
+                        '<script type="text/javascript" src="js/lib/jquery-1.12.3.min.js"><\/script>' +
+                        '<script type="text/javascript" src="js/lib/jquery.mobile-1.4.5.js"><\/script>' +
+                        //'<script type="text/javascript" src="js/index.js"><\/script>' +
+                        '<script type="text/javascript" src="js/APP.min.js"><\/script></head><body>' +
+                        '</head><body>' +
+                        html +
+                        "</body></html>";
                 }
+
                 var patternHead = /<head[^>]*>((.|[\n\r])*)<\/head>/im
                 var array_matches_head = patternHead.exec(src);
 
@@ -216,13 +230,14 @@
             // CSS
             if (css) {
                 css = '<style>' + css + '</style>';
-                if (array_matches_head) {
-                    src = src.replace('</head>', css + '</head>');
-                } else if (array_matches_body_tag) {
-                    src = src.replace('</body>', css + '</body>');
-                } else {
-                    src += css;
-                }
+                // if (array_matches_head) {
+                //     src = src.replace('</head>', css + '</head>');
+                // } else if (array_matches_body_tag) {
+                //     src = src.replace('</body>', css + '</body>');
+                // } else {
+                //     src += css;
+                // }
+                src = src.replace('</head>', css + '</head>');
             }
 
             // Javascript
@@ -249,7 +264,9 @@
         }
 
         $("#createBtn").on('click', function () {
-            var html_code = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>文档标题</title>\n</head>\n<body>\n\t<h1>Hello World</h1>\n</body>\n</html>\n";
+            var html_code = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>文档标题</title>" +
+                "\n<link rel=\"stylesheet\" type=\"text/css\" href=\"css/jquery.mobile-1.4.5.min.css\">" +
+                "\n</head>\n<body>\n\t<h1>Hello World</h1>\n</body>\n</html>\n";
             html_editor.getDoc().setValue(html_code);
 
             var css_code = "h1{color: red}";
