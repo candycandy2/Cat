@@ -292,7 +292,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 
 .main-GetQPush {
     text-align: center;
-    padding-top: 28vh;
+    padding-top: 41vw;
 }
 
 .logo-GetQPush {
@@ -302,7 +302,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 .text-GetQPush {
     width: 75vw;
     margin: 0 auto;
-    margin-top: 6.5vh;
+    margin-top: 10vw;
     overflow-wrap: break-word;
     white-space: normal;
     text-overflow: clip;
@@ -327,7 +327,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 
 .main-updateAppVersion {
     text-align: center;
-    padding-top: 28vh;
+    padding-top: 41vw;
 }
 
 .logo-updateAppVersion {
@@ -337,12 +337,12 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 .text-updateAppVersion {
     width: 75vw;
     margin: 0 auto;
-    margin-top: 6.5vh;
+    margin-top: 10vw;
     overflow-wrap: break-word;
     white-space: normal;
     text-overflow: clip;
     overflow: auto;
-    text-align: left;
+    text-align: center;
 }
 
 .button-updateAppVersion {
@@ -357,8 +357,19 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     color: #FFF;
 }
 
-#viewUpdateAppVersion .button-text-updateAppVersion {
-
+#viewGetQPush .foot-button,
+#viewMaintain .foot-button,
+#viewUpdateAppVersion .foot-button,
+#viewNotSignedIn .foot-button {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 11.36vw;
+    background: #009587;
+    color: #fff;
+    text-align: center;
+    line-height: 11.36vw;
+    font-size: 4.18vw;
 }
 
 /*Popup Msg*/
