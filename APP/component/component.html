@@ -63,15 +63,15 @@
     <div data-role="header">
     </div>
     <div data-role="main" class="main-GetQPush">
-        <img class="logo-GetQPush" src="img/component/QPlay_logo.svg" />
+        <img class="logo-GetQPush" src="img/component/connect.png" />
         <div class="text-GetQPush">
             <!--服務連線中...-->
             <span class="langStr" data-id="str_001"></span>
             <!--<br>第一次登入需要取得認證, 請耐心等候-->
         </div>
-        <div class="brand-GetQPush-content">
+        <!-- <div class="brand-GetQPush-content">
             <img class="brand-GetQPush" src="img/component/Logo.svg" />
-        </div>
+        </div> -->
     </div>
 </div>
 <!-- Start of viewMaintain -->
@@ -79,33 +79,37 @@
     <div data-role="header">
     </div>
     <div data-role="main" class="main-GetQPush">
-        <img class="logo-GetQPush" src="img/component/QPlay_logo.svg" />
+        <img class="logo-GetQPush" src="img/component/maintain.png" />
         <div class="text-GetQPush">
             <!--系統維護中<br>請稍後再試-->
             <span class="langStr" data-id="com_004"></span>
-            <span> <input type="button" value="Retry again" onClick="window.location.reload()"> </span>
+            <!-- <span> <input type="button" value="Retry again" onClick="window.location.reload()"> </span> -->
         </div>
-        <div class="brand-GetQPush-content">
+        <!-- <div class="brand-GetQPush-content">
             <img class="brand-GetQPush" src="img/component/Logo.svg" />
-        </div>
+        </div> -->
     </div>
+    <div class="foot-button" onClick="window.location.reload()">Retry again</div>
 </div>
 <!-- Start of viewUpdateAppVersion -->
 <div data-role="page" id="viewUpdateAppVersion" class="hide">
     <div data-role="header">
     </div>
     <div data-role="main" class="main-updateAppVersion">
-        <img class="logo-updateAppVersion" src="img/component/QPlay_logo.svg" />
+        <img class="logo-updateAppVersion" src="img/component/update.png" />
         <div class="text-updateAppVersion">
             <!--請更新應用程式以立即體驗新功能、獲得改善效能和錯誤修正-->
             <span class="langStr" data-id="com_005"></span>
         </div>
-        <div class="button-updateAppVersion" id="UpdateAPP">
+        <!-- <div class="button-updateAppVersion" id="UpdateAPP">
             <div class="button-text-updateAppVersion">
-                <!--更新應用程式-->
                 <span class="langStr" data-id="com_006"></span>
             </div>
-        </div>
+        </div> -->
+    </div>
+    <div class="foot-button" id="UpdateAPP">
+        <!--更新應用程式-->
+        <span class="langStr" data-id="com_006"></span>
     </div>
 </div>
 <!-- Start of viewNotSignedIn -->
@@ -113,17 +117,20 @@
     <div data-role="header">
     </div>
     <div data-role="main" class="main-updateAppVersion">
-        <img class="logo-updateAppVersion" src="img/component/QPlay_logo.svg" />
+        <img class="logo-updateAppVersion" src="img/component/logo.png" style="width:40%;" />
         <div class="text-updateAppVersion">
             <!--已登出，請重新登入-->
             <span class="langStr" data-id="str_044"></span>
         </div>
-        <div class="button-updateAppVersion" id="LoginAgain">
+        <!-- <div class="button-updateAppVersion" id="LoginAgain">
             <div class="button-text-updateAppVersion">
-                <!--Login-->
                 <span class="langStr" data-id="str_045"></span>
             </div>
-        </div>
+        </div> -->
+    </div>
+    <div class="foot-button" id="LoginAgain">
+        <!--Login-->
+        <span class="langStr" data-id="str_045"></span>
     </div>
 </div>
 <!-- Start of popup infoMsg -->
