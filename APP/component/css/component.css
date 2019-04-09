@@ -251,7 +251,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 }
 
 #initialOther {
-    margin-top: 20vh;
+    margin-top: 40vw;
 }
 
 #initialOther .logo-initial {
@@ -267,8 +267,8 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 }
 
 #initialOther .app-logo-initial {
-    margin-top: 4vw;
-    width: 28vw;
+    margin-top: 6vw;
+    width: 24vw;
 }
 
 #initialOther .brand-initial-content {
