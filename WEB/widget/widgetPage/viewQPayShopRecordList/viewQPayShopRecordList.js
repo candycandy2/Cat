@@ -117,7 +117,7 @@ $("#viewQPayShopRecordList").pagecontainer({
             //進入該頁面，每3秒refresh金額
             refreshInterval = setInterval(function() {
                 $('.refresh-shop-record').trigger('click');
-            }, 3000);
+            }, 5000);
         });
 
         $("#viewQPayShopRecordList").on("pagehide", function (event, ui) {
