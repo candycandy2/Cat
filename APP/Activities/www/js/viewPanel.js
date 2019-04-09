@@ -34,7 +34,7 @@ var panel = htmlContent +
 $(document).one("pagebeforeshow", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
-    $("#mypanel #mypanelviewActivitiesList").css("background", "#503f81");
+    $("#mypanel #mypanelviewActivitiesList").css("background", "#4cb6ac");
     $("#mypanel #mypanelviewActivitiesList").css("color", "#fff");
 
     if (device.platform === "iOS") {

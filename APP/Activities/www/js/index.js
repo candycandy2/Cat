@@ -110,7 +110,7 @@ function changePageByPanel(pageId, panel) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         //lastPageID = $.mobile.activePage[0].id;
         $.mobile.changePage("#" + pageId);
-        $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
+        $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#4cb6ac");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
         //切换菜单才添加到數組，back返回时不添加並刪除最後一頁
         if (panel) {
