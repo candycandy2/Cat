@@ -304,7 +304,7 @@ $("#viewOvertimeSubmit").pagecontainer({
         $('#newOTDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            minDate: formatDateForNumber(Date.now())
+            minDate: formatDateForNumber(new Date().setDate(new Date().getDate()-7))
         });
 
         //選擇出勤日期
