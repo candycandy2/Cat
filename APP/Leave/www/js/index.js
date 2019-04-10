@@ -72,14 +72,6 @@ window.initialSuccess = function() {
         .then(checkLeaveWidgetPage('viewPersonalLeaveCalendar/viewPersonalLeaveCalendar'))
         .then(checkLeaveWidgetPage('viewLeaveQuery/viewLeaveQuery'))
         .then(checkLeaveWidgetPage('viewLeaveAgent/viewLeaveAgent'));
-        //.then(GetUserAuthority());
-    /*checkLeaveWidgetPage('viewLeaveMain/viewLeaveMain')
-        .then(checkLeaveWidgetPage('viewOvertimeQuery/viewOvertimeQuery'));
-        //.then(GetUserAuthority());
-
-    setTimeout(function() {
-        GetUserAuthority();
-    }, 1000);*/
 
     loadingMask("show");
 
@@ -119,7 +111,7 @@ function checkLeaveWidgetPage(leaveWidgetUrl) {
                 script.src = url + leaveWidgetUrl + '.js';
                 document.head.appendChild(script);
                 resolve(1);
-                //checkLeaveWidgetPage的七個頁面都加載完成,才能執行GetUserAuthority()
+                //checkLeaveWidgetPage的8個頁面都加載完成,才能執行GetUserAuthority()
                 checkLeaveWidgetNum++;
                 if (checkLeaveWidgetNum == 8) {
                     GetUserAuthority();
