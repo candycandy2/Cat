@@ -434,10 +434,6 @@ element.style {
     -webkit-overflow-scrolling :touch;
 } 
 
-.header-style {
-    background-color: #492f7f;
-}
-
 .ui-content .ui-listview {
     margin: 0px;
 }
