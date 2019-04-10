@@ -1168,3 +1168,38 @@
     width: 100%;
     height: 100%;
 }
+
+/*********************** buy ***********************/
+.buy-list li{
+    width: 90.37vw;
+    height: 14.5vw;
+    padding: 0 3.71vw 3.5vw 5.92vw;
+}
+
+.buy-list li>div{
+    float: left;
+    height: 100%;
+}
+
+.buy-list li>div:nth-of-type(1){
+    width: 14.5vw;
+    border-radius: 2px;
+    background: #CCCCCC;
+}
+
+.buy-list li>div:nth-of-type(1) img{
+    width: 100%;
+}
+
+.buy-list li>div:nth-of-type(2){
+    width: 72.37vw;
+    margin-left: 3.5vw;
+    font-size: 3.768vw;
+    color: #223037;
+}
+
+.buy-btn{
+    width: 24vw !important;
+    height: 7vw !important;
+    line-height: 7vw !important;
+}

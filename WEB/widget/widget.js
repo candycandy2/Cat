@@ -17,7 +17,8 @@ var widget = {
             .then(this.load(10, divItem))
             .then(this.load(11, divItem))
             .then(this.load(12, divItem))
-            .then(this.load(13, divItem));
+            .then(this.load(13, divItem))
+            .then(this.load(14, divItem));
     },
     list: function() {
 
@@ -35,7 +36,8 @@ var widget = {
             { id: 10, name: 'staff', enabled: true, show: true, deletable: true, lang: langStr['wgt_102'] },
             { id: 11, name: 'staffAdmin', enabled: true, show: false, deletable: true, lang: langStr['wgt_102'] },
             { id: 12, name: 'cards', enabled: true, show: true, deletable: false, lang: langStr['wgt_167'] },
-            { id: 13, name: 'osis', enabled: true, show: false, deletable: true, lang: 'OSIS' }
+            { id: 13, name: 'osis', enabled: true, show: false, deletable: true, lang: 'OSIS' },
+            { id: 14, name: 'buy', enabled: true, show: false, deletable: true, lang: langStr['wgt_221'] }
 
         ];
     },
