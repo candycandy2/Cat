@@ -47,8 +47,6 @@ $("#viewQPayUserInputPassword").pagecontainer({
             $('.pwd-box').removeClass('pwd-active');
             $('.pwd-box:eq(0)').addClass('pwd-active');
             $('.user-password-next').removeClass('button-active');
-
-            countdownInterval = null;
             $('.userCountdownSec').text(MAXseconds);
             $('.user-password-countdown').hide();
         }
@@ -69,12 +67,12 @@ $("#viewQPayUserInputPassword").pagecontainer({
                 //如果倒计时结束，仍然没有进行下一步，视为放弃交易，需要初始化并重新输入密码
                 if(seconds > MAXseconds) {
                     clearInterval(countdownInterval);
-                    countdownInterval = null;
                     initialPage();
                 }
 
             }, 1000);
         }
+
 
         /********************************** page event ***********************************/
         $("#viewQPayUserInputPassword").on("pagebeforeshow", function (event, ui) {
@@ -134,7 +132,6 @@ $("#viewQPayUserInputPassword").pagecontainer({
             //倒计时立即结束
             if(countdownInterval != null) {
                 clearInterval(countdownInterval);
-                countdownInterval = null;
                 $('.user-password-countdown').hide();
                 $('.userCountdownSec').text(MAXseconds);
             }
@@ -144,6 +141,10 @@ $("#viewQPayUserInputPassword").pagecontainer({
         $('.user-password-next').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
+                //倒计时立即结束
+                if(countdownInterval != null) {
+                    clearInterval(countdownInterval);
+                }
                 //loadingMask("show");
                 var trade_info = {
                     'shop_id': shop_id,

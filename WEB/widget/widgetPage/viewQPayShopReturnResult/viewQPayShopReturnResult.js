@@ -11,10 +11,16 @@ $("#viewQPayShopReturnResult").pagecontainer({
             if(trade_info['success'] == 'Y') {
                 $('.user-trade-fail').hide();
                 $('.user-trade-success').show();
-                $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_success.png');
+                $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_success.gif');
                 $('.user-trade-status').css('color', '#009688');
                 $('.user-trade-status').text(langStr['wgt_164']);
                 $('.user-trade-return').text(trade_info['reason']);
+
+                //gif再换成png
+                setTimeout(function() {
+                    $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_success.png');
+                }, 2100);
+
             } else {
                 $('.user-trade-success').hide();
                 $('.user-trade-fail').show();
