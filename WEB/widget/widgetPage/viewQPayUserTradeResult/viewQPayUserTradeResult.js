@@ -1,7 +1,8 @@
 $("#viewQPayUserTradeResult").pagecontainer({
     create: function (event, ui) {
 
-        var backToPage = 'viewQPayUserMain';
+        var backToPage = 'viewQPayUserMain',
+            imgURL = '/widget/widgetPage/viewQPayUserTradeResult/img/';
 
         //进行交易
         function makeNewTrade(tradeInfo) {
@@ -29,7 +30,7 @@ $("#viewQPayUserTradeResult").pagecontainer({
                 //交易成功或失败
                 if (data['result_code'] == '1') {
                     $('.user-trade-fail').hide();
-                    $('.user-trade-icon img').attr('src', serverURL + '/widget/widgetPage/viewQPayUserTradeResult/img/result_success.png');
+                    $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_success.gif');
                     $('.user-trade-status').css('color', '#009688');
                     $('.user-trade-status').text(langStr['wgt_068']);
                     $('.user-trade-money').text(trade_price);
@@ -39,9 +40,14 @@ $("#viewQPayUserTradeResult").pagecontainer({
                     window.sessionStorage.setItem('user_point_dirty', 'Y');
                     window.sessionStorage.setItem('user_point', data['content'].point_now);
 
+                    //gif再换成png
+                    setTimeout(function() {
+                        $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_success.png');
+                    }, 2100);
+
                 } else {
                     $('.user-trade-fail').show();
-                    $('.user-trade-icon img').attr('src', serverURL + '/widget/widgetPage/viewQPayUserTradeResult/img/result_warn.png');
+                    $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_warn.png');
                     $('.user-trade-status').css('color', '#C22C2B');
                     $('.user-trade-status').text(langStr['wgt_069']);
                     $('.user-trade-money').text('0');

@@ -1,7 +1,8 @@
 $("#viewQPayShopTradeResult").pagecontainer({
     create: function (event, ui) {
 
-        var backToPage = 'viewQPayShopMain';
+        var backToPage = 'viewQPayShopMain',
+            imgURL = '/widget/widgetPage/viewQPayShopTradeResult/img/';
 
         //进行交易
         function makeNewTrade(tradeInfo) {
@@ -30,15 +31,20 @@ $("#viewQPayShopTradeResult").pagecontainer({
                 //交易成功或失败
                 if (data['result_code'] == '1') {
                     $('.shop-trade-fail').hide();
-                    $('.shop-trade-icon img').attr('src', serverURL + '/widget/widgetPage/viewQPayShopTradeResult/img/result_success.png');
+                    $('.shop-trade-icon img').attr('src', serverURL + imgURL + 'result_success.gif');
                     $('.shop-trade-status').css('color', '#009688');
                     $('.shop-trade-status').text(langStr['wgt_068']);
                     $('.shop-trade-money').text(trade_price);
                     $('.trade-fail-reason').text('');
 
+                    //gif再换成png
+                    setTimeout(function() {
+                        $('.shop-trade-icon img').attr('src', serverURL + imgURL + 'result_success.png');
+                    }, 2100);
+
                 } else {
                     $('.shop-trade-fail').show();
-                    $('.shop-trade-icon img').attr('src', serverURL + '/widget/widgetPage/viewQPayShopTradeResult/img/result_warn.png');
+                    $('.shop-trade-icon img').attr('src', serverURL + imgURL + 'result_warn.png');
                     $('.shop-trade-status').css('color', '#C22C2B');
                     $('.shop-trade-status').text(langStr['wgt_069']);
                     $('.shop-trade-money').text('0');
