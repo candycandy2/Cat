@@ -11,8 +11,10 @@ var buyWidget = {
                 //2.img
                 var buyImg = $('<img>').attr('src', serverURL + '/widget/widget/buy/img/widget_buy_icon.png');
                 $('.buy-icon').html('').append(buyImg);
-                // var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/buy/img/widget_buy_img.png');
-                // $('.buy-widget-img').html('').append(moreImg);
+                var img1 = $('<img>').attr('src', serverURL + '/widget/widget/buy/img/icon-pen.jpg');
+                $('.buy-list-img1').html('').append(img1);
+                var img2 = $('<img>').attr('src', serverURL + '/widget/widget/buy/img/icon-cafe.jpg');
+                $('.buy-list-img2').html('').append(img2);
 
             }, "html");
 

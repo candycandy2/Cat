@@ -37,7 +37,7 @@ var widget = {
             { id: 11, name: 'staffAdmin', enabled: true, show: false, deletable: true, lang: langStr['wgt_102'] },
             { id: 12, name: 'cards', enabled: true, show: true, deletable: false, lang: langStr['wgt_167'] },
             { id: 13, name: 'osis', enabled: true, show: false, deletable: true, lang: 'OSIS' },
-            { id: 14, name: 'buy', enabled: true, show: false, deletable: true, lang: langStr['wgt_221'] }
+            { id: 14, name: 'buy', enabled: true, show: true, deletable: true, lang: langStr['wgt_221'] }
 
         ];
     },
