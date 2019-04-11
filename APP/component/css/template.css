@@ -111,7 +111,8 @@ html .ui-navbar li .ui-btn.ui-btn-active {
     color: #0f0f0f;
 }
 
-.app-popup.ui-overlay-shadow {
+.app-popup.ui-overlay-shadow,
+.popup-info.ui-overlay-shadow {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
