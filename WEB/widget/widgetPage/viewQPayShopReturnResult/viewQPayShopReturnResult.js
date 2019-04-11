@@ -50,6 +50,12 @@ $("#viewQPayShopReturnResult").pagecontainer({
 
 
         /********************************** page event ***********************************/
+        $("#viewQPayShopReturnResult").one("pagebeforeshow", function (event, ui) {
+            //first time coming this page append loading gif
+            var img = $('<img>').attr('src', serverURL + imgURL + 'loading.gif');
+            $('.user-trade-loading').append(img);
+        });
+
         $("#viewQPayShopReturnResult").on("pagebeforeshow", function (event, ui) {
 
         });

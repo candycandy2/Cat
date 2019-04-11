@@ -73,6 +73,12 @@ $("#viewQPayUserTradeResult").pagecontainer({
 
 
         /********************************** page event ***********************************/
+        $("#viewQPayUserTradeResult").one("pagebeforeshow", function (event, ui) {
+            //first time coming this page append loading gif
+            var img = $('<img>').attr('src', serverURL + imgURL + 'loading.gif');
+            $('.user-trade-loading').append(img);
+        });
+
         $("#viewQPayUserTradeResult").on("pagebeforeshow", function (event, ui) {
             //只有从上一页（输入密码）跳转过来才有trade_info，才需要API
             var trade_info = JSON.parse(window.sessionStorage.getItem('trade_info'));

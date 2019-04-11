@@ -64,6 +64,12 @@ $("#viewQPayShopTradeResult").pagecontainer({
 
 
         /********************************** page event ***********************************/
+        $("#viewQPayShopTradeResult").one("pagebeforeshow", function (event, ui) {
+            //first time coming this page append loading gif
+            var img = $('<img>').attr('src', serverURL + imgURL + 'loading.gif');
+            $('.shop-trade-loading').append(img);
+        });
+
         $("#viewQPayShopTradeResult").on("pagebeforeshow", function (event, ui) {
             var trade_info = JSON.parse(window.sessionStorage.getItem('trade_info'));
             if(trade_info !== null) {
