@@ -16,11 +16,6 @@ $("#viewQPayShopReturnResult").pagecontainer({
                 $('.user-trade-status').text(langStr['wgt_164']);
                 $('.user-trade-return').text(trade_info['reason']);
 
-                //gif再换成png
-                setTimeout(function() {
-                    $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_success.png');
-                }, 2100);
-
             } else {
                 $('.user-trade-success').hide();
                 $('.user-trade-fail').show();
