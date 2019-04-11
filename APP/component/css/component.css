@@ -384,40 +384,44 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 .popup-div .ui-content {
     width: 85%;
     height: auto;
-    padding: 10% 10% 0;
-    font-size: 3vh;
+    padding: 8% 8% 0;
+    font-size: 4.18vw;
 }
 
 .popup-div .hr-style {
     position: absolute;
     width: 99%;
     left: 0;
-    color: #D6D6D6;
+    border: none;
+    height: 1px;
+    background: #D6D6D6;
 }
 
 .popup-div .bottom {
-    height: 10vh;
+    height: 14vw;
 }
 
 .popup-div .button-content {
     position: absolute;
     width: 100%;
+    height: 14vw;
     left: 0;
-    line-height: 3.5;
+    line-height: 3.75;
     text-align: center;
-    color: #492E80;
-    font-size: 3.3vh;
+    color: #1678E5;
+    font-size: 4.39vw;
 }
 
 .popup-div .button-content div {
     float: left;
     width: 49%;
+    height: 100%;
 }
 
 .popup-div .button-content .vertical-line {
     border-left: 1px solid #D6D6D6;
     width: 1%;
-    height: 8.5vh;
+    height: 11vw;
     margin-top: 1.5vh;
 }
 
