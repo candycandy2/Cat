@@ -4,75 +4,15 @@
 }
 
 .user-trade-loading {
-    width: 92.58vw;
-    height: 100vh;
     position: fixed;
-    padding: 6.58vw 3.71vw 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
-.user-loading-icon {
+.user-trade-loading img {
     width: 100%;
-    height: 22vw;
-    padding-bottom: 10vw;
-}
-
-.user-loading-icon div {
-    width: 22vw;
-    height: 22vw;
-    margin: auto;
-    background: #E5E6E6;
-    border-radius: 50%;
-}
-
-.user-loading-total {
-    width: 100%;
-    height: 15.6vw;
-    padding-bottom: 13.8vw;
-}
-
-.user-loading-total div {
-    width: 41.3vw;
-    height: 100%;
-    margin: auto;
-    background: #E5E6E6;
-}
-
-.user-loading-short {
-    width: 100%;
-    height: 3.39vw;
-    padding-bottom: 1.16vw;
-}
-
-.user-loading-short div {
-    width: 21vw;
-    height: 100%;
-    margin-left: 1.68vw;
-    background: #E5E6E6;
-}
-
-.user-loading-long {
-    width: 100%;
-    height: 5vw;
-    padding-bottom: 5.46vw;
-}
-
-.user-loading-long div {
-    width: 89.22vw;
-    height: 100%;
-    margin-left: 1.68vw;
-    background: #E5E6E6;
-}
-
-.user-loading-foot {
-    width: 100%;
-    height: 10.35vw;
-}
-
-.user-loading-foot div {
-    width: 35.5vw;
-    height: 100%;
-    margin: auto;
-    background: #E5E6E6;
 }
 
 .user-trade-main {
