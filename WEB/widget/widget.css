@@ -1195,6 +1195,26 @@
     width: 72.37vw;
     margin-left: 3.5vw;
     font-size: 3.768vw;
+}
+
+.buy-list li a{
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.buy-list li a:link{
+    color: #223037;
+}
+
+.buy-list li a:visited{
+    color: #223037;
+}
+
+.buy-list li a:hover{
+    color: #223037;
+}
+
+.buy-list li a:active{
     color: #223037;
 }
 
