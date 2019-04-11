@@ -40,11 +40,6 @@ $("#viewQPayUserTradeResult").pagecontainer({
                     window.sessionStorage.setItem('user_point_dirty', 'Y');
                     window.sessionStorage.setItem('user_point', data['content'].point_now);
 
-                    //gif再换成png
-                    setTimeout(function() {
-                        $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_success.png');
-                    }, 2100);
-
                 } else {
                     $('.user-trade-fail').show();
                     $('.user-trade-icon img').attr('src', serverURL + imgURL + 'result_warn.png');

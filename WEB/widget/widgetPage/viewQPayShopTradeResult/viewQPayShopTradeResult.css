@@ -9,10 +9,13 @@
     left: 0;
     right: 0;
     bottom: 0;
+    display: flex;
 }
 
 .shop-trade-loading img {
-    width: 100%;
+    width: 20vw;
+    height: 20vw;
+    margin: auto;
 }
 
 .shop-trade-main {

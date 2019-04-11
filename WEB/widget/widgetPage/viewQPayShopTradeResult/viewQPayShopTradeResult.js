@@ -37,11 +37,6 @@ $("#viewQPayShopTradeResult").pagecontainer({
                     $('.shop-trade-money').text(trade_price);
                     $('.trade-fail-reason').text('');
 
-                    //gif再换成png
-                    setTimeout(function() {
-                        $('.shop-trade-icon img').attr('src', serverURL + imgURL + 'result_success.png');
-                    }, 2100);
-
                 } else {
                     $('.shop-trade-fail').show();
                     $('.shop-trade-icon img').attr('src', serverURL + imgURL + 'result_warn.png');
