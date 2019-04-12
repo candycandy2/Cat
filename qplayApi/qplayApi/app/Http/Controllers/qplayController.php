@@ -16,6 +16,7 @@ use App\lib\ResultCode;
 use App\lib\Verify;
 use DB;
 use Mail;
+use Log;
 
 class qplayController extends Controller
 {   
@@ -2469,39 +2470,44 @@ SQL;
         }
 
         if ($sendMail) {
-            $content = file_get_contents('php://input');
-            $content = CommonUtil::prepareJSON($content);
+            try {
+                $content = file_get_contents('php://input');
+                $content = CommonUtil::prepareJSON($content);
 
-            if (\Request::isJson($content)) {
-                $jsonContent = json_decode($content, true);
-                $message_title = CommonUtil::jsUnescape(base64_decode($jsonContent['message_title']));
-                $message_text = CommonUtil::jsUnescape(base64_decode($jsonContent['message_text']));
+                if (\Request::isJson($content)) {
+                    $jsonContent = json_decode($content, true);
+                    $message_title = CommonUtil::jsUnescape(base64_decode($jsonContent['message_title']));
+                    $message_text = CommonUtil::jsUnescape(base64_decode($jsonContent['message_text']));
 
-                //From
-                $mailFrom = [
-                    "email" => "no-reply@benq.com",
-                    "name" => "QPlay",
-                    "subject" => $message_title
-                ];
+                    //From
+                    $mailFrom = [
+                        "email" => "no-reply@benq.com",
+                        "name" => "QPlay",
+                        "subject" => $message_title
+                    ];
 
-                //To
-                $emailTo = array();
+                    //To
+                    $emailTo = array();
 
-                foreach ($jsonContent['destination_user_id'] as $destinationUser) {
-                    $userid = explode('\\', $destinationUser)[1];
-                    $domain = explode('\\', $destinationUser)[0];
+                    foreach ($jsonContent['destination_user_id'] as $destinationUser) {
+                        $userid = explode('\\', $destinationUser)[1];
+                        $domain = explode('\\', $destinationUser)[0];
 
-                    $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
+                        $destinationUserInfo = CommonUtil::getUserInfoJustByUserIDAndDomain($userid, $domain);
 
-                    if (trim($destinationUserInfo->email) != "") {
-                        array_push($emailTo, $destinationUserInfo->email);
+                        if (trim($destinationUserInfo->email) != "") {
+                            array_push($emailTo, $destinationUserInfo->email);
+                        }
                     }
-                }
 
-                Mail::raw($message_text, function ($message) use($mailFrom, $emailTo) {
-                    $message->from($mailFrom["email"], $mailFrom["name"]);
-                    $message->to($emailTo)->subject($mailFrom["subject"]);
-                });
+                    Mail::raw($message_text, function ($message) use($mailFrom, $emailTo) {
+                        $message->from($mailFrom["email"], $mailFrom["name"]);
+                        $message->to($emailTo)->subject($mailFrom["subject"]);
+                    });
+                }
+            } catch (\Exception $e) {
+                Log::info("==========Mail Send Fail==========");
+                Log::info($e);
             }
         }
 
