@@ -2252,7 +2252,7 @@ var datetimepickerFactory = function($) {
                 .on('open.xdsoft', function(event) {
                     var onShow = true;
                     if (options.onShow && $.isFunction(options.onShow)) {
-                        if (this.initialAppName !== undefined && this.initialAppName === "Leave") {
+                        if (initialAppName !== undefined && initialAppName === "Leave") {
                             _xdsoft_datetime.currentTime = recordStartText;
                         }
                         onShow = options.onShow.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'), event);
