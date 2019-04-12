@@ -213,12 +213,33 @@ function checkServerStatus() {
             //服务器正常
             loadStringTable();
             app.bindEvents();
+
+            //是否需要預告
+            checkServerAnnounced(data);
+
         } else {
             loadNotFoundPage();
         }
     }).fail(function(err) {
         loadNotFoundPage();
     });
+}
+
+//預告服務器停機時段
+function checkServerAnnounced(data) {
+    var needs = data['Pre-announced'];
+    if(needs == 'Y') {
+        var start = new Date(data['start']).getTime() / 1000,
+            end = new Date(data['end']).getTime() / 1000,
+            now = Math.round(new Date().getTime() / 1000),
+            announce = window.localStorage.getItem('ServerDownData');
+
+        if(now > start && now < end && announce == null) {
+            window.localStorage.setItem('ServerDownData', JSON.stringify(data));
+        }
+    } else {
+        window.localStorage.removeItem('ServerDownData');
+    }
 }
 
 //加载404页面
