@@ -192,8 +192,21 @@ input[type=radio]:checked + label {
     display: none;
 }
 
+.serverAnnouncePop .ui-content{
+    padding: 0;
+}
+
+.serverAnnouncePop .ui-content .header{
+    margin-top: 10vw;
+    padding: 0 5vw;
+}
+
+.serverAnnouncePop .ui-content .footer{
+    margin-top: 8vw;
+}
+
 /*************************** viewMain3 widget ********************************/
-#viewMain3 .ui-content {
+#viewMain3 .page-main {
     position: fixed;
     /*bottom: 0;*/
     padding: 0 !important;

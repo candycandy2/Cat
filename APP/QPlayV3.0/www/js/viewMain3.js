@@ -84,6 +84,21 @@ $("#viewMain3").pagecontainer({
             }
         });
 
+        //是否有server預告
+        function showServerAnnounce() {
+            var data = JSON.parse(window.localStorage.getItem('ServerDownData'));
+            if(data != null) {
+                //未讀
+                if(typeof data['read'] == 'undefined') {
+                    data['read'] = 'N';
+                    window.localStorage.setItem('ServerDownData', JSON.stringify(data));
+                    //popup
+                    $('.serverAnnouncePop .header-title').text(data['content']);
+                    popupMsgInit('.serverAnnouncePop');
+                }
+            }
+        }
+
         //获取自己设计的widget
         function getSelfWidget() {
             var selfWidget = ["ball", "movie"];//模拟API获得所有自己开发widget
@@ -118,6 +133,8 @@ $("#viewMain3").pagecontainer({
         $("#viewMain3").one("pageshow", function(event, ui) {
             //main height and offsetTop
             offsetTop = $('#viewMain3 .page-header').height();
+            //預告
+            showServerAnnounce();
             //test
             getSelfWidget();
         });
@@ -162,6 +179,14 @@ $("#viewMain3").pagecontainer({
         $('#setting').on('click', function() {
             $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
             checkWidgetPage('viewAppSetting', pageVisitedList);
+        });
+
+        //關閉預告
+        $('.serverAnnouncePop .btn-cancel').on('click', function() {
+            //只通知一次
+            var data = JSON.parse(window.localStorage.getItem('ServerDownData'));
+            data['read'] = 'Y';
+            window.localStorage.setItem('ServerDownData', JSON.stringify(data));
         });
 
 
