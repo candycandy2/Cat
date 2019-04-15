@@ -97,6 +97,21 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
         });
 
         /********************************** page event *************************************/
+        $("#viewPersonalLeaveCalendar").one("pagebeforeshow", function(event, ui) {
+            var now = new Date();
+            var year = now.getFullYear().toString();
+            var month = (now.getMonth() + 1).toString();
+            queryCalendarData = "<LayoutHeader><Year>" +
+                year +
+                "</Year><Month>" +
+                month +
+                "</Month><EmpNo>" +
+                myEmpNo +
+                "</EmpNo></LayoutHeader>";
+            //呼叫API
+            QueryCalendarData();
+        });
+
         $("#viewPersonalLeaveCalendar").on("pageshow", function(event, ui) {
             changeLeavePanelBKColor();
             loadingMask("hide");
