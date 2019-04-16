@@ -238,7 +238,8 @@ $("#viewLeaveClockin").pagecontainer({
         //選擇出勤日期
         $("#selectWorkday").on("click", function() {
             if ($("#chooseWorkday").text() == pleaseSelectStr) {
-                recordStartText = new Date(Date.now());
+                //recordStartText = new Date(Date.now());
+                recordStartText = time;
             } else {
                 recordStartText = new Date($("#chooseWorkday").text());
             }
@@ -272,7 +273,8 @@ $("#viewLeaveClockin").pagecontainer({
         //選擇刷卡日期
         $("#selectClockinday").on("click", function() {
             if ($("#chooseClockinday").text() == pleaseSelectStr) {
-                recordStartText = new Date(Date.now());
+                //recordStartText = new Date(Date.now());
+                recordStartText = time;
             } else {
                 recordStartText = new Date($("#chooseClockinday").text());
             }
