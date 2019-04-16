@@ -311,7 +311,8 @@ $("#viewOvertimeSubmit").pagecontainer({
         $("#selectOTday").on("click", function() {
             if (!viewAcutalOTApplyShow) {
                 if ($("#chooseOTday").text() == pleaseSelectStr) {
-                    recordStartText = new Date(Date.now());
+                    //recordStartText = new Date(Date.now());
+                    recordStartText = time;
                 } else {
                     recordStartText = new Date($("#chooseOTday").text());
                 }

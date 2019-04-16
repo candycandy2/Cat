@@ -1328,7 +1328,8 @@ $("#viewLeaveMain").pagecontainer({
                 popupMsgInit('.basedayList');
             } else {
                 if ($("#chooseBaseday").text() == selectBasedayStr) {
-                    recordStartText = new Date(Date.now());
+                    //recordStartText = new Date(Date.now());
+                    recordStartText = time;
                 } else {
                     recordStartText = new Date($("#chooseBaseday").text());
                 }
@@ -1374,7 +1375,8 @@ $("#viewLeaveMain").pagecontainer({
             if (self === otherBasedayStr) {
                 baseday = "";
                 if ($("#chooseBaseday").text() == selectBasedayStr) {
-                    recordStartText = new Date(Date.now());
+                    //recordStartText = new Date(Date.now());
+                    recordStartText = time;
                 } else {
                     recordStartText = new Date($("#chooseBaseday").text());
                 }
@@ -1434,7 +1436,8 @@ $("#viewLeaveMain").pagecontainer({
                     //再判斷基準日是否已经选择
                     if ($("#chooseBaseday").text() !== selectBasedayStr) {
                         if ($("#startText").text() == pleaseSelectStr) {
-                            recordStartText = new Date(Date.now());
+                            //recordStartText = new Date(Date.now());
+                            recordStartText = time;
                         } else {
                             recordStartText = new Date($("#startText").text());
                         }
@@ -1444,7 +1447,8 @@ $("#viewLeaveMain").pagecontainer({
                     }
                 } else {
                     if ($("#startText").text() == pleaseSelectStr) {
-                        recordStartText = new Date(Date.now());
+                        //recordStartText = new Date(Date.now());
+                        recordStartText = time;
                     } else {
                         recordStartText = new Date($("#startText").text());
                     }
