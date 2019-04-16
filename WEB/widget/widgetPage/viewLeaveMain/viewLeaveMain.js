@@ -952,9 +952,9 @@ $("#viewLeaveMain").pagecontainer({
                 queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
                 QueryEmployeeLeaveApplyForm();
 
-                //加班單查询——获取加班单列表
-                queryEmployeeOvertimeApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-                QueryEmployeeOvertimeApplyForm();
+                //加班單查询——获取加班单列表(转移到加班单页面viewOvertimeQuery)
+                // queryEmployeeOvertimeApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+                // QueryEmployeeOvertimeApplyForm();
 
                 viewPersonalLeaveShow = true;
                 defaultSettingDone = false;
@@ -1316,6 +1316,7 @@ $("#viewLeaveMain").pagecontainer({
         });
 
         $('#newBaseDate').datetimepicker({
+            id: 'newBase',
             timepicker: false,
             yearStart: '2016',
             yearEnd: '2019'
@@ -1352,6 +1353,7 @@ $("#viewLeaveMain").pagecontainer({
         });
 
         $('#oldBaseDate').datetimepicker({
+            id: 'oldBase',
             timepicker: false,
             yearStart: '2016',
             yearEnd: '2019'
@@ -1411,12 +1413,13 @@ $("#viewLeaveMain").pagecontainer({
             $(".basedayList").popup("close");
         });
 
-        $('#starDateTime').datetimepicker({
+        $('#startDateTime').datetimepicker({
+            id: 'startTime',
             step: 30,
             yearStart: '2016',
             yearEnd: '2019',
             onSelectTime: function(current_time, $input) {
-                $("#starDateTime").blur();
+                $("#startDateTime").blur();
             }
         });
 
@@ -1435,7 +1438,7 @@ $("#viewLeaveMain").pagecontainer({
                         } else {
                             recordStartText = new Date($("#startText").text());
                         }
-                        $('#starDateTime').datetimepicker('show');
+                        $('#startDateTime').datetimepicker('show');
                     } else {
                         popupMsgInit('.basedayFirst');
                     }
@@ -1445,12 +1448,12 @@ $("#viewLeaveMain").pagecontainer({
                     } else {
                         recordStartText = new Date($("#startText").text());
                     }
-                    $('#starDateTime').datetimepicker('show');
+                    $('#startDateTime').datetimepicker('show');
                 }
             }
         });
 
-        $("#starDateTime").on("blur", function() {
+        $("#startDateTime").on("blur", function() {
             var self = $(this).val();
             var minute = parseInt(self.substring(14, 16));
 
@@ -1476,7 +1479,7 @@ $("#viewLeaveMain").pagecontainer({
 
             } else {
                 $('#startText').text(pleaseSelectStr);
-                $("#starDateTime").val("");
+                $("#startDateTime").val("");
 
             }
             //如果开始时间改变，结束时间无论如何也要清空
@@ -1536,6 +1539,7 @@ $("#viewLeaveMain").pagecontainer({
         });
 
         $('#endDateTime').datetimepicker({
+            id: 'endTime',
             step: 30,
             yearStart: '2016',
             yearEnd: '2019',

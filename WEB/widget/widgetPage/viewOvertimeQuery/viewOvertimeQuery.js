@@ -313,6 +313,11 @@ $("#viewOvertimeQuery").pagecontainer({
         }
 
         /********************************** page event *************************************/
+        $("#viewOvertimeQuery").one("pagebeforeshow", function(event, ui) {
+            //加班單查询——获取加班单列表
+            queryEmployeeOvertimeApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+            QueryEmployeeOvertimeApplyForm();
+        });
 
         $("#viewOvertimeQuery").on("pageshow", function(event, ui) {
             if (!changePageFromSubmitToDetail) {
